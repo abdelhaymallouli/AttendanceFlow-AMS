@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - School Absence Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center p-4">
+    
+    <div class="w-full max-w-md">
+        <!-- Logo & Header -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-indigo-600 rounded-2xl mb-4 shadow-lg">
+                <i data-lucide="school" class="text-white w-8 h-8"></i>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">School AMS</h1>
+            <p class="text-gray-600">Absence Management System</p>
+        </div>
+
+        <!-- Login Card -->
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Welcome Back</h2>
+            
+            <!-- Role Selection -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-3">Select Your Role</label>
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="selectRole('admin')" id="adminBtn" class="role-btn flex flex-col items-center justify-center p-4 border-2 border-gray-200 rounded-xl hover:border-indigo-500 hover:bg-indigo-50 transition-all duration-200">
+                        <i data-lucide="shield-check" class="w-8 h-8 text-indigo-600 mb-2"></i>
+                        <span class="font-medium text-gray-700">Administrator</span>
+                    </button>
+                    <button onclick="selectRole('student')" id="studentBtn" class="role-btn flex flex-col items-center justify-center p-4 border-2 border-gray-200 rounded-xl hover:border-indigo-500 hover:bg-indigo-50 transition-all duration-200">
+                        <i data-lucide="graduation-cap" class="w-8 h-8 text-indigo-600 mb-2"></i>
+                        <span class="font-medium text-gray-700">Student</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="mb-4">
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
+                        <span id="usernameLabel">Username or Email</span>
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i data-lucide="user" class="w-5 h-5 text-gray-400"></i>
+                        </div>
+                        <input type="text" id="username" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all" placeholder="Enter your username" required>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i data-lucide="lock" class="w-5 h-5 text-gray-400"></i>
+                        </div>
+                        <input type="password" id="password" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all" placeholder="Enter your password" required>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between mb-6">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                        <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                    </label>
+                    <a href="#" class="text-sm text-indigo-600 hover:text-indigo-700 font-medium">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition-colors duration-200 flex items-center justify-center shadow-lg hover:shadow-xl">
+                    <span>Sign In</span>
+                    <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
+                </button>
+            </form>
+
+            <!-- Demo Credentials -->
+            <div class="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <p class="text-xs font-semibold text-gray-700 mb-2">Demo Credentials:</p>
+                <div class="text-xs text-gray-600 space-y-1">
+                    <p><strong>Admin:</strong> admin@school.edu / admin123</p>
+                    <p><strong>Student:</strong> student@school.edu / student123</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-6 text-sm text-gray-600">
+            <p>&copy; 2024 School AMS. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        let selectedRole = null;
+
+        function selectRole(role) {
+            selectedRole = role;
+            const adminBtn = document.getElementById('adminBtn');
+            const studentBtn = document.getElementById('studentBtn');
+            const usernameLabel = document.getElementById('usernameLabel');
+            
+            // Reset both buttons
+            adminBtn.classList.remove('border-indigo-600', 'bg-indigo-50');
+            studentBtn.classList.remove('border-indigo-600', 'bg-indigo-50');
+            
+            // Highlight selected
+            if (role === 'admin') {
+                adminBtn.classList.add('border-indigo-600', 'bg-indigo-50');
+                usernameLabel.textContent = 'Admin Email';
+            } else {
+                studentBtn.classList.add('border-indigo-600', 'bg-indigo-50');
+                usernameLabel.textContent = 'Student ID or Email';
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            if (!selectedRole) {
+                alert('Please select your role (Administrator or Student)');
+                return;
+            }
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Simple demo authentication
+            if (selectedRole === 'admin' && (username === 'admin@school.edu' || username === 'admin') && password === 'admin123') {
+                window.location.href = 'admin-dashboard.html';
+            } else if (selectedRole === 'student' && (username === 'student@school.edu' || username === 'student') && password === 'student123') {
+                window.location.href = 'student-dashboard.html';
+            } else {
+                alert('Invalid credentials. Please try the demo credentials provided below.');
+            }
+        }
+
+        // Auto-select admin role on load
+        selectRole('admin');
+    </script>
+</body>
+</html>
