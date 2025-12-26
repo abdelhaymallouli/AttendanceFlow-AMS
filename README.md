@@ -1,5 +1,5 @@
 
-# 📋 final Project : Attendance Management System (AMS)
+# 📋 final Project (AttendanceFlow-AMS): Attendance Management System (AMS)
 
 An empathetic solution to the "Paper-to-Laptop" friction in school administration. Built with **Laravel** and **Tailwind CSS**.
 
