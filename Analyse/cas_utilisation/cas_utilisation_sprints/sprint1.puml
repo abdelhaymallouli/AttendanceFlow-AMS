@@ -32,10 +32,5 @@ T --> UC02
 A --> UC01
 A --> UC02
 
-note right of UC01
-  Accès sécurisé par rôle :
-  - Enseignant
-  - Administrateur
-end note
 
 @enduml

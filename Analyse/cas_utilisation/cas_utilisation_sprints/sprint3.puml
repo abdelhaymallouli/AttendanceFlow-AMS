@@ -46,10 +46,5 @@ A --> UC10
 A --> UC11
 A --> UC12
 
-note right of UC09
-  L'approbation ou le rejet
-  clôture le cycle du justificatif.
-  L'enseignant est notifié.
-end note
 
 @enduml

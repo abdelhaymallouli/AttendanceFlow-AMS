@@ -34,10 +34,6 @@ T --> UC05
 
 A --> UC05
 
-note right of UC03
-  La saisie se fait en temps réel
-  dès le début du cours.
-  Aucun support papier requis.
-end note
+
 
 @enduml

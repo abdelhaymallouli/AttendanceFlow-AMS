@@ -1,5 +1,5 @@
 @startuml use_case_global
-title Diagramme de Cas d'Utilisation Global\nAttendanceFlow-AMS
+title Diagramme de Cas d'Utilisation\nAttendanceFlow-AMS
 
 left to right direction
 
@@ -15,20 +15,14 @@ skinparam actor {
 }
 skinparam packageStyle rectangle
 
-actor "Administrateur\nde l'Absence" as admin
+actor "Administrateur" as admin
 
 rectangle "AttendanceFlow-AMS" {
   usecase "S'authentifier" as UC01
-  usecase "Gérer son profil" as UC02
-  usecase "Consulter le tableau\nde bord en temps réel" as UC03
-  usecase "Filtrer les absences\npar classe / par date" as UC04
-  usecase "Enregistrer les présences\n(Présent / Absent / Retard)" as UC05
-  usecase "Modifier une présence\nenregistrée" as UC06
-  usecase "Télécharger un justificatif\n(PDF / Image)" as UC07
-  usecase "Approuver un justificatif" as UC08
-  usecase "Rejeter un justificatif\navec motif" as UC09
-  usecase "Exporter le rapport\nquotidien (PDF / Excel)" as UC10
-  usecase "Consulter l'historique\ndes absences" as UC11
+  usecase "Gérer les présences" as UC02
+  usecase "Consulter le tableau de bord" as UC03
+  usecase "Gérer les justificatifs" as UC04
+  usecase "Exporter les rapports" as UC05
 }
 
 admin --> UC01
@@ -36,11 +30,5 @@ admin --> UC02
 admin --> UC03
 admin --> UC04
 admin --> UC05
-admin --> UC06
-admin --> UC07
-admin --> UC08
-admin --> UC09
-admin --> UC10
-admin --> UC11
 
 @enduml
