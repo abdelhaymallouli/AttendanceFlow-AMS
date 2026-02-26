@@ -1,0 +1,27 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Teacher" as teacher
+actor "Attendance Administrator" as admin
+actor "Student / Parent" as student
+
+rectangle "AttendanceFlow-AMS" {
+  usecase "Record Class Attendance\n(Present/Absent/Late)" as UC1
+  usecase "View School Attendance Dashboard" as UC2
+  usecase "Verify & Approve/Reject Justifications" as UC3
+  usecase "Export Daily Attendance Reports" as UC4
+  usecase "View Personal Absence Record" as UC5
+  usecase "Upload Absence Justification\n(e.g., Medical Note)" as UC6
+}
+
+teacher --> UC1
+
+admin --> UC2
+admin --> UC3
+admin --> UC4
+
+student --> UC5
+student --> UC6
+
+@enduml
