@@ -4,15 +4,12 @@ skinparam packageStyle rectangle
 
 actor "Enseignant" as teacher
 actor "Administrateur de l'Absence" as admin
-actor "Étudiant / Parent" as student
 
 rectangle "AttendanceFlow-AMS" {
   usecase "Enregistrer les présences en classe\n(Présent/Absent/Retard)" as UC1
   usecase "Consulter le tableau de bord des présences" as UC2
   usecase "Vérifier et Approuver/Rejeter les justificatifs" as UC3
   usecase "Exporter les rapports de présence quotidiens" as UC4
-  usecase "Consulter le relevé d'absences personnel" as UC5
-  usecase "Télécharger un justificatif d'absence\n(ex: Certificat médical)" as UC6
 }
 
 teacher --> UC1
@@ -21,8 +18,4 @@ admin --> UC2
 admin --> UC3
 admin --> UC4
 
-student --> UC5
-student --> UC6
-
 @enduml
- 

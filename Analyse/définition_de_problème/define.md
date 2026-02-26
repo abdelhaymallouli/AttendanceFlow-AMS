@@ -11,9 +11,6 @@ Sur la base de nos recherches d'empathie, nous pouvons maintenant définir clair
 **Pour l'Administrateur (Madame Hannane) :**
 L'Administrateur de l'Absence a besoin d'un moyen de recevoir des données de présence numériques et en temps réel de la part des enseignants, car le système actuel de double saisie sur papier cause un décalage de 4 à 6 heures, une fatigue cognitive élevée et augmente le risque d'erreurs d'enregistrement.
 
-**Pour l'Étudiant :**
-Les étudiants ont besoin d'un moyen transparent de consulter leur état de présence et de justification, car le système actuel nécessite des déplacements physiques au bureau qui interrompent à la fois leur journée et le flux de travail de l'administration.
-
 ---
 
 ## ❓ 2. Questions "Comment pourrions-nous" (HMW)

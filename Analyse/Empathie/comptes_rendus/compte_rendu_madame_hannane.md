@@ -27,7 +27,6 @@ La lecture de l'écriture manuscrite ("Est-ce un 'B' ou un '8' ?") et la manipul
 
 - **Automatisation :** Éliminer la saisie manuelle en permettant aux enseignants de saisir directement les données.
 - **Tableau de Bord de Validation :** Passer d'un rôle de "saisie" à un rôle de "vérification/validation".
-- **Transparence :** Permettre aux élèves et parents de consulter l'état des présences sans solliciter physiquement l'administration.
 - **Preuve Numérique :** Une fonctionnalité de téléchargement de justificatifs pour remplacer les billets de retard/absence physiques.
 
 ## 🎯 Conclusion

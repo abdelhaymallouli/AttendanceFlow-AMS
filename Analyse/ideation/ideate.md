@@ -22,10 +22,6 @@ Notre objectif est de créer un système où les données sont saisies une seule
 * **Concept :** Un tableau de bord pour Madame Hannane utilisant un code couleur (ex: Rouge pour Absent, Vert pour Présent, Jaune pour Justifié) pour scanner rapidement l'état des présences.
 * **Pourquoi ça marche :** Réduit la charge cognitive. Elle n'a plus à lire chaque nom, mais seulement à vérifier les exceptions et gérer les téléchargements de justificatifs.
 
-### **Solution C : Portail de Transparence pour les Étudiants**
-* **Concept :** Un portail simple où les étudiants peuvent se connecter pour vérifier leur état d'absence et si leur justificatif a été accepté.
-* **Pourquoi ça marche :** Réduit les visites physiques au bureau de l'administration, faisant gagner du temps à la fois à l'étudiant et à l'administrateur.
-
 ---
 
 ## 🛠️ 3. Brainstorming des Fonctionnalités

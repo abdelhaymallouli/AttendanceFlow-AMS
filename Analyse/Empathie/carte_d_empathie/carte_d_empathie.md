@@ -1,7 +1,7 @@
 # Carte d'Empathie : Madame Hannane
 
 **Rôle :** Administratrice de l'Absence (Attendance Administrator)  
-**Utilisateur Principal :** Sarah / Madame Hannane
+**Utilisateur Principal :** Madame Hannane
 
 ---
 
@@ -17,7 +17,6 @@
 - Des piles de papier qui s'accumulent sur son bureau.
 - Des listes d'élèves écrites à la main, parfois illisibles.
 - Un écran d'ordinateur avec des tableaux Excel complexes et fatigants.
-- Des élèves qui attendent devant son bureau pour des questions administratives.
 
 ### 🧠 Ce qu'elle PENSE et RESSENT
 - **Pense :** *"Je fais le travail qu'un ordinateur devrait faire seul."*
