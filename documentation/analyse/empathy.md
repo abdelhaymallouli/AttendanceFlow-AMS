@@ -66,4 +66,4 @@ Based on our interviews and the "Paper-to-Laptop" problem, our design must focus
 
 ---
 
-## NEXT Chapter : define Problem
+## NEXT Chapter : Define Problem
