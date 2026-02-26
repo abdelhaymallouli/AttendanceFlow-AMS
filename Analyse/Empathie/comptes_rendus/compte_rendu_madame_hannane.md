@@ -1,7 +1,7 @@
 # Compte Rendu d'Entretien : Empathie
 
 **Projet :** AttendanceFlow-AMS (Attendance Management System)  
-**Date :** 26 Février 2026  
+**Date :** 15 Novembre 2025  
 **Intervenant :** Madame Hannane (Administratrice de l'Absence)  
 **Sujet :** Analyse des besoins et frustrations liés à la gestion manuelle des présences.
 
