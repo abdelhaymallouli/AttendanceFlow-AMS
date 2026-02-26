@@ -1,21 +1,46 @@
-@startuml
+@startuml use_case_global
+title Diagramme de Cas d'Utilisation Global\nAttendanceFlow-AMS
+
 left to right direction
+
+skinparam usecase {
+  BackgroundColor #EBF5FB
+  BorderColor #2E86C1
+  ArrowColor #2E86C1
+  FontSize 12
+}
+skinparam actor {
+  BorderColor #2E86C1
+  BackgroundColor #D6EAF8
+}
 skinparam packageStyle rectangle
 
-actor "Enseignant" as teacher
-actor "Administrateur de l'Absence" as admin
+actor "Administrateur\nde l'Absence" as admin
 
 rectangle "AttendanceFlow-AMS" {
-  usecase "Enregistrer les présences en classe\n(Présent/Absent/Retard)" as UC1
-  usecase "Consulter le tableau de bord des présences" as UC2
-  usecase "Vérifier et Approuver/Rejeter les justificatifs" as UC3
-  usecase "Exporter les rapports de présence quotidiens" as UC4
+  usecase "S'authentifier" as UC01
+  usecase "Gérer son profil" as UC02
+  usecase "Consulter le tableau\nde bord en temps réel" as UC03
+  usecase "Filtrer les absences\npar classe / par date" as UC04
+  usecase "Enregistrer les présences\n(Présent / Absent / Retard)" as UC05
+  usecase "Modifier une présence\nenregistrée" as UC06
+  usecase "Télécharger un justificatif\n(PDF / Image)" as UC07
+  usecase "Approuver un justificatif" as UC08
+  usecase "Rejeter un justificatif\navec motif" as UC09
+  usecase "Exporter le rapport\nquotidien (PDF / Excel)" as UC10
+  usecase "Consulter l'historique\ndes absences" as UC11
 }
 
-teacher --> UC1
-
-admin --> UC2
-admin --> UC3
-admin --> UC4
+admin --> UC01
+admin --> UC02
+admin --> UC03
+admin --> UC04
+admin --> UC05
+admin --> UC06
+admin --> UC07
+admin --> UC08
+admin --> UC09
+admin --> UC10
+admin --> UC11
 
 @enduml

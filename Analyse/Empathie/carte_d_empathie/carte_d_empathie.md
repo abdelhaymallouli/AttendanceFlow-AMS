@@ -5,6 +5,8 @@
 
 ---
 
+![Carte d'Empathie - Madame Hannane](./carte_d_empathie.png)
+
 ## 🗺️ Visualisation de l'Expérience Utilisateur
 
 ### 👂 Ce qu'elle ENTEND

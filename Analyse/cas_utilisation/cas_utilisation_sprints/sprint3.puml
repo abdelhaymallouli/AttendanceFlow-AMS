@@ -1,0 +1,55 @@
+@startuml sprint3
+title Sprint 3 — Dashboard, Justificatifs & Rapports\nAttendanceFlow-AMS
+
+left to right direction
+
+skinparam usecase {
+  BackgroundColor #FEF9E7
+  BorderColor #D4AC0D
+  ArrowColor #D4AC0D
+}
+skinparam actor {
+  BorderColor #D4AC0D
+  BackgroundColor #FCF3CF
+}
+skinparam packageStyle rectangle
+
+actor "Administrateur\nde l'Absence" as A
+
+rectangle "Sprint 3 — Dashboard & Justificatifs & Rapports" {
+
+  package "Dashboard" {
+    usecase "UC06 : Consulter le tableau\nde bord en temps réel" as UC06
+    usecase "UC07 : Filtrer les absences\npar classe / par date" as UC07
+    UC06 <.. UC07 : <<extend>>
+  }
+
+  package "Gestion des Justificatifs" {
+    usecase "UC08 : Télécharger un justificatif\n(PDF / Image)" as UC08
+    usecase "UC09 : Approuver un justificatif" as UC09
+    usecase "UC10 : Rejeter un justificatif\navec motif" as UC10
+    UC09 ..> UC08 : <<include>>
+    UC10 ..> UC08 : <<include>>
+  }
+
+  package "Rapports & Export" {
+    usecase "UC11 : Exporter le rapport\nquotidien (PDF / Excel)" as UC11
+    usecase "UC12 : Consulter l'historique\ndes absences" as UC12
+  }
+}
+
+A --> UC06
+A --> UC07
+A --> UC08
+A --> UC09
+A --> UC10
+A --> UC11
+A --> UC12
+
+note right of UC09
+  L'approbation ou le rejet
+  clôture le cycle du justificatif.
+  L'enseignant est notifié.
+end note
+
+@enduml

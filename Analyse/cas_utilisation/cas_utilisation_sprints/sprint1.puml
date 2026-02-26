@@ -1,0 +1,41 @@
+@startuml sprint1
+title Sprint 1 — Authentification & Gestion des Profils\nAttendanceFlow-AMS
+
+left to right direction
+
+skinparam usecase {
+  BackgroundColor #EBF5FB
+  BorderColor #2E86C1
+  ArrowColor #2E86C1
+}
+skinparam actor {
+  BorderColor #2E86C1
+  BackgroundColor #D6EAF8
+}
+skinparam packageStyle rectangle
+
+actor "Enseignant" as T
+actor "Administrateur\nde l'Absence" as A
+
+rectangle "Sprint 1 — Authentification" {
+
+  usecase "UC01 : S'authentifier\n(Login / Logout)" as UC01
+  usecase "UC02 : Gérer son profil\n(Nom, email, mot de passe)" as UC02
+  usecase "UC02a : Modifier son\nmot de passe" as UC02a
+
+  UC02 <.. UC02a : <<extend>>
+}
+
+T --> UC01
+T --> UC02
+
+A --> UC01
+A --> UC02
+
+note right of UC01
+  Accès sécurisé par rôle :
+  - Enseignant
+  - Administrateur
+end note
+
+@enduml

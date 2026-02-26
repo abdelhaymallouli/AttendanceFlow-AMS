@@ -1,0 +1,43 @@
+@startuml sprint2
+title Sprint 2 — Saisie et Consultation des Présences\nAttendanceFlow-AMS
+
+left to right direction
+
+skinparam usecase {
+  BackgroundColor #EAFAF1
+  BorderColor #1E8449
+  ArrowColor #1E8449
+}
+skinparam actor {
+  BorderColor #1E8449
+  BackgroundColor #D5F5E3
+}
+skinparam packageStyle rectangle
+
+actor "Enseignant" as T
+actor "Administrateur\nde l'Absence" as A
+
+rectangle "Sprint 2 — Saisie des Présences" {
+
+  usecase "UC03 : Enregistrer les présences\n(Présent / Absent / Retard)" as UC03
+  usecase "UC04 : Modifier une présence\nenregistrée" as UC04
+  usecase "UC05 : Consulter la liste\nde présence d'une classe" as UC05
+  usecase "UC03a : Saisir un motif\npour un retard" as UC03a
+
+  UC03 <.. UC03a : <<extend>>
+  UC04 ..> UC05 : <<include>>
+}
+
+T --> UC03
+T --> UC04
+T --> UC05
+
+A --> UC05
+
+note right of UC03
+  La saisie se fait en temps réel
+  dès le début du cours.
+  Aucun support papier requis.
+end note
+
+@enduml
