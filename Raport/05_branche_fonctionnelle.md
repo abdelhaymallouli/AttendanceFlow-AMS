@@ -45,12 +45,12 @@ L'analyse croisée de ces trois profils révèle un besoin commun : la **suppres
 Suite à la phase d'empathie, nous avons synthétisé nos découvertes pour isoler le problème central. L'analyse révèle que le système actuel de "double saisie" (papier puis Excel) est la source principale d'inefficacité et d'erreurs.
 
 **Énoncé du problème :**
-> Madame Hannane a besoin d'une méthode de réception des données **numériques et en temps réel** de la part des enseignants, car le système actuel cause un décalage de 4 à 6 heures et une fatigue cognitive élevée, mettant en péril la fiabilité des dossiers scolaires.
+> Madame Hannane et l'équipe pédagogique ont besoin d'une méthode de réception des données **numériques, segmentées par session (09h-11h, 11h-14h, 14h-17h)** et en temps réel. Le système actuel cause un décalage de 4 à 6 heures et manque de granularité, ce qui génère des erreurs de calcul d'assiduité et une fatigue cognitive élevée.
 
 **Questions "How Might We" (HMW) :**
 Pour stimuler notre créativité, nous avons posé trois questions directrices :
 1. **Comment pourrions-nous** éliminer totalement le transfert physique des fiches papier de la salle de classe ?
-2. **Comment pourrions-nous** permettre à l'administrateur de traiter le statut de plus de 120 étudiants en un coup d'œil ?
+2. **Comment pourrions-nous** permettre à l'enseignant de valider chaque session (9-11, 11-14, 14-17) en moins de 30 secondes ?
 3. **Comment pourrions-nous** dématérialiser l'approbation des justificatifs médicaux ?
 
 **Besoins Fonctionnels Identifiés :**
@@ -67,7 +67,7 @@ Pour stimuler notre créativité, nous avons posé trois questions directrices :
 La phase d'idéation nous a permis d'explorer des solutions concrètes. Notre vision est celle d'un flux **"Direct-to-System"** où l'information ne subit aucune friction intermédiaire. L'objectif est de transformer le rôle de l'Administrateur, de la "Saisie de données" vers la "Vérification de données".
 
 **Solutions Stratégiques Retenues :**
-- **Saisie Directe (Mobile/Web) :** L'enseignant enregistre les présences numériquement durant les 10 premières minutes de cours.
+- **Saisie Directe par Session (Mobile/Web) :** L'enseignant enregistre les présences numériquement pour chaque tranche horaire (9h-11h, 11h-14h, 14h-17h).
 - **Hub de Validation "One-Click" :** Un tableau de bord administratif utilisant un code couleur (Rouge: Absent, Vert: Présent, Jaune: Justifié) pour scanner rapidement l'état.
 - **Cloud de Justificatifs :** Un portail où les étudiants/parents soumettent leurs preuves numériques, liées directement aux absences.
 
@@ -103,7 +103,7 @@ C'est la solution directe aux problèmes de décalage identifiés. L'enseignant 
 ![Cas d'Utilisation Sprint 2](imgs/sprint2.png)
 
 *   **Acteurs :** Enseignant.
-*   **Objectif :** Marquage des absences dès les premières minutes de cours via une interface responsive.
+*   **Objectif :** Marquage granulaire des absences par session (9-11, 11-14, 14-17) via une interface responsive.
 
 ---
 
