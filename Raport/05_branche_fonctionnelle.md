@@ -28,7 +28,7 @@ Pour l'étudiant, l'opacité du système actuel génère du stress et une lourde
 #### C. Imane Bouziane (Formatrice)
 La formatrice voit la gestion des absences comme un "vol" de temps pédagogique, surtout avec la nécessité de pointer les étudiants par session (9h-11h, 11h-14h, 14h-17h).
 
-![Mind Map - Imane Bouziane](imgs/mindmap_fouad.png)
+![Mind Map - Imane Bouziane](imgs/mindmap_imane.png)
 
 **Analyse de l'Expérience :**
 - **Points de Friction :** Difficulté à segmenter les présences par tranches horaires sur papier, logistique lourde des fiches et interruption du rythme des cours.
@@ -44,8 +44,8 @@ L'analyse croisée de ces trois profils révèle un besoin commun : la **suppres
 ### 2. Définition du Problème
 Suite à la phase d'empathie, nous avons synthétisé nos découvertes pour isoler le problème central. L'analyse révèle que le système actuel de "double saisie" (papier puis Excel) est la source principale d'inefficacité et d'erreurs.
 
-**Énoncé du problème :**
-> Madame Hannane et l'équipe pédagogique ont besoin d'une méthode de réception des données **numériques, segmentées par session (09h-11h, 11h-14h, 14h-17h)** et en temps réel. Le système actuel cause un décalage de 4 à 6 heures et manque de granularité, ce qui génère des erreurs de calcul d'assiduité et une fatigue cognitive élevée.
+**Énoncé du problème global :**
+> Le problème central est l'inefficacité du flux de travail actuel qui repose sur le passage du **support papier vers une saisie manuelle sur Excel**. Cette méthode génère une surcharge logistique pour les formateurs (notamment pour la segmentation complexe des sessions 9-11, 11-14, 14-17) et un décalage d'information critique pour l'administration, compromettant la fiabilité globale du système.
 
 **Questions "How Might We" (HMW) :**
 Pour stimuler notre créativité, nous avons posé trois questions directrices :
@@ -80,40 +80,36 @@ La phase d'idéation nous a permis d'explorer des solutions concrètes. Notre vi
 <w:p><w:r><w:br w:type="page"/></w:r></w:p>
 ```
 
-### 4. Diagramme de Cas d'Utilisation
-Le diagramme global définit l'étendue du système **AttendanceFlow-AMS**. Il illustre comment l'Administrateur interagit avec les fonctionnalités clés de gestion, de consultation et de rapportage, tout en maintenant un accès sécurisé.
+### 4. Diagramme de Cas d'Utilisation Global
+Le diagramme global définit l'étendue complète du système **AttendanceFlow-AMS**. Il illustre les interactions des trois acteurs clés (Administrateur, Formateur, Étudiant) avec les piliers du projet : le pointage granulaire par session, la validation administrative et la transparence pour l'étudiant.
 
 ![Diagramme de Cas d'Utilisation Global](imgs/use_case.png)
 
 ### 5. Cas d'Utilisation --- Périmètre MVP (Minimum Viable Product)
 
-Le développement de l'application est itératif. Notre MVP se concentre sur le flux critique : la sécurisation des accès et la suppression du décalage de saisie des absences.
-
-#### Core Fonctionnalité 1 : Authentification & Sécurité (UC01)
-Le socle du système repose sur une identification rigoureuse des acteurs pour garantir l'intégrité des données de présence.
+#### Itération 1 — MVP : Digitalisation du Pointage (Sprint 1)
+Le socle du système repose sur la résolution du problème critique "Papier vers Excel". L'objectif est de permettre un pointage direct à la source.
 
 ![Cas d'Utilisation Sprint 1](imgs/sprint1.png)
 
-*   **Acteurs :** Administrateur, Enseignant, Étudiant.
-*   **Objectif :** Accès différencié aux fonctionnalités selon le rôle.
+*   **Acteurs :** Administrateur, Formateur.
+*   **Objectif :** Authentification sécurisée et marquage des absences par session (9-11, 11-14, 14-17) avec synchronisation temps réel.
 
-#### Core Fonctionnalité 2 : Saisie Mobile en Temps Réel (UC03)
-C'est la solution directe aux problèmes de décalage identifiés. L'enseignant devient l'émetteur direct de l'information.
+#### Itération 2 : Justificatifs & Consultation (Sprint 2)
+Cette itération apporte la boucle de rétroaction nécessaire pour l'étudiant et simplifie la gestion des dossiers médicaux.
 
 ![Cas d'Utilisation Sprint 2](imgs/sprint2.png)
 
-*   **Acteurs :** Enseignant.
-*   **Objectif :** Marquage granulaire des absences par session (9-11, 11-14, 14-17) via une interface responsive.
-
----
+*   **Acteurs :** Administrateur, Étudiant.
+*   **Objectif :** Soumission numérique des justificatifs et consultation individuelle des statistiques d'assiduité.
 
 ### 6. Perspectives et Évolutions Post-MVP
 Une fois le flux critique stabilisé, le système s'enrichira de fonctionnalités de gestion avancées pour optimiser totalement le rôle de l'administrateur.
 
-#### Itération 2 : Gestion des Exceptions et Justificatifs (UC04, UC06)
+#### Itération 2 : Gestion des Exceptions et Justificatifs (Sprint 2 continu)
 Numérisation totale du cycle de vie des justificatifs pour supprimer définitivement la paperasse.
 
-![Cas d'Utilisation Sprint 3](imgs/sprint2.png)
+![Cas d'Utilisation Sprint 2](imgs/sprint2.png)
 
 #### Itération 3 : Dashboard Analytique & Exports (UC05)
 Transformation des données brutes en indicateurs de performance et génération automatique des rapports légaux.

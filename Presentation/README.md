@@ -104,7 +104,8 @@ style: |
 </div>
 
 # **Projet de Fin de Formation**
-### Système de QCM Interactif
+### AttendanceFlow-AMS
+**Système de Gestion des Absences**
 
 **Réalisé par :** <span class="highlight">Abdelhay Mallouli</span>  
 **Encadré par :** <span class="highlight">M. ESSARRAJ Fouad</span>  
@@ -125,104 +126,65 @@ style: |
 </div>
 
 ---
+---
 ## 1. Contexte du projet
+
+Le projet **AttendanceFlow-AMS** est né du besoin de moderniser le processus de suivi des absences. Actuellement, l'établissement gère ce flux via des feuilles de présence manuelles, ce qui entraîne des lourdeurs administratives et un manque de réactivité.
+
+---
+## Définition de Problème
+
+Le flux actuel repose sur une transition inefficace du support papier vers une saisie manuelle laborieuse sur Excel. Ce processus génère une surcharge logistique pour les formateurs et un décalage d'information critique pour la gestion administrative.
 
 ---
 
 ## 2. Méthodologie : Design Thinking
 
-
-
 <div class="img-container">
-  <img src="images/designThinking.png" class="img-methodo" alt="Design Thinking">
+  <img src="images/designThinking.png" class="img-methodo" style="max-height: 400px;" alt="Design Thinking">
+  <p style="font-size: 1.1em; font-weight: bold; color: #088dc7;">Une approche centrée sur l'humain pour comprendre les besoins réels.</p>
 </div>
 
 ---
 
-## Méthodologie : Scrum (Agile)
-
-
+## 2. Méthodologie : Scrum (Agile)
 
 <div class="img-container">
-  <img src="images/scrum.jpg" class="img-methodo" alt="Scrum">
+  <img src="images/scrum.jpg" class="img-methodo" style="max-height: 400px;" alt="Scrum">
+  <p style="font-size: 1.1em; font-weight: bold; color: #088dc7;">Un cadre de travail itératif pour une livraison continue de valeur.</p>
 </div>
 
 ---
 
-## Méthodologie : Processus 2TUP
-
-
+## 3. Branche Fonctionnelle : Cas d'Utilisation Global
 
 <div class="img-container">
-  <img src="images/2TUP.PNG" class="img-methodo" alt="2TUP">
+  <img src="images/use_case_global.png" class="img-methodo" alt="Global Use Case">
 </div>
 
 ---
 
-## 3. Branche Fonctionnelle : Design Thinking
-### 1. EMPATHIE
+## Branche Fonctionnelle : Périmètre Sprint 1 (MVP)
 
 <div class="img-container">
-  <div class="dt-card" style="border-top-color: #f39c12;">
-    <h4>Comprendre l'utilisateur</h4>
-    <blockquote style="font-style: italic; background: white; padding: 15px; border-radius: 8px;">
-      <p>- La formatrice Fatine souhaite un système simple pour créer et gérer des QCM personnalisables, avec correction automatique et affichage du score final.</p>
-      <p>- Le formateur Youssef souhaite un QCM structuré par session et objectif, lié au professeur, avec un calcul automatique des résultats.</p>
-      <p>- L’administrateur Hamouda souhaite une plateforme fiable avec des données validées, un QCM structuré et sécurisé, ainsi qu’une interface simple pour faciliter la gestion des candidats.</p>
-    </blockquote>
-  </div>
+  <img src="images/sprint1.png" class="img-methodo" alt="Sprint 1 Use Case">
 </div>
 
 ---
 
-## Branche Fonctionnelle : Design Thinking
-### 2. DÉFINITION
+## Branche Fonctionnelle : Périmètre Sprint 2
 
 <div class="img-container">
-  <div class="dt-card" style="border-top-color: #f39c12;">
-    <h4>Cadrage du problème</h4>
-    <blockquote style="font-style: italic; background: white; padding: 15px; border-radius: 8px;">
-     <p> - Comment pourrions-nous permettre aux formateurs de générer des QCM par objectif en quelques clics, tout en garantissant une correction instantanée pour l'étudiant ? </p>
-      <p>- Comment pourrions-nous structurer l'interface pour que la liaison entre une question, un professeur et un objectif de session soit totalement transparente ? </p>
-      <p>-Comment pourrions-nous concevoir une interface administrateur simple, claire et ergonomique permettant une gestion efficace des candidats et des QCM ? </p>
-    </blockquote>
-  </div>
-</div>
-
----
-
-## Branche Fonctionnelle : Design Thinking
-### 3. IDÉATION
-
-<div class="img-container">
-  <div class="dt-card" style="border-top-color: #f39c12;">
-    <h4>Solutions retenues</h4>
-    <p>• Interface <strong>"Single Question"</strong> pour éviter la surcharge cognitive.</p>
-    <p>• <strong>Timer dynamique</strong> par catégorie de question.</p>
-    <p>• <strong>Dashboard</strong> temps réel pour le suivi des formateurs.</p>
-  </div>
-</div>
-
----
-
-## Branche Fonctionnelle : Cas d'utilisation
-
-
-
-<div class="img-container">
-  <h3>Interaction Utilisateur (UML)</h3>
-  <img src="images/use-case.png" class="img-methodo" alt="Use Case">
+  <img src="images/sprint2.png" class="img-methodo" alt="Sprint 2 Use Case">
 </div>
 
 ---
 ## Branche Fonctionnelle : Maquettes (UI/UX)
 
-
-
 <div class="maquette-grid">
   <div style="text-align: center;">
-    <img src="images/maquette.png" class="img-methodo" style="height: 360px; width: auto;" alt="Maquette Desktop">
-    <p style="font-size: 0.3rem; color: #666;">Interface Administration</p>
+    <img src="images/maquette.png" class="img-methodo" style="height: 360px; width: auto;" alt="Interface Admin">
+    <p style="font-size: 0.8rem; color: #666;">Tableau de Bord Administratif</p>
   </div>
 </div>
 
@@ -231,39 +193,29 @@ style: |
 ## 4. Branche Technique : Tech Stack
 <div class="sommaire-grid">
   <div class="dt-card" style="margin-top:0;">
-    <h4>Les technologies à utiliser</h4>
+    <h4>Backend & Architecture</h4>
     <ul>
-      <li><strong>Base de données:</strong> MySQL </li>
-      <li><strong>Framework:</strong> Laravel 12</li>
-      <li><strong>Architecture:</strong> N-Tiers</li>
-      <strong>Controller:</strong> Requêtes HTTP
-      <strong>Service:</strong> Logique métier
-      <strong>Model:</strong> Base de données
-      <li><strong>Architecture:</strong> MVC</li>
-      <li><strong> Blade :</strong>Templates réutilisables (components, layouts).</li>
+      <li><strong>Laravel 12 (PHP 8.2+) :</strong> Coeur d'application robuste.</li>
+      <li><strong>Architecture Service-Pattern :</strong> Découplage de la logique métier.</li>
+      <li><strong>Base de données :</strong> MySQL relationnelle.</li>
     </ul>
   </div>
   <div class="dt-card" style="margin-top:0; border-top-color: #27ae60;">
+    <h4>Frontend & Outillage</h4>
     <ul>
-      <li><strong> AJAX :</strong> Interactions dynamiques (ex: Modales) sans rechargement de page.</li>
-      <li><strong>Alpine.js :</strong>  Librairie JavaScript pour les interactions dynamiques.</li>
-      <li><strong>Spatie :</strong> Librairie pour la gestion des permissions et rôles.</li>
-      <li><strong>Vite :</strong>   Outil de build rapide.</li>
-      <li><strong>Lucide :</strong> Librairie d'icônes.</li>
-      <li><strong>Tailwind CSS :</strong>Développement rapide, responsive.</li>
+      <li><strong>Blade & Tailwind CSS :</strong> Interface responsive et premium.</li>
+      <li><strong>Livewire / Alpine.js :</strong> Interactivité temps réel.</li>
+      <li><strong>Vite :</strong> Compilation ultra-rapide des assets.</li>
     </ul>
   </div>
 </div>
 
 ---
 
-
 ## 5. Conception : Diagramme de classe
 
-
- <h3>Modélisation des données (MLD)</h3>
 <div class="img-container">
- 
+  <h3>Modélisation des données (MLD)</h3>
   <img src="images/diagramme-class.png" style="width: 100%;" alt="Diagramme de classe">
 </div>
 
@@ -273,30 +225,27 @@ style: |
 
 <div class="sommaire-grid">
   <div class="dt-card" style="margin-top:0;">
-    <h4>Environnement de Développement</h4>
+    <h4>Environnement</h4>
     <ul>
       <li><strong>IDE :</strong> VS Code & Antigravity </li>
-      <li><strong>Monitoring DB :</strong> Workbench Sql</li>
+      <li><strong>Serveur Local :</strong> PHP Artisan Serve</li>
     </ul>
   </div>
   <div class="dt-card" style="margin-top:0; border-top-color: #27ae60;">
-    <h4>Gestion & Déploiement</h4>
+    <h4>Gestion</h4>
     <ul>
-      <li><strong>Modelisation UML :</strong>Mermaid/PlantUML</li>
-      <li><strong>Gestion de version :</strong> Git (GitHub)</li>
-      <li><strong>Navigateur :</strong> Chrome DevTools</li>
+      <li><strong>Versionning :</strong> Git / GitHub</li>
+      <li><strong>Conception :</strong> Mermaid & Trello (Scrum)</li>
     </ul>
   </div>
 </div>
 
-<br>
-
 ---
 ## 6. Conclusion
 
-- **Objectifs atteints** : Application QCM fonctionnelle et responsive.
-- **Compétences** : Maîtrise du cycle Agile et de la stack Full-stack.
-- **Perspectives** : Intégration d'un module d'IA pour l'analyse prédictive.
+- **Efficacité** : Suppression du support papier et de l'erreur humaine sur Excel.
+- **Réactivité** : Information disponible en moins d'une minute après l'appel.
+- **Perspectives** : Intégration de notifications SMS/Email aux parents.
 
 <br>
 

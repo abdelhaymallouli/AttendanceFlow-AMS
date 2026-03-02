@@ -1,36 +1,34 @@
 @startuml sprint1
-title Sprint 1 — Authentification & Gestion des Profils\nAttendanceFlow-AMS
+title Sprint 1 (MVP) — Digitalisation du Pointage\nAttendanceFlow-AMS
 
 left to right direction
 
 skinparam usecase {
-  BackgroundColor #EBF5FB
-  BorderColor #2E86C1
-  ArrowColor #2E86C1
+  BackgroundColor #FCF3CF
+  BorderColor #F1C40F
+  ArrowColor #F1C40F
 }
 skinparam actor {
-  BorderColor #2E86C1
-  BackgroundColor #D6EAF8
+  BorderColor #F1C40F
+  BackgroundColor #FEF9E7
 }
-skinparam packageStyle rectangle
 
-actor "Enseignant" as T
-actor "Administrateur\nde l'Absence" as A
+actor "Formateur" as Trainer
+actor "Administrateur" as Admin
 
-rectangle "Sprint 1 — Authentification" {
+rectangle "Sprint 1 — MVP Attendance" {
+  usecase "S'authentifier" as UC01
+  usecase "Pointage par session\n(9-11, 11-14, 14-17)" as UC02
+  usecase "Saisir motif de retard" as UC02a
+  usecase "Visualiser les présences\nen temps réel" as UC03
 
-  usecase "UC01 : S'authentifier\n(Login / Logout)" as UC01
-  usecase "UC02 : Gérer son profil\n(Nom, email, mot de passe)" as UC02
-  usecase "UC02a : Modifier son\nmot de passe" as UC02a
-
+  UC02 ..> UC01 : <<include>>
+  UC03 ..> UC01 : <<include>>
   UC02 <.. UC02a : <<extend>>
 }
 
-T --> UC01
-T --> UC02
-
-A --> UC01
-A --> UC02
-
+Trainer -- UC02
+Admin -- UC02
+Admin -- UC03
 
 @enduml

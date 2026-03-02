@@ -1,5 +1,5 @@
 @startuml use_case_global
-title Diagramme de Cas d'Utilisation\nAttendanceFlow-AMS
+title Diagramme de Cas d'Utilisation Global\nAttendanceFlow-AMS
 
 left to right direction
 
@@ -7,28 +7,43 @@ skinparam usecase {
   BackgroundColor #EBF5FB
   BorderColor #2E86C1
   ArrowColor #2E86C1
-  FontSize 12
 }
 skinparam actor {
   BorderColor #2E86C1
   BackgroundColor #D6EAF8
 }
-skinparam packageStyle rectangle
 
-actor "Administrateur" as admin
+actor "Administrateur" as Admin
+actor "Formateur" as Trainer
+actor "Étudiant" as Student
 
 rectangle "AttendanceFlow-AMS" {
   usecase "S'authentifier" as UC01
-  usecase "Gérer les présences" as UC02
-  usecase "Consulter le tableau de bord" as UC03
-  usecase "Gérer les justificatifs" as UC04
-  usecase "Exporter les rapports" as UC05
+  usecase "Pointer les absences (Session 9-11, 11-14, 14-17)" as UC02
+  usecase "Saisir un motif de retard" as UC02a
+  usecase "Visualiser le tableau de bord temps réel" as UC03
+  usecase "Soumettre un justificatif (PDF/Image)" as UC04
+  usecase "Gérer les justifications" as UC05
+  usecase "Valider / Réfuter un justificatif" as UC05a
+  usecase "Consulter son compteur d'assiduité" as UC06
+  usecase "Exporter les rapports (Excel/PDF)" as UC07
+
+  UC02 <.. UC02a : <<extend>>
+  UC05 <.. UC05a : <<extend>>
+  
+  UC02 ..> UC01 : <<include>>
+  UC03 ..> UC01 : <<include>>
+  UC04 ..> UC01 : <<include>>
+  UC07 ..> UC01 : <<include>>
 }
 
-admin --> UC01
-admin --> UC02
-admin --> UC03
-admin --> UC04
-admin --> UC05
+Trainer -- UC02
+Admin -- UC02
+Admin -- UC03
+Admin -- UC05
+Admin -- UC07
+
+Student -- UC04
+Student -- UC06
 
 @enduml
