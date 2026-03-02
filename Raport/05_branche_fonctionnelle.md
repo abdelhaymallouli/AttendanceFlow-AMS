@@ -5,16 +5,37 @@ La branche fonctionnelle constitue le cœur de notre analyse. Elle vise à tradu
 L'analyse fonctionnelle de ce projet suit la méthodologie **Design Thinking**, structurée en phases immersives pour garantir que la solution répond aux besoins réels des utilisateurs.
 
 ### 1. Empathie
-L'approche **Design Thinking** commence par l'immersion. Dans cette phase, nous avons cherché à comprendre profondément les défis quotidiens de **Madame Hannane**, Administratrice de l'Absence. Son flux de travail actuel est marqué par une surcharge de tâches manuelles et une dépendance critique au support papier.
+L'approche **Design Thinking** commence par l'immersion. Dans cette phase, nous avons cherché à comprendre profondément les défis quotidiens de nos trois acteurs clés : l'administratrice, l'enseignant et l'étudiant.
 
-L'entretien réalisé nous a permis de cartographier ses expériences à travers une **Carte d'Empathie**. Cet outil nous aide à visualiser ce qu'elle voit (des piles de papier), ce qu'elle entend (les plaintes sur la paperasse), ce qu'elle pense (le besoin d'automatisation) et ce qu'elle ressent (l'anxiété sur la fiabilité des données).
+#### A. Madame Hannane (Administratrice de l'Absence)
+Son flux de travail actuel est marqué par une surcharge de tâches manuelles et une dépendance critique au support papier. Le passage de la "saisie" à la "validation" est son besoin prioritaire.
 
-![Carte d'Empathie --- Madame Hannane](../Analyse/Empathie/carte_d_empathie/carte_d_empathie.png)
+![Mind Map - Madame Hannane](imgs/mindmap_hannane.png)
 
-**Synthèse de l'Expérience Utilisateur :**
-- **Observations :** Plus de 70% de son temps est gaspillé en saisie de données.
-- **Points de Friction :** Des listes manuscrites illisibles et un décalage de plusieurs heures entre le relevé et la saisie.
-- **Objectif :** Transformer son rôle de "saisisseur de données" en "validateur de données".
+**Analyse de l'Expérience :**
+- **Points de Friction :** Des listes manuscrites illisibles, un décalage (data lag) de 4 à 6 heures, et une peur constante de l'erreur humaine.
+- **Besoins Clés :** Transformation de son rôle en validateur de données, synchronisation immédiate et suppression du support papier.
+
+#### B. Anouar Benyakhelef (Étudiant)
+Pour l'étudiant, l'opacité du système actuel génère du stress et une lourdeur administrative inutile, notamment pour la gestion des justificatifs.
+
+![Mind Map - Anouar Benyakhelef](imgs/mindmap_anouar.png)
+
+**Analyse de l'Expérience :**
+- **Points de Friction :** Manque de visibilité sur son assiduité, besoin de se déplacer physiquement à l'administration pour chaque démarche.
+- **Besoins Clés :** Transparence en temps réel sur son compteur d'absences et autonomie dans la soumission numérique des justificatifs.
+
+#### C. Imane Bouziane (Formatrice)
+La formatrice voit la gestion des absences comme un "vol" de temps pédagogique, surtout avec la nécessité de pointer les étudiants par session (9h-11h, 11h-14h, 14h-17h).
+
+![Mind Map - Imane Bouziane](imgs/mindmap_fouad.png)
+
+**Analyse de l'Expérience :**
+- **Points de Friction :** Difficulté à segmenter les présences par tranches horaires sur papier, logistique lourde des fiches et interruption du rythme des cours.
+- **Besoins Clés :** Validation granulaire par session (9-11, 11-14, 14-17), interface mobile fluide et synchronisation automatique avec l'administration.
+
+**Synthèse Globale de l'Empathie :**
+L'analyse croisée de ces trois profils révèle un besoin commun : la **suppression du support physique** au profit d'un flux numérique fluide, sécurisé et instantané.
 
 ```{=openxml}
 <w:p><w:r><w:br w:type="page"/></w:r></w:p>

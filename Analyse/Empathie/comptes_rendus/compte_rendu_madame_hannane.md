@@ -1,36 +1,64 @@
-# Compte Rendu d'Entretien : Empathie
+# Compte Rendu d'Entretien : Administratrice (Madame Hannane)
 
 **Projet :** AttendanceFlow-AMS (Attendance Management System)  
 **Date :** 15 Novembre 2025  
-**Intervenant :** Madame Hannane (Administratrice de l'Absence)  
-**Sujet :** Analyse des besoins et frustrations liés à la gestion manuelle des présences.
+**Intervenant :** Madame Hannane  
 
 ---
 
-## 📋 Contexte de l'Entretien
-L'objectif de cet entretien était de comprendre en profondeur le flux de travail actuel de Madame Hannane, d'identifier les points de friction majeurs (pain points) et de définir les attentes pour la future solution numérique.
+![Carte d'Empathie - Madame Hannane](../carte_d_empathie/empathy_map_hannane.png)
 
-## 🔍 Observations Clés
+### 1. Identify the target user
+- **Role :** Administratrice de l'Absence (Gestionnaire de scolarité).
+- **Technical Level :** Intermédiaire (Utilise Excel et des logiciels de gestion bureautique classiques).
+- **Device Used :** Desktop (Ordinateur de bureau) avec un écran large pour les tableaux complexes.
 
-### 1. Le "Piège du Double Travail"
-Madame Hannane passe environ **70% de sa journée** à effectuer des tâches de saisie de données. Elle agit comme un "pont humain" entre :
-- Les fiches de présence physiques collectées auprès des enseignants le matin.
-- Le système informatique (Excel ou ancien logiciel) mis à jour l'après-midi.
+### 2. Describe the current user workflow step-by-step
+1. Collecte physique des fiches de présence papier auprès des enseignants le matin.
+2. Tri manuel des fiches par classe et par niveau.
+3. Déchiffrage de l'écriture manuscrite des enseignants.
+4. Saisie manuelle des absences dans le système informatique (Excel/Logiciel).
+5. Réception et archivage physique des justificatifs (certificats médicaux).
+6. Appel téléphonique aux parents pour les absences critiques non justifiées.
 
-### 2. Le Décalage des Données (Data Lag)
-Il existe un délai de **4 à 6 heures** entre l'absence réelle d'un élève et sa saisie dans le système. Ce décalage empêche une réactivité immédiate de l'administration et des parents.
+### 3. Identify friction points in the workflow
+- **Too many steps :** Le passage physique du papier de la classe au bureau administratif est une étape superflue.
+- **Confusion :** Difficulté à lire l'écriture manuscrite de certains enseignants.
+- **Delays :** Un décalage de **4 à 6 heures** entre l'absence réelle et sa visibilité dans le système.
 
-### 3. Risques et Erreurs
-La lecture de l'écriture manuscrite ("Est-ce un 'B' ou un '8' ?") et la manipulation de piles de papier augmentent considérablement le risque d'erreur humaine et de perte de documents (justificatifs perdus).
+### 4. List repeated manual actions users perform
+- Recopie systématique de noms et de statuts depuis le papier vers l'ordinateur.
+- Manipulation incessante de piles de papier (fiches, billets de retard).
+- Recherche manuelle dans des classeurs pour vérifier si un justificatif a été reçu.
 
-## 💡 Besoins et Attentes
+### 5. Identify common errors or validation issues
+- Inversion de noms lors de la saisie manuelle.
+- Perte de documents physiques (justificatifs glissés entre deux dossiers).
+- Erreur de lecture : Confusion entre des chiffres ou des lettres proches (ex: 'B' et '8').
 
-- **Automatisation :** Éliminer la saisie manuelle en permettant aux enseignants de saisir directement les données.
-- **Tableau de Bord de Validation :** Passer d'un rôle de "saisie" à un rôle de "vérification/validation".
-- **Preuve Numérique :** Une fonctionnalité de téléchargement de justificatifs pour remplacer les billets de retard/absence physiques.
+### 6. Detect missing features that would simplify tasks
+- **Scan visuel rapide :** Un tableau de bord coloré au lieu de listes de texte brut.
+- **Validation en un clic :** Approuver un justificatif sans saisie de texte.
 
-## 🎯 Conclusion
-Madame Hannane se sent épuisée par les tâches répétitives et anxieuse quant à la précision des données. La solution doit être **scannable**, **intuitive** et **réduire la charge cognitive**.
+### 7. Identify automation opportunities
+- Synchronisation automatique dès que l'enseignant valide sa présence en classe.
+- Envoi d'alertes automatiques aux parents lors d'absence prolongée.
+
+### 8. Highlight performance issues
+- **Processus lourd :** La saisie manuelle consomme **70% de la journée** de l'administratrice.
+- **Lenteur de traitement :** L'impossibilité de traiter les urgences à cause du flux "papier".
+
+### 9. Identify navigation problems
+- **Bad structure :** Devoir naviguer entre plusieurs classeurs physiques et plusieurs onglets Excel.
+- **Too many clicks :** La saisie d'une seule absence nécessite de retrouver l'étudiant, puis le cours, puis de changer le statut.
+
+### 10. Convert all pain points into functional improvement opportunities
+- **Opportunité :** Remplacer le papier par une saisie mobile à la source (enseignant).
+- **Opportunité :** Créer un "Hub de Validation" centralisé pour l'Admin.
+- **Opportunité :** Numériser le dépôt des pièces jointes (justificatifs).
+
+### 11. Write a clear functional problem statement
+Le système actuel impose une charge cognitive élevée due à un flux de données manuel et papier, entraînant une latence critique de l'information (4-6h) et un taux d'erreur humaine non négligeable. Le besoin est une plateforme numérique assurant la transmission instantanée et sécurisée des statuts de présence de la source (classe) vers l'administration.
 
 ---
-*Document créé dans le cadre de la phase d'Empathie du projet AMS.*
+*Document restructuré selon le framework d'analyse d'empathie.*

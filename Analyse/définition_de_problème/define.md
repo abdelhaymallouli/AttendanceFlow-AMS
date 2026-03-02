@@ -9,7 +9,13 @@ Sur la base de nos recherches d'empathie, nous pouvons maintenant définir clair
 ## 📌 1. Énoncé du Problème
 
 **Pour l'Administrateur (Madame Hannane) :**
-L'Administrateur de l'Absence a besoin d'un moyen de recevoir des données de présence numériques et en temps réel de la part des enseignants, car le système actuel de double saisie sur papier cause un décalage de 4 à 6 heures, une fatigue cognitive élevée et augmente le risque d'erreurs d'enregistrement.
+Le système actuel impose une charge cognitive élevée due à un flux de données manuel et papier, entraînant une latence critique de l'information (4-6h) et un taux d'erreur humaine non négligeable. Le besoin est une plateforme numérique assurant la transmission instantanée et sécurisée des statuts de présence de la source (classe) vers l'administration.
+
+**Pour l'Étudiant (Anouar Benyakhelef) :**
+L'étudiant souffre d'un manque de transparence radical concernant son assiduité et d'une lourdeur bureaucratique pour justifier ses absences. Le système doit fournir une interface mobile permettant la consultation instantanée des statistiques de présence et la soumission dématérialisée des justificatifs médicaux afin de réduire les déplacements inutiles et le stress lié à l'incertitude.
+
+**Pour le Formateur (Fouad Essarraj) :**
+La gestion manuelle des présences par les formateurs est une source de distraction pédagogique et une faille logistique (risque de perte, erreurs de signature). Le système doit proposer une interface de saisie ultra-rapide (gestion par exception) intégrée à l'emploi du temps, permettant une transmission instantanée des données à l'administration sans nécessiter de déplacement physique.
 
 ---
 
