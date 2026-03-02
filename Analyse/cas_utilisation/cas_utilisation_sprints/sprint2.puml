@@ -16,7 +16,7 @@ skinparam actor {
 actor "Étudiant" as Student
 actor "Administrateur" as Admin
 
-rectangle "Sprint 2 — Justificatifs" {
+rectangle "Sprint 2 — Justificatifs (Application Mobile & Web)" {
   usecase "S'authentifier" as UC01
   usecase "Soumettre un justificatif\n(Upload PDF/Image)" as UC04
   usecase "Consulter les absences\net statistiques" as UC05

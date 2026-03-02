@@ -16,7 +16,7 @@ skinparam actor {
 actor "Formateur" as Trainer
 actor "Administrateur" as Admin
 
-rectangle "Sprint 1 — MVP Attendance" {
+rectangle "Sprint 1 — MVP Attendance (Application Mobile & Web)" {
   usecase "S'authentifier" as UC01
   usecase "Pointage par session\n(9-11, 11-14, 14-17)" as UC02
   usecase "Saisir motif de retard" as UC02a

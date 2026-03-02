@@ -1,12 +1,11 @@
-@startuml use_case_global
-title Diagramme de Cas d'Utilisation Global\nAttendanceFlow-AMS
+@startuml use_case_simple_mobile
+title Diagramme de Cas d'Utilisation - AttendanceFlow-AMS
 
 left to right direction
 
 skinparam usecase {
   BackgroundColor #EBF5FB
   BorderColor #2E86C1
-  ArrowColor #2E86C1
 }
 skinparam actor {
   BorderColor #2E86C1
@@ -17,33 +16,42 @@ actor "Administrateur" as Admin
 actor "Formateur" as Trainer
 actor "Étudiant" as Student
 
-rectangle "AttendanceFlow-AMS" {
+rectangle "AttendanceFlow-AMS (Application Mobile & Web)" {
+  
   usecase "S'authentifier" as UC01
-  usecase "Pointer les absences (Session 9-11, 11-14, 14-17)" as UC02
-  usecase "Saisir un motif de retard" as UC02a
-  usecase "Visualiser le tableau de bord temps réel" as UC03
-  usecase "Soumettre un justificatif (PDF/Image)" as UC04
-  usecase "Gérer les justifications" as UC05
-  usecase "Valider / Réfuter un justificatif" as UC05a
-  usecase "Consulter son compteur d'assiduité" as UC06
-  usecase "Exporter les rapports (Excel/PDF)" as UC07
 
+  ' On regroupe tout dans l'interface accessible partout
+    usecase "Pointer les absences (Mobile / App)" as UC02
+    usecase "Saisir un motif de retard" as UC02a
+    usecase "Soumettre un justificatif" as UC04
+    usecase "Gérer les justificatifs" as UC05
+    usecase "Consulter son assiduité" as UC06
+    usecase "Visualiser le Dashboard" as UC03
+    usecase "Exporter les rapports" as UC07
+
+
+  usecase "Valider / Réfuter un justificatif" as UC05a
+
+  ' Relations
   UC02 <.. UC02a : <<extend>>
   UC05 <.. UC05a : <<extend>>
   
   UC02 ..> UC01 : <<include>>
   UC03 ..> UC01 : <<include>>
   UC04 ..> UC01 : <<include>>
+  UC05 ..> UC01 : <<include>>
+  UC06 ..> UC01 : <<include>>
   UC07 ..> UC01 : <<include>>
 }
 
+' Liens Acteurs
 Trainer -- UC02
+Student -- UC04
+Student -- UC06
+
 Admin -- UC02
 Admin -- UC03
 Admin -- UC05
 Admin -- UC07
-
-Student -- UC04
-Student -- UC06
 
 @enduml
