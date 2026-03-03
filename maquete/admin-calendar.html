@@ -215,11 +215,11 @@
                         </div>
                         <div class="flex items-center space-x-2">
                             <button @click="goToToday()"
-                                class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium">
+                                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium">
                                 Today
                             </button>
                             <select x-model="viewMode"
-                                class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none text-sm">
+                                class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm">
                                 <option value="month">Month</option>
                                 <option value="week">Week</option>
                             </select>
@@ -267,7 +267,7 @@
                                  }" @click="selectDay(day)">
                                 <div class="flex justify-between items-start mb-1">
                                     <span class="text-sm font-medium"
-                                        :class="day.isToday ? 'w-7 h-7 bg-indigo-600 text-white rounded-full flex items-center justify-center' : 'text-gray-700'"
+                                        :class="day.isToday ? 'w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center' : 'text-gray-700'"
                                         x-text="day.dayNumber"></span>
                                     <template x-if="day.event">
                                         <div class="event-dot" :class="day.eventColor"></div>
@@ -322,7 +322,7 @@
                     </div>
                     <div class="mt-4 flex space-x-3">
                         <a :href="`admin-data-entry.html?date=${selectedDay?.date}`"
-                            class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                            class="bg-blue-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                             View Details
                         </a>
                         <button

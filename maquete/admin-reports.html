@@ -578,7 +578,7 @@
                         datasets: [{
                             label: 'Attendance Rate',
                             data: [97.2, 96.5, 95.8, 94.3],
-                            borderColor: '#6366f1', // indigo-600
+                            borderColor: '#2563eb', // blue-600
                             backgroundColor: 'rgba(99, 102, 241, 0.1)',
                             tension: 0.4,
                             fill: true
@@ -690,12 +690,13 @@
             }
             trendsChartInitialized = true;
         };
-            lucide.createIcons();
-            const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', options);
-    
-    
+        lucide.createIcons();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', options);
+
+
     </script>
-            <script src="https://preline.co/assets/js/hs-ui.bundle.js"></script>
-    </body>
+    <script src="https://preline.co/assets/js/hs-ui.bundle.js"></script>
+</body>
+
 </html>

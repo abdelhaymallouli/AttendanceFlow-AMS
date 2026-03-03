@@ -248,13 +248,13 @@
                                     <i data-lucide="search" class="w-5 h-5 text-gray-400"></i>
                                 </div>
                                 <input x-model="searchQuery" @input="filterStudents()" type="text"
-                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                                     placeholder="Search by name or ID...">
                             </div>
                         </div>
                         <div class="flex gap-2">
                             <select x-model="filterGrade" @change="filterStudents()"
-                                class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none">
+                                class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none">
                                 <option value="all">All Grades</option>
                                 <option value="10A">Grade 10A</option>
                                 <option value="10B">Grade 10B</option>
@@ -264,7 +264,7 @@
                                 <option value="12B">Grade 12B</option>
                             </select>
                             <select x-model="filterStatus" @change="filterStudents()"
-                                class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none">
+                                class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none">
                                 <option value="all">All Status</option>
                                 <option value="good">Good Standing</option>
                                 <option value="atrisk">At Risk</option>
@@ -308,7 +308,7 @@
                                             <div class="flex items-center">
                                                 <div
                                                     class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mr-3">
-                                                    <span class="text-sm font-medium text-indigo-600"
+                                                    <span class="text-sm font-medium text-blue-600"
                                                         x-text="student.name.charAt(0)"></span>
                                                 </div>
                                                 <div>
@@ -353,7 +353,7 @@
                                         </td>
                                         <td class="px-6 py-4 text-right">
                                             <button @click="viewStudent(student)"
-                                                class="text-indigo-600 hover:text-indigo-900 text-sm font-medium mr-3">View</button>
+                                                class="text-blue-600 hover:text-indigo-900 text-sm font-medium mr-3">View</button>
                                             <button @click="editStudent(student)"
                                                 class="text-gray-600 hover:text-gray-900 text-sm font-medium">Edit</button>
                                         </td>
@@ -371,7 +371,7 @@
                                     <div class="flex items-center">
                                         <div
                                             class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mr-3">
-                                            <span class="text-sm font-medium text-indigo-600"
+                                            <span class="text-sm font-medium text-blue-600"
                                                 x-text="student.name.charAt(0)"></span>
                                         </div>
                                         <div>

@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicode AMS - Professional Design System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://preline.co/assets/css/main.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://preline.co/assets/vendor/preline/dist/preline.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        [x-cloak] {
+            display: none !important;
+        }
+
+        /* Premium Background */
+        .ds-bg {
+            background-color: #f8fafc;
+            background-image: radial-gradient(#e2e8f0 1.2px, transparent 1.2px);
+            background-size: 24px 24px;
+        }
+
+        /* Device Lab Frames */
+        .frame-container {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .v-mobile {
+            width: 375px;
+            height: 667px;
+            margin: 0 auto;
+            border-radius: 2.5rem;
+            border: 8px solid #1e293b;
+        }
+
+        .v-tablet {
+            width: 768px;
+            height: 1024px;
+            margin: 0 auto;
+            border-radius: 2rem;
+            border: 8px solid #1e293b;
+        }
+
+        .v-desktop {
+            width: 100%;
+            height: auto;
+            border-radius: 0.75rem;
+        }
+
+        /* Code Block */
+        .code-snippet {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.8125rem;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+
+        .nav-active {
+            background: #eff6ff;
+            color: #2563eb;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body class="ds-bg text-slate-900 antialiased" x-data="{ 
+    activeSection: 'charts',
+    viewports: {},
+    codeVisible: {},
+    toggleViewport(id, size) { this.viewports[id] = size; },
+    getViewport(id) { return this.viewports[id] || 'desktop'; },
+    toggleCode(id) { this.codeVisible[id] = !this.codeVisible[id]; }
+}">
+
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- SIDEBAR -->
+        <aside class="hidden lg:flex flex-col w-72 bg-white border-r border-slate-200 shadow-sm z-50">
+            <div class="h-16 flex items-center px-6 border-b border-slate-100">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
+                        <i data-lucide="layout" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-slate-800 leading-none">Design System</h1>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mt-1">Solicode AMS 1.0
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <nav class="flex-1 p-4 space-y-6 overflow-y-auto">
+                <div>
+                    <h3 class="px-4 text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4">Core Sections
+                    </h3>
+                    <div class="space-y-1">
+                        <button @click="activeSection = 'charts'"
+                            :class="activeSection === 'charts' ? 'nav-active' : 'text-slate-600 hover:bg-slate-50'"
+                            class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all group">
+                            <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Charts & Visuals
+                        </button>
+                        <button @click="activeSection = 'atoms'"
+                            :class="activeSection === 'atoms' ? 'nav-active' : 'text-slate-600 hover:bg-slate-50'"
+                            class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all">
+                            <i data-lucide="box" class="w-4 h-4"></i> Atoms
+                        </button>
+                        <button @click="activeSection = 'molecules'"
+                            :class="activeSection === 'molecules' ? 'nav-active' : 'text-slate-600 hover:bg-slate-50'"
+                            class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all">
+                            <i data-lucide="package" class="w-4 h-4"></i> Molecules
+                        </button>
+                        <button @click="activeSection = 'organisms'"
+                            :class="activeSection === 'organisms' ? 'nav-active' : 'text-slate-600 hover:bg-slate-50'"
+                            class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all">
+                            <i data-lucide="layers" class="w-4 h-4"></i> Organisms
+                        </button>
+                        <button @click="activeSection = 'layouts'"
+                            :class="activeSection === 'layouts' ? 'nav-active' : 'text-slate-600 hover:bg-slate-50'"
+                            class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all">
+                            <i data-lucide="layout-template" class="w-4 h-4"></i> Layouts
+                        </button>
+                    </div>
+                </div>
+            </nav>
+            <div class="p-4 border-t border-slate-100 bg-slate-50/50">
+                <a href="admin-dashboard.html"
+                    class="flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 shadow-sm hover:shadow transition-all">
+                    <i data-lucide="external-link" class="w-3 h-3"></i> View Full Maquete
+                </a>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 overflow-y-auto">
+            <div class="max-w-7xl mx-auto px-6 py-12 lg:px-12 lg:py-20">
+
+                <!-- HEADER AREA -->
+                <header class="mb-20">
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-[10px] font-black uppercase tracking-widest mb-6">
+                        <span class="relative flex h-2 w-2">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
+                        </span>
+                        Live Documentation
+                    </div>
+                    <h2 class="text-5xl font-black text-slate-900 tracking-tight mb-4"
+                        x-text="activeSection === 'charts' ? 'Interactive Data Visuals' : activeSection.charAt(0).toUpperCase() + activeSection.slice(1)">
+                    </h2>
+                    <p class="text-lg text-slate-500 max-w-2xl leading-relaxed">
+                        Exhaustive catalog of every UI component used in Solicode AMS, extracted with 100% fidelity from
+                        the production maquete.
+                    </p>
+                </header>
+
+                <!-- COMPONENTS VIEW -->
+                <div class="space-y-32">
+
+                    <!-- CHARTS SECTION (CHARTS FIRST) -->
+                    <section x-show="activeSection === 'charts'" x-cloak class="space-y-24">
+
+                        <!-- Attendance Trends -->
+                        <div x-data="{ id: 'chart-trend' }" class="space-y-6">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">Attendance Trends</h3>
+                                <div class="flex items-center gap-4">
+                                    <div class="flex bg-slate-100 p-1 rounded-lg">
+                                        <button @click="toggleViewport(id, 'mobile')"
+                                            :class="getViewport(id) === 'mobile' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-400 hover:text-slate-600'"
+                                            class="p-1.5 rounded-md transition-all"><i data-lucide="smartphone"
+                                                class="w-4 h-4"></i></button>
+                                        <button @click="toggleViewport(id, 'desktop')"
+                                            :class="getViewport(id) === 'desktop' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-400 hover:text-slate-600'"
+                                            class="p-1.5 rounded-md transition-all"><i data-lucide="monitor"
+                                                class="w-4 h-4"></i></button>
+                                    </div>
+                                    <button @click="toggleCode(id)"
+                                        class="text-slate-400 hover:text-blue-600 transition-colors"><i
+                                            data-lucide="code-2" class="w-5 h-5"></i></button>
+                                </div>
+                            </div>
+                            <div :class="getViewport(id) === 'mobile' ? 'v-mobile overflow-y-auto bg-slate-50 p-4' : 'v-desktop bg-white p-8'"
+                                class="frame-container">
+                                <div class="bg-white border border-gray-200 rounded-xl p-6">
+                                    <div class="flex items-center justify-between mb-6">
+                                        <div>
+                                            <h3 class="text-lg font-bold text-gray-800">Weekly Attendance Trend</h3>
+                                            <p class="text-sm text-gray-500">Present vs Absent vs Late — this week</p>
+                                        </div>
+                                    </div>
+                                    <div class="relative h-64">
+                                        <canvas id="dsAttendanceChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Justification Distribution -->
+                        <div x-data="{ id: 'chart-just' }" class="space-y-6">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">Justification Distribution</h3>
+                                <div class="flex items-center gap-4">
+                                    <div class="flex bg-slate-100 p-1 rounded-lg">
+                                        <button @click="toggleViewport(id, 'mobile')"
+                                            :class="getViewport(id) === 'mobile' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-400 hover:text-slate-600'"
+                                            class="p-1.5 rounded-md transition-all"><i data-lucide="smartphone"
+                                                class="w-4 h-4"></i></button>
+                                        <button @click="toggleViewport(id, 'desktop')"
+                                            :class="getViewport(id) === 'desktop' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-400 hover:text-slate-600'"
+                                            class="p-1.5 rounded-md transition-all"><i data-lucide="monitor"
+                                                class="w-4 h-4"></i></button>
+                                    </div>
+                                    <button @click="toggleCode(id)"
+                                        class="text-slate-400 hover:text-blue-600 transition-colors"><i
+                                            data-lucide="code-2" class="w-5 h-5"></i></button>
+                                </div>
+                            </div>
+                            <div :class="getViewport(id) === 'mobile' ? 'v-mobile overflow-y-auto bg-slate-50 p-4' : 'v-desktop bg-white p-8'"
+                                class="frame-container">
+                                <div
+                                    class="bg-white border border-gray-200 rounded-xl p-6 max-w-sm mx-auto text-center">
+                                    <h3 class="text-lg font-bold text-gray-800 mb-6 text-left">Justification Status</h3>
+                                    <div class="relative flex justify-center" style="height:200px;">
+                                        <canvas id="dsJustificationChart"></canvas>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-3 mt-6 pt-4 border-t border-gray-100">
+                                        <div>
+                                            <p class="text-xl font-bold text-blue-600">42</p>
+                                            <p class="text-[10px] text-gray-500 uppercase font-bold">Approved</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-xl font-bold text-amber-500">7</p>
+                                            <p class="text-[10px] text-gray-500 uppercase font-bold">Pending</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-xl font-bold text-red-500">11</p>
+                                            <p class="text-[10px] text-gray-500 uppercase font-bold">Rejected</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Class Performance -->
+                        <div x-data="{ id: 'chart-perf' }" class="space-y-6">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">Class Performance</h3>
+                                <div class="flex items-center gap-4">
+                                    <div class="flex bg-slate-100 p-1 rounded-lg">
+                                        <button @click="toggleViewport(id, 'mobile')"
+                                            :class="getViewport(id) === 'mobile' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-400 hover:text-slate-600'"
+                                            class="p-1.5 rounded-md transition-all"><i data-lucide="smartphone"
+                                                class="w-4 h-4"></i></button>
+                                        <button @click="toggleViewport(id, 'desktop')"
+                                            :class="getViewport(id) === 'desktop' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-400 hover:text-slate-600'"
+                                            class="p-1.5 rounded-md transition-all"><i data-lucide="monitor"
+                                                class="w-4 h-4"></i></button>
+                                    </div>
+                                    <button @click="toggleCode(id)"
+                                        class="text-slate-400 hover:text-blue-600 transition-colors"><i
+                                            data-lucide="code-2" class="w-5 h-5"></i></button>
+                                </div>
+                            </div>
+                            <div :class="getViewport(id) === 'mobile' ? 'v-mobile overflow-y-auto bg-slate-50 p-4' : 'v-desktop bg-white p-8'"
+                                class="frame-container">
+                                <!-- VERBATIM: ClassPerformanceChart.html -->
+                                <div class="bg-white border border-gray-200 rounded-xl p-6 max-w-2xl mx-auto">
+                                    <div class="flex items-center justify-between mb-6">
+                                        <div>
+                                            <h3 class="text-lg font-bold text-gray-800">Class Performance</h3>
+                                            <p class="text-sm text-gray-500">Attendance rate by class — this month</p>
+                                        </div>
+                                    </div>
+                                    <div class="relative h-56">
+                                        <canvas id="dsPerformanceChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ATOMS SECTION -->
+                    <section x-show="activeSection === 'atoms'" x-cloak class="space-y-24">
+                        <div x-data="{ id: 'atom-buttons' }" class="space-y-10">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">BaseButton.html</h3>
+                                <button @click="toggleCode(id)"
+                                    class="text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="code-2"
+                                        class="w-5 h-5"></i></button>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                                <div class="space-y-8">
+                                    <h4 class="text-xs font-black uppercase text-slate-400 tracking-widest">Variants
+                                    </h4>
+                                    <div class="flex flex-wrap gap-4 items-center">
+                                        <!-- VERBATIM: BaseButton.html -->
+                                        <button type="button"
+                                            class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm font-semibold px-5 py-2.5 rounded-lg shadow-sm">Primary</button>
+                                        <button type="button"
+                                            class="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-sm font-medium px-5 py-2.5 rounded-lg">Secondary</button>
+                                        <button type="button"
+                                            class="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg">Danger</button>
+                                    </div>
+                                </div>
+                                <div class="space-y-8">
+                                    <h4 class="text-xs font-black uppercase text-slate-400 tracking-widest">States</h4>
+                                    <div class="flex flex-wrap gap-4 items-center">
+                                        <button disabled
+                                            class="inline-flex items-center justify-center gap-2 bg-gray-200 text-gray-400 text-sm font-medium px-5 py-2.5 rounded-lg cursor-not-allowed">Disabled</button>
+                                        <button
+                                            class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg"><i
+                                                data-lucide="bell" class="w-5 h-5"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- CODE SNIPPET -->
+                            <div x-show="codeVisible[id]" x-cloak
+                                class="mt-8 animate-in fade-in slide-in-from-top-4 duration-300">
+                                <div
+                                    class="flex items-center justify-between bg-slate-800 px-4 py-2 rounded-t-lg border-b border-slate-700">
+                                    <span
+                                        class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">BaseButton.html</span>
+                                    <button class="text-slate-400 hover:text-white transition-colors"><i
+                                            data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                                </div>
+                                <pre class="code-snippet rounded-t-none"><code>&lt;!-- PRIMARY BUTTON --&gt;
+&lt;button type="button" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800
+         text-white text-sm font-semibold px-5 py-2.5 rounded-lg shadow-sm hover:shadow-md
+         transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"&gt;
+    &lt;i data-lucide="plus-circle" class="w-4 h-4"&gt;&lt;/i&gt;
+    &lt;span&gt;Primary Action&lt;/span&gt;
+&lt;/button&gt;</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- AVATARS -->
+                        <div x-data="{ id: 'atom-avatars' }" class="space-y-10">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">BaseAvatar.html</h3>
+                                <button @click="toggleCode(id)"
+                                    class="text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="code-2"
+                                        class="w-5 h-5"></i></button>
+                            </div>
+                            <div class="flex flex-wrap gap-12 items-center">
+                                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center"><i
+                                        data-lucide="user" class="w-6 h-6 text-blue-600"></i></div>
+                                <div
+                                    class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center shadow-lg">
+                                    <span class="text-white font-bold text-sm">AM</span>
+                                </div>
+                            </div>
+                            <!-- CODE SNIPPET -->
+                            <div x-show="codeVisible[id]" x-cloak
+                                class="mt-8 animate-in fade-in slide-in-from-top-4 duration-300">
+                                <div
+                                    class="flex items-center justify-between bg-slate-800 px-4 py-2 rounded-t-lg border-b border-slate-700">
+                                    <span
+                                        class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">BaseAvatar.html</span>
+                                    <button class="text-slate-400 hover:text-white transition-colors"><i
+                                            data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                                </div>
+                                <pre class="code-snippet rounded-t-none"><code>&lt;!-- ICON PLACEHOLDER --&gt;
+&lt;div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center"&gt;
+    &lt;i data-lucide="user" class="w-5 h-5 text-blue-600"&gt;&lt;/i&gt;
+&lt;/div&gt;
+
+&lt;!-- INITIALS AVATAR --&gt;
+&lt;div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center"&gt;
+    &lt;span class="text-white font-semibold text-sm"&gt;EJ&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- BADGES -->
+                        <div x-data="{ id: 'atom-badges' }" class="space-y-10">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">BaseBadge.html</h3>
+                                <button @click="toggleCode(id)"
+                                    class="text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="code-2"
+                                        class="w-5 h-5"></i></button>
+                            </div>
+                            <div class="flex flex-wrap gap-4 items-center">
+                                <span
+                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-bold">Information</span>
+                                <span
+                                    class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-bold">Present</span>
+                                <span
+                                    class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs font-bold">Absent</span>
+                            </div>
+                            <!-- CODE SNIPPET -->
+                            <div x-show="codeVisible[id]" x-cloak
+                                class="mt-8 animate-in fade-in slide-in-from-top-4 duration-300">
+                                <div
+                                    class="flex items-center justify-between bg-slate-800 px-4 py-2 rounded-t-lg border-b border-slate-700">
+                                    <span
+                                        class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">BaseBadge.html</span>
+                                    <button class="text-slate-400 hover:text-white transition-colors"><i
+                                            data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                                </div>
+                                <pre class="code-snippet rounded-t-none"><code>&lt;!-- INFO BADGE --&gt;
+&lt;span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"&gt;
+    Information
+&lt;/span&gt;
+
+&lt;!-- SUCCESS BADGE --&gt;
+&lt;span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"&gt;
+    Present
+&lt;/span&gt;</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- INPUTS -->
+                        <div x-data="{ id: 'atom-inputs' }" class="space-y-10">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">BaseInput.html</h3>
+                                <button @click="toggleCode(id)"
+                                    class="text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="code-2"
+                                        class="w-5 h-5"></i></button>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                                <div class="space-y-6">
+                                    <label class="block text-sm font-medium text-gray-700">Standard Input</label>
+                                    <input type="text" placeholder="Enter value..."
+                                        class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                </div>
+                                <div class="space-y-6">
+                                    <label class="block text-sm font-medium text-gray-700">Search with Icon</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center"><i
+                                                data-lucide="search" class="w-4 h-4 text-gray-400"></i></div>
+                                        <input type="search" placeholder="Search..."
+                                            class="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- CODE SNIPPET -->
+                            <div x-show="codeVisible[id]" x-cloak
+                                class="mt-8 animate-in fade-in slide-in-from-top-4 duration-300">
+                                <div
+                                    class="flex items-center justify-between bg-slate-800 px-4 py-2 rounded-t-lg border-b border-slate-700">
+                                    <span
+                                        class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">BaseInput.html</span>
+                                    <button class="text-slate-400 hover:text-white transition-colors"><i
+                                            data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                                </div>
+                                <pre class="code-snippet rounded-t-none"><code>&lt;!-- TEXT INPUT --&gt;
+&lt;div class="w-full"&gt;
+    &lt;label class="block text-sm font-medium text-gray-700 mb-1.5"&gt;Label&lt;/label&gt;
+    &lt;input type="text" placeholder="Enter value..." class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-800
+           bg-white placeholder-gray-400
+           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+           transition-all duration-150"&gt;
+&lt;/div&gt;</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- CHECKBOXES -->
+                        <div x-data="{ id: 'atom-checkboxes' }" class="space-y-10">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">BaseCheckbox.html</h3>
+                                <button @click="toggleCode(id)"
+                                    class="text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="code-2"
+                                        class="w-5 h-5"></i></button>
+                            </div>
+                            <div class="flex flex-wrap gap-12 p-6 bg-white border border-slate-100 rounded-xl">
+                                <!-- BASIC CHECKBOX -->
+                                <input type="checkbox"
+                                    class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 transition-colors cursor-pointer">
+
+                                <!-- CHECKBOX WITH LABEL -->
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 transition-colors">
+                                    <span class="text-sm text-gray-700">Remember me</span>
+                                </label>
+
+                                <!-- SELECT-ALL (for tables) -->
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" id="selectAll"
+                                        class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 transition-colors">
+                                    <span class="text-sm font-medium text-gray-700">Select All</span>
+                                </label>
+                            </div>
+                            <!-- CODE SNIPPET -->
+                            <div x-show="codeVisible[id]" x-cloak
+                                class="mt-8 animate-in fade-in slide-in-from-top-4 duration-300">
+                                <div
+                                    class="flex items-center justify-between bg-slate-800 px-4 py-2 rounded-t-lg border-b border-slate-700">
+                                    <span
+                                        class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">BaseCheckbox.html</span>
+                                    <button class="text-slate-400 hover:text-white transition-colors"><i
+                                            data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                                </div>
+                                <pre class="code-snippet rounded-t-none"><code>&lt;!-- BASIC CHECKBOX --&gt;
+&lt;input type="checkbox"
+    class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 transition-colors cursor-pointer"&gt;
+
+&lt;!-- CHECKBOX WITH LABEL --&gt;
+&lt;label class="flex items-center gap-2 cursor-pointer"&gt;
+    &lt;input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 transition-colors"&gt;
+    &lt;span class="text-sm text-gray-700"&gt;Remember me&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- SELECTS -->
+                        <div x-data="{ id: 'atom-selects' }" class="space-y-10">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">BaseSelect.html</h3>
+                                <button @click="toggleCode(id)"
+                                    class="text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="code-2"
+                                        class="w-5 h-5"></i></button>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                                <div class="space-y-4">
+                                    <label
+                                        class="block text-sm font-medium text-gray-400 uppercase tracking-widest text-gray-700">Default
+                                        Select</label>
+                                    <select class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-800
+                                             bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                                             transition-all duration-150 cursor-pointer">
+                                        <option value="">Choose an option</option>
+                                        <option value="10A">Grade 10A</option>
+                                        <option value="10B">Grade 10B</option>
+                                        <option value="11A">Grade 11A</option>
+                                        <option value="11B">Grade 11B</option>
+                                    </select>
+                                </div>
+                                <div class="space-y-4">
+                                    <label
+                                        class="block text-sm font-medium text-gray-400 uppercase tracking-widest text-gray-700 mb-1.5">Select
+                                        Class</label>
+                                    <select class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-800
+                                           bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                                           transition-all duration-150 cursor-pointer">
+                                        <option value="all">All Classes</option>
+                                        <option value="10A">Grade 10A</option>
+                                        <option value="10B">Grade 10B</option>
+                                        <option value="11A">Grade 11A</option>
+                                        <option value="11B">Grade 11B</option>
+                                        <option value="12A">Grade 12A</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- CODE SNIPPET -->
+                            <div x-show="codeVisible[id]" x-cloak
+                                class="mt-8 animate-in fade-in slide-in-from-top-4 duration-300">
+                                <div
+                                    class="flex items-center justify-between bg-slate-800 px-4 py-2 rounded-t-lg border-b border-slate-700">
+                                    <span
+                                        class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">BaseSelect.html</span>
+                                    <button class="text-slate-400 hover:text-white transition-colors"><i
+                                            data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                                </div>
+                                <pre class="code-snippet rounded-t-none"><code>&lt;!-- DEFAULT SELECT --&gt;
+&lt;select class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-800
+         bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+         transition-all duration-150 cursor-pointer"&gt;
+    &lt;option value=""&gt;Choose an option&lt;/option&gt;
+    &lt;option value="10A"&gt;Grade 10A&lt;/option&gt;
+    &lt;option value="10B"&gt;Grade 10B&lt;/option&gt;
+&lt;/select&gt;</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- ICONS -->
+                        <div x-data="{ id: 'atom-icons' }" class="space-y-10">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">BaseIcon.html</h3>
+                                <button @click="toggleCode(id)"
+                                    class="text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="code-2"
+                                        class="w-5 h-5"></i></button>
+                            </div>
+                            <div class="space-y-12">
+                                <div
+                                    class="flex flex-wrap gap-8 items-end p-6 bg-white border border-slate-100 rounded-xl">
+                                    <i data-lucide="star" class="w-3 h-3 text-gray-600"></i>
+                                    <i data-lucide="star" class="w-4 h-4 text-gray-600"></i>
+                                    <i data-lucide="star" class="w-5 h-5 text-gray-600"></i>
+                                    <i data-lucide="star" class="w-6 h-6 text-gray-600"></i>
+                                    <i data-lucide="star" class="w-8 h-8 text-gray-600"></i>
+                                </div>
+                                <div class="flex flex-wrap gap-6 p-6 bg-slate-50 border border-slate-100 rounded-xl">
+                                    <i data-lucide="layout-dashboard" class="w-6 h-6 text-slate-600"></i>
+                                    <i data-lucide="clipboard-check" class="w-6 h-6 text-slate-600"></i>
+                                    <i data-lucide="bar-chart-2" class="w-6 h-6 text-slate-600"></i>
+                                    <i data-lucide="users" class="w-6 h-6 text-slate-600"></i>
+                                    <i data-lucide="file-text" class="w-6 h-6 text-slate-600"></i>
+                                    <i data-lucide="bell" class="w-6 h-6 text-slate-600"></i>
+                                    <i data-lucide="school" class="w-6 h-6 text-blue-600"></i>
+                                </div>
+                            </div>
+                            <!-- CODE SNIPPET -->
+                            <div x-show="codeVisible[id]" x-cloak
+                                class="mt-8 animate-in fade-in slide-in-from-top-4 duration-300">
+                                <div
+                                    class="flex items-center justify-between bg-slate-800 px-4 py-2 rounded-t-lg border-b border-slate-700">
+                                    <span
+                                        class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">BaseIcon.html</span>
+                                    <button class="text-slate-400 hover:text-white transition-colors"><i
+                                            data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                                </div>
+                                <pre class="code-snippet rounded-t-none"><code>&lt;!-- ICON SIZES --&gt;
+&lt;i data-lucide="star" class="w-3 h-3 text-gray-600"&gt;&lt;/i&gt; &lt;!-- xs --&gt;
+&lt;i data-lucide="star" class="w-4 h-4 text-gray-600"&gt;&lt;/i&gt; &lt;!-- sm --&gt;
+&lt;i data-lucide="star" class="w-5 h-5 text-gray-600"&gt;&lt;/i&gt; &lt;!-- md --&gt;
+
+&lt;!-- ICON WITH COLORED CONTAINER --&gt;
+&lt;div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center"&gt;
+    &lt;i data-lucide="users" class="w-5 h-5 text-blue-600"&gt;&lt;/i&gt;
+&lt;/div&gt;</code></pre>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- MOLECULES SECTION -->
+                    <section x-show="activeSection === 'molecules'" x-cloak class="space-y-24">
+                        <!-- STAT CARDS -->
+                        <div x-data="{ id: 'mol-stats' }" class="space-y-10">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">StatCard.html</h3>
+                                <div class="flex items-center gap-4">
+                                    <div class="flex bg-slate-100 p-1 rounded-lg">
+                                        <button @click="toggleViewport(id, 'mobile')"
+                                            :class="getViewport(id) === 'mobile' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-400 hover:text-slate-600'"
+                                            class="p-1.5 rounded-md transition-all"><i data-lucide="smartphone"
+                                                class="w-4 h-4"></i></button>
+                                        <button @click="toggleViewport(id, 'desktop')"
+                                            :class="getViewport(id) === 'desktop' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-400 hover:text-slate-600'"
+                                            class="p-1.5 rounded-md transition-all"><i data-lucide="monitor"
+                                                class="w-4 h-4"></i></button>
+                                    </div>
+                                    <button @click="toggleCode(id)"
+                                        class="text-slate-400 hover:text-blue-600 transition-colors"><i
+                                            data-lucide="code-2" class="w-5 h-5"></i></button>
+                                </div>
+                            </div>
+                            <div :class="getViewport(id) === 'mobile' ? 'v-mobile overflow-y-auto bg-slate-50 p-4' : 'v-desktop bg-white p-8'"
+                                class="frame-container">
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                    <div
+                                        class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+                                        <div class="flex items-center justify-between mb-4">
+                                            <div
+                                                class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                                <i data-lucide="users" class="w-6 h-6 text-blue-600"></i>
+                                            </div>
+                                            <span
+                                                class="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">+2.5%</span>
+                                        </div>
+                                        <p class="text-2xl font-bold text-gray-800 mb-1">847</p>
+                                        <p class="text-sm text-gray-500">Total Students</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- CODE SNIPPET -->
+                            <div x-show="codeVisible[id]" x-cloak
+                                class="mt-8 animate-in fade-in slide-in-from-top-4 duration-300">
+                                <div
+                                    class="flex items-center justify-between bg-slate-800 px-4 py-2 rounded-t-lg border-b border-slate-700">
+                                    <span
+                                        class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">StatCard.html</span>
+                                    <button class="text-slate-400 hover:text-white transition-colors"><i
+                                            data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                                </div>
+                                <pre class="code-snippet rounded-t-none"><code>&lt;!-- STAT CARD --&gt;
+&lt;div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow"&gt;
+    &lt;div class="flex items-center justify-between mb-4"&gt;
+        &lt;div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center"&gt;
+            &lt;i data-lucide="users" class="w-6 h-6 text-blue-600"&gt;&lt;/i&gt;
+        &lt;/div&gt;
+        &lt;span class="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full"&gt;+2.5%&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;p class="text-2xl font-bold text-gray-800 mb-1"&gt;847&lt;/p&gt;
+    &lt;p class="text-sm text-gray-500"&gt;Total Students&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- ACTION ICON BUTTON -->
+                        <div x-data="{ id: 'mol-action-btn' }" class="space-y-10">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">ActionIconButton.html</h3>
+                                <button @click="toggleCode(id)"
+                                    class="text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="code-2"
+                                        class="w-5 h-5"></i></button>
+                            </div>
+                            <div class="flex flex-wrap gap-6 p-6 bg-white border border-slate-100 rounded-xl">
+                                <!-- Solid Style -->
+                                <button
+                                    class="inline-flex items-center justify-center p-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-sm transition-colors">
+                                    <i data-lucide="plus" class="w-5 h-5"></i>
+                                </button>
+                                <!-- Ghost Style -->
+                                <button
+                                    class="inline-flex items-center justify-center p-2.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                                    <i data-lucide="edit-3" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                            <!-- CODE SNIPPET -->
+                            <div x-show="codeVisible[id]" x-cloak
+                                class="mt-8 animate-in fade-in slide-in-from-top-4 duration-300">
+                                <div
+                                    class="flex items-center justify-between bg-slate-800 px-4 py-2 rounded-t-lg border-b border-slate-700">
+                                    <span
+                                        class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">ActionIconButton.html</span>
+                                    <button class="text-slate-400 hover:text-white transition-colors"><i
+                                            data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                                </div>
+                                <pre class="code-snippet rounded-t-none"><code>&lt;!-- PRIMARY FILL BUTTON --&gt;
+&lt;a href="#" class="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-700
+         text-white font-semibold py-3 px-4 rounded-lg transition-colors shadow-sm"&gt;
+    &lt;i data-lucide="plus-circle" class="w-5 h-5"&gt;&lt;/i&gt;
+    &lt;span&gt;Attendance Entry&lt;/span&gt;
+&lt;/a&gt;</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- SEARCH BAR -->
+                        <div x-data="{ id: 'mol-search' }" class="space-y-10">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">SearchBar.html</h3>
+                                <button @click="toggleCode(id)"
+                                    class="text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="code-2"
+                                        class="w-5 h-5"></i></button>
+                            </div>
+                            <div class="max-w-md p-6 bg-white border border-slate-100 rounded-xl">
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i
+                                            data-lucide="search" class="w-4 h-4 text-gray-400"></i></div>
+                                    <input type="search" placeholder="Search student or ID..."
+                                        class="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm">
+                                </div>
+                            </div>
+                            <!-- CODE SNIPPET -->
+                            <div x-show="codeVisible[id]" x-cloak
+                                class="mt-8 animate-in fade-in slide-in-from-top-4 duration-300">
+                                <div
+                                    class="flex items-center justify-between bg-slate-800 px-4 py-2 rounded-t-lg border-b border-slate-700">
+                                    <span
+                                        class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">SearchBar.html</span>
+                                    <button class="text-slate-400 hover:text-white transition-colors"><i
+                                            data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                                </div>
+                                <pre class="code-snippet rounded-t-none"><code>&lt;!-- COMPACT SEARCH BAR --&gt;
+&lt;div class="relative"&gt;
+    &lt;div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"&gt;
+        &lt;i data-lucide="search" class="w-4 h-4 text-gray-400"&gt;&lt;/i&gt;
+    &lt;/div&gt;
+    &lt;input type="search" placeholder="Search..." class="pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-800
+           bg-white placeholder-gray-400
+           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+           transition-all duration-150 w-64"&gt;
+&lt;/div&gt;</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- NAV LINK -->
+                        <div x-data="{ id: 'mol-navlink' }" class="space-y-10">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">NavLink.html</h3>
+                                <button @click="toggleCode(id)"
+                                    class="text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="code-2"
+                                        class="w-5 h-5"></i></button>
+                            </div>
+                            <div class="max-w-xs space-y-2 p-6 bg-slate-800 rounded-xl">
+                                <!-- Active Link -->
+                                <a href="#"
+                                    class="flex items-center gap-x-3.5 py-2 px-2.5 bg-blue-600 text-sm text-white rounded-lg">
+                                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                                    Dashboard
+                                </a>
+                                <!-- Inactive Link -->
+                                <a href="#"
+                                    class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-slate-400 hover:text-white hover:bg-white/10 rounded-lg">
+                                    <i data-lucide="users" class="w-4 h-4"></i>
+                                    Students
+                                </a>
+                            </div>
+                            <!-- CODE SNIPPET -->
+                            <div x-show="codeVisible[id]" x-cloak
+                                class="mt-8 animate-in fade-in slide-in-from-top-4 duration-300">
+                                <div
+                                    class="flex items-center justify-between bg-slate-800 px-4 py-2 rounded-t-lg border-b border-slate-700">
+                                    <span
+                                        class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">NavLink.html</span>
+                                    <button class="text-slate-400 hover:text-white transition-colors"><i
+                                            data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                                </div>
+                                <pre class="code-snippet rounded-t-none"><code>&lt;!-- ACTIVE NAV LINK --&gt;
+&lt;a href="#" class="flex items-center space-x-3 px-4 py-3 text-blue-600 bg-blue-50 rounded-lg font-medium transition-colors"&gt;
+    &lt;i data-lucide="layout-dashboard" class="w-5 h-5"&gt;&lt;/i&gt;
+    &lt;span&gt;Dashboard&lt;/span&gt;
+&lt;/a&gt;</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- USER SNIPPET -->
+                        <div x-data="{ id: 'mol-user' }" class="space-y-10">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">UserSnippet.html</h3>
+                                <button @click="toggleCode(id)"
+                                    class="text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="code-2"
+                                        class="w-5 h-5"></i></button>
+                            </div>
+                            <div class="max-w-xs p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center"><i
+                                            data-lucide="user" class="w-5 h-5 text-blue-600"></i></div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-medium text-gray-800 truncate">Admin User</p>
+                                        <p class="text-xs text-gray-500 truncate">admin@school.edu</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- CODE SNIPPET -->
+                            <div x-show="codeVisible[id]" x-cloak
+                                class="mt-8 animate-in fade-in slide-in-from-top-4 duration-300">
+                                <div
+                                    class="flex items-center justify-between bg-slate-800 px-4 py-2 rounded-t-lg border-b border-slate-700">
+                                    <span
+                                        class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">UserSnippet.html</span>
+                                    <button class="text-slate-400 hover:text-white transition-colors"><i
+                                            data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                                </div>
+                                <pre class="code-snippet rounded-t-none"><code>&lt;!-- USER SNIPPET --&gt;
+&lt;div class="flex items-center space-x-3"&gt;
+    &lt;div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center"&gt;
+        &lt;i data-lucide="user" class="w-5 h-5 text-blue-600"&gt;&lt;/i&gt;
+    &lt;/div&gt;
+    &lt;div class="flex-1 min-w-0"&gt;
+        &lt;p class="text-sm font-medium text-gray-800 truncate"&gt;Admin User&lt;/p&gt;
+        &lt;p class="text-xs text-gray-500 truncate"&gt;admin@school.edu&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- ACTIVITY ITEM -->
+                        <div x-data="{ id: 'mol-activity' }" class="space-y-10">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">ActivityItem.html</h3>
+                                <button @click="toggleCode(id)"
+                                    class="text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="code-2"
+                                        class="w-5 h-5"></i></button>
+                            </div>
+                            <div class="max-w-md p-4 bg-white border-l-4 border-blue-500 rounded-r-xl shadow-sm">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <p class="text-sm font-bold text-gray-800">Attendance Marked</p>
+                                        <p class="text-xs text-gray-500">Class 204 — Morning Session</p>
+                                    </div>
+                                    <span class="text-[10px] font-bold text-gray-400 uppercase">10m ago</span>
+                                </div>
+                            </div>
+                            <!-- CODE SNIPPET -->
+                            <div x-show="codeVisible[id]" x-cloak
+                                class="mt-8 animate-in fade-in slide-in-from-top-4 duration-300">
+                                <div
+                                    class="flex items-center justify-between bg-slate-800 px-4 py-2 rounded-t-lg border-b border-slate-700">
+                                    <span
+                                        class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">ActivityItem.html</span>
+                                    <button class="text-slate-400 hover:text-white transition-colors"><i
+                                            data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                                </div>
+                                <pre class="code-snippet rounded-t-none"><code>&lt;!-- SUCCESS ACTIVITY ITEM --&gt;
+&lt;div class="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"&gt;
+    &lt;div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"&gt;
+        &lt;i data-lucide="check" class="w-5 h-5 text-green-600"&gt;&lt;/i&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- TABLE SKELETON -->
+                        <div x-data="{ id: 'mol-skeleton' }" class="space-y-10">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">TableSkeleton.html</h3>
+                                <button @click="toggleCode(id)"
+                                    class="text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="code-2"
+                                        class="w-5 h-5"></i></button>
+                            </div>
+                            <div
+                                class="animate-pulse bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                                <div class="grid grid-cols-12 gap-4 px-4 py-3 bg-gray-50 border-b border-gray-200">
+                                    <div class="col-span-1 h-3 bg-gray-200 rounded"></div>
+                                    <div class="col-span-3 h-3 bg-gray-200 rounded"></div>
+                                    <div class="col-span-4 h-3 bg-gray-200 rounded"></div>
+                                    <div class="col-span-4 h-3 bg-gray-200 rounded"></div>
+                                </div>
+                                <div class="grid grid-cols-12 gap-4 px-4 py-4 items-center">
+                                    <div class="col-span-1 h-2.5 bg-gray-100 rounded w-1/2"></div>
+                                    <div class="col-span-3 h-2.5 bg-gray-100 rounded"></div>
+                                    <div class="col-span-4 h-2.5 bg-gray-200/50 rounded-full w-2/3 mx-auto"></div>
+                                    <div class="col-span-4 h-2.5 bg-gray-100 rounded w-1/4 ml-auto"></div>
+                                </div>
+                            </div>
+                            <!-- CODE SNIPPET -->
+                            <div x-show="codeVisible[id]" x-cloak
+                                class="mt-8 animate-in fade-in slide-in-from-top-4 duration-300">
+                                <div
+                                    class="flex items-center justify-between bg-slate-800 px-4 py-2 rounded-t-lg border-b border-slate-700">
+                                    <span
+                                        class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">TableSkeleton.html</span>
+                                    <button class="text-slate-400 hover:text-white transition-colors"><i
+                                            data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                                </div>
+                                <pre class="code-snippet rounded-t-none"><code>&lt;!-- TABLE SKELETON --&gt;
+&lt;div class="bg-white border border-gray-200 rounded-xl overflow-hidden animate-pulse shadow-sm"&gt;
+    &lt;div class="grid grid-cols-12 gap-4 px-4 py-3 bg-gray-50 border-b border-gray-200"&gt;
+        &lt;div class="col-span-1 h-3 bg-gray-200 rounded"&gt;&lt;/div&gt;
+        &lt;div class="col-span-3 h-3 bg-gray-200 rounded"&gt;&lt;/div&gt;
+        &lt;div class="col-span-4 h-3 bg-gray-200 rounded"&gt;&lt;/div&gt;
+        &lt;div class="col-span-4 h-3 bg-gray-200 rounded"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ORGANISMS SECTION -->
+                    <section x-show="activeSection === 'organisms'" x-cloak class="space-y-24">
+                        <!-- TOP BAR -->
+                        <div x-data="{ id: 'org-topbar' }" class="space-y-10">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">TopBar.html</h3>
+                                <button @click="toggleCode(id)"
+                                    class="text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="code-2"
+                                        class="w-5 h-5"></i></button>
+                            </div>
+                            <div
+                                class="frame-container bg-slate-50 p-0 rounded-xl overflow-hidden border border-slate-200">
+                                <!-- VISUAL EXAMPLE -->
+                                <header
+                                    class="h-16 bg-white flex items-center justify-between px-6 shadow-sm border-b border-gray-100">
+                                    <div class="flex items-center space-x-4">
+                                        <h2 class="text-lg font-bold text-gray-800">Dashboard</h2>
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <div class="hidden md:flex items-center space-x-2 text-sm text-gray-500"><i
+                                                data-lucide="calendar" class="w-4 h-4"></i><span>Monday, March 3,
+                                                2026</span></div>
+                                        <button class="relative p-2 text-gray-400 hover:text-gray-600"><i
+                                                data-lucide="bell" class="w-5 h-5"></i><span
+                                                class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span></button>
+                                        <div
+                                            class="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center hover:bg-blue-200 transition-colors">
+                                            <i data-lucide="user" class="w-4 h-4 text-blue-600"></i></div>
+                                    </div>
+                                </header>
+                            </div>
+                            <!-- CODE SNIPPET -->
+                            <div x-show="codeVisible[id]" x-cloak
+                                class="mt-8 animate-in fade-in slide-in-from-top-4 duration-300">
+                                <div
+                                    class="flex items-center justify-between bg-slate-800 px-4 py-2 rounded-t-lg border-b border-slate-700">
+                                    <span
+                                        class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">TopBar.html</span>
+                                    <button class="text-slate-400 hover:text-white transition-colors"><i
+                                            data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                                </div>
+                                <pre class="code-snippet rounded-t-none"><code>&lt;!-- TopBar.html --&gt;
+&lt;header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 lg:px-6 sticky top-0 z-30"&gt;
+    &lt;div class="flex items-center space-x-4"&gt;
+        &lt;button @click="sidebarOpen = true" class="lg:hidden text-gray-500 hover:text-gray-700 p-1"&gt;
+            &lt;i data-lucide="menu" class="w-6 h-6"&gt;&lt;/i&gt;
+        &lt;/button&gt;
+        &lt;div&gt;
+            &lt;h2 class="text-xl font-bold text-gray-800"&gt;Dashboard&lt;/h2&gt;
+            &lt;p class="text-sm text-gray-500 hidden sm:block"&gt;Welcome back, Administrator&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="flex items-center space-x-3"&gt;
+        &lt;div class="hidden md:flex items-center space-x-2 text-sm text-gray-500"&gt;
+            &lt;i data-lucide="calendar" class="w-4 h-4"&gt;&lt;/i&gt;
+            &lt;span id="topBarDate"&gt;&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;button class="relative p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"&gt;
+            &lt;i data-lucide="bell" class="w-5 h-5"&gt;&lt;/i&gt;
+            &lt;span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"&gt;&lt;/span&gt;
+        &lt;/button&gt;
+    &lt;/div&gt;
+&lt;/header&gt;</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- STUDENT TABLE -->
+                        <div x-data="{ id: 'org-table' }" class="space-y-10">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">StudentTable.html</h3>
+                                <div class="flex items-center gap-4">
+                                    <div class="flex bg-slate-100 p-1 rounded-lg">
+                                        <button @click="toggleViewport(id, 'mobile')"
+                                            :class="getViewport(id) === 'mobile' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-400 hover:text-slate-600'"
+                                            class="p-1.5 rounded-md transition-all"><i data-lucide="smartphone"
+                                                class="w-4 h-4"></i></button>
+                                        <button @click="toggleViewport(id, 'desktop')"
+                                            :class="getViewport(id) === 'desktop' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-400 hover:text-slate-600'"
+                                            class="p-1.5 rounded-md transition-all"><i data-lucide="monitor"
+                                                class="w-4 h-4"></i></button>
+                                    </div>
+                                    <button @click="toggleCode(id)"
+                                        class="text-slate-400 hover:text-blue-600 transition-colors"><i
+                                            data-lucide="code-2" class="w-5 h-5"></i></button>
+                                </div>
+                            </div>
+                            <div :class="getViewport(id) === 'mobile' ? 'v-mobile overflow-y-auto bg-slate-50 p-4' : 'v-desktop bg-white p-8'"
+                                class="frame-container">
+                                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                                    <div
+                                        class="grid grid-cols-12 gap-4 px-4 py-3 bg-gray-50 border-b border-gray-200 text-xs font-bold text-gray-500 uppercase tracking-widest">
+                                        <div class="col-span-1">#</div>
+                                        <div class="col-span-3">Name</div>
+                                        <div class="col-span-4 text-center">Status</div>
+                                        <div class="col-span-4 text-right pr-4">Actions</div>
+                                    </div>
+                                    <div class="grid grid-cols-12 gap-4 px-4 py-4 items-center">
+                                        <div class="col-span-1 text-sm text-gray-400">1</div>
+                                        <div class="col-span-3 font-medium">Emma Johnson</div>
+                                        <div class="col-span-4 flex justify-center gap-2"><span
+                                                class="px-2 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded">PRESENT</span>
+                                        </div>
+                                        <div class="col-span-4 text-right pr-4"><button
+                                                class="text-blue-600 hover:underline text-xs font-bold">Details</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- STATS GRID -->
+                        <div x-data="{ id: 'org-stats' }" class="space-y-10">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">StatsGrid.html</h3>
+                                <button @click="toggleCode(id)"
+                                    class="text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="code-2"
+                                        class="w-5 h-5"></i></button>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+                                <!-- Total Students -->
+                                <div
+                                    class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                            <i data-lucide="users" class="w-6 h-6 text-blue-600"></i>
+                                        </div>
+                                        <span
+                                            class="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">+2.5%</span>
+                                    </div>
+                                    <p class="text-2xl font-bold text-gray-800 mb-1">847</p>
+                                    <p class="text-sm text-gray-500">Total Students</p>
+                                </div>
+
+                                <!-- Present Today -->
+                                <div
+                                    class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                            <i data-lucide="check-circle" class="w-6 h-6 text-green-600"></i>
+                                        </div>
+                                        <span
+                                            class="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">96.5%</span>
+                                    </div>
+                                    <p class="text-2xl font-bold text-gray-800 mb-1">817</p>
+                                    <p class="text-sm text-gray-500">Present Today</p>
+                                </div>
+
+                                <!-- Absent Today -->
+                                <div
+                                    class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                                            <i data-lucide="x-circle" class="w-6 h-6 text-red-600"></i>
+                                        </div>
+                                        <span
+                                            class="text-xs font-medium text-red-600 bg-red-50 px-2 py-1 rounded-full">3.5%</span>
+                                    </div>
+                                    <p class="text-2xl font-bold text-gray-800 mb-1">30</p>
+                                    <p class="text-sm text-gray-500">Absent Today</p>
+                                </div>
+
+                                <!-- Pending Justifications -->
+                                <div
+                                    class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
+                                            <i data-lucide="file-text" class="w-6 h-6 text-amber-600"></i>
+                                        </div>
+                                        <span
+                                            class="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded-full">Action</span>
+                                    </div>
+                                    <p class="text-2xl font-bold text-gray-800 mb-1">7</p>
+                                    <p class="text-sm text-gray-500">Pending Justifications</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ACTION PANEL -->
+                        <div x-data="{ id: 'org-action-panel' }" class="space-y-10">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">ActionPanel.html</h3>
+                                <button @click="toggleCode(id)"
+                                    class="text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="code-2"
+                                        class="w-5 h-5"></i></button>
+                            </div>
+                            <div class="max-w-sm bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                                    <i data-lucide="zap" class="w-5 h-5 text-blue-600"></i>
+                                    Quick Actions
+                                </h3>
+                                <div class="space-y-3">
+                                    <button
+                                        class="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors shadow-sm">
+                                        <i data-lucide="plus-circle" class="w-5 h-5"></i> Attendance Entry
+                                    </button>
+                                    <button
+                                        class="flex items-center justify-center gap-2 w-full bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 font-medium py-3 px-4 rounded-lg transition-colors">
+                                        <i data-lucide="download" class="w-5 h-5"></i> Export Report
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CHART SECTION -->
+                        <div x-data="{ id: 'org-chart-wrapper' }" class="space-y-10">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">ChartSection.html</h3>
+                                <button @click="toggleCode(id)"
+                                    class="text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="code-2"
+                                        class="w-5 h-5"></i></button>
+                            </div>
+                            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                                <div class="flex items-center justify-between mb-6">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-gray-800">Attendance Overview</h3>
+                                        <p class="text-sm text-gray-500 mt-0.5">Weekly attendance statistics</p>
+                                    </div>
+                                    <div class="flex items-center gap-1 bg-gray-100 p-1 rounded-lg">
+                                        <button
+                                            class="px-3 py-1.5 text-xs font-semibold bg-white text-gray-800 rounded-md shadow-sm">Week</button>
+                                        <button
+                                            class="px-3 py-1.5 text-xs font-medium text-gray-500 hover:text-gray-700 rounded-md">Month</button>
+                                    </div>
+                                </div>
+                                <div
+                                    class="h-48 bg-slate-50 border border-dashed border-slate-200 rounded-lg flex items-center justify-center text-slate-400 text-sm font-medium italic">
+                                    Chart Placeholder</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- LAYOUTS SECTION -->
+                    <section x-show="activeSection === 'layouts'" x-cloak class="space-y-24">
+                        <!-- AUTH LAYOUT -->
+                        <div x-data="{ id: 'lay-auth' }" class="space-y-10">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">AuthLayout.html</h3>
+                                <div class="flex items-center gap-4">
+                                    <button @click="toggleCode(id)"
+                                        class="text-slate-400 hover:text-blue-600 transition-colors"><i
+                                            data-lucide="code-2" class="w-5 h-5"></i></button>
+                                </div>
+                            </div>
+                            <div
+                                class="frame-container bg-slate-50 p-12 rounded-xl flex items-center justify-center min-h-[400px]">
+                                <div
+                                    class="w-full max-w-sm bg-white border border-gray-200 rounded-2xl shadow-sm p-8 text-center">
+                                    <div
+                                        class="w-16 h-16 bg-blue-600 rounded-2xl mx-auto mb-4 flex items-center justify-center text-white">
+                                        <i data-lucide="school" class="w-8 h-8"></i>
+                                    </div>
+                                    <h1 class="text-2xl font-bold text-gray-800">Solicode AMS</h1>
+                                    <p class="text-gray-500 text-sm mt-1">Welcome Back</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MAIN LAYOUT -->
+                        <div x-data="{ id: 'lay-main' }" class="space-y-10">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">MainLayout.html</h3>
+                                <button @click="toggleCode(id)"
+                                    class="text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="code-2"
+                                        class="w-5 h-5"></i></button>
+                            </div>
+                            <div
+                                class="frame-container h-[600px] bg-slate-100 rounded-xl overflow-hidden border border-slate-100 shadow-xl flex">
+                                <!-- Sidebar -->
+                                <div class="w-64 bg-white border-r border-gray-200 flex flex-col hidden md:flex">
+                                    <div class="h-16 border-b border-gray-200 flex items-center px-6">
+                                        <div class="w-8 h-8 bg-blue-600 rounded-lg"></div>
+                                        <span class="ml-3 font-bold text-gray-800">Solicode AMS</span>
+                                    </div>
+                                    <div class="flex-1 p-4 space-y-2">
+                                        <div class="h-10 bg-blue-50 border border-blue-100 rounded-lg"></div>
+                                        <div class="h-10 bg-transparent rounded-lg"></div>
+                                        <div class="h-10 bg-transparent rounded-lg"></div>
+                                    </div>
+                                    <div class="p-4 border-t border-gray-200">
+                                        <div class="h-10 bg-gray-50 rounded-lg"></div>
+                                    </div>
+                                </div>
+                                <!-- Content -->
+                                <div class="flex-1 flex flex-col">
+                                    <header
+                                        class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6">
+                                        <div class="w-32 h-6 bg-gray-100 rounded"></div>
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-32 h-6 bg-gray-100 rounded hidden sm:block"></div>
+                                            <div class="w-8 h-8 bg-gray-200 rounded-full"></div>
+                                        </div>
+                                    </header>
+                                    <main class="flex-1 p-6 space-y-6 overflow-y-auto">
+                                        <div class="grid grid-cols-4 gap-6">
+                                            <div class="h-24 bg-white rounded-xl border border-gray-200 shadow-sm">
+                                            </div>
+                                            <div class="h-24 bg-white rounded-xl border border-gray-200 shadow-sm">
+                                            </div>
+                                            <div class="h-24 bg-white rounded-xl border border-gray-200 shadow-sm">
+                                            </div>
+                                            <div class="h-24 bg-white rounded-xl border border-gray-200 shadow-sm">
+                                            </div>
+                                        </div>
+                                        <div class="h-96 bg-white rounded-2xl border border-gray-200 shadow-sm"></div>
+                                    </main>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- FOOTER -->
+                <footer class="mt-40 pt-20 border-t border-slate-200 text-center">
+                    <p class="text-[10px] font-black text-slate-300 uppercase tracking-[0.5em]">Solicode AMS Design
+                        System — Master Edition</p>
+                </footer>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+
+            // Attendance Chart
+            const trendCtx = document.getElementById('dsAttendanceChart');
+            if (trendCtx) {
+                new Chart(trendCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+                        datasets: [
+                            { label: 'Present', data: [817, 802, 830, 815, 795], backgroundColor: 'rgba(59, 130, 246, 0.85)', borderRadius: 4 },
+                            { label: 'Absent', data: [20, 30, 12, 22, 35], backgroundColor: 'rgba(239, 68, 68, 0.75)', borderRadius: 4 },
+                            { label: 'Late', data: [10, 15, 5, 10, 17], backgroundColor: 'rgba(245, 158, 11, 0.75)', borderRadius: 4 }
+                        ]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#f1f5f9' } }, x: { grid: { display: false } } } }
+                });
+            }
+
+            // Justification Chart
+            const justCtx = document.getElementById('dsJustificationChart');
+            if (justCtx) {
+                new Chart(justCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Approved', 'Pending', 'Rejected'],
+                        datasets: [{
+                            data: [42, 7, 11],
+                            backgroundColor: ['#3b82f6', '#f59e0b', '#ef4444'],
+                            borderWidth: 2,
+                            borderColor: '#fff'
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { display: false } } }
+                });
+            }
+
+            // Performance Chart
+            const perfCtx = document.getElementById('dsPerformanceChart');
+            if (perfCtx) {
+                new Chart(perfCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['10A', '10B', '11A', '11B', '12A'],
+                        datasets: [{
+                            label: 'Attendance %',
+                            data: [98, 92, 95, 89, 97],
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            borderWidth: 3,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#fff',
+                            pointBorderColor: '#3b82f6',
+                            pointBorderWidth: 2
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 100, grid: { color: '#f1f5f9' } }, x: { grid: { display: false } } } }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
