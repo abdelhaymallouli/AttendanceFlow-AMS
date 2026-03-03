@@ -1,0 +1,91 @@
+﻿<!--
+  CHART: ClassPerformanceChart
+  Horizontal bar chart comparing attendance rate by class.
+  Requires: <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+-->
+<div class="bg-white border border-gray-200 rounded-xl p-6">
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h3 class="text-lg font-bold text-gray-800">Class Performance</h3>
+            <p class="text-sm text-gray-500">Attendance rate by class — this month</p>
+        </div>
+    </div>
+
+    <div class="relative h-56">
+        <canvas id="classPerformanceChart"></canvas>
+    </div>
+
+    <!-- Class colour key -->
+    <div class="flex flex-wrap gap-3 mt-4 pt-4 border-t border-gray-100">
+        <div class="flex items-center gap-2 text-sm text-gray-600"><span
+                class="w-3 h-3 rounded-sm bg-blue-500"></span>10A</div>
+        <div class="flex items-center gap-2 text-sm text-gray-600"><span
+                class="w-3 h-3 rounded-sm bg-indigo-500"></span>10B</div>
+        <div class="flex items-center gap-2 text-sm text-gray-600"><span
+                class="w-3 h-3 rounded-sm bg-violet-500"></span>11A</div>
+        <div class="flex items-center gap-2 text-sm text-gray-600"><span
+                class="w-3 h-3 rounded-sm bg-purple-500"></span>11B</div>
+        <div class="flex items-center gap-2 text-sm text-gray-600"><span
+                class="w-3 h-3 rounded-sm bg-pink-500"></span>12A</div>
+        <div class="flex items-center gap-2 text-sm text-gray-600"><span
+                class="w-3 h-3 rounded-sm bg-rose-500"></span>12B</div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    (function () {
+        const ctx = document.getElementById('classPerformanceChart');
+        if (!ctx) return;
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Grade 10A', 'Grade 10B', 'Grade 11A', 'Grade 11B', 'Grade 12A', 'Grade 12B'],
+                datasets: [{
+                    label: 'Attendance %',
+                    data: [98, 95, 92, 97, 88, 94],
+                    backgroundColor: [
+                        'rgba(59,130,246,0.8)',
+                        'rgba(99,102,241,0.8)',
+                        'rgba(139,92,246,0.8)',
+                        'rgba(168,85,247,0.8)',
+                        'rgba(236,72,153,0.8)',
+                        'rgba(239,68,68,0.8)'
+                    ],
+                    borderRadius: 6,
+                    barPercentage: 0.6
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1f2937',
+                        titleColor: '#f9fafb',
+                        bodyColor: '#d1d5db',
+                        padding: 10,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: ctx => ` ${ctx.raw}% attendance`
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { color: '#f3f4f6' },
+                        ticks: { color: '#6b7280', font: { size: 12 } },
+                        min: 70,
+                        max: 100
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { color: '#374151', font: { size: 12 } }
+                    }
+                }
+            }
+        });
+    })();
+</script>

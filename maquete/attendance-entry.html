@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Entry - Solicode AMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://preline.co/assets/css/main.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        .status-btn {
+            transition: all 0.15s ease;
+        }
+
+        .status-btn:active {
+            transform: scale(0.95);
+        }
+
+        .session-tab {
+            transition: all 0.2s ease;
+        }
+
+        .student-row {
+            transition: background-color 0.2s ease;
+        }
+
+        .student-row:hover {
+            background-color: #f9fafb;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-status-btn {
+                min-height: 44px;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50" x-data="attendanceApp()">
+
+    <!-- Mobile Header -->
+    <header
+        class="lg:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-40">
+        <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <i data-lucide="school" class="w-4 h-4 text-white"></i>
+            </div>
+            <span class="font-bold text-gray-800">Solicode AMS</span>
+        </div>
+        <button @click="sidebarOpen = !sidebarOpen" class="text-gray-600">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+    </header>
+
+    <!-- Mobile Sidebar -->
+    <div x-show="sidebarOpen" x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 -translate-x-full" x-transition:enter-end="opacity-100 translate-x-0"
+        x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0"
+        x-transition:leave-end="opacity-0 -translate-x-full" class="fixed inset-0 z-50 lg:hidden"
+        style="display: none;">
+        <div class="absolute inset-0 bg-black/50" @click="sidebarOpen = false"></div>
+        <div class="absolute left-0 top-0 h-full w-64 bg-white border-r border-gray-200">
+            <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="school" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-gray-800">Solicode AMS</h1>
+                        <p class="text-xs text-gray-500" x-text="userRole"></p>
+                    </div>
+                </div>
+                <button @click="sidebarOpen = false" class="text-gray-500">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <nav class="p-4 space-y-1" x-html="navigationLinks"></nav>
+        </div>
+    </div>
+
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- Desktop Sidebar -->
+        <aside class="hidden lg:flex flex-col w-64 bg-white border-r border-gray-200">
+            <!-- Logo -->
+            <div class="flex items-center h-16 px-6 border-b border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="school" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-gray-800">Solicode AMS</h1>
+                        <p class="text-xs text-gray-500" x-text="userRole"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto" x-html="navigationLinks"></nav>
+
+            <!-- User Profile -->
+            <div class="border-t border-gray-200 p-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i data-lucide="user" class="w-5 h-5 text-blue-600"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-800 truncate" x-text="userName"></p>
+                        <p class="text-xs text-gray-500 truncate" x-text="userEmail"></p>
+                    </div>
+                    <a href="login.html" class="text-gray-400 hover:text-gray-600">
+                        <i data-lucide="log-out" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+
+            <!-- Top Bar -->
+            <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 lg:px-6">
+                <div class="flex items-center space-x-4">
+                    <button @click="sidebarOpen = true" class="lg:hidden text-gray-500">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-800">Attendance Entry</h2>
+                        <p class="text-sm text-gray-500">Session-based attendance marking</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:flex items-center space-x-2 text-sm text-gray-600">
+                        <i data-lucide="calendar" class="w-4 h-4"></i>
+                        <span id="currentDate"></span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Recording Interface -->
+            <main class="flex-1 overflow-y-auto p-4 lg:p-6">
+
+                <!-- Session Selector -->
+                <div class="bg-white border border-gray-200 rounded-xl p-4 mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-3">Select Session</label>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <button @click="selectSession('morning')"
+                            :class="selectedSession === 'morning' ? 'ring-2 ring-blue-600 bg-blue-50 border-blue-600' : 'border-gray-200 hover:border-blue-400'"
+                            class="session-tab flex items-center p-4 border rounded-xl transition-all bg-white">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3"
+                                :class="selectedSession === 'morning' ? 'bg-blue-600' : 'bg-gray-100'">
+                                <i data-lucide="sunrise" class="w-5 h-5"
+                                    :class="selectedSession === 'morning' ? 'text-white' : 'text-gray-600'"></i>
+                            </div>
+                            <div class="text-left">
+                                <p class="font-semibold"
+                                    :class="selectedSession === 'morning' ? 'text-blue-900' : 'text-gray-800'">Morning
+                                </p>
+                                <p class="text-xs"
+                                    :class="selectedSession === 'morning' ? 'text-blue-600' : 'text-gray-500'">9:00 -
+                                    11:00</p>
+                            </div>
+                        </button>
+                        <button @click="selectSession('midday')"
+                            :class="selectedSession === 'midday' ? 'ring-2 ring-blue-600 bg-blue-50 border-blue-600' : 'border-gray-200 hover:border-blue-400'"
+                            class="session-tab flex items-center p-4 border rounded-xl transition-all bg-white">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3"
+                                :class="selectedSession === 'midday' ? 'bg-blue-600' : 'bg-gray-100'">
+                                <i data-lucide="sun" class="w-5 h-5"
+                                    :class="selectedSession === 'midday' ? 'text-white' : 'text-gray-600'"></i>
+                            </div>
+                            <div class="text-left">
+                                <p class="font-semibold"
+                                    :class="selectedSession === 'midday' ? 'text-blue-900' : 'text-gray-800'">Midday</p>
+                                <p class="text-xs"
+                                    :class="selectedSession === 'midday' ? 'text-blue-600' : 'text-gray-500'">11:00 -
+                                    14:00</p>
+                            </div>
+                        </button>
+                        <button @click="selectSession('afternoon')"
+                            :class="selectedSession === 'afternoon' ? 'ring-2 ring-blue-600 bg-blue-50 border-blue-600' : 'border-gray-200 hover:border-blue-400'"
+                            class="session-tab flex items-center p-4 border rounded-xl transition-all bg-white">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3"
+                                :class="selectedSession === 'afternoon' ? 'bg-blue-600' : 'bg-gray-100'">
+                                <i data-lucide="sunset" class="w-5 h-5"
+                                    :class="selectedSession === 'afternoon' ? 'text-white' : 'text-gray-600'"></i>
+                            </div>
+                            <div class="text-left">
+                                <p class="font-semibold"
+                                    :class="selectedSession === 'afternoon' ? 'text-blue-900' : 'text-gray-800'">
+                                    Afternoon</p>
+                                <p class="text-xs"
+                                    :class="selectedSession === 'afternoon' ? 'text-blue-600' : 'text-gray-500'">14:00 -
+                                    17:00</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Controls Bar -->
+                <div class="bg-white border border-gray-200 rounded-xl p-4 mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+                        <!-- Class Filter -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Select Class</label>
+                            <select x-model="selectedClass" @change="filterStudents()"
+                                class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-800">
+                                <option value="all">All Classes</option>
+                                <option value="10A">Grade 10A</option>
+                                <option value="10B">Grade 10B</option>
+                                <option value="11A">Grade 11A</option>
+                                <option value="11B">Grade 11B</option>
+                                <option value="12A">Grade 12A</option>
+                                <option value="12B">Grade 12B</option>
+                            </select>
+                        </div>
+
+                        <!-- Search -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Search Student</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i data-lucide="search" class="w-5 h-5 text-gray-400"></i>
+                                </div>
+                                <input x-model="searchQuery" @input="filterStudents()" type="text"
+                                    class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-800"
+                                    placeholder="Name or ID...">
+                            </div>
+                        </div>
+
+                        <!-- Bulk Actions -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Quick Actions</label>
+                            <div class="flex space-x-2">
+                                <button @click="markAllPresent()"
+                                    class="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm mobile-status-btn flex items-center justify-center">
+                                    <i data-lucide="check-circle" class="w-4 h-4 mr-1"></i>
+                                    All Present
+                                </button>
+                                <button @click="clearAll()"
+                                    class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm mobile-status-btn flex items-center justify-center">
+                                    <i data-lucide="rotate-ccw" class="w-4 h-4 mr-1"></i>
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Summary Bar -->
+                    <div
+                        class="mt-4 pt-4 border-t border-gray-200 flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div class="flex flex-wrap justify-center md:justify-start gap-4 text-sm">
+                            <div class="flex items-center">
+                                <span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
+                                <span class="text-gray-600">Present: <strong class="text-gray-800"
+                                        x-text="getPresentCount()"></strong></span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="w-3 h-3 bg-red-500 rounded-full mr-2"></span>
+                                <span class="text-gray-600">Absent: <strong class="text-gray-800"
+                                        x-text="getAbsentCount()"></strong></span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="w-3 h-3 bg-amber-500 rounded-full mr-2"></span>
+                                <span class="text-gray-600">Late: <strong class="text-gray-800"
+                                        x-text="getLateCount()"></strong></span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="w-3 h-3 bg-gray-300 rounded-full mr-2"></span>
+                                <span class="text-gray-600">Unmarked: <strong class="text-gray-800"
+                                        x-text="getUnmarkedCount()"></strong></span>
+                            </div>
+                        </div>
+                        <button @click="saveAttendance()" :disabled="hasUnsavedChanges === false"
+                            class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold py-2 px-6 rounded-lg transition-colors flex items-center justify-center mobile-status-btn">
+                            <i data-lucide="save" class="w-5 h-5 mr-2"></i>
+                            <span x-text="hasUnsavedChanges ? 'Save Attendance' : 'Saved'"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Student List -->
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+
+                    <!-- Table Header -->
+                    <div
+                        class="hidden md:grid grid-cols-12 gap-4 p-4 bg-gray-50 border-b border-gray-200 font-medium text-sm text-gray-700">
+                        <div class="col-span-1">#</div>
+                        <div class="col-span-2">Student ID</div>
+                        <div class="col-span-3">Name</div>
+                        <div class="col-span-2">Class</div>
+                        <div class="col-span-4 text-center">Status</div>
+                    </div>
+
+                    <!-- Mobile Header -->
+                    <div class="md:hidden p-4 bg-gray-50 border-b border-gray-200 font-medium text-sm text-gray-700">
+                        <div class="flex justify-between">
+                            <span>Student</span>
+                            <span>Status</span>
+                        </div>
+                    </div>
+
+                    <!-- Student Rows -->
+                    <div class="divide-y divide-gray-200">
+                        <template x-for="(student, index) in filteredStudents" :key="student.id">
+                            <!-- Desktop Row -->
+                            <div class="hidden md:grid grid-cols-12 gap-4 p-4 student-row items-center">
+                                <div class="col-span-1 text-sm text-gray-500" x-text="index + 1"></div>
+                                <div class="col-span-2 text-sm font-medium text-gray-800" x-text="student.id"></div>
+                                <div class="col-span-3">
+                                    <p class="text-sm font-medium text-gray-800" x-text="student.name"></p>
+                                    <p class="text-xs text-gray-500" x-text="student.email"></p>
+                                </div>
+                                <div class="col-span-2">
+                                    <span
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+                                        x-text="student.class"></span>
+                                </div>
+                                <div class="col-span-4 flex justify-center space-x-2">
+                                    <button @click="setStatus(student.id, 'present')"
+                                        :class="student.status === 'present' ? 'bg-green-600 text-white ring-2 ring-green-600 ring-offset-2' : 'bg-white text-gray-700 border border-gray-300 hover:bg-green-50'"
+                                        class="status-btn flex-1 py-2 px-3 rounded-lg font-medium text-sm transition-all">
+                                        <i data-lucide="check" class="w-4 h-4 inline mr-1"></i>
+                                        P
+                                    </button>
+                                    <button @click="setStatus(student.id, 'absent')"
+                                        :class="student.status === 'absent' ? 'bg-red-600 text-white ring-2 ring-red-600 ring-offset-2' : 'bg-white text-gray-700 border border-gray-300 hover:bg-red-50'"
+                                        class="status-btn flex-1 py-2 px-3 rounded-lg font-medium text-sm transition-all">
+                                        <i data-lucide="x" class="w-4 h-4 inline mr-1"></i>
+                                        A
+                                    </button>
+                                    <button @click="setStatus(student.id, 'late')"
+                                        :class="student.status === 'late' ? 'bg-amber-600 text-white ring-2 ring-amber-600 ring-offset-2' : 'bg-white text-gray-700 border border-gray-300 hover:bg-amber-50'"
+                                        class="status-btn flex-1 py-2 px-3 rounded-lg font-medium text-sm transition-all">
+                                        <i data-lucide="clock" class="w-4 h-4 inline mr-1"></i>
+                                        L
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Mobile Row -->
+                            <div class="md:hidden p-4 student-row">
+                                <div class="flex items-center justify-between mb-3">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-800" x-text="student.name"></p>
+                                        <p class="text-xs text-gray-500" x-text="student.id + ' • ' + student.class">
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button @click="setStatus(student.id, 'present')"
+                                        :class="student.status === 'present' ? 'bg-green-600 text-white' : 'bg-white text-gray-700 border border-gray-300'"
+                                        class="status-btn flex-1 py-3 px-3 rounded-lg font-medium text-sm mobile-status-btn">
+                                        <i data-lucide="check" class="w-4 h-4 inline mr-1"></i>
+                                        Present
+                                    </button>
+                                    <button @click="setStatus(student.id, 'absent')"
+                                        :class="student.status === 'absent' ? 'bg-red-600 text-white' : 'bg-white text-gray-700 border border-gray-300'"
+                                        class="status-btn flex-1 py-3 px-3 rounded-lg font-medium text-sm mobile-status-btn">
+                                        <i data-lucide="x" class="w-4 h-4 inline mr-1"></i>
+                                        Absent
+                                    </button>
+                                    <button @click="setStatus(student.id, 'late')"
+                                        :class="student.status === 'late' ? 'bg-amber-600 text-white' : 'bg-white text-gray-700 border border-gray-300'"
+                                        class="status-btn flex-1 py-3 px-3 rounded-lg font-medium text-sm mobile-status-btn">
+                                        <i data-lucide="clock" class="w-4 h-4 inline mr-1"></i>
+                                        Late
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div x-show="filteredStudents.length === 0" class="p-12 text-center">
+                        <i data-lucide="search-x" class="w-12 h-12 text-gray-400 mx-auto mb-4"></i>
+                        <p class="text-gray-500">No students found matching your criteria</p>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Success Toast -->
+    <div x-show="showToast" x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 transform translate-y-2"
+        x-transition:enter-end="opacity-100 transform translate-y-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 transform translate-y-0"
+        x-transition:leave-end="opacity-0 transform translate-y-2"
+        class="fixed bottom-6 right-6 bg-green-600 text-white px-6 py-4 rounded-lg shadow-xl flex items-center space-x-3 z-50"
+        style="display: none;">
+        <i data-lucide="check-circle" class="w-6 h-6"></i>
+        <span class="font-medium">Attendance saved successfully!</span>
+    </div>
+
+    <script src="https://preline.co/assets/js/hs-ui.bundle.js"></script>
+    <script>
+        function attendanceApp() {
+            return {
+                sidebarOpen: false,
+                selectedSession: 'morning',
+                selectedClass: 'all',
+                searchQuery: '',
+                hasUnsavedChanges: false,
+                showToast: false,
+                userRole: 'Administrator',
+                userName: 'Admin User',
+                userEmail: 'admin@school.edu',
+
+                get navigationLinks() {
+                    const isAdmin = this.userRole === 'Administrator';
+                    const dashboardUrl = isAdmin ? 'admin-dashboard.html' : 'teacher-dashboard.html';
+                    const entryUrl = 'attendance-entry.html';
+                    const justificationsUrl = isAdmin ? 'admin-justifications.html' : 'teacher-justifications.html';
+
+                    return `
+                        <a href="${dashboardUrl}" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                            <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                            <span>Dashboard</span>
+                        </a>
+                        <a href="${entryUrl}" class="flex items-center space-x-3 px-4 py-3 text-blue-600 bg-blue-50 rounded-lg font-medium">
+                            <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+                            <span>Attendance Entry</span>
+                            <span class="ml-auto bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">NOW</span>
+                        </a>
+                        ${isAdmin ? `
+                        <a href="admin-reports.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                            <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                            <span>Reports</span>
+                        </a>
+                        <a href="admin-students.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                            <i data-lucide="users" class="w-5 h-5"></i>
+                            <span>Students</span>
+                        </a>
+                        <a href="admin-calendar.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                            <i data-lucide="calendar" class="w-5 h-5"></i>
+                            <span>Calendar</span>
+                        </a>
+                        ` : `
+                        <a href="teacher-sessions.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                            <i data-lucide="clock" class="w-5 h-5"></i>
+                            <span>My Sessions</span>
+                        </a>
+                        <a href="teacher-reports.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                            <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                            <span>Class Reports</span>
+                        </a>
+                        `}
+                        <a href="${justificationsUrl}" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors relative">
+                            <i data-lucide="file-text" class="w-5 h-5"></i>
+                            <span>Justifications</span>
+                            <span class="ml-auto bg-amber-500 text-white text-xs font-bold px-2 py-1 rounded-full">3</span>
+                        </a>
+                    `;
+                },
+
+                students: [
+                    { id: 'STU001', name: 'Emma Johnson', email: 'emma.j@school.edu', class: '10A', status: null },
+                    { id: 'STU002', name: 'Liam Smith', email: 'liam.s@school.edu', class: '10A', status: null },
+                    { id: 'STU003', name: 'Olivia Brown', email: 'olivia.b@school.edu', class: '10A', status: null },
+                    { id: 'STU004', name: 'Noah Davis', email: 'noah.d@school.edu', class: '10A', status: null },
+                    { id: 'STU005', name: 'Ava Wilson', email: 'ava.w@school.edu', class: '10A', status: null },
+                    { id: 'STU006', name: 'Elijah Moore', email: 'elijah.m@school.edu', class: '10B', status: null },
+                    { id: 'STU007', name: 'Sophia Taylor', email: 'sophia.t@school.edu', class: '10B', status: null },
+                    { id: 'STU008', name: 'James Anderson', email: 'james.a@school.edu', class: '10B', status: null },
+                    { id: 'STU009', name: 'Isabella Thomas', email: 'isabella.t@school.edu', class: '10B', status: null },
+                    { id: 'STU010', name: 'Benjamin Jackson', email: 'benjamin.j@school.edu', class: '10B', status: null },
+                    { id: 'STU011', name: 'Mia White', email: 'mia.w@school.edu', class: '11A', status: null },
+                    { id: 'STU012', name: 'Lucas Harris', email: 'lucas.h@school.edu', class: '11A', status: null },
+                    { id: 'STU013', name: 'Charlotte Martin', email: 'charlotte.m@school.edu', class: '11A', status: null },
+                    { id: 'STU014', name: 'Henry Thompson', email: 'henry.t@school.edu', class: '11A', status: null },
+                    { id: 'STU015', name: 'Amelia Garcia', email: 'amelia.g@school.edu', class: '11A', status: null },
+                    { id: 'STU016', name: 'Alexander Martinez', email: 'alex.m@school.edu', class: '11B', status: null },
+                    { id: 'STU017', name: 'Harper Robinson', email: 'harper.r@school.edu', class: '11B', status: null },
+                    { id: 'STU018', name: 'Sebastian Clark', email: 'sebastian.c@school.edu', class: '11B', status: null },
+                    { id: 'STU019', name: 'Evelyn Rodriguez', email: 'evelyn.r@school.edu', class: '11B', status: null },
+                    { id: 'STU020', name: 'Michael Lewis', email: 'michael.l@school.edu', class: '11B', status: null }
+                ],
+                filteredStudents: [],
+
+                init() {
+                    this.filterStudents();
+                    this.autoSelectSession();
+                    // Detect user role from URL or localStorage (demo)
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const role = urlParams.get('role');
+                    if (role === 'teacher') {
+                        this.userRole = 'Teacher';
+                        this.userName = 'Imane Bouziane';
+                        this.userEmail = 'teacher@school.edu';
+                    }
+                    setTimeout(() => lucide.createIcons(), 100);
+                },
+
+                autoSelectSession() {
+                    const hour = new Date().getHours();
+                    if (hour >= 9 && hour < 11) {
+                        this.selectedSession = 'morning';
+                    } else if (hour >= 11 && hour < 14) {
+                        this.selectedSession = 'midday';
+                    } else if (hour >= 14 && hour < 17) {
+                        this.selectedSession = 'afternoon';
+                    }
+                },
+
+                selectSession(session) {
+                    this.selectedSession = session;
+                    this.hasUnsavedChanges = false;
+                    this.clearAll();
+                },
+
+                filterStudents() {
+                    let filtered = this.students;
+
+                    if (this.selectedClass !== 'all') {
+                        filtered = filtered.filter(s => s.class === this.selectedClass);
+                    }
+
+                    if (this.searchQuery.trim() !== '') {
+                        const query = this.searchQuery.toLowerCase();
+                        filtered = filtered.filter(s =>
+                            s.name.toLowerCase().includes(query) ||
+                            s.id.toLowerCase().includes(query)
+                        );
+                    }
+
+                    this.filteredStudents = filtered;
+                    this.$nextTick(() => lucide.createIcons());
+                },
+
+                setStatus(studentId, status) {
+                    const student = this.students.find(s => s.id === studentId);
+                    if (student) {
+                        student.status = student.status === status ? null : status;
+                        this.hasUnsavedChanges = true;
+                    }
+                    this.$nextTick(() => lucide.createIcons());
+                },
+
+                markAllPresent() {
+                    this.filteredStudents.forEach(student => {
+                        student.status = 'present';
+                    });
+                    this.hasUnsavedChanges = true;
+                    this.$nextTick(() => lucide.createIcons());
+                },
+
+                clearAll() {
+                    this.filteredStudents.forEach(student => {
+                        student.status = null;
+                    });
+                    this.hasUnsavedChanges = true;
+                    this.$nextTick(() => lucide.createIcons());
+                },
+
+                getPresentCount() {
+                    return this.filteredStudents.filter(s => s.status === 'present').length;
+                },
+
+                getAbsentCount() {
+                    return this.filteredStudents.filter(s => s.status === 'absent').length;
+                },
+
+                getLateCount() {
+                    return this.filteredStudents.filter(s => s.status === 'late').length;
+                },
+
+                getUnmarkedCount() {
+                    return this.filteredStudents.filter(s => s.status === null).length;
+                },
+
+                saveAttendance() {
+                    if (!this.hasUnsavedChanges) return;
+
+                    this.hasUnsavedChanges = false;
+                    this.showToast = true;
+
+                    setTimeout(() => {
+                        this.showToast = false;
+                    }, 3000);
+                }
+            }
+        }
+
+        lucide.createIcons();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', options);
+    </script>
+</body>
+
+</html>

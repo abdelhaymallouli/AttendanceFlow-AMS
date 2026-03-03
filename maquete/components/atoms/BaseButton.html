@@ -1,0 +1,50 @@
+﻿<!--
+  ATOM: BaseButton
+  Variants: primary | secondary | ghost | danger | icon-only
+  Usage: Copy the variant you need and adjust href / @click / text.
+-->
+
+<!-- PRIMARY BUTTON -->
+<button type="button" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800
+         text-white text-sm font-semibold px-5 py-2.5 rounded-lg shadow-sm hover:shadow-md
+         transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+    <i data-lucide="plus-circle" class="w-4 h-4"></i>
+    <span>Primary Action</span>
+</button>
+
+<!-- SECONDARY BUTTON -->
+<button type="button" class="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-50 active:bg-gray-100
+         border border-gray-200 text-gray-700 text-sm font-medium px-5 py-2.5 rounded-lg
+         transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+    <i data-lucide="download" class="w-4 h-4"></i>
+    <span>Secondary Action</span>
+</button>
+
+<!-- GHOST BUTTON -->
+<button type="button" class="inline-flex items-center justify-center gap-2 bg-transparent hover:bg-gray-100 active:bg-gray-200
+         text-gray-600 text-sm font-medium px-4 py-2 rounded-lg
+         transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2">
+    <i data-lucide="settings" class="w-4 h-4"></i>
+    <span>Ghost Action</span>
+</button>
+
+<!-- DANGER BUTTON -->
+<button type="button" class="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 active:bg-red-800
+         text-white text-sm font-semibold px-5 py-2.5 rounded-lg shadow-sm
+         transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+    <i data-lucide="trash-2" class="w-4 h-4"></i>
+    <span>Delete</span>
+</button>
+
+<!-- ICON-ONLY BUTTON -->
+<button type="button" class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg
+         transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2">
+    <i data-lucide="bell" class="w-5 h-5"></i>
+</button>
+
+<!-- DISABLED BUTTON -->
+<button type="button" disabled class="inline-flex items-center justify-center gap-2 bg-gray-200 text-gray-400 text-sm font-medium
+         px-5 py-2.5 rounded-lg cursor-not-allowed">
+    <i data-lucide="save" class="w-4 h-4"></i>
+    <span>Disabled</span>
+</button>

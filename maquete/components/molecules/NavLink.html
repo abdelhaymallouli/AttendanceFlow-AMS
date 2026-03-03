@@ -1,0 +1,43 @@
+﻿<!--
+  MOLECULE: NavLink
+  A sidebar navigation link with icon, label, and optional badge.
+  Variants: default | active | with-badge
+-->
+
+<!-- ACTIVE NAV LINK -->
+<a href="admin-dashboard.html"
+    class="flex items-center space-x-3 px-4 py-3 text-blue-600 bg-blue-50 rounded-lg font-medium transition-colors">
+    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+    <span>Dashboard</span>
+</a>
+
+<!-- DEFAULT NAV LINK -->
+<a href="admin-reports.html"
+    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+    <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+    <span>Reports</span>
+</a>
+
+<!-- NAV LINK WITH COUNT BADGE -->
+<a href="admin-justifications.html"
+    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+    <i data-lucide="file-text" class="w-5 h-5"></i>
+    <span>Justifications</span>
+    <span class="ml-auto bg-amber-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">7</span>
+</a>
+
+<!-- NAV LINK WITH "HOT" BADGE -->
+<a href="attendance-entry.html"
+    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+    <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+    <span>Attendance Entry</span>
+    <span class="ml-auto bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">HOT</span>
+</a>
+
+<!-- NAV LINK WITH "NOW" BADGE -->
+<a href="attendance-entry.html"
+    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+    <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+    <span>Attendance Entry</span>
+    <span class="ml-auto bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">NOW</span>
+</a>

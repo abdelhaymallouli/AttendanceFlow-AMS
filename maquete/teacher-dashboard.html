@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - Solicode AMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://preline.co/assets/css/main.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        .session-card {
+            transition: all 0.3s ease;
+        }
+
+        .session-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .pulse-dot {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50" x-data="teacherDashboard()">
+
+    <!-- Mobile Header -->
+    <header
+        class="lg:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-40">
+        <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <i data-lucide="school" class="w-4 h-4 text-white"></i>
+            </div>
+            <span class="font-bold text-gray-800">Solicode AMS</span>
+        </div>
+        <button @click="sidebarOpen = !sidebarOpen" class="text-gray-600">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+    </header>
+
+    <!-- Mobile Sidebar -->
+    <div x-show="sidebarOpen" x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 -translate-x-full" x-transition:enter-end="opacity-100 translate-x-0"
+        x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0"
+        x-transition:leave-end="opacity-0 -translate-x-full" class="fixed inset-0 z-50 lg:hidden"
+        style="display: none;">
+        <div class="absolute inset-0 bg-black/50" @click="sidebarOpen = false"></div>
+        <div class="absolute left-0 top-0 h-full w-64 bg-white border-r border-gray-200">
+            <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="school" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-gray-800">Solicode AMS</h1>
+                        <p class="text-xs text-gray-500">Teacher Portal</p>
+                    </div>
+                </div>
+                <button @click="sidebarOpen = false" class="text-gray-500">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <nav class="p-4 space-y-1">
+                <a href="teacher-dashboard.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-blue-600 bg-blue-50 rounded-lg font-medium">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="attendance-entry.html?role=teacher"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+                    <span>Attendance Entry</span>
+                    <span class="ml-auto bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">NOW</span>
+                </a>
+                <a href="teacher-sessions.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="clock" class="w-5 h-5"></i>
+                    <span>My Sessions</span>
+                </a>
+                <a href="teacher-reports.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                    <span>Class Reports</span>
+                </a>
+                <a href="teacher-justifications.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors relative">
+                    <i data-lucide="file-text" class="w-5 h-5"></i>
+                    <span>Justifications</span>
+                    <span class="ml-auto bg-amber-500 text-white text-xs font-bold px-2 py-1 rounded-full">3</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- Desktop Sidebar -->
+        <aside class="hidden lg:flex flex-col w-64 bg-white border-r border-gray-200">
+            <!-- Logo -->
+            <div class="flex items-center h-16 px-6 border-b border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="school" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-gray-800">Solicode AMS</h1>
+                        <p class="text-xs text-gray-500">Teacher Portal</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+                <a href="teacher-dashboard.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-blue-600 bg-blue-50 rounded-lg font-medium">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="attendance-entry.html?role=teacher"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+                    <span>Attendance Entry</span>
+                    <span class="ml-auto bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">NOW</span>
+                </a>
+                <a href="teacher-sessions.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="clock" class="w-5 h-5"></i>
+                    <span>My Sessions</span>
+                </a>
+                <a href="teacher-reports.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                    <span>Class Reports</span>
+                </a>
+                <a href="teacher-justifications.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors relative">
+                    <i data-lucide="file-text" class="w-5 h-5"></i>
+                    <span>Justifications</span>
+                    <span class="ml-auto bg-amber-500 text-white text-xs font-bold px-2 py-1 rounded-full">3</span>
+                </a>
+            </nav>
+
+            <!-- User Profile -->
+            <div class="border-t border-gray-200 p-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i data-lucide="user" class="w-5 h-5 text-blue-600"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-800 truncate">Imane Bouziane</p>
+                        <p class="text-xs text-gray-500 truncate">Grade 10A-10B</p>
+                    </div>
+                    <a href="login.html" class="text-gray-400 hover:text-gray-600">
+                        <i data-lucide="log-out" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+
+            <!-- Top Bar -->
+            <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 lg:px-6">
+                <div class="flex items-center space-x-4">
+                    <button @click="sidebarOpen = true" class="lg:hidden text-gray-500">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-800">Teacher Dashboard</h2>
+                        <p class="text-sm text-gray-500">Quick access to your daily sessions</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:flex items-center space-x-2 text-sm text-gray-600">
+                        <i data-lucide="calendar" class="w-4 h-4"></i>
+                        <span id="currentDate"></span>
+                    </div>
+                    <button
+                        class="relative p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                        <i data-lucide="bell" class="w-5 h-5"></i>
+                        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <main class="flex-1 overflow-y-auto p-4 lg:p-6">
+
+                <!-- Current Session Alert -->
+                <div x-show="currentSession"
+                    class="mb-6 bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg p-6 text-white">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                                <span class="pulse-dot w-3 h-3 bg-green-400 rounded-full"></span>
+                            </div>
+                            <div>
+                                <p class="text-sm opacity-90">Current Session</p>
+                                <h3 class="text-xl font-bold" x-text="currentSession?.name"></h3>
+                                <p class="text-sm opacity-90" x-text="currentSession?.time"></p>
+                            </div>
+                        </div>
+                        <a :href="`attendance-entry.html?role=teacher&session=${currentSession?.id}`"
+                            class="bg-white text-blue-600 font-semibold py-3 px-6 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center">
+                            <i data-lucide="clipboard-check" class="w-5 h-5 mr-2"></i>
+                            Take Attendance
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Today's Sessions -->
+                <h3 class="text-lg font-bold text-gray-800 mb-4">Today's Sessions</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 mb-8">
+                    <template x-for="session in sessions" :key="session.id">
+                        <div class="session-card bg-white border-2 rounded-xl p-6"
+                            :class="session.status === 'completed' ? 'border-green-500' : session.status === 'active' ? 'border-blue-500' : 'border-gray-200'">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-lg flex items-center justify-center"
+                                    :class="session.status === 'completed' ? 'bg-green-100' : session.status === 'active' ? 'bg-blue-100' : 'bg-gray-100'">
+                                    <i data-lucide="clock" class="w-6 h-6"
+                                        :class="session.status === 'completed' ? 'text-green-600' : session.status === 'active' ? 'text-blue-600' : 'text-gray-600'"></i>
+                                </div>
+                                <span class="text-xs font-bold px-3 py-1 rounded-full"
+                                    :class="session.status === 'completed' ? 'bg-green-100 text-green-700' : session.status === 'active' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'"
+                                    x-text="session.status === 'completed' ? 'Completed' : session.status === 'active' ? 'In Progress' : 'Upcoming'"></span>
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-800 mb-1" x-text="session.name"></h4>
+                            <p class="text-sm text-gray-500 mb-4" x-text="session.time"></p>
+                            <div class="flex items-center justify-between">
+                                <div class="text-sm text-gray-600">
+                                    <span x-text="session.class"></span>
+                                    <span class="mx-1">•</span>
+                                    <span x-text="session.students + ' students'"></span>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-gray-100">
+                                <a :href="`attendance-entry.html?role=teacher&session=${session.id}`"
+                                    class="w-full block text-center py-2 px-4 rounded-lg font-medium transition-colors"
+                                    :class="session.status === 'completed' ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-blue-600 text-white hover:bg-blue-700'"
+                                    x-text="session.status === 'completed' ? 'View Details' : 'Take Attendance'"></a>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 lg:p-6">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="users" class="w-5 h-5 text-blue-600"></i>
+                            </div>
+                        </div>
+                        <p class="text-2xl font-bold text-gray-800">58</p>
+                        <p class="text-sm text-gray-500">Total Students</p>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 lg:p-6">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
+                            </div>
+                        </div>
+                        <p class="text-2xl font-bold text-gray-800">94%</p>
+                        <p class="text-sm text-gray-500">Avg. Attendance</p>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 lg:p-6">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="alert-circle" class="w-5 h-5 text-amber-600"></i>
+                            </div>
+                        </div>
+                        <p class="text-2xl font-bold text-gray-800">3</p>
+                        <p class="text-sm text-gray-500">Pending Justifications</p>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 lg:p-6">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="clock" class="w-5 h-5 text-purple-600"></i>
+                            </div>
+                        </div>
+                        <p class="text-2xl font-bold text-gray-800">2/3</p>
+                        <p class="text-sm text-gray-500">Sessions Today</p>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-gray-800 flex items-center">
+                            <i data-lucide="activity" class="w-5 h-5 mr-2 text-blue-600"></i>
+                            Recent Activity
+                        </h3>
+                        <button class="text-sm text-blue-600 hover:text-blue-700 font-medium">View All</button>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-4 p-4 bg-green-50 rounded-lg">
+                            <div
+                                class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="check" class="w-5 h-5 text-green-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-gray-800">Attendance completed for 10A - Morning
+                                    Session</p>
+                                <p class="text-xs text-gray-500 mt-1">28 present, 1 absent, 1 late • 30 minutes ago</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4 p-4 bg-blue-50 rounded-lg">
+                            <div
+                                class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="file-check" class="w-5 h-5 text-blue-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-gray-800">Justification approved for Emma Johnson</p>
+                                <p class="text-xs text-gray-500 mt-1">Medical certificate verified • 1 hour ago</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4 p-4 bg-amber-50 rounded-lg">
+                            <div
+                                class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="clock" class="w-5 h-5 text-amber-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-gray-800">Late arrival recorded for Michael Chen</p>
+                                <p class="text-xs text-gray-500 mt-1">Arrived at 9:15 AM • 2 hours ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <script src="https://preline.co/assets/js/hs-ui.bundle.js"></script>
+    <script>
+        function teacherDashboard() {
+            return {
+                sidebarOpen: false,
+                currentSession: null,
+                sessions: [
+                    { id: 'morning', name: 'Morning Session', time: '9:00 - 11:00', class: 'Grade 10A', students: 30, status: 'completed' },
+                    { id: 'midday', name: 'Midday Session', time: '11:00 - 14:00', class: 'Grade 10B', students: 28, status: 'active' },
+                    { id: 'afternoon', name: 'Afternoon Session', time: '14:00 - 17:00', class: 'Grade 10A', students: 30, status: 'upcoming' }
+                ],
+                init() {
+                    this.determineCurrentSession();
+                    setTimeout(() => lucide.createIcons(), 100);
+                },
+                determineCurrentSession() {
+                    const hour = new Date().getHours();
+                    if (hour >= 9 && hour < 11) {
+                        this.currentSession = this.sessions.find(s => s.id === 'morning');
+                    } else if (hour >= 11 && hour < 14) {
+                        this.currentSession = this.sessions.find(s => s.id === 'midday');
+                    } else if (hour >= 14 && hour < 17) {
+                        this.currentSession = this.sessions.find(s => s.id === 'afternoon');
+                    }
+                }
+            }
+        }
+
+        lucide.createIcons();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', options);
+    </script>
+</body>
+
+</html>

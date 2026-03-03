@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar - Solicode AMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        .calendar-day {
+            min-height: 100px;
+            transition: background-color 0.2s ease;
+        }
+
+        .calendar-day:hover {
+            background-color: #f9fafb;
+        }
+
+        .event-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50" x-data="calendarApp()">
+
+    <!-- Mobile Header -->
+    <header
+        class="lg:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-40">
+        <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <i data-lucide="school" class="w-4 h-4 text-white"></i>
+            </div>
+            <span class="font-bold text-gray-800">Solicode AMS</span>
+        </div>
+        <button @click="sidebarOpen = !sidebarOpen" class="text-gray-600">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+    </header>
+
+    <!-- Mobile Sidebar -->
+    <div x-show="sidebarOpen" x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 -translate-x-full" x-transition:enter-end="opacity-100 translate-x-0"
+        x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0"
+        x-transition:leave-end="opacity-0 -translate-x-full" class="fixed inset-0 z-50 lg:hidden"
+        style="display: none;">
+        <div class="absolute inset-0 bg-black/50" @click="sidebarOpen = false"></div>
+        <div class="absolute left-0 top-0 h-full w-64 bg-white border-r border-gray-200">
+            <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="school" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-gray-800">Solicode AMS</h1>
+                        <p class="text-xs text-gray-500">Administrator</p>
+                    </div>
+                </div>
+                <button @click="sidebarOpen = false" class="text-gray-500">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <nav class="p-4 space-y-1">
+                <a href="admin-dashboard.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="attendance-entry.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+                    <span>Attendance Entry</span>
+                    <span class="ml-auto bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">HOT</span>
+                </a>
+                <a href="admin-reports.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="admin-students.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="users" class="w-5 h-5"></i>
+                    <span>Students</span>
+                </a>
+                <a href="admin-calendar.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-blue-600 bg-blue-50 rounded-lg font-medium">
+                    <i data-lucide="calendar" class="w-5 h-5"></i>
+                    <span>Calendar</span>
+                </a>
+                <a href="admin-justifications.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors relative">
+                    <i data-lucide="file-text" class="w-5 h-5"></i>
+                    <span>Justifications</span>
+                    <span class="ml-auto bg-amber-500 text-white text-xs font-bold px-2 py-1 rounded-full">7</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- Desktop Sidebar -->
+        <aside class="hidden lg:flex flex-col w-64 bg-white border-r border-gray-200">
+            <!-- Logo -->
+            <div class="flex items-center h-16 px-6 border-b border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="school" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-gray-800">Solicode AMS</h1>
+                        <p class="text-xs text-gray-500">Administrator</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+                <a href="admin-dashboard.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="attendance-entry.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+                    <span>Attendance Entry</span>
+                    <span class="ml-auto bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">HOT</span>
+                </a>
+                <a href="admin-reports.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="admin-students.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="users" class="w-5 h-5"></i>
+                    <span>Students</span>
+                </a>
+                <a href="admin-calendar.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-blue-600 bg-blue-50 rounded-lg font-medium">
+                    <i data-lucide="calendar" class="w-5 h-5"></i>
+                    <span>Calendar</span>
+                </a>
+                <a href="admin-justifications.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors relative">
+                    <i data-lucide="file-text" class="w-5 h-5"></i>
+                    <span>Justifications</span>
+                    <span class="ml-auto bg-amber-500 text-white text-xs font-bold px-2 py-1 rounded-full">7</span>
+                </a>
+            </nav>
+
+            <!-- User Profile -->
+            <div class="border-t border-gray-200 p-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i data-lucide="user" class="w-5 h-5 text-blue-600"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-800 truncate">Admin User</p>
+                        <p class="text-xs text-gray-500 truncate">admin@school.edu</p>
+                    </div>
+                    <a href="login.html" class="text-gray-400 hover:text-gray-600">
+                        <i data-lucide="log-out" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+
+            <!-- Top Bar -->
+            <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 lg:px-6">
+                <div class="flex items-center space-x-4">
+                    <button @click="sidebarOpen = true" class="lg:hidden text-gray-500">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-800">School Calendar</h2>
+                        <p class="text-sm text-gray-500">View attendance and events</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:flex items-center space-x-2 text-sm text-gray-600">
+                        <i data-lucide="calendar" class="w-4 h-4"></i>
+                        <span id="currentDate"></span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Calendar Content -->
+            <main class="flex-1 overflow-y-auto p-6">
+
+                <!-- Calendar Header -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center space-x-4">
+                            <button @click="previousMonth()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                                <i data-lucide="chevron-left" class="w-5 h-5 text-gray-600"></i>
+                            </button>
+                            <h3 class="text-xl font-bold text-gray-800" x-text="monthYear"></h3>
+                            <button @click="nextMonth()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                                <i data-lucide="chevron-right" class="w-5 h-5 text-gray-600"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button @click="goToToday()"
+                                class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium">
+                                Today
+                            </button>
+                            <select x-model="viewMode"
+                                class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none text-sm">
+                                <option value="month">Month</option>
+                                <option value="week">Week</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Legend -->
+                <div class="flex flex-wrap gap-4 mb-6 text-sm">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        <span class="text-gray-600">High Attendance (>95%)</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                        <span class="text-gray-600">Average (90-95%)</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <span class="text-gray-600">Low Attendance (<90%)< /span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+                        <span class="text-gray-600">Holiday/Event</span>
+                    </div>
+                </div>
+
+                <!-- Calendar Grid -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <!-- Day Headers -->
+                    <div class="grid grid-cols-7 border-b border-gray-200">
+                        <template x-for="day in ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']">
+                            <div class="py-3 text-center text-sm font-medium text-gray-500 bg-gray-50" x-text="day">
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- Calendar Days -->
+                    <div class="grid grid-cols-7">
+                        <template x-for="day in calendarDays" :key="day.date">
+                            <div class="calendar-day border-b border-r border-gray-200 p-2 cursor-pointer" :class="{
+                                     'bg-indigo-50': day.isToday,
+                                     'text-gray-400': !day.isCurrentMonth,
+                                     'hover:bg-gray-50': day.isCurrentMonth
+                                 }" @click="selectDay(day)">
+                                <div class="flex justify-between items-start mb-1">
+                                    <span class="text-sm font-medium"
+                                        :class="day.isToday ? 'w-7 h-7 bg-indigo-600 text-white rounded-full flex items-center justify-center' : 'text-gray-700'"
+                                        x-text="day.dayNumber"></span>
+                                    <template x-if="day.event">
+                                        <div class="event-dot" :class="day.eventColor"></div>
+                                    </template>
+                                </div>
+                                <template x-if="day.attendance">
+                                    <div class="mt-2">
+                                        <div class="flex items-center justify-between text-xs mb-1">
+                                            <span class="text-gray-500">Attendance</span>
+                                            <span class="font-medium"
+                                                :class="day.attendance >= 95 ? 'text-green-600' : day.attendance >= 90 ? 'text-amber-600' : 'text-red-600'"
+                                                x-text="day.attendance + '%'"></span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-1.5">
+                                            <div class="h-1.5 rounded-full"
+                                                :class="day.attendance >= 95 ? 'bg-green-500' : day.attendance >= 90 ? 'bg-amber-500' : 'bg-red-500'"
+                                                :style="`width: ${day.attendance}%`"></div>
+                                        </div>
+                                    </div>
+                                </template>
+                                <template x-if="day.event">
+                                    <div class="mt-2 px-2 py-1 rounded text-xs" :class="day.eventBgClass"
+                                        x-text="day.event"></div>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Selected Day Details -->
+                <div x-show="selectedDay" class="mt-6 bg-white rounded-xl shadow-sm border border-gray-200 p-6"
+                    style="display: none;">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-gray-800" x-text="selectedDay?.fullDate"></h3>
+                        <button @click="selectedDay = null" class="text-gray-400 hover:text-gray-600">
+                            <i data-lucide="x" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <p class="text-sm text-gray-500">Total Students</p>
+                            <p class="text-2xl font-bold text-gray-800">847</p>
+                        </div>
+                        <div class="bg-green-50 rounded-lg p-4">
+                            <p class="text-sm text-gray-500">Present</p>
+                            <p class="text-2xl font-bold text-green-600" x-text="selectedDay?.present || 817"></p>
+                        </div>
+                        <div class="bg-red-50 rounded-lg p-4">
+                            <p class="text-sm text-gray-500">Absent</p>
+                            <p class="text-2xl font-bold text-red-600" x-text="selectedDay?.absent || 30"></p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex space-x-3">
+                        <a :href="`admin-data-entry.html?date=${selectedDay?.date}`"
+                            class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                            View Details
+                        </a>
+                        <button
+                            class="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                            Export Report
+                        </button>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div x-show="sidebarOpen" @click="sidebarOpen = false"
+        x-transition:enter="transition-opacity ease-linear duration-300" x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-linear duration-300"
+        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+        class="fixed inset-0 bg-gray-900 bg-opacity-50 z-40 lg:hidden" style="display: none;">
+    </div>
+
+    <script src="https://preline.co/assets/js/hs-ui.bundle.js"></script>
+    <script>
+        function calendarApp() {
+            return {
+                sidebarOpen: false,
+                currentDate: new Date(),
+                viewMode: 'month',
+                selectedDay: null,
+                calendarDays: [],
+                monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+
+                init() {
+                    this.generateCalendar();
+                    setTimeout(() => lucide.createIcons(), 100);
+                },
+
+                get monthYear() {
+                    return `${this.monthNames[this.currentDate.getMonth()]} ${this.currentDate.getFullYear()}`;
+                },
+
+                generateCalendar() {
+                    const year = this.currentDate.getFullYear();
+                    const month = this.currentDate.getMonth();
+
+                    const firstDay = new Date(year, month, 1);
+                    const lastDay = new Date(year, month + 1, 0);
+                    const daysInMonth = lastDay.getDate();
+                    const startingDay = firstDay.getDay();
+
+                    const today = new Date();
+
+                    this.calendarDays = [];
+
+                    // Previous month days
+                    const prevMonth = new Date(year, month, 0);
+                    for (let i = startingDay - 1; i >= 0; i--) {
+                        this.calendarDays.push({
+                            date: new Date(year, month - 1, prevMonth.getDate() - i).toISOString().split('T')[0],
+                            dayNumber: prevMonth.getDate() - i,
+                            isCurrentMonth: false,
+                            isToday: false
+                        });
+                    }
+
+                    // Current month days
+                    for (let i = 1; i <= daysInMonth; i++) {
+                        const date = new Date(year, month, i);
+                        const isToday = date.toDateString() === today.toDateString();
+                        const dayOfWeek = date.getDay();
+
+                        // Sample data for demonstration
+                        let attendance = null;
+                        let event = null;
+                        let eventColor = '';
+                        let eventBgClass = '';
+
+                        if (dayOfWeek !== 0 && dayOfWeek !== 6) { // Weekdays only
+                            attendance = Math.floor(Math.random() * 15) + 85; // 85-100%
+                        }
+
+                        // Add some sample events
+                        if (i === 25) {
+                            event = 'Christmas Break';
+                            eventColor = 'bg-blue-500';
+                            eventBgClass = 'bg-blue-100 text-blue-700';
+                            attendance = null;
+                        } else if (i === 15) {
+                            event = 'Parent Meeting';
+                            eventColor = 'bg-purple-500';
+                            eventBgClass = 'bg-purple-100 text-purple-700';
+                        }
+
+                        this.calendarDays.push({
+                            date: date.toISOString().split('T')[0],
+                            dayNumber: i,
+                            isCurrentMonth: true,
+                            isToday: isToday,
+                            attendance: attendance,
+                            event: event,
+                            eventColor: eventColor,
+                            eventBgClass: eventBgClass,
+                            fullDate: date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+                            present: attendance ? Math.floor(847 * attendance / 100) : null,
+                            absent: attendance ? 847 - Math.floor(847 * attendance / 100) : null
+                        });
+                    }
+
+                    // Next month days
+                    const remainingDays = 42 - this.calendarDays.length;
+                    for (let i = 1; i <= remainingDays; i++) {
+                        this.calendarDays.push({
+                            date: new Date(year, month + 1, i).toISOString().split('T')[0],
+                            dayNumber: i,
+                            isCurrentMonth: false,
+                            isToday: false
+                        });
+                    }
+                },
+
+                previousMonth() {
+                    this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+                    this.generateCalendar();
+                },
+
+                nextMonth() {
+                    this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+                    this.generateCalendar();
+                },
+
+                goToToday() {
+                    this.currentDate = new Date();
+                    this.generateCalendar();
+                },
+
+                selectDay(day) {
+                    if (day.isCurrentMonth) {
+                        this.selectedDay = day;
+                    }
+                }
+            }
+        }
+
+        lucide.createIcons();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', options);
+    </script>
+</body>
+
+</html>

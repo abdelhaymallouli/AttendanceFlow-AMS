@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Justifications - Solicode AMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://preline.co/assets/css/main.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        .upload-zone {
+            transition: all 0.3s ease;
+        }
+
+        .upload-zone.drag-over {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+
+        .justification-card {
+            transition: all 0.2s ease;
+        }
+
+        .justification-card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50" x-data="studentJustificationsApp()">
+
+    <!-- Mobile Header -->
+    <header
+        class="lg:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-40">
+        <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <i data-lucide="school" class="w-4 h-4 text-white"></i>
+            </div>
+            <span class="font-bold text-gray-800">Solicode AMS</span>
+        </div>
+        <button @click="sidebarOpen = !sidebarOpen" class="text-gray-600">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+    </header>
+
+    <!-- Mobile Sidebar -->
+    <div x-show="sidebarOpen" x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 -translate-x-full" x-transition:enter-end="opacity-100 translate-x-0"
+        x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0"
+        x-transition:leave-end="opacity-0 -translate-x-full" class="fixed inset-0 z-50 lg:hidden"
+        style="display: none;">
+        <div class="absolute inset-0 bg-black/50" @click="sidebarOpen = false"></div>
+        <div class="absolute left-0 top-0 h-full w-64 bg-white border-r border-gray-200">
+            <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="school" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-gray-800">Solicode AMS</h1>
+                        <p class="text-xs text-gray-500">Student</p>
+                    </div>
+                </div>
+                <button @click="sidebarOpen = false" class="text-gray-500">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <nav class="p-4 space-y-1">
+                <a href="student-dashboard.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="student-justifications.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-blue-600 bg-blue-50 rounded-lg font-medium">
+                    <i data-lucide="file-text" class="w-5 h-5"></i>
+                    <span>My Justifications</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- Desktop Sidebar -->
+        <aside class="hidden lg:flex flex-col w-64 bg-white border-r border-gray-200">
+            <!-- Logo -->
+            <div class="flex items-center h-16 px-6 border-b border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="school" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-gray-800">Solicode AMS</h1>
+                        <p class="text-xs text-gray-500">Student</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+                <a href="student-dashboard.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="student-justifications.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-blue-600 bg-blue-50 rounded-lg font-medium">
+                    <i data-lucide="file-text" class="w-5 h-5"></i>
+                    <span>My Justifications</span>
+                </a>
+            </nav>
+
+            <!-- User Profile -->
+            <div class="border-t border-gray-200 p-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i data-lucide="user" class="w-5 h-5 text-blue-600"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-800 truncate">Emma Johnson</p>
+                        <p class="text-xs text-gray-500 truncate">STU015 • Grade 11A</p>
+                    </div>
+                    <a href="login.html" class="text-gray-400 hover:text-gray-600">
+                        <i data-lucide="log-out" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+
+            <!-- Top Bar -->
+            <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 lg:px-6">
+                <div class="flex items-center space-x-4">
+                    <button @click="sidebarOpen = true" class="lg:hidden text-gray-500">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-800">My Justifications</h2>
+                        <p class="text-sm text-gray-500">Submit and track your absence justifications</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:flex items-center space-x-2 text-sm text-gray-600">
+                        <i data-lucide="calendar" class="w-4 h-4"></i>
+                        <span id="currentDate"></span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <main class="flex-1 overflow-y-auto p-4 lg:p-6">
+
+                <!-- Header Stats -->
+                <div class="bg-white border border-gray-200 rounded-xl mb-6 p-6">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center">
+                                <i data-lucide="file-text" class="w-7 h-7 text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h1 class="text-xl font-bold text-gray-800">Justification Status</h1>
+                                <p class="text-gray-600">Track your submitted documents</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 md:mt-0 flex items-center space-x-4">
+                            <div class="text-right">
+                                <p class="text-sm text-gray-500">Pending</p>
+                                <p class="text-2xl font-bold text-amber-600" x-text="pendingCount"></p>
+                            </div>
+                            <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
+                                <i data-lucide="clock" class="w-6 h-6 text-amber-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                    <!-- Left Column: Submit New Justification -->
+                    <div class="lg:col-span-1">
+                        <div class="bg-white border border-gray-200 rounded-xl p-6 sticky top-6">
+                            <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                                <i data-lucide="upload-cloud" class="w-5 h-5 mr-2 text-blue-600"></i>
+                                Submit New
+                            </h2>
+
+                            <form @submit.prevent="submitJustification()">
+                                <!-- Absence Date -->
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Absence Date</label>
+                                    <input type="date" x-model="newJustification.date" required
+                                        class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-800">
+                                </div>
+
+                                <!-- Session -->
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Session</label>
+                                    <select x-model="newJustification.session" required
+                                        class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-800">
+                                        <option value="">Select session</option>
+                                        <option value="morning">Morning (9:00 - 11:00)</option>
+                                        <option value="midday">Midday (11:00 - 14:00)</option>
+                                        <option value="afternoon">Afternoon (14:00 - 17:00)</option>
+                                        <option value="full">Full Day</option>
+                                    </select>
+                                </div>
+
+                                <!-- Reason Type -->
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Reason Type</label>
+                                    <select x-model="newJustification.type" required
+                                        class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-800">
+                                        <option value="">Select type</option>
+                                        <option value="medical">Medical / Health</option>
+                                        <option value="family">Family Emergency</option>
+                                        <option value="appointment">Official Appointment</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+
+                                <!-- Description -->
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                                    <textarea x-model="newJustification.reason" rows="3" required
+                                        class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-800 resize-none"
+                                        placeholder="Briefly explain the reason for your absence..."></textarea>
+                                </div>
+
+                                <!-- File Upload -->
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Supporting
+                                        Document</label>
+                                    <div class="upload-zone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center"
+                                        :class="{ 'drag-over': dragOver }" @dragover.prevent="dragOver = true"
+                                        @dragleave.prevent="dragOver = false" @drop.prevent="handleFileDrop($event)">
+                                        <template x-if="!newJustification.file">
+                                            <div>
+                                                <i data-lucide="file-plus"
+                                                    class="w-10 h-10 text-gray-400 mx-auto mb-3"></i>
+                                                <p class="text-sm text-gray-600">Drop your file here</p>
+                                                <p class="text-xs text-gray-400 mt-1">or</p>
+                                                <label class="mt-3 inline-block cursor-pointer">
+                                                    <input type="file" class="hidden" accept=".pdf,.jpg,.jpeg,.png"
+                                                        @change="handleFileSelect($event)">
+                                                    <span
+                                                        class="px-4 py-2 bg-blue-100 text-blue-700 font-medium rounded-lg hover:bg-blue-200 transition-colors text-sm">
+                                                        Choose File
+                                                    </span>
+                                                </label>
+                                                <p class="text-xs text-gray-400 mt-3">PDF, JPG, PNG (max 10MB)</p>
+                                            </div>
+                                        </template>
+                                        <template x-if="newJustification.file">
+                                            <div class="flex items-center justify-center space-x-3">
+                                                <i data-lucide="file-check" class="w-8 h-8 text-green-500"></i>
+                                                <div class="text-left">
+                                                    <p class="text-sm font-medium text-gray-800"
+                                                        x-text="newJustification.file.name"></p>
+                                                    <p class="text-xs text-gray-500"
+                                                        x-text="formatFileSize(newJustification.file.size)"></p>
+                                                </div>
+                                                <button @click.prevent="newJustification.file = null"
+                                                    class="text-red-500 hover:text-red-700">
+                                                    <i data-lucide="x" class="w-5 h-5"></i>
+                                                </button>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <button type="submit" :disabled="isSubmitting"
+                                    class="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center">
+                                    <i data-lucide="send" class="w-5 h-5 mr-2"></i>
+                                    <span x-text="isSubmitting ? 'Submitting...' : 'Submit Justification'"></span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Justification History -->
+                    <div class="lg:col-span-2">
+                        <div class="bg-white border border-gray-200 rounded-xl p-6">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-lg font-bold text-gray-800 flex items-center">
+                                    <i data-lucide="history" class="w-5 h-5 mr-2 text-blue-600"></i>
+                                    Submission History
+                                </h2>
+                                <select x-model="filterStatus" @change="filterJustifications()"
+                                    class="px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-800 text-sm">
+                                    <option value="all">All Status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="approved">Approved</option>
+                                    <option value="rejected">Rejected</option>
+                                </select>
+                            </div>
+
+                            <!-- Justifications List -->
+                            <div class="space-y-4">
+                                <template x-for="justification in filteredJustifications" :key="justification.id">
+                                    <div class="justification-card border border-gray-200 rounded-xl p-4">
+                                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                            <div class="flex items-start space-x-4">
+                                                <div class="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0"
+                                                    :class="justification.status === 'pending' ? 'bg-amber-100' : justification.status === 'approved' ? 'bg-green-100' : 'bg-red-100'">
+                                                    <i data-lucide="file-text" class="w-6 h-6"
+                                                        :class="justification.status === 'pending' ? 'text-amber-600' : justification.status === 'approved' ? 'text-green-600' : 'text-red-600'"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="flex items-center space-x-2 mb-1">
+                                                        <span class="font-medium text-gray-800"
+                                                            x-text="formatDate(justification.date)"></span>
+                                                        <span class="text-gray-400">•</span>
+                                                        <span class="text-sm text-gray-600"
+                                                            x-text="formatSession(justification.session)"></span>
+                                                    </div>
+                                                    <p class="text-sm text-gray-600 mb-2" x-text="justification.reason">
+                                                    </p>
+                                                    <div class="flex items-center space-x-3">
+                                                        <span
+                                                            class="inline-flex items-center px-2 py-1 rounded text-xs font-medium"
+                                                            :class="justification.status === 'pending' ? 'bg-amber-100 text-amber-700' : justification.status === 'approved' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'"
+                                                            x-text="justification.status.charAt(0).toUpperCase() + justification.status.slice(1)">
+                                                        </span>
+                                                        <span class="text-xs text-gray-400"
+                                                            x-text="'Submitted ' + formatDate(justification.submittedDate)"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center space-x-2">
+                                                <button @click="viewDocument(justification)"
+                                                    class="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center">
+                                                    <i data-lucide="eye" class="w-4 h-4 mr-1"></i>
+                                                    View
+                                                </button>
+                                                <template x-if="justification.status === 'pending'">
+                                                    <button @click="cancelJustification(justification.id)"
+                                                        class="text-red-600 hover:text-red-700 text-sm font-medium flex items-center">
+                                                        <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i>
+                                                        Cancel
+                                                    </button>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <!-- Empty State -->
+                                <div x-show="filteredJustifications.length === 0" class="p-12 text-center">
+                                    <i data-lucide="inbox" class="w-12 h-12 text-gray-400 mx-auto mb-4"></i>
+                                    <p class="text-gray-500">No justifications found</p>
+                                    <p class="text-sm text-gray-400 mt-1">Submit your first justification using the form
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tips Card -->
+                        <div class="mt-6 bg-blue-50 rounded-xl border border-blue-200 p-6">
+                            <h3 class="text-sm font-bold text-blue-800 mb-3 flex items-center">
+                                <i data-lucide="info" class="w-4 h-4 mr-2"></i>
+                                Tips for Quick Approval
+                            </h3>
+                            <ul class="space-y-2 text-sm text-blue-700">
+                                <li class="flex items-start">
+                                    <i data-lucide="check" class="w-4 h-4 mr-2 mt-0.5 flex-shrink-0"></i>
+                                    Submit within 48 hours of your absence
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-lucide="check" class="w-4 h-4 mr-2 mt-0.5 flex-shrink-0"></i>
+                                    Include clear, readable documents
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-lucide="check" class="w-4 h-4 mr-2 mt-0.5 flex-shrink-0"></i>
+                                    Medical certificates should include doctor's signature
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation (Desktop) -->
+                <div class="hidden lg:flex mt-8 justify-center space-x-8">
+                    <a href="student-dashboard.html"
+                        class="text-gray-600 hover:text-gray-800 flex items-center space-x-2 transition">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="student-justifications.html" class="text-blue-600 font-medium flex items-center space-x-2">
+                        <i data-lucide="file-text" class="w-5 h-5"></i>
+                        <span>Justifications</span>
+                    </a>
+                    <a href="login.html"
+                        class="text-gray-600 hover:text-gray-800 flex items-center space-x-2 transition">
+                        <i data-lucide="log-out" class="w-5 h-5"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+        </div>
+
+        <!-- Document Viewer Modal -->
+        <div x-show="showModal" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;">
+            <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+                <div x-show="showModal" @click="showModal = false" x-transition:enter="ease-out duration-300"
+                    x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                    x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
+                    x-transition:leave-end="opacity-0"
+                    class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity">
+                </div>
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+                <div x-show="showModal" x-transition:enter="ease-out duration-300"
+                    x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                    x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                    x-transition:leave="ease-in duration-200"
+                    x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                    x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                    class="inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4" x-text="selectedJustification?.documentName">
+                        </h3>
+                        <div class="bg-gray-100 rounded-lg p-8 text-center">
+                            <i data-lucide="file-image" class="w-16 h-16 text-gray-400 mx-auto mb-4"></i>
+                            <p class="text-gray-500">Document preview would appear here</p>
+                        </div>
+                        <div class="mt-4 space-y-2">
+                            <p class="text-sm text-gray-700"><span class="font-medium">Absence Date:</span> <span
+                                    x-text="formatDate(selectedJustification?.date)"></span></p>
+                            <p class="text-sm text-gray-700"><span class="font-medium">Session:</span> <span
+                                    x-text="formatSession(selectedJustification?.session)"></span></p>
+                            <p class="text-sm text-gray-700"><span class="font-medium">Reason:</span> <span
+                                    x-text="selectedJustification?.reason"></span></p>
+                            <p class="text-sm text-gray-700"><span class="font-medium">Status:</span>
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
+                                    :class="selectedJustification?.status === 'pending' ? 'bg-amber-100 text-amber-700' : selectedJustification?.status === 'approved' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'"
+                                    x-text="selectedJustification?.status?.charAt(0).toUpperCase() + selectedJustification?.status?.slice(1)">
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                        <button @click="showModal = false" type="button"
+                            class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none sm:text-sm">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Toast -->
+        <div x-show="showToast" x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 transform translate-y-2"
+            x-transition:enter-end="opacity-100 transform translate-y-0"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100 transform translate-y-0"
+            x-transition:leave-end="opacity-0 transform translate-y-2"
+            class="fixed bottom-6 right-6 bg-green-600 text-white px-6 py-4 rounded-lg shadow-xl flex items-center space-x-3 z-50"
+            style="display: none;">
+            <i data-lucide="check-circle" class="w-6 h-6"></i>
+            <span class="font-medium" x-text="toastMessage"></span>
+        </div>
+
+        <script src="https://preline.co/assets/js/hs-ui.bundle.js"></script>
+        <script>
+            function studentJustificationsApp() {
+                return {
+                    sidebarOpen: false,
+                    mobileMenuOpen: false,
+                    dragOver: false,
+                    isSubmitting: false,
+                    showModal: false,
+                    showToast: false,
+                    toastMessage: '',
+                    filterStatus: 'all',
+                    selectedJustification: null,
+                    newJustification: {
+                        date: '',
+                        session: '',
+                        type: '',
+                        reason: '',
+                        file: null
+                    },
+                    justifications: [
+                        { id: 1, date: '2025-12-24', session: 'morning', type: 'family', reason: 'Family emergency - had to travel urgently', submittedDate: '2025-12-24', status: 'pending', documentName: 'parent_letter.jpg' },
+                        { id: 2, date: '2025-12-12', session: 'full', type: 'medical', reason: 'Annual health checkup at hospital', submittedDate: '2025-12-13', status: 'approved', documentName: 'medical_certificate.pdf' },
+                        { id: 3, date: '2025-11-28', session: 'midday', type: 'appointment', reason: 'Dentist appointment for root canal', submittedDate: '2025-11-29', status: 'approved', documentName: 'dentist_note.pdf' },
+                        { id: 4, date: '2025-10-15', session: 'afternoon', type: 'other', reason: 'Participating in school sports competition', submittedDate: '2025-10-16', status: 'rejected', documentName: 'sports_event.jpg' }
+                    ],
+                    filteredJustifications: [],
+
+                    init() {
+                        this.filterJustifications();
+                        setTimeout(() => lucide.createIcons(), 100);
+                    },
+
+                    get pendingCount() {
+                        return this.justifications.filter(j => j.status === 'pending').length;
+                    },
+
+                    filterJustifications() {
+                        if (this.filterStatus === 'all') {
+                            this.filteredJustifications = this.justifications;
+                        } else {
+                            this.filteredJustifications = this.justifications.filter(j => j.status === this.filterStatus);
+                        }
+                        this.$nextTick(() => lucide.createIcons());
+                    },
+
+                    handleFileSelect(event) {
+                        const file = event.target.files[0];
+                        if (file) {
+                            if (file.size > 10 * 1024 * 1024) {
+                                alert('File size must be less than 10MB');
+                                return;
+                            }
+                            this.newJustification.file = file;
+                        }
+                    },
+
+                    handleFileDrop(event) {
+                        this.dragOver = false;
+                        const file = event.dataTransfer.files[0];
+                        if (file) {
+                            if (file.size > 10 * 1024 * 1024) {
+                                alert('File size must be less than 10MB');
+                                return;
+                            }
+                            this.newJustification.file = file;
+                        }
+                    },
+
+                    formatFileSize(bytes) {
+                        if (bytes === 0) return '0 Bytes';
+                        const k = 1024;
+                        const sizes = ['Bytes', 'KB', 'MB'];
+                        const i = Math.floor(Math.log(bytes) / Math.log(k));
+                        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+                    },
+
+                    formatDate(dateString) {
+                        if (!dateString) return '';
+                        const date = new Date(dateString);
+                        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    },
+
+                    formatSession(session) {
+                        const sessions = {
+                            'morning': 'Morning (9:00 - 11:00)',
+                            'midday': 'Midday (11:00 - 14:00)',
+                            'afternoon': 'Afternoon (14:00 - 17:00)',
+                            'full': 'Full Day'
+                        };
+                        return sessions[session] || session;
+                    },
+
+                    submitJustification() {
+                        this.isSubmitting = true;
+
+                        setTimeout(() => {
+                            const newId = this.justifications.length + 1;
+                            this.justifications.unshift({
+                                id: newId,
+                                date: this.newJustification.date,
+                                session: this.newJustification.session,
+                                type: this.newJustification.type,
+                                reason: this.newJustification.reason,
+                                submittedDate: new Date().toISOString().split('T')[0],
+                                status: 'pending',
+                                documentName: this.newJustification.file ? this.newJustification.file.name : 'document.pdf'
+                            });
+
+                            this.newJustification = { date: '', session: '', type: '', reason: '', file: null };
+                            this.isSubmitting = false;
+                            this.filterJustifications();
+                            this.showToastMessage('Justification submitted successfully!');
+                        }, 1500);
+                    },
+
+                    viewDocument(justification) {
+                        this.selectedJustification = justification;
+                        this.showModal = true;
+                        this.$nextTick(() => lucide.createIcons());
+                    },
+
+                    cancelJustification(id) {
+                        if (confirm('Are you sure you want to cancel this justification?')) {
+                            this.justifications = this.justifications.filter(j => j.id !== id);
+                            this.filterJustifications();
+                            this.showToastMessage('Justification cancelled');
+                        }
+                    },
+
+                    showToastMessage(message) {
+                        this.toastMessage = message;
+                        this.showToast = true;
+                        setTimeout(() => {
+                            this.showToast = false;
+                        }, 3000);
+                    }
+                }
+            }
+
+            <script src="https://preline.co/assets/js/hs-ui.bundle.js"></script>
+        <script>
+        const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', options);
+        lucide.createIcons();
+        </script>
+        </script>
+</body>
+
+</html>

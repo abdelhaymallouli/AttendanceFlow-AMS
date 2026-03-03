@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justifications - Solicode AMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        .justification-card {
+            transition: all 0.2s ease;
+        }
+
+        .justification-card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-badge {
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50" x-data="justificationsApp()">
+
+    <!-- Mobile Header -->
+    <header
+        class="lg:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-40">
+        <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <i data-lucide="school" class="w-4 h-4 text-white"></i>
+            </div>
+            <span class="font-bold text-gray-800">Solicode AMS</span>
+        </div>
+        <button @click="sidebarOpen = !sidebarOpen" class="text-gray-600">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+    </header>
+
+    <!-- Mobile Sidebar -->
+    <div x-show="sidebarOpen" x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 -translate-x-full" x-transition:enter-end="opacity-100 translate-x-0"
+        x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0"
+        x-transition:leave-end="opacity-0 -translate-x-full" class="fixed inset-0 z-50 lg:hidden"
+        style="display: none;">
+        <div class="absolute inset-0 bg-black/50" @click="sidebarOpen = false"></div>
+        <div class="absolute left-0 top-0 h-full w-64 bg-white border-r border-gray-200">
+            <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="school" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-gray-800">Solicode AMS</h1>
+                        <p class="text-xs text-gray-500">Administrator</p>
+                    </div>
+                </div>
+                <button @click="sidebarOpen = false" class="text-gray-500">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <nav class="p-4 space-y-1">
+                <a href="admin-dashboard.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="attendance-entry.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+                    <span>Attendance Entry</span>
+                    <span class="ml-auto bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">HOT</span>
+                </a>
+                <a href="admin-reports.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="admin-students.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="users" class="w-5 h-5"></i>
+                    <span>Students</span>
+                </a>
+                <a href="admin-calendar.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="calendar" class="w-5 h-5"></i>
+                    <span>Calendar</span>
+                </a>
+                <a href="admin-justifications.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-blue-600 bg-blue-50 rounded-lg font-medium relative">
+                    <i data-lucide="file-text" class="w-5 h-5"></i>
+                    <span>Justifications</span>
+                    <span class="ml-auto bg-amber-500 text-white text-xs font-bold px-2 py-1 rounded-full"
+                        x-text="pendingCount"></span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- Desktop Sidebar -->
+        <aside class="hidden lg:flex flex-col w-64 bg-white border-r border-gray-200">
+            <!-- Logo -->
+            <div class="flex items-center h-16 px-6 border-b border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="school" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-gray-800">Solicode AMS</h1>
+                        <p class="text-xs text-gray-500">Administrator</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+                <a href="admin-dashboard.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="attendance-entry.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+                    <span>Attendance Entry</span>
+                    <span class="ml-auto bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">HOT</span>
+                </a>
+                <a href="admin-reports.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="admin-students.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="users" class="w-5 h-5"></i>
+                    <span>Students</span>
+                </a>
+                <a href="admin-calendar.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i data-lucide="calendar" class="w-5 h-5"></i>
+                    <span>Calendar</span>
+                </a>
+                <a href="admin-justifications.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-blue-600 bg-blue-50 rounded-lg font-medium relative">
+                    <i data-lucide="file-text" class="w-5 h-5"></i>
+                    <span>Justifications</span>
+                    <span class="ml-auto bg-amber-500 text-white text-xs font-bold px-2 py-1 rounded-full"
+                        x-text="pendingCount"></span>
+                </a>
+            </nav>
+
+            <!-- User Profile -->
+            <div class="border-t border-gray-200 p-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i data-lucide="user" class="w-5 h-5 text-blue-600"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-800 truncate">Admin User</p>
+                        <p class="text-xs text-gray-500 truncate">admin@school.edu</p>
+                    </div>
+                    <a href="login.html" class="text-gray-400 hover:text-gray-600">
+                        <i data-lucide="log-out" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+
+            <!-- Top Bar -->
+            <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 lg:px-6">
+                <div class="flex items-center space-x-4">
+                    <button @click="sidebarOpen = true" class="lg:hidden text-gray-500">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-800">Absence Justifications</h2>
+                        <p class="text-sm text-gray-500">Review and approve student justifications</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:flex items-center space-x-2 text-sm text-gray-600">
+                        <i data-lucide="calendar" class="w-4 h-4"></i>
+                        <span id="currentDate"></span>
+                    </div>
+                    <button
+                        class="relative p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                        <i data-lucide="bell" class="w-5 h-5"></i>
+                        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Justifications Content -->
+            <main class="flex-1 overflow-y-auto p-6">
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="clock" class="w-5 h-5 text-amber-600"></i>
+                            </div>
+                        </div>
+                        <p class="text-2xl font-bold text-gray-800" x-text="pendingCount"></p>
+                        <p class="text-sm text-gray-500">Pending</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
+                            </div>
+                        </div>
+                        <p class="text-2xl font-bold text-gray-800" x-text="approvedCount"></p>
+                        <p class="text-sm text-gray-500">Approved</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="x-circle" class="w-5 h-5 text-red-600"></i>
+                            </div>
+                        </div>
+                        <p class="text-2xl font-bold text-gray-800" x-text="rejectedCount"></p>
+                        <p class="text-sm text-gray-500">Rejected</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="file-text" class="w-5 h-5 text-blue-600"></i>
+                            </div>
+                        </div>
+                        <p class="text-2xl font-bold text-gray-800" x-text="justifications.length"></p>
+                        <p class="text-sm text-gray-500">Total</p>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex-1">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i data-lucide="search" class="w-5 h-5 text-gray-400"></i>
+                                </div>
+                                <input x-model="searchQuery" @input="filterJustifications()" type="text"
+                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                                    placeholder="Search by student name or ID...">
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <select x-model="filterStatus" @change="filterJustifications()"
+                                class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none">
+                                <option value="all">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                            <select x-model="filterType" @change="filterJustifications()"
+                                class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none">
+                                <option value="all">All Types</option>
+                                <option value="medical">Medical</option>
+                                <option value="family">Family</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Justifications List -->
+                <div class="space-y-4">
+                    <template x-for="justification in filteredJustifications" :key="justification.id">
+                        <div class="justification-card bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                                <!-- Student Info -->
+                                <div class="flex items-center space-x-4">
+                                    <div
+                                        class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <i data-lucide="user" class="w-6 h-6 text-indigo-600"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800" x-text="justification.studentName"></h4>
+                                        <p class="text-sm text-gray-500"
+                                            x-text="justification.studentId + ' • Grade ' + justification.grade"></p>
+                                    </div>
+                                </div>
+
+                                <!-- Absence Info -->
+                                <div class="flex items-center space-x-4 text-sm">
+                                    <div class="flex items-center space-x-2">
+                                        <i data-lucide="calendar" class="w-4 h-4 text-gray-400"></i>
+                                        <span class="text-gray-600" x-text="justification.absenceDate"></span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <i data-lucide="clock" class="w-4 h-4 text-gray-400"></i>
+                                        <span class="text-gray-600" x-text="justification.session"></span>
+                                    </div>
+                                </div>
+
+                                <!-- Document -->
+                                <div class="flex items-center space-x-3">
+                                    <div class="flex items-center space-x-2 px-3 py-2 bg-gray-50 rounded-lg">
+                                        <i data-lucide="file-text" class="w-4 h-4 text-gray-500"></i>
+                                        <span class="text-sm text-gray-600" x-text="justification.documentName"></span>
+                                    </div>
+                                    <button @click="viewDocument(justification)"
+                                        class="text-indigo-600 hover:text-indigo-700 text-sm font-medium">
+                                        View
+                                    </button>
+                                </div>
+
+                                <!-- Status & Actions -->
+                                <div class="flex items-center space-x-3">
+                                    <span class="status-badge px-3 py-1 rounded-full text-xs font-medium" :class="justification.status === 'pending' ? 'bg-amber-100 text-amber-700' : 
+                                                justification.status === 'approved' ? 'bg-green-100 text-green-700' : 
+                                                'bg-red-100 text-red-700'"
+                                        x-text="justification.status.charAt(0).toUpperCase() + justification.status.slice(1)">
+                                    </span>
+                                    <template x-if="justification.status === 'pending'">
+                                        <div class="flex space-x-2">
+                                            <button @click="approveJustification(justification.id)"
+                                                class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg text-sm font-medium transition-colors">
+                                                Approve
+                                            </button>
+                                            <button @click="rejectJustification(justification.id)"
+                                                class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-sm font-medium transition-colors">
+                                                Reject
+                                            </button>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <!-- Reason -->
+                            <div class="mt-4 pt-4 border-t border-gray-100">
+                                <p class="text-sm text-gray-600">
+                                    <span class="font-medium">Reason:</span>
+                                    <span x-text="justification.reason"></span>
+                                </p>
+                                <p class="text-xs text-gray-400 mt-1"
+                                    x-text="'Submitted on ' + justification.submittedDate"></p>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- Empty State -->
+                    <div x-show="filteredJustifications.length === 0"
+                        class="p-12 text-center bg-white rounded-xl shadow-sm border border-gray-200">
+                        <i data-lucide="inbox" class="w-12 h-12 text-gray-400 mx-auto mb-4"></i>
+                        <p class="text-gray-500">No justifications found matching your criteria</p>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div x-show="sidebarOpen" @click="sidebarOpen = false"
+        x-transition:enter="transition-opacity ease-linear duration-300" x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-linear duration-300"
+        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+        class="fixed inset-0 bg-gray-900 bg-opacity-50 z-40 lg:hidden" style="display: none;">
+    </div>
+
+    <!-- Document Viewer Modal -->
+    <div x-show="showModal" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div x-show="showModal" @click="showModal = false" x-transition:enter="ease-out duration-300"
+                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0" class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity">
+            </div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+            <div x-show="showModal" x-transition:enter="ease-out duration-300"
+                x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                x-transition:leave="ease-in duration-200"
+                x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                class="inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div
+                            class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-indigo-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <i data-lucide="file-text" class="h-6 w-6 text-indigo-600"></i>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900"
+                                x-text="selectedJustification?.documentName"></h3>
+                            <div class="mt-4">
+                                <div class="bg-gray-100 rounded-lg p-8 text-center">
+                                    <i data-lucide="file-image" class="w-16 h-16 text-gray-400 mx-auto mb-4"></i>
+                                    <p class="text-gray-500">Document preview would appear here</p>
+                                    <p class="text-sm text-gray-400 mt-2" x-text="selectedJustification?.documentName">
+                                    </p>
+                                </div>
+                                <div class="mt-4 space-y-2">
+                                    <p class="text-sm"><span class="font-medium">Student:</span> <span
+                                            x-text="selectedJustification?.studentName"></span></p>
+                                    <p class="text-sm"><span class="font-medium">Absence Date:</span> <span
+                                            x-text="selectedJustification?.absenceDate"></span></p>
+                                    <p class="text-sm"><span class="font-medium">Reason:</span> <span
+                                            x-text="selectedJustification?.reason"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <template x-if="selectedJustification?.status === 'pending'">
+                        <div class="flex space-x-2 w-full sm:w-auto">
+                            <button @click="approveJustification(selectedJustification.id); showModal = false"
+                                type="button"
+                                class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none sm:text-sm">
+                                Approve
+                            </button>
+                            <button @click="rejectJustification(selectedJustification.id); showModal = false"
+                                type="button"
+                                class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none sm:text-sm">
+                                Reject
+                            </button>
+                        </div>
+                    </template>
+                    <button @click="showModal = false" type="button"
+                        class="mt-3 w-full inline-flex justify-center rounded-lg border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:ml-3 sm:text-sm">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Toast -->
+    <div x-show="showToast" x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 transform translate-y-2"
+        x-transition:enter-end="opacity-100 transform translate-y-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 transform translate-y-0"
+        x-transition:leave-end="opacity-0 transform translate-y-2"
+        class="fixed bottom-6 right-6 px-6 py-4 rounded-lg shadow-xl flex items-center space-x-3 z-50"
+        :class="toastType === 'success' ? 'bg-green-600 text-white' : 'bg-red-600 text-white'" style="display: none;">
+        <i data-lucide="check-circle" class="w-6 h-6"></i>
+        <span class="font-medium" x-text="toastMessage"></span>
+    </div>
+
+    <script>
+        function justificationsApp() {
+            return {
+                sidebarOpen: false,
+                searchQuery: '',
+                filterStatus: 'all',
+                filterType: 'all',
+                showModal: false,
+                showToast: false,
+                toastMessage: '',
+                toastType: 'success',
+                selectedJustification: null,
+                justifications: [
+                    { id: 1, studentName: 'Emma Johnson', studentId: 'STU001', grade: '10A', absenceDate: 'Dec 20, 2025', session: 'Morning (9-11)', documentName: 'medical_certificate.pdf', reason: 'Doctor appointment - fever and flu symptoms', submittedDate: 'Dec 21, 2025', status: 'pending', type: 'medical' },
+                    { id: 2, studentName: 'Michael Chen', studentId: 'STU008', grade: '10B', absenceDate: 'Dec 18, 2025', session: 'Afternoon (14-17)', documentName: 'parent_letter.jpg', reason: 'Family emergency - had to travel', submittedDate: 'Dec 19, 2025', status: 'pending', type: 'family' },
+                    { id: 3, studentName: 'Sarah Johnson', studentId: 'STU015', grade: '11A', absenceDate: 'Dec 15, 2025', session: 'Midday (11-14)', documentName: 'hospital_note.pdf', reason: 'Hospital visit for annual checkup', submittedDate: 'Dec 16, 2025', status: 'pending', type: 'medical' },
+                    { id: 4, studentName: 'James Rodriguez', studentId: 'STU022', grade: '12A', absenceDate: 'Dec 10, 2025', session: 'Morning (9-11)', documentName: 'dentist_appointment.pdf', reason: 'Scheduled dental surgery', submittedDate: 'Dec 11, 2025', status: 'approved', type: 'medical' },
+                    { id: 5, studentName: 'Olivia Brown', studentId: 'STU003', grade: '10A', absenceDate: 'Dec 5, 2025', session: 'Afternoon (14-17)', documentName: 'court_summons.pdf', reason: 'Required court appearance', submittedDate: 'Dec 6, 2025', status: 'approved', type: 'other' },
+                    { id: 6, studentName: 'Lucas Harris', studentId: 'STU012', grade: '11A', absenceDate: 'Dec 1, 2025', session: 'Morning (9-11)', documentName: 'travel_document.pdf', reason: 'Family vacation - no valid reason', submittedDate: 'Dec 2, 2025', status: 'rejected', type: 'other' },
+                    { id: 7, studentName: 'Ava Wilson', studentId: 'STU005', grade: '10A', absenceDate: 'Nov 28, 2025', session: 'Midday (11-14)', documentName: 'medical_certificate.pdf', reason: 'Stomach flu', submittedDate: 'Nov 29, 2025', status: 'approved', type: 'medical' }
+                ],
+                filteredJustifications: [],
+
+                init() {
+                    this.filterJustifications();
+                    setTimeout(() => lucide.createIcons(), 100);
+                },
+
+                get pendingCount() {
+                    return this.justifications.filter(j => j.status === 'pending').length;
+                },
+
+                get approvedCount() {
+                    return this.justifications.filter(j => j.status === 'approved').length;
+                },
+
+                get rejectedCount() {
+                    return this.justifications.filter(j => j.status === 'rejected').length;
+                },
+
+                filterJustifications() {
+                    let filtered = this.justifications;
+
+                    if (this.filterStatus !== 'all') {
+                        filtered = filtered.filter(j => j.status === this.filterStatus);
+                    }
+
+                    if (this.filterType !== 'all') {
+                        filtered = filtered.filter(j => j.type === this.filterType);
+                    }
+
+                    if (this.searchQuery.trim() !== '') {
+                        const query = this.searchQuery.toLowerCase();
+                        filtered = filtered.filter(j =>
+                            j.studentName.toLowerCase().includes(query) ||
+                            j.studentId.toLowerCase().includes(query)
+                        );
+                    }
+
+                    this.filteredJustifications = filtered;
+                    this.$nextTick(() => lucide.createIcons());
+                },
+
+                viewDocument(justification) {
+                    this.selectedJustification = justification;
+                    this.showModal = true;
+                    this.$nextTick(() => lucide.createIcons());
+                },
+
+                approveJustification(id) {
+                    const justification = this.justifications.find(j => j.id === id);
+                    if (justification) {
+                        justification.status = 'approved';
+                        this.showToastMessage('Justification approved successfully', 'success');
+                        this.filterJustifications();
+                    }
+                },
+
+                rejectJustification(id) {
+                    const justification = this.justifications.find(j => j.id === id);
+                    if (justification) {
+                        justification.status = 'rejected';
+                        this.showToastMessage('Justification rejected', 'error');
+                        this.filterJustifications();
+                    }
+                },
+
+                showToastMessage(message, type) {
+                    this.toastMessage = message;
+                    this.toastType = type;
+                    this.showToast = true;
+                    setTimeout(() => {
+                        this.showToast = false;
+                    }, 3000);
+                }
+            }
+        }
+
+        lucide.createIcons();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', options);
+    </script>
+</body>
+
+</html>

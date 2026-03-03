@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicode AMS - Attendance Management System</title>
+    <meta http-equiv="refresh" content="0; url=login.html">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://preline.co/assets/css/main.min.css">
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+        }
+        .loading {
+            text-align: center;
+            color: white;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading">
+        <div class="spinner"></div>
+        <h1 class="text-2xl font-bold mb-2">Solicode AMS</h1>
+        <p class="opacity-80">Redirecting to login...</p>
+        <p class="text-sm mt-4 opacity-60">If not redirected, <a href="login.html" style="color: white; text-decoration: underline;">click here</a></p>
+    </div>
+</body>
+</html>

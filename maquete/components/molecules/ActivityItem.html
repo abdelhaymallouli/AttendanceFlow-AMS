@@ -1,0 +1,49 @@
+﻿<!--
+  MOLECULE: ActivityItem
+  Feed/timeline entry for recent actions.
+  Variants: success | info | warning | danger
+-->
+
+<!-- SUCCESS ACTIVITY ITEM -->
+<div class="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+        <i data-lucide="check" class="w-5 h-5 text-green-600"></i>
+    </div>
+    <div class="flex-1 min-w-0">
+        <p class="text-sm font-medium text-gray-800">Attendance recorded for Grade 10A</p>
+        <p class="text-xs text-gray-500 mt-1">28 students present, 2 absent • 10 minutes ago</p>
+    </div>
+</div>
+
+<!-- INFO ACTIVITY ITEM -->
+<div class="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+        <i data-lucide="file-check" class="w-5 h-5 text-blue-600"></i>
+    </div>
+    <div class="flex-1 min-w-0">
+        <p class="text-sm font-medium text-gray-800">Justification approved for Sarah Johnson</p>
+        <p class="text-xs text-gray-500 mt-1">Medical certificate accepted • 25 minutes ago</p>
+    </div>
+</div>
+
+<!-- WARNING ACTIVITY ITEM -->
+<div class="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+    <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
+        <i data-lucide="clock" class="w-5 h-5 text-amber-600"></i>
+    </div>
+    <div class="flex-1 min-w-0">
+        <p class="text-sm font-medium text-gray-800">Late arrival recorded for Michael Chen</p>
+        <p class="text-xs text-gray-500 mt-1">Arrived at 8:45 AM • 1 hour ago</p>
+    </div>
+</div>
+
+<!-- DANGER ACTIVITY ITEM -->
+<div class="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+    <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+        <i data-lucide="alert-circle" class="w-5 h-5 text-red-600"></i>
+    </div>
+    <div class="flex-1 min-w-0">
+        <p class="text-sm font-medium text-gray-800">New justification request from Emma Davis</p>
+        <p class="text-xs text-gray-500 mt-1">Awaiting review • 2 hours ago</p>
+    </div>
+</div>

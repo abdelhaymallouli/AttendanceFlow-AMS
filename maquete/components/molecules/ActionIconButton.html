@@ -1,0 +1,33 @@
+﻿<!--
+  MOLECULE: ActionIconButton
+  Icon + text buttons for quick actions.
+  Variants: link-style | fill-style
+-->
+
+<!-- PRIMARY FILL BUTTON (Attendance Entry) -->
+<a href="attendance-entry.html" class="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-700
+         text-white font-semibold py-3 px-4 rounded-lg transition-colors shadow-sm">
+    <i data-lucide="plus-circle" class="w-5 h-5"></i>
+    <span>Attendance Entry</span>
+</a>
+
+<!-- SECONDARY OUTLINE BUTTON (Export Report) -->
+<a href="admin-reports.html" class="flex items-center justify-center gap-2 w-full bg-white hover:bg-gray-50
+         border border-gray-200 text-gray-700 font-medium py-3 px-4 rounded-lg transition-colors">
+    <i data-lucide="download" class="w-5 h-5"></i>
+    <span>Export Report</span>
+</a>
+
+<!-- SECONDARY OUTLINE BUTTON (Send Notifications) -->
+<button type="button" class="flex items-center justify-center gap-2 w-full bg-white hover:bg-gray-50
+         border border-gray-200 text-gray-700 font-medium py-3 px-4 rounded-lg transition-colors">
+    <i data-lucide="send" class="w-5 h-5"></i>
+    <span>Send Notifications</span>
+</button>
+
+<!-- DANGER ACTION BUTTON -->
+<button type="button" class="flex items-center justify-center gap-2 w-full bg-white hover:bg-red-50
+         border border-red-200 text-red-600 font-medium py-3 px-4 rounded-lg transition-colors">
+    <i data-lucide="trash-2" class="w-5 h-5"></i>
+    <span>Delete Student</span>
+</button>

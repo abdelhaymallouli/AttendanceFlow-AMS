@@ -1,0 +1,70 @@
+﻿<!--
+  CHART: JustificationChart
+  Donut chart showing distribution of justification statuses.
+  Requires: <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+-->
+<div class="bg-white border border-gray-200 rounded-xl p-6">
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h3 class="text-lg font-bold text-gray-800">Justification Status</h3>
+            <p class="text-sm text-gray-500">Distribution of all justification requests</p>
+        </div>
+    </div>
+
+    <!-- Donut chart -->
+    <div class="relative flex justify-center" style="height:220px;">
+        <canvas id="justificationChart"></canvas>
+    </div>
+
+    <!-- Stats below donut -->
+    <div class="grid grid-cols-3 gap-3 mt-6 pt-4 border-t border-gray-100 text-center">
+        <div>
+            <p class="text-2xl font-bold text-blue-600">42</p>
+            <p class="text-xs text-gray-500 mt-0.5">Approved</p>
+        </div>
+        <div>
+            <p class="text-2xl font-bold text-amber-500">7</p>
+            <p class="text-xs text-gray-500 mt-0.5">Pending</p>
+        </div>
+        <div>
+            <p class="text-2xl font-bold text-red-500">11</p>
+            <p class="text-xs text-gray-500 mt-0.5">Rejected</p>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    (function () {
+        const ctx = document.getElementById('justificationChart');
+        if (!ctx) return;
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Approved', 'Pending', 'Rejected'],
+                datasets: [{
+                    data: [42, 7, 11],
+                    backgroundColor: ['#3b82f6', '#f59e0b', '#ef4444'],
+                    borderColor: ['#fff', '#fff', '#fff'],
+                    borderWidth: 3,
+                    hoverOffset: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1f2937',
+                        titleColor: '#f9fafb',
+                        bodyColor: '#d1d5db',
+                        padding: 10,
+                        cornerRadius: 8
+                    }
+                }
+            }
+        });
+    })();
+</script>

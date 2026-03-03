@@ -1,0 +1,29 @@
+﻿<!--
+  MOLECULE: SearchBar
+  Search input with icon, used in TopBar or table filter sections.
+-->
+
+<!-- COMPACT SEARCH BAR (for TopBar) -->
+<div class="relative">
+    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <i data-lucide="search" class="w-4 h-4 text-gray-400"></i>
+    </div>
+    <input type="search" placeholder="Search..." class="pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-800
+           bg-white placeholder-gray-400
+           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+           transition-all duration-150 w-64">
+</div>
+
+<!-- FULL-WIDTH SEARCH BAR (for table filters) -->
+<div class="w-full">
+    <label class="block text-sm font-medium text-gray-700 mb-1.5">Search Student</label>
+    <div class="relative">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i data-lucide="search" class="w-4 h-4 text-gray-400"></i>
+        </div>
+        <input type="search" placeholder="Name or ID..." class="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-800
+             bg-white placeholder-gray-400
+             focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+             transition-all duration-150">
+    </div>
+</div>

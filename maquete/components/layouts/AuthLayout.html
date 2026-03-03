@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><!-- PAGE TITLE --> - Solicode AMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+    </style>
+</head>
+
+<!--
+  LAYOUT: AuthLayout
+  Centred card layout for login / auth screens.
+  Usage: Drop your login form inside <main>.
+-->
+
+<body class="bg-white min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-md">
+
+        <!-- Logo & branding -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl mb-4 shadow-lg">
+                <i data-lucide="school" class="w-8 h-8 text-white"></i>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-800">Solicode AMS</h1>
+            <p class="text-gray-500 mt-1 text-sm">Attendance Management System</p>
+        </div>
+
+        <!-- Card container -->
+        <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-8">
+
+            <!-- ===== DROP YOUR AUTH FORM / CONTENT HERE ===== -->
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Welcome Back</h2>
+
+        </div>
+
+        <!-- Footer -->
+        <p class="text-center mt-6 text-xs text-gray-400">&copy; 2025 Solicode AMS. All rights reserved.</p>
+
+    </div>
+
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>
