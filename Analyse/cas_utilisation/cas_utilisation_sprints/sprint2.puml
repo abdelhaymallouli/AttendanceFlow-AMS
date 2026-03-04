@@ -16,19 +16,18 @@ skinparam actor {
 actor "Étudiant" as Student
 actor "Administrateur" as Admin
 
-rectangle "Sprint 2 — Justificatifs (Application Mobile & Web)" {
+rectangle "Sprint 2 — Justificatifs & Consultation (Focus Web Platform)" {
   usecase "S'authentifier" as UC01
-  usecase "Soumettre un justificatif\n(Upload PDF/Image)" as UC04
-  usecase "Consulter les absences\net statistiques" as UC05
-  usecase "Valider / Réfuter un\njustificatif" as UC06
-  usecase "Suivi par code couleur\n(Dashboard Admin)" as UC07
-
+  usecase "Soumettre un justificatif (Web)" as UC04
+  usecase "Valider / Réfuter un justificatif (Web)" as UC06
+  usecase "Exporter les rapports (Web)" as UC07
+  
+  usecase "Consulter sses absences (Mobile - Rapide / Web - Complet)" as UC05
+  
   UC04 ..> UC01 : <<include>>
   UC05 ..> UC01 : <<include>>
   UC06 ..> UC01 : <<include>>
   UC07 ..> UC01 : <<include>>
-  
-  UC06 <.. UC07 : <<extend>>
 }
 
 Student -- UC04
