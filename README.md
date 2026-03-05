@@ -1,90 +1,74 @@
+# 🎓 AttendanceFlow-AMS: Système de Gestion des Absences
 
-# 📋 final Project (AttendanceFlow-AMS): Attendance Management System (AMS)
-
-An empathetic solution to the "Paper-to-Laptop" friction in school administration. Built with **Laravel** and **Tailwind CSS**.
-
----
-
-## 🚀 The Vision
-
-Most school systems fail because they treat administrators like "human bridges" between paper and digital databases. **AMS** is designed to eliminate the manual data-entry lag by creating a real-time, digital-first workflow for teachers and administrators.
-
-## 🔍 The Problem: The "Double-Work" Trap
-
-Our research into the **Empathy Phase** revealed that Attendance Administrators spend up to **70% of their day** transcribing physical paper slips into digital spreadsheets.
-
-* **The Data Lag:** A 4–6 hour gap exists between a student being absent and the system being updated.
-* **The Risk:** High potential for human error and lost documentation.
-* **The Friction:** Administrators are stuck in a repetitive cycle of "Looking at paper → Looking at screen."
+Bienvenue sur le dépôt principal du projet **AttendanceFlow-AMS**, une solution numérique innovante conçue pour moderniser et simplifier la gestion des absences en milieu scolaire/académique.
 
 ---
 
-## 👤 User Personas & Empathy
+## 🚀 La Vision
 
-We designed this system with two primary users in mind:
+Le système éducatif actuel souffre souvent d'une inefficacité systémique : le "pont humain" entre le support papier et les bases de données numériques. **AMS** a été pensé pour éliminer ce délai de traitement (data lag) en offrant un flux de travail "Direct-to-System" pour les formateurs et les administrateurs.
 
-### **Sarah, the Attendance Administrator**
+## 👥 Personas & Approche Empathique
 
-* **The Goal:** Zero manual data entry and 100% accuracy.
-* **The Pain:** Carrying stacks of paper and cross-referencing lists manually.
-* **The Solution:** A validation-only dashboard where she simply "approves" incoming teacher data.
-
-### **The Student**
-
-* **The Goal:** Transparency.
-* **The Pain:** Having to visit the office physically to check if a medical note was processed.
-* **The Solution:** A personal portal to view attendance status in real-time.
+Le projet a été pensé via la méthodologie **Design Thinking**, en se concentrant sur trois acteurs clés :
+1. **Madame Hannane (Administratrice)** : Cherche à passer de la "saisie manuelle" (fastidieuse) à la "validation" (efficace).
+2. **Imane Bouziane (Formatrice)** : A besoin d'une interface mobile ultra-rapide pour valider les présences par session (9h-11h, 11h-14h, 14h-17h).
+3. **Anouar Benyakhelef (Étudiant)** : Demande plus de transparence en temps réel et la possibilité de soumettre ses justificatifs numériquement.
 
 ---
 
-## 🛠️ The Tech Stack
+## 🛠️ Stack Technique
 
-To ensure a fast, responsive, and secure experience, we are using:
+- **Backend** : Laravel 12 (PHP 8.2+)
+- **Frontend** : Blade, Tailwind CSS (Mobile-First UI)
+- **Base de données** : MySQL
+- **Architecture** : MVC / Service Pattern
 
-* **Backend:** [Laravel](https://laravel.com/) (Robust API & Database Management)
-* **Frontend:** [Tailwind CSS](https://tailwindcss.com/) (For a clean, "scannable" UI)
-* **Database:** MySQL / PostgreSQL
-* **Key Features:** * Mobile-ready attendance marking for Teachers.
-* Digital "Justification" uploads (Replacing paper notes).
-* Real-time status alerts.
+## 🏗️ Structure du Projet & Documentation
 
+Toute l'analyse fonctionnelle et technique se trouve dans le répertoire `Analyse/` :
+- `Analyse/définition_de_problème/` : Synthèse des "How Might We".
+- `Analyse/cas_utilisation/` : Diagrammes de cas d'utilisation (Global, Sprint 1, Sprint 2).
+- `Analyse/diagramme_de_classe/` : Modélisation des données.
 
-
----
-
-## 🛤️ The Journey: From Paper to Digital
-
-We are shrinking the attendance workflow to make it as fluid as modern enterprise tools:
-
-**Old Workflow:** `Administration Attendance collect`  `Admin Reads`  `Admin Types`  `Saved`
-
-**AMS Workflow:** `Teacher Inputs or Administration Attendance (Mobile/Web)`  `Instant Sync`  `Admin Validates`
+Les rapports et présentations associés sont disponibles dans les dossiers `Raport/` et `Presentation/`.
 
 ---
 
-## 🏗️ Project Structure & Roadmap
+## 📅 Roadmap & Périmètre (MVP)
 
-1. **Phase 1: Empathy (in Progress)** - Understanding the user struggle.
-2. **Phase 2: Define** - Mapping User Stories and Functional Requirements.
-3. **Phase 3: Development** - Sprint 1 focusing on the Teacher & Admin Dashboards.
-4. **Phase 4: Testing** - Eliminating bugs in the "Justification Upload" flow.
+Le projet est divisé en Sprints (Méthode Agile/Scrum) :
+
+- **Sprint 1 (Actuel)** : *Digitalisation du Pointage*. Focus sur l'authentification (RBAC) et l'interface formateur pour la saisie directe par session. Monitoring en temps réel pour l'administration.
+- **Sprint 2** : *Justificatifs & Consultation*. Soumission numérique des notes médicales par les étudiants et validation par l'administration.
+- **Sprint 3 (Post-MVP)** : *Dashboard & Analytics*. Exports légaux (Excel/PDF) et alertes automatisées.
 
 ---
 
-## 🚦 Getting Started (Development)
-
-*(Note: These are standard Laravel installation steps)*
+## 🚦 Mise en Route (Développement)
 
 ```bash
-# Clone the repository
+# Cloner le dépôt
 git clone https://github.com/abdelhaymallouli/School-Absence-Management-System-AMS-.git
 
-# Install dependencies
+# Installer les dépendances
 composer install
 npm install
 
-# Run the development server
+# Créer le fichier d'environnement
+cp .env.example .env
+
+# Générer la clé d'application
+php artisan key:generate
+
+# Lancer les migrations et les seeders (à venir)
+php artisan migrate --seed
+
+# Lancer le serveur de développement
 php artisan serve
 npm run dev
 ```
 
+---
+
+*Ce projet est réalisé dans le cadre d'un Projet de Fin de Formation.*
