@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Calendar - Solicode AMS Mobile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+        .content-area { padding-bottom: 90px; }
+        .day-cell { min-height: 52px; }
+        .dot-high { background-color: #10b981; }
+        .dot-avg { background-color: #f59e0b; }
+        .dot-low { background-color: #ef4444; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <!-- Top Bar -->
+    <div class="bg-white border-b border-gray-100 sticky top-0 z-40">
+        <div class="flex items-center gap-3 px-4 py-3">
+            <a href="admin-dashboard.html" class="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-gray-100">
+                <i data-lucide="arrow-left" class="w-5 h-5 text-gray-600"></i>
+            </a>
+            <div class="flex-1">
+                <h1 class="text-sm font-bold text-gray-800">Attendance Calendar</h1>
+                <p class="text-xs text-gray-500">March 2025</p>
+            </div>
+            <button class="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center">
+                <i data-lucide="filter" class="w-4 h-4 text-gray-600"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="content-area px-4 pt-4">
+
+        <!-- Month Navigator -->
+        <div class="flex items-center justify-between mb-4">
+            <button class="w-9 h-9 bg-white border border-gray-200 rounded-xl flex items-center justify-center">
+                <i data-lucide="chevron-left" class="w-4 h-4 text-gray-600"></i>
+            </button>
+            <h2 class="text-base font-bold text-gray-800">March 2025</h2>
+            <button class="w-9 h-9 bg-white border border-gray-200 rounded-xl flex items-center justify-center">
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600"></i>
+            </button>
+        </div>
+
+        <!-- Legend -->
+        <div class="flex gap-4 mb-4 bg-white rounded-2xl border border-gray-100 p-3">
+            <div class="flex items-center gap-1.5">
+                <div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
+                <span class="text-xs text-gray-600">&gt;95% High</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+                <div class="w-2.5 h-2.5 rounded-full bg-amber-500"></div>
+                <span class="text-xs text-gray-600">90–95% Avg</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+                <div class="w-2.5 h-2.5 rounded-full bg-red-500"></div>
+                <span class="text-xs text-gray-600">&lt;90% Low</span>
+            </div>
+        </div>
+
+        <!-- Calendar -->
+        <div class="bg-white rounded-2xl border border-gray-100 p-4 mb-5">
+            <!-- Day Headers -->
+            <div class="grid grid-cols-7 mb-2">
+                <div class="text-center text-xs font-semibold text-gray-400 py-1">Sun</div>
+                <div class="text-center text-xs font-semibold text-gray-400 py-1">Mon</div>
+                <div class="text-center text-xs font-semibold text-gray-400 py-1">Tue</div>
+                <div class="text-center text-xs font-semibold text-gray-400 py-1">Wed</div>
+                <div class="text-center text-xs font-semibold text-gray-400 py-1">Thu</div>
+                <div class="text-center text-xs font-semibold text-gray-400 py-1">Fri</div>
+                <div class="text-center text-xs font-semibold text-gray-400 py-1">Sat</div>
+            </div>
+            <!-- Calendar Grid -->
+            <div class="grid grid-cols-7 gap-1" id="calendarGrid"></div>
+        </div>
+
+        <!-- Selected Day Detail -->
+        <div class="bg-white rounded-2xl border border-gray-100 p-4 mb-5">
+            <h3 class="text-sm font-semibold text-gray-800 mb-3">March 8, 2025 (Saturday)</h3>
+            <div class="space-y-2">
+                <div class="flex items-center justify-between py-2 border-b border-gray-50">
+                    <span class="text-xs text-gray-600">Grade 10A</span>
+                    <span class="text-xs font-bold text-emerald-600">96%</span>
+                </div>
+                <div class="flex items-center justify-between py-2 border-b border-gray-50">
+                    <span class="text-xs text-gray-600">Grade 11A</span>
+                    <span class="text-xs font-bold text-emerald-600">94%</span>
+                </div>
+                <div class="flex items-center justify-between py-2 border-b border-gray-50">
+                    <span class="text-xs text-gray-600">Grade 11B</span>
+                    <span class="text-xs font-bold text-amber-600">88%</span>
+                </div>
+                <div class="flex items-center justify-between py-2">
+                    <span class="text-xs text-gray-600">Grade 12A</span>
+                    <span class="text-xs font-bold text-emerald-600">97%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weekly Summary -->
+        <div class="bg-white rounded-2xl border border-gray-100 p-4">
+            <h3 class="text-sm font-semibold text-gray-800 mb-3">This Week Summary</h3>
+            <div class="flex gap-2">
+                <div class="flex-1 flex flex-col items-center gap-2">
+                    <div class="flex-1 w-full flex flex-col justify-end" style="height:60px">
+                        <div class="bg-emerald-500 rounded-t-lg" style="height:90%"></div>
+                    </div>
+                    <span class="text-xs text-gray-500">Mon</span>
+                </div>
+                <div class="flex-1 flex flex-col items-center gap-2">
+                    <div class="flex-1 w-full flex flex-col justify-end" style="height:60px">
+                        <div class="bg-emerald-500 rounded-t-lg" style="height:95%"></div>
+                    </div>
+                    <span class="text-xs text-gray-500">Tue</span>
+                </div>
+                <div class="flex-1 flex flex-col items-center gap-2">
+                    <div class="flex-1 w-full flex flex-col justify-end" style="height:60px">
+                        <div class="bg-amber-500 rounded-t-lg" style="height:85%"></div>
+                    </div>
+                    <span class="text-xs text-gray-500">Wed</span>
+                </div>
+                <div class="flex-1 flex flex-col items-center gap-2">
+                    <div class="flex-1 w-full flex flex-col justify-end" style="height:60px">
+                        <div class="bg-emerald-500 rounded-t-lg" style="height:92%"></div>
+                    </div>
+                    <span class="text-xs text-gray-500">Thu</span>
+                </div>
+                <div class="flex-1 flex flex-col items-center gap-2">
+                    <div class="flex-1 w-full flex flex-col justify-end" style="height:60px">
+                        <div class="bg-emerald-500 rounded-t-lg" style="height:96%"></div>
+                    </div>
+                    <span class="text-xs text-gray-500">Fri</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 z-40" style="padding-bottom: env(safe-area-inset-bottom, 8px)">
+        <div class="flex items-center justify-around py-2">
+            <a href="admin-dashboard.html" class="flex flex-col items-center gap-1 px-4 py-2">
+                <i data-lucide="home" class="w-5 h-5 text-gray-400"></i>
+                <span class="text-xs font-medium text-gray-400">Home</span>
+            </a>
+            <a href="admin-students.html" class="flex flex-col items-center gap-1 px-4 py-2">
+                <i data-lucide="users" class="w-5 h-5 text-gray-400"></i>
+                <span class="text-xs font-medium text-gray-400">Students</span>
+            </a>
+            <a href="attendance-entry.html" class="flex flex-col items-center gap-1 px-4 py-2">
+                <div class="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center -mt-5 shadow-lg shadow-blue-200">
+                    <i data-lucide="clipboard-check" class="w-5 h-5 text-white"></i>
+                </div>
+            </a>
+            <a href="admin-justifications.html" class="flex flex-col items-center gap-1 px-4 py-2">
+                <i data-lucide="file-text" class="w-5 h-5 text-gray-400"></i>
+                <span class="text-xs font-medium text-gray-400">Requests</span>
+            </a>
+            <a href="admin-reports.html" class="flex flex-col items-center gap-1 px-4 py-2">
+                <i data-lucide="bar-chart-2" class="w-5 h-5 text-gray-400"></i>
+                <span class="text-xs font-medium text-gray-400">Reports</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // Simple calendar renderer
+        const grid = document.getElementById('calendarGrid');
+        const colors = ['', '', 'high', 'high', 'avg', '', '', 'high', 'low', 'high', 'avg', 'high', '', '',
+                        'high', 'high', 'avg', 'high', 'high', '', '', 'low', 'high', 'high', 'avg', 'high', '', '',
+                        'avg', 'high', 'high'];
+        const dotClass = { high: 'bg-emerald-500', avg: 'bg-amber-500', low: 'bg-red-500' };
+
+        // March 2025 starts on Saturday (6)
+        for (let i = 0; i < 6; i++) {
+            const empty = document.createElement('div');
+            grid.appendChild(empty);
+        }
+        for (let d = 1; d <= 31; d++) {
+            const cell = document.createElement('div');
+            const color = colors[d - 1];
+            const isToday = d === 8;
+            cell.className = `day-cell flex flex-col items-center justify-start pt-1.5 rounded-xl cursor-pointer ${isToday ? 'bg-blue-600' : 'hover:bg-gray-50'}`;
+            cell.innerHTML = `<span class="text-xs font-medium ${isToday ? 'text-white' : 'text-gray-700'}">${d}</span>
+                ${color ? `<div class="w-1.5 h-1.5 rounded-full mt-1 ${isToday ? 'bg-white' : dotClass[color]}"></div>` : ''}`;
+            grid.appendChild(cell);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Admin Dashboard - Solicode AMS Mobile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+        .bottom-nav { padding-bottom: env(safe-area-inset-bottom, 8px); }
+        .content-area { padding-bottom: 80px; }
+        .nav-item.active .nav-icon { color: #2563eb; }
+        .nav-item.active .nav-label { color: #2563eb; }
+        .nav-item.active .nav-dot { display: block; }
+        .nav-dot { display: none; }
+        .stat-card { background: linear-gradient(135deg, var(--from), var(--to)); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <!-- Top Bar -->
+    <div class="bg-white border-b border-gray-100 sticky top-0 z-40">
+        <div class="flex items-center justify-between px-4 py-3">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center">
+                    <i data-lucide="school" class="w-5 h-5 text-white"></i>
+                </div>
+                <div>
+                    <h1 class="text-sm font-bold text-gray-800">Solicode AMS</h1>
+                    <p class="text-xs text-gray-500">Admin Panel</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button class="w-9 h-9 flex items-center justify-center text-gray-500 rounded-xl hover:bg-gray-100 relative">
+                    <i data-lucide="bell" class="w-5 h-5"></i>
+                    <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+                </button>
+                <div class="w-9 h-9 bg-blue-100 rounded-xl flex items-center justify-center">
+                    <span class="text-xs font-bold text-blue-600">AD</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content-area px-4 pt-4 pb-6">
+
+        <!-- Greeting -->
+        <div class="mb-5">
+            <h2 class="text-xl font-bold text-gray-800">Good Morning, Admin 👋</h2>
+            <p class="text-sm text-gray-500 mt-0.5">Sunday, March 8, 2025</p>
+        </div>
+
+        <!-- Quick Stats Grid -->
+        <div class="grid grid-cols-2 gap-3 mb-5">
+            <div class="bg-blue-600 rounded-2xl p-4 text-white">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-8 h-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                        <i data-lucide="users" class="w-4 h-4"></i>
+                    </div>
+                    <span class="text-xs bg-white bg-opacity-20 px-2 py-0.5 rounded-full">Total</span>
+                </div>
+                <p class="text-2xl font-bold">1,247</p>
+                <p class="text-xs text-blue-200 mt-1">Students</p>
+            </div>
+            <div class="bg-emerald-500 rounded-2xl p-4 text-white">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-8 h-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                        <i data-lucide="trending-up" class="w-4 h-4"></i>
+                    </div>
+                    <span class="text-xs bg-white bg-opacity-20 px-2 py-0.5 rounded-full">Today</span>
+                </div>
+                <p class="text-2xl font-bold">94.2%</p>
+                <p class="text-xs text-emerald-100 mt-1">Attendance</p>
+            </div>
+            <div class="bg-amber-500 rounded-2xl p-4 text-white">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-8 h-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                        <i data-lucide="file-text" class="w-4 h-4"></i>
+                    </div>
+                    <span class="text-xs bg-white bg-opacity-20 px-2 py-0.5 rounded-full">Pending</span>
+                </div>
+                <p class="text-2xl font-bold">23</p>
+                <p class="text-xs text-amber-100 mt-1">Justifications</p>
+            </div>
+            <div class="bg-violet-500 rounded-2xl p-4 text-white">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-8 h-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                        <i data-lucide="user-check" class="w-4 h-4"></i>
+                    </div>
+                    <span class="text-xs bg-white bg-opacity-20 px-2 py-0.5 rounded-full">Active</span>
+                </div>
+                <p class="text-2xl font-bold">48</p>
+                <p class="text-xs text-violet-100 mt-1">Teachers</p>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="mb-5">
+            <h3 class="text-sm font-semibold text-gray-700 mb-3">Quick Actions</h3>
+            <div class="grid grid-cols-4 gap-2">
+                <a href="attendance-entry.html" class="flex flex-col items-center gap-1.5">
+                    <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center">
+                        <i data-lucide="clipboard-check" class="w-6 h-6 text-blue-600"></i>
+                    </div>
+                    <span class="text-xs text-gray-600 text-center leading-tight">Attendance</span>
+                </a>
+                <a href="admin-students.html" class="flex flex-col items-center gap-1.5">
+                    <div class="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center">
+                        <i data-lucide="users" class="w-6 h-6 text-emerald-600"></i>
+                    </div>
+                    <span class="text-xs text-gray-600 text-center leading-tight">Students</span>
+                </a>
+                <a href="admin-justifications.html" class="flex flex-col items-center gap-1.5">
+                    <div class="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center">
+                        <i data-lucide="file-text" class="w-6 h-6 text-amber-600"></i>
+                    </div>
+                    <span class="text-xs text-gray-600 text-center leading-tight">Requests</span>
+                </a>
+                <a href="admin-reports.html" class="flex flex-col items-center gap-1.5">
+                    <div class="w-14 h-14 bg-violet-50 rounded-2xl flex items-center justify-center">
+                        <i data-lucide="bar-chart-2" class="w-6 h-6 text-violet-600"></i>
+                    </div>
+                    <span class="text-xs text-gray-600 text-center leading-tight">Reports</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Pending Justifications -->
+        <div class="mb-5">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-sm font-semibold text-gray-700">Pending Requests</h3>
+                <a href="admin-justifications.html" class="text-xs text-blue-600 font-medium">See All</a>
+            </div>
+            <div class="space-y-2">
+                <div class="bg-white rounded-2xl p-4 border border-gray-100">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <span class="text-sm font-bold text-blue-600">AA</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-semibold text-gray-800 truncate">Ahmed Alami</p>
+                            <p class="text-xs text-gray-500">Medical — Grade 10A</p>
+                        </div>
+                        <div class="flex gap-2 flex-shrink-0">
+                            <button class="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="check" class="w-4 h-4 text-emerald-600"></i>
+                            </button>
+                            <button class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="x" class="w-4 h-4 text-red-500"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl p-4 border border-gray-100">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <span class="text-sm font-bold text-purple-600">FB</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-semibold text-gray-800 truncate">Fatima Benali</p>
+                            <p class="text-xs text-gray-500">Family — Grade 11B</p>
+                        </div>
+                        <div class="flex gap-2 flex-shrink-0">
+                            <button class="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="check" class="w-4 h-4 text-emerald-600"></i>
+                            </button>
+                            <button class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="x" class="w-4 h-4 text-red-500"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl p-4 border border-gray-100">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <span class="text-sm font-bold text-emerald-600">MO</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-semibold text-gray-800 truncate">Mohammed Ouali</p>
+                            <p class="text-xs text-gray-500">Official — Grade 12A</p>
+                        </div>
+                        <div class="flex gap-2 flex-shrink-0">
+                            <button class="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="check" class="w-4 h-4 text-emerald-600"></i>
+                            </button>
+                            <button class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="x" class="w-4 h-4 text-red-500"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- At-Risk Students -->
+        <div>
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-sm font-semibold text-gray-700">At-Risk Students</h3>
+                <a href="admin-students.html" class="text-xs text-blue-600 font-medium">View All</a>
+            </div>
+            <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+                <div class="divide-y divide-gray-50">
+                    <div class="flex items-center gap-3 p-4">
+                        <div class="w-9 h-9 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <span class="text-xs font-bold text-red-500">KH</span>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-gray-800">Karim Hassan</p>
+                            <p class="text-xs text-gray-500">Grade 10A</p>
+                        </div>
+                        <span class="text-xs font-semibold text-red-500 bg-red-50 px-2 py-1 rounded-lg">72%</span>
+                    </div>
+                    <div class="flex items-center gap-3 p-4">
+                        <div class="w-9 h-9 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <span class="text-xs font-bold text-amber-600">SA</span>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-gray-800">Sara Amrani</p>
+                            <p class="text-xs text-gray-500">Grade 11B</p>
+                        </div>
+                        <span class="text-xs font-semibold text-amber-600 bg-amber-50 px-2 py-1 rounded-lg">81%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 bottom-nav z-40">
+        <div class="flex items-center justify-around py-2">
+            <a href="admin-dashboard.html" class="nav-item active flex flex-col items-center gap-1 px-4 py-2">
+                <i data-lucide="home" class="nav-icon w-5 h-5 text-blue-600"></i>
+                <span class="nav-label text-xs font-medium text-blue-600">Home</span>
+            </a>
+            <a href="admin-students.html" class="nav-item flex flex-col items-center gap-1 px-4 py-2">
+                <i data-lucide="users" class="nav-icon w-5 h-5 text-gray-400"></i>
+                <span class="nav-label text-xs font-medium text-gray-400">Students</span>
+            </a>
+            <a href="attendance-entry.html" class="flex flex-col items-center gap-1 px-4 py-2">
+                <div class="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center -mt-5 shadow-lg shadow-blue-200">
+                    <i data-lucide="clipboard-check" class="w-5 h-5 text-white"></i>
+                </div>
+            </a>
+            <a href="admin-justifications.html" class="nav-item flex flex-col items-center gap-1 px-4 py-2">
+                <i data-lucide="file-text" class="nav-icon w-5 h-5 text-gray-400"></i>
+                <span class="nav-label text-xs font-medium text-gray-400">Requests</span>
+            </a>
+            <a href="admin-reports.html" class="nav-item flex flex-col items-center gap-1 px-4 py-2">
+                <i data-lucide="bar-chart-2" class="nav-icon w-5 h-5 text-gray-400"></i>
+                <span class="nav-label text-xs font-medium text-gray-400">Reports</span>
+            </a>
+        </div>
+    </div>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>

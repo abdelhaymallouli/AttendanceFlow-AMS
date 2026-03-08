@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Login - Solicode AMS Mobile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+        .role-btn.active { border-color: #2563eb; background-color: #eff6ff; }
+        input:focus { outline: none; }
+        .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 16px); }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 min-h-screen flex flex-col">
+
+    <!-- Top Area -->
+    <div class="flex-1 flex flex-col items-center justify-center px-6 py-12">
+
+        <!-- Logo -->
+        <div class="text-center mb-10">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-white bg-opacity-20 rounded-3xl mb-5 shadow-xl backdrop-blur-sm">
+                <i data-lucide="school" class="text-white w-10 h-10"></i>
+            </div>
+            <h1 class="text-3xl font-bold text-white mb-1">Solicode AMS</h1>
+            <p class="text-blue-200 text-sm">Attendance Management System</p>
+        </div>
+
+        <!-- Login Card -->
+        <div class="w-full bg-white rounded-3xl shadow-2xl overflow-hidden">
+
+            <!-- Card Header -->
+            <div class="px-6 pt-8 pb-4">
+                <h2 class="text-2xl font-bold text-gray-800 mb-1">Welcome Back</h2>
+                <p class="text-gray-500 text-sm">Sign in to continue</p>
+            </div>
+
+            <div class="px-6 pb-8">
+                <!-- Role Selection -->
+                <div class="mb-6">
+                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Select Your Role</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="selectRole('admin')" id="adminBtn"
+                            class="role-btn active flex flex-col items-center justify-center p-3 border-2 border-blue-600 bg-blue-50 rounded-2xl transition-all duration-200 min-h-[80px]">
+                            <i data-lucide="shield-check" class="w-6 h-6 text-blue-600 mb-1.5"></i>
+                            <span class="text-xs font-semibold text-gray-700">Admin</span>
+                        </button>
+                        <button onclick="selectRole('teacher')" id="teacherBtn"
+                            class="role-btn flex flex-col items-center justify-center p-3 border-2 border-gray-200 rounded-2xl transition-all duration-200 min-h-[80px]">
+                            <i data-lucide="user-check" class="w-6 h-6 text-blue-600 mb-1.5"></i>
+                            <span class="text-xs font-semibold text-gray-700">Teacher</span>
+                        </button>
+                        <button onclick="selectRole('student')" id="studentBtn"
+                            class="role-btn flex flex-col items-center justify-center p-3 border-2 border-gray-200 rounded-2xl transition-all duration-200 min-h-[80px]">
+                            <i data-lucide="graduation-cap" class="w-6 h-6 text-blue-600 mb-1.5"></i>
+                            <span class="text-xs font-semibold text-gray-700">Student</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                            <span id="usernameLabel">Email or ID</span>
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i data-lucide="user" class="w-5 h-5 text-gray-400"></i>
+                            </div>
+                            <input type="text" id="username"
+                                class="w-full pl-11 pr-4 py-3.5 border border-gray-200 rounded-2xl text-gray-800 bg-gray-50 text-sm"
+                                placeholder="Enter your email" required>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i data-lucide="lock" class="w-5 h-5 text-gray-400"></i>
+                            </div>
+                            <input type="password" id="password"
+                                class="w-full pl-11 pr-4 py-3.5 border border-gray-200 rounded-2xl text-gray-800 bg-gray-50 text-sm"
+                                placeholder="Enter your password" required>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-1">
+                        <label class="flex items-center gap-2">
+                            <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded">
+                            <span class="text-sm text-gray-600">Remember me</span>
+                        </label>
+                        <a href="#" class="text-sm text-blue-600 font-medium">Forgot password?</a>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-blue-600 text-white font-semibold py-4 px-4 rounded-2xl text-sm flex items-center justify-center gap-2 mt-2 shadow-lg shadow-blue-200 active:scale-95 transition-transform">
+                        Sign In
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </form>
+
+                <!-- Demo Credentials -->
+                <div class="mt-5 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                    <p class="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wider">Demo Credentials</p>
+                    <div class="text-xs text-gray-600 space-y-1">
+                        <p><strong class="text-gray-800">Admin:</strong> admin@school.edu / admin123</p>
+                        <p><strong class="text-gray-800">Teacher:</strong> teacher@school.edu / teacher123</p>
+                        <p><strong class="text-gray-800">Student:</strong> student@school.edu / student123</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="text-center text-blue-200 text-xs mt-6">&copy; 2025 Solicode AMS</p>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        let selectedRole = 'admin';
+
+        function selectRole(role) {
+            selectedRole = role;
+            document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(role + 'Btn').classList.add('active');
+            const labels = { admin: 'Admin Email', teacher: 'Teacher Email', student: 'Student Email or ID' };
+            document.getElementById('usernameLabel').textContent = labels[role];
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            if (selectedRole === 'admin' && (username === 'admin@school.edu' || username === 'admin') && password === 'admin123') {
+                window.location.href = 'admin-dashboard.html';
+            } else if (selectedRole === 'teacher' && (username === 'teacher@school.edu' || username === 'teacher') && password === 'teacher123') {
+                window.location.href = 'teacher-dashboard.html';
+            } else if (selectedRole === 'student' && (username === 'student@school.edu' || username === 'student') && password === 'student123') {
+                window.location.href = 'student-dashboard.html';
+            } else {
+                alert('Invalid credentials. Use the demo credentials below.');
+            }
+        }
+    </script>
+</body>
+</html>

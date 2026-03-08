@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>My Justifications - Solicode AMS Mobile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+        .content-area { padding-bottom: 90px; }
+        .tab-active { border-bottom: 2px solid #4f46e5; color: #4f46e5; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen" x-data="studentJustApp()">
+
+    <!-- Top Bar -->
+    <div class="bg-white border-b border-gray-100 sticky top-0 z-40">
+        <div class="flex items-center gap-3 px-4 py-3">
+            <a href="student-dashboard.html" class="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-gray-100">
+                <i data-lucide="arrow-left" class="w-5 h-5 text-gray-600"></i>
+            </a>
+            <div class="flex-1">
+                <h1 class="text-sm font-bold text-gray-800">Justifications</h1>
+                <p class="text-xs text-gray-500">Youssef Alami</p>
+            </div>
+        </div>
+        <!-- Tabs -->
+        <div class="flex border-b border-gray-100">
+            <button @click="tab='submit'" :class="tab==='submit' ? 'tab-active font-semibold' : 'text-gray-400'"
+                class="flex-1 py-3 text-sm text-center transition-colors">Submit</button>
+            <button @click="tab='history'" :class="tab==='history' ? 'tab-active font-semibold' : 'text-gray-400'"
+                class="flex-1 py-3 text-sm text-center transition-colors">History</button>
+        </div>
+    </div>
+
+    <!-- Submit Form -->
+    <div class="content-area" x-show="tab === 'submit'">
+        <div class="px-4 py-4 space-y-4">
+            <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-4 flex items-center gap-3">
+                <i data-lucide="info" class="w-5 h-5 text-indigo-600 flex-shrink-0"></i>
+                <p class="text-xs text-indigo-700">Attach a supporting document to speed up processing.</p>
+            </div>
+
+            <!-- Date -->
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1.5">Absence Date</label>
+                <input type="date" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-2xl text-sm text-gray-800">
+            </div>
+
+            <!-- Session -->
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1.5">Session</label>
+                <select class="w-full px-4 py-3 bg-white border border-gray-200 rounded-2xl text-sm text-gray-800 appearance-none">
+                    <option>Select session...</option>
+                    <option>Morning (9:00 - 11:00)</option>
+                    <option>Midday (11:00 - 14:00)</option>
+                    <option>Afternoon (14:00 - 17:00)</option>
+                    <option>Full Day</option>
+                </select>
+            </div>
+
+            <!-- Type -->
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1.5">Reason Type</label>
+                <div class="grid grid-cols-2 gap-2">
+                    <button @click="type='medical'" :class="type==='medical' ? 'border-indigo-500 bg-indigo-50 text-indigo-700' : 'border-gray-200 text-gray-600'"
+                        class="border-2 rounded-2xl p-3 text-xs font-medium flex items-center gap-2">
+                        <i data-lucide="heart-pulse" class="w-4 h-4"></i> Medical
+                    </button>
+                    <button @click="type='family'" :class="type==='family' ? 'border-indigo-500 bg-indigo-50 text-indigo-700' : 'border-gray-200 text-gray-600'"
+                        class="border-2 rounded-2xl p-3 text-xs font-medium flex items-center gap-2">
+                        <i data-lucide="home" class="w-4 h-4"></i> Family
+                    </button>
+                    <button @click="type='appointment'" :class="type==='appointment' ? 'border-indigo-500 bg-indigo-50 text-indigo-700' : 'border-gray-200 text-gray-600'"
+                        class="border-2 rounded-2xl p-3 text-xs font-medium flex items-center gap-2">
+                        <i data-lucide="building-2" class="w-4 h-4"></i> Official
+                    </button>
+                    <button @click="type='other'" :class="type==='other' ? 'border-indigo-500 bg-indigo-50 text-indigo-700' : 'border-gray-200 text-gray-600'"
+                        class="border-2 rounded-2xl p-3 text-xs font-medium flex items-center gap-2">
+                        <i data-lucide="more-horizontal" class="w-4 h-4"></i> Other
+                    </button>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1.5">Description</label>
+                <textarea rows="3" placeholder="Briefly explain the reason..." class="w-full px-4 py-3 bg-white border border-gray-200 rounded-2xl text-sm text-gray-800 resize-none"></textarea>
+            </div>
+
+            <!-- Upload -->
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1.5">Supporting Document</label>
+                <button class="w-full border-2 border-dashed border-gray-300 rounded-2xl p-6 flex flex-col items-center gap-2 text-gray-500">
+                    <i data-lucide="upload-cloud" class="w-8 h-8 text-gray-400"></i>
+                    <span class="text-xs font-medium">Tap to upload document</span>
+                    <span class="text-xs text-gray-400">PDF, JPG, PNG — max 10MB</span>
+                </button>
+            </div>
+
+            <button onclick="alert('Justification submitted!')" class="w-full bg-indigo-600 text-white font-semibold py-4 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-indigo-200">
+                <i data-lucide="send" class="w-5 h-5"></i>
+                Submit Justification
+            </button>
+        </div>
+    </div>
+
+    <!-- History -->
+    <div class="content-area" x-show="tab === 'history'">
+        <div class="px-4 py-4 space-y-3">
+            <template x-for="j in justifications" :key="j.id">
+                <div class="bg-white rounded-2xl border border-gray-100 p-4">
+                    <div class="flex items-start justify-between mb-2">
+                        <div>
+                            <p class="text-sm font-semibold text-gray-800" x-text="j.date"></p>
+                            <p class="text-xs text-gray-500" x-text="j.type + ' · ' + j.session"></p>
+                        </div>
+                        <span class="text-xs font-medium px-2 py-1 rounded-lg"
+                              :class="j.status === 'pending' ? 'bg-amber-100 text-amber-700' : j.status === 'approved' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-600'"
+                              x-text="j.status.charAt(0).toUpperCase() + j.status.slice(1)"></span>
+                    </div>
+                    <p class="text-xs text-gray-600 line-clamp-2" x-text="j.reason"></p>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 z-40" style="padding-bottom: env(safe-area-inset-bottom, 8px)">
+        <div class="flex items-center justify-around py-2">
+            <a href="student-dashboard.html" class="flex flex-col items-center gap-1 px-4 py-2">
+                <i data-lucide="home" class="w-5 h-5 text-gray-400"></i>
+                <span class="text-xs font-medium text-gray-400">Home</span>
+            </a>
+            <a href="student-justifications.html" class="flex flex-col items-center gap-1 px-4 py-2">
+                <div class="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center -mt-5 shadow-lg shadow-indigo-200">
+                    <i data-lucide="file-plus" class="w-5 h-5 text-white"></i>
+                </div>
+            </a>
+            <a href="student-justifications.html" class="flex flex-col items-center gap-1 px-4 py-2">
+                <i data-lucide="history" class="w-5 h-5 text-indigo-600"></i>
+                <span class="text-xs font-medium text-indigo-600">History</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function studentJustApp() {
+            return {
+                tab: 'submit',
+                type: '',
+                justifications: [
+                    { id: 1, date: 'March 5, 2025', type: 'Medical', session: 'Full Day', reason: 'Doctor appointment confirmed by certificate.', status: 'pending' },
+                    { id: 2, date: 'Feb 28, 2025', type: 'Family', session: 'Morning', reason: 'Family emergency requiring urgent travel.', status: 'approved' },
+                    { id: 3, date: 'Feb 15, 2025', type: 'Other', session: 'Afternoon', reason: 'No valid documentation provided.', status: 'rejected' },
+                ]
+            };
+        }
+    </script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

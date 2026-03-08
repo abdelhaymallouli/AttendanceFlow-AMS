@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Teacher Justifications - Solicode AMS Mobile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+        .content-area { padding-bottom: 90px; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen" x-data="teacherJustApp()">
+
+    <!-- Top Bar -->
+    <div class="bg-white border-b border-gray-100 sticky top-0 z-40">
+        <div class="flex items-center gap-3 px-4 py-3">
+            <a href="teacher-dashboard.html" class="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-gray-100">
+                <i data-lucide="arrow-left" class="w-5 h-5 text-gray-600"></i>
+            </a>
+            <div class="flex-1">
+                <h1 class="text-sm font-bold text-gray-800">Student Requests</h1>
+                <p class="text-xs text-gray-500" x-text="filtered.length + ' requests'"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search -->
+    <div class="px-4 py-3 bg-white border-b border-gray-100">
+        <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i data-lucide="search" class="w-4 h-4 text-gray-400"></i>
+            </div>
+            <input type="text" x-model="search" placeholder="Search by student name..."
+                class="w-full pl-10 pr-4 py-2.5 bg-gray-100 border-0 rounded-xl text-sm text-gray-800 placeholder-gray-400">
+        </div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="flex gap-2 px-4 py-3 overflow-x-auto bg-white border-b border-gray-100" style="scrollbar-width:none">
+        <button @click="filter='all'" :class="filter==='all' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-600'"
+            class="px-4 py-1.5 rounded-xl text-xs font-medium flex-shrink-0">All</button>
+        <button @click="filter='pending'" :class="filter==='pending' ? 'bg-amber-500 text-white' : 'bg-gray-100 text-gray-600'"
+            class="px-4 py-1.5 rounded-xl text-xs font-medium flex-shrink-0">Pending</button>
+        <button @click="filter='approved'" :class="filter==='approved' ? 'bg-emerald-500 text-white' : 'bg-gray-100 text-gray-600'"
+            class="px-4 py-1.5 rounded-xl text-xs font-medium flex-shrink-0">Approved</button>
+        <button @click="filter='rejected'" :class="filter==='rejected' ? 'bg-red-500 text-white' : 'bg-gray-100 text-gray-600'"
+            class="px-4 py-1.5 rounded-xl text-xs font-medium flex-shrink-0">Rejected</button>
+    </div>
+
+    <!-- Cards -->
+    <div class="content-area px-4 py-3 space-y-3">
+        <template x-for="j in filtered" :key="j.id">
+            <div class="bg-white rounded-2xl border border-gray-100 p-4">
+                <div class="flex items-start gap-3 mb-3">
+                    <div class="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center flex-shrink-0 font-bold text-sm text-teal-700"
+                         x-text="j.initials"></div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between">
+                            <p class="text-sm font-semibold text-gray-800" x-text="j.name"></p>
+                            <span class="text-xs font-medium px-2 py-0.5 rounded-lg"
+                                  :class="j.status === 'pending' ? 'bg-amber-100 text-amber-700' : j.status === 'approved' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-600'"
+                                  x-text="j.status.charAt(0).toUpperCase() + j.status.slice(1)"></span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-0.5" x-text="j.type + ' · ' + j.grade + ' · ' + j.date"></p>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-600 mb-3 line-clamp-2" x-text="j.reason"></p>
+                <template x-if="j.status === 'pending'">
+                    <div class="flex gap-2">
+                        <button @click="j.status = 'approved'" class="flex-1 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold py-2.5 rounded-xl flex items-center justify-center gap-1.5">
+                            <i data-lucide="check" class="w-3.5 h-3.5"></i> Approve
+                        </button>
+                        <button @click="j.status = 'rejected'" class="flex-1 bg-red-50 border border-red-200 text-red-600 text-xs font-semibold py-2.5 rounded-xl flex items-center justify-center gap-1.5">
+                            <i data-lucide="x" class="w-3.5 h-3.5"></i> Reject
+                        </button>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 z-40" style="padding-bottom: env(safe-area-inset-bottom, 8px)">
+        <div class="flex items-center justify-around py-2">
+            <a href="teacher-dashboard.html" class="flex flex-col items-center gap-1 px-4 py-2">
+                <i data-lucide="home" class="w-5 h-5 text-gray-400"></i>
+                <span class="text-xs font-medium text-gray-400">Home</span>
+            </a>
+            <a href="attendance-entry.html" class="flex flex-col items-center gap-1 px-4 py-2">
+                <div class="w-12 h-12 bg-teal-600 rounded-2xl flex items-center justify-center -mt-5 shadow-lg shadow-teal-200">
+                    <i data-lucide="clipboard-check" class="w-5 h-5 text-white"></i>
+                </div>
+            </a>
+            <a href="teacher-justifications.html" class="flex flex-col items-center gap-1 px-4 py-2">
+                <i data-lucide="file-text" class="w-5 h-5 text-teal-600"></i>
+                <span class="text-xs font-medium text-teal-600">Requests</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function teacherJustApp() {
+            return {
+                search: '',
+                filter: 'all',
+                justifications: [
+                    { id: 1, name: 'Ahmed Alami', initials: 'AA', grade: 'Grade 10A', type: 'Medical', date: 'March 5', reason: 'Doctor appointment confirmed by medical certificate from clinic.', status: 'pending' },
+                    { id: 2, name: 'Sara Benali', initials: 'SB', grade: 'Grade 10A', type: 'Family', date: 'March 3', reason: 'Family emergency requiring urgent travel out of city.', status: 'pending' },
+                    { id: 3, name: 'Karim Tazi', initials: 'KT', grade: 'Grade 10A', type: 'Medical', date: 'Feb 28', reason: 'Hospital stay confirmed by doctor note.', status: 'approved' },
+                    { id: 4, name: 'Nadia Ouali', initials: 'NO', grade: 'Grade 10A', type: 'Other', date: 'Feb 25', reason: 'No valid reason or documentation provided.', status: 'rejected' },
+                ],
+                get filtered() {
+                    return this.justifications.filter(j => {
+                        const matchF = this.filter === 'all' || j.status === this.filter;
+                        const matchS = this.search === '' || j.name.toLowerCase().includes(this.search.toLowerCase());
+                        return matchF && matchS;
+                    });
+                }
+            };
+        }
+    </script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

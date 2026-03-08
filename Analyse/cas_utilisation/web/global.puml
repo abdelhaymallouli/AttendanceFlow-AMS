@@ -1,0 +1,41 @@
+@startuml global_web
+title Cas d'Utilisation Global - Plateforme Web
+left to right direction
+
+skinparam usecase {
+  BackgroundColor #EBF5FB
+  BorderColor #2E86C1
+}
+
+actor "Administrateur" as Admin
+actor "Étudiant" as Student
+actor "Formateur" as Trainer
+
+rectangle "Plateforme Web (AttendanceFlow-AMS)" {
+    usecase "S'authentifier" as UC_W01
+    usecase "Visualiser le Dashboard" as UC_W03
+    usecase "Soumettre un justificatif" as UC_W04
+    usecase "Gérer les justificatifs" as UC_W05
+    usecase "Valider / Réfuter un justificatif" as UC_W05a
+    usecase "Exporter les rapports" as UC_W07
+    usecase "Historique d'assiduité complet" as UC_W06
+    usecase "Gestion avancée des absences" as UC_W_ABS
+}
+
+Admin -- UC_W01
+Admin -- UC_W03
+Admin -- UC_W05
+Admin -- UC_W02
+Admin -- UC_W07
+Admin -- UC_W_ABS
+UC_W05 <.. UC_W05a : <<extend>>
+
+Student -- UC_W01
+Student -- UC_W04
+Student -- UC_W06
+
+Trainer -- UC_W01
+Trainer -- UC_W02
+Trainer -- UC_W_ABS
+
+@enduml

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Solicode AMS - Mobile Mockups</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-4 pt-10 pb-6">
+        <div class="flex items-center gap-3 mb-2">
+            <div class="w-12 h-12 bg-white bg-opacity-20 rounded-2xl flex items-center justify-center">
+                <i data-lucide="school" class="w-6 h-6 text-white"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold text-white">Solicode AMS</h1>
+                <p class="text-blue-200 text-xs">Mobile Mockups Navigator</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="px-4 py-5 space-y-5">
+
+        <!-- Auth -->
+        <div>
+            <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Authentication</h2>
+            <a href="login.html" class="flex items-center gap-4 bg-white rounded-2xl p-4 border border-gray-100 shadow-sm">
+                <div class="w-11 h-11 bg-blue-100 rounded-xl flex items-center justify-center">
+                    <i data-lucide="log-in" class="w-5 h-5 text-blue-600"></i>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-semibold text-gray-800">Login</p>
+                    <p class="text-xs text-gray-500">Admin, Teacher, Student</p>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+            </a>
+        </div>
+
+        <!-- Admin -->
+        <div>
+            <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Admin</h2>
+            <div class="space-y-2">
+                <a href="admin-dashboard.html" class="flex items-center gap-4 bg-white rounded-2xl p-4 border border-gray-100">
+                    <div class="w-11 h-11 bg-blue-100 rounded-xl flex items-center justify-center">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5 text-blue-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold text-gray-800">Admin Dashboard</p>
+                        <p class="text-xs text-gray-500">Overview & quick actions</p>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+                </a>
+                <a href="admin-students.html" class="flex items-center gap-4 bg-white rounded-2xl p-4 border border-gray-100">
+                    <div class="w-11 h-11 bg-emerald-100 rounded-xl flex items-center justify-center">
+                        <i data-lucide="users" class="w-5 h-5 text-emerald-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold text-gray-800">Students</p>
+                        <p class="text-xs text-gray-500">Manage & filter students</p>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+                </a>
+                <a href="admin-justifications.html" class="flex items-center gap-4 bg-white rounded-2xl p-4 border border-gray-100">
+                    <div class="w-11 h-11 bg-amber-100 rounded-xl flex items-center justify-center">
+                        <i data-lucide="file-text" class="w-5 h-5 text-amber-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold text-gray-800">Justifications</p>
+                        <p class="text-xs text-gray-500">Approve or reject requests</p>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+                </a>
+                <a href="admin-reports.html" class="flex items-center gap-4 bg-white rounded-2xl p-4 border border-gray-100">
+                    <div class="w-11 h-11 bg-violet-100 rounded-xl flex items-center justify-center">
+                        <i data-lucide="bar-chart-2" class="w-5 h-5 text-violet-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold text-gray-800">Reports</p>
+                        <p class="text-xs text-gray-500">Analytics & statistics</p>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+                </a>
+                <a href="admin-calendar.html" class="flex items-center gap-4 bg-white rounded-2xl p-4 border border-gray-100">
+                    <div class="w-11 h-11 bg-pink-100 rounded-xl flex items-center justify-center">
+                        <i data-lucide="calendar" class="w-5 h-5 text-pink-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold text-gray-800">Attendance Calendar</p>
+                        <p class="text-xs text-gray-500">Monthly attendance heatmap</p>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Teacher -->
+        <div>
+            <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Teacher</h2>
+            <div class="space-y-2">
+                <a href="teacher-dashboard.html" class="flex items-center gap-4 bg-white rounded-2xl p-4 border border-gray-100">
+                    <div class="w-11 h-11 bg-teal-100 rounded-xl flex items-center justify-center">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5 text-teal-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold text-gray-800">Teacher Dashboard</p>
+                        <p class="text-xs text-gray-500">Sessions & students</p>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+                </a>
+                <a href="attendance-entry.html" class="flex items-center gap-4 bg-white rounded-2xl p-4 border border-gray-100">
+                    <div class="w-11 h-11 bg-blue-100 rounded-xl flex items-center justify-center">
+                        <i data-lucide="clipboard-check" class="w-5 h-5 text-blue-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold text-gray-800">Attendance Entry</p>
+                        <p class="text-xs text-gray-500">Mark present / absent / late</p>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+                </a>
+                <a href="teacher-justifications.html" class="flex items-center gap-4 bg-white rounded-2xl p-4 border border-gray-100">
+                    <div class="w-11 h-11 bg-amber-100 rounded-xl flex items-center justify-center">
+                        <i data-lucide="file-text" class="w-5 h-5 text-amber-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold text-gray-800">Student Requests</p>
+                        <p class="text-xs text-gray-500">Review justifications</p>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Student -->
+        <div>
+            <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Student</h2>
+            <div class="space-y-2">
+                <a href="student-dashboard.html" class="flex items-center gap-4 bg-white rounded-2xl p-4 border border-gray-100">
+                    <div class="w-11 h-11 bg-indigo-100 rounded-xl flex items-center justify-center">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5 text-indigo-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold text-gray-800">Student Dashboard</p>
+                        <p class="text-xs text-gray-500">My attendance overview</p>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+                </a>
+                <a href="student-justifications.html" class="flex items-center gap-4 bg-white rounded-2xl p-4 border border-gray-100">
+                    <div class="w-11 h-11 bg-purple-100 rounded-xl flex items-center justify-center">
+                        <i data-lucide="file-plus" class="w-5 h-5 text-purple-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold text-gray-800">My Justifications</p>
+                        <p class="text-xs text-gray-500">Submit & track requests</p>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+                </a>
+            </div>
+        </div>
+
+        <p class="text-center text-xs text-gray-400 pb-4">&copy; 2025 Solicode AMS — Mobile UI Mockups</p>
+    </div>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>

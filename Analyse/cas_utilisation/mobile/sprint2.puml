@@ -1,0 +1,20 @@
+@startuml sprint2_mobile
+title Sprint 2 - Application Mobile (Consultation)
+left to right direction
+
+skinparam usecase {
+  BackgroundColor #EAFAF1
+  BorderColor #1E8449
+}
+
+actor "Étudiant" as Student
+
+rectangle "Mobile - Sprint 2" {
+    usecase "Consulter ses absences (Vue Rapide)" as UC_M06
+    usecase "Vérifier statut du cours" as UC_M08
+}
+
+Student -- UC_M06
+Student -- UC_M08
+
+@enduml

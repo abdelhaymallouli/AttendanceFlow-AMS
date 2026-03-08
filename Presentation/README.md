@@ -46,7 +46,7 @@ style: |
     display: flex; justify-content: center; align-items: center;
     border-radius: 50%; font-weight: bold; margin-right: 15px; flex-shrink: 0;
   }
-  
+
   .img-container {
     display: flex;
     flex-direction: column;
@@ -95,7 +95,6 @@ style: |
     align-items: flex-start;
     height: 350px;
   }
-
 ---
 
 <div class="logo-header">
@@ -104,7 +103,9 @@ style: |
 </div>
 
 # **Projet de Fin de Formation**
+
 ### AttendanceFlow-AMS
+
 **Système de Gestion des Absences**
 
 **Réalisé par :** <span class="highlight">Abdelhay Mallouli</span>  
@@ -126,24 +127,59 @@ style: |
 </div>
 
 ---
----
+
 ## 1. Contexte du projet
 
 Le projet **AttendanceFlow-AMS** est né du besoin de moderniser le processus de suivi des absences. Actuellement, l'établissement gère ce flux via des feuilles de présence manuelles, ce qui entraîne des lourdeurs administratives et un manque de réactivité.
 
----
-## Définition de Problème
-
-Le flux actuel repose sur une transition inefficace du support papier vers une saisie manuelle laborieuse sur Excel. Ce processus génère une surcharge logistique pour les formateurs et un décalage d'information critique pour la gestion administrative.
+**Vision centrale :** Transformer la "saisie de données" laborieuse en une "validation de données" fluide et en temps réel.
 
 ---
+
+## 1. Contexte : Phase d'Empathie
+
+<div class="sommaire-grid">
+  <div class="dt-card" style="margin-top:0;">
+    <h4>🔴 Douleurs (Pains)</h4>
+    <ul style="font-size: 0.85em;">
+      <li><strong>Admin :</strong> Charge cognitive élevée (lecture manuscrite), data lag de 4-6h.</li>
+      <li><strong>Formateur :</strong> Perte de temps (appel 3x/jour), manque de granularité.</li>
+      <li><strong>Étudiant :</strong> Opacité sur son quota d'absences, stress des erreurs.</li>
+    </ul>
+  </div>
+  <div class="dt-card" style="margin-top:0; border-top-color: #27ae60;">
+    <h4>🟢 Gains (Benefits)</h4>
+    <ul style="font-size: 0.85em;">
+      <li><strong>Sincérité :</strong> Synchronisation immédiate professeur/administration.</li>
+      <li><strong>Simplicité :</strong> Justificatifs numériques par simple photo.</li>
+      <li><strong>Précision :</strong> Distinction claire 9-11, 11-14, 14-17.</li>
+    </ul>
+  </div>
+</div>
+
+---
+
 
 ## 2. Méthodologie : Design Thinking
 
 <div class="img-container">
-  <img src="images/designThinking.png" class="img-methodo" style="max-height: 400px;" alt="Design Thinking">
-  <p style="font-size: 1.1em; font-weight: bold; color: #088dc7;">Une approche centrée sur l'humain pour comprendre les besoins réels.</p>
+  <img src="images/designThinking.png" class="img-methodo" style="max-height: 350px;" alt="Design Thinking">
+  <p style="font-size: 1.1em; font-weight: bold; color: #088dc7;">Empathie → Définition → Idéation → Prototype → Test</p>
 </div>
+
+---
+
+## 2. Méthodologie : Idéation (Solutions)
+
+### **Solution A : Saisie Directe par Session**
+
+- Les enseignants enregistrent les présences numériquement par tranche horaire depuis leur **Smartphone**.
+- Élimine la segmentation manuelle post-cours.
+
+### **Solution B : Hub de Validation Centralisé**
+
+- Tableau de bord web permettant de visualiser l'état global ou spécifique.
+- Madame Hannane valide les absences en un clic au lieu de les saisir.
 
 ---
 
@@ -151,34 +187,23 @@ Le flux actuel repose sur une transition inefficace du support papier vers une s
 
 <div class="img-container">
   <img src="images/scrum.jpg" class="img-methodo" style="max-height: 400px;" alt="Scrum">
-  <p style="font-size: 1.1em; font-weight: bold; color: #088dc7;">Un cadre de travail itératif pour une livraison continue de valeur.</p>
+  <p style="font-size: 1.1em; font-weight: bold; color: #088dc7;">Itérations rapides pour une livraison continue de valeur.</p>
 </div>
 
 ---
 
-## 3. Branche Fonctionnelle : Cas d'Utilisation Global
+## 3. Branche Fonctionnelle : Web (Global)
 
-<div class="img-container">
-  <img src="images/use_case_global.png" class="img-methodo" alt="Global Use Case">
-</div>
+![Web Global](images/global-w.png)
 
 ---
 
-## Branche Fonctionnelle : Périmètre Sprint 1 (MVP)
+## 3. Branche Fonctionnelle : Mobile (Global)
 
-<div class="img-container">
-  <img src="images/sprint1.png" class="img-methodo" alt="Sprint 1 Use Case">
-</div>
+![Mobile Global](images/global-m.png)
 
 ---
 
-## Branche Fonctionnelle : Périmètre Sprint 2
-
-<div class="img-container">
-  <img src="images/sprint2.png" class="img-methodo" alt="Sprint 2 Use Case">
-</div>
-
----
 ## Branche Fonctionnelle : Maquettes (UI/UX)
 
 <div class="maquette-grid">
@@ -191,6 +216,7 @@ Le flux actuel repose sur une transition inefficace du support papier vers une s
 ---
 
 ## 4. Branche Technique : Tech Stack
+
 <div class="sommaire-grid">
   <div class="dt-card" style="margin-top:0;">
     <h4>Backend & Architecture</h4>
@@ -212,11 +238,134 @@ Le flux actuel repose sur une transition inefficace du support papier vers une s
 
 ---
 
-## 5. Conception : Diagramme de classe
+## 5. Conception : Diagramme de Classe
 
-<div class="img-container">
-  <h3>Modélisation des données (MLD)</h3>
-  <img src="images/diagramme-class.png" style="width: 100%;" alt="Diagramme de classe">
+```mermaid
+classDiagram
+    %% Spatie / IAM Package
+    namespace IAM_Auth_Service {
+        class User {
+            +int id
+            +string name
+            +string email
+            +string password
+            +login()
+            +logout()
+            +hasRole(role)
+            +hasPermissionTo(permission)
+        }
+
+        class Role {
+            +int id
+            +string name
+            +string guard_name
+        }
+
+        class Permission {
+            +int id
+            +string name
+            +string guard_name
+        }
+    }
+
+    %% Academic Package
+    namespace Academic_Service {
+        class StudentProfile {
+            +int id
+            +int user_id
+            +string matricule
+            +string photo
+            +int group_id
+        }
+
+        class TeacherProfile {
+            +int id
+            +int user_id
+            +string specialty
+        }
+
+        class Group {
+            +int id
+            +string name
+            +int filiere_id
+        }
+
+        class Filiere {
+            +int id
+            +string name
+            +string code
+        }
+
+        class Session {
+            +int id
+            +time start_time
+            +time end_time
+            +string type
+            +int group_id
+            +int teacher_id
+        }
+    }
+
+    %% Attendance Package
+    namespace Attendance_Service {
+        class AttendanceRecord {
+            +int id
+            +int student_id
+            +int session_id
+            +enum status
+            +date date
+            +mark()
+            +updateStatus()
+        }
+
+        class Justification {
+            +int id
+            +int attendance_record_id
+            +string reason
+            +string file_path
+            +enum status
+            +date submitted_at
+            +approve()
+            +reject()
+        }
+    }
+
+    %% Relations Spatie (IAM)
+    User "*" -- "*" Role : hasRoles
+    Role "*" -- "*" Permission : hasPermissions
+    User "*" -- "*" Permission : hasDirectPermissions
+
+    %% User to Profiles (One to One)
+    User "1" -- "0..1" StudentProfile : extends
+    User "1" -- "0..1" TeacherProfile : extends
+
+    %% Academic Relations
+    StudentProfile "*" -- "1" Group : belongsTo
+    Group "*" -- "1" Filiere : belongsTo
+    Session "*" -- "1" Group : scheduled for
+    Session "*" -- "1" TeacherProfile : assigned to
+
+    %% Attendance Relations
+    AttendanceRecord "*" -- "1" StudentProfile : has
+    AttendanceRecord "*" -- "1" Session : corresponds to
+
+    AttendanceRecord "1" -- "0..1" Justification : justified by
+```
+
+---
+
+## 5. Conception : Architecture Modulaire
+
+<div class="sommaire-grid">
+  <div class="dt-card" style="margin-top:0; font-size: 0.8em;">
+    <h4>Services Techniques</h4>
+    <ul>
+      <li><strong>IAM Service :</strong> Spatie Permission (Roles/Permissions).</li>
+      <li><strong>Academic Service :</strong> Groupes, Filières et Sessions.</li>
+      <li><strong>Attendance Service :</strong> Pointage et Justificatifs.</li>
+      <li><strong>Design :</strong> Service Pattern pour découpler la logique.</li>
+    </ul>
+  </div>
 </div>
 
 ---
@@ -241,6 +390,7 @@ Le flux actuel repose sur une transition inefficace du support papier vers une s
 </div>
 
 ---
+
 ## 6. Conclusion
 
 - **Efficacité** : Suppression du support papier et de l'erreur humaine sur Excel.

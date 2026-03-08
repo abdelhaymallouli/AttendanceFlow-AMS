@@ -1,0 +1,26 @@
+@startuml sprint2_web
+title Sprint 2 - Plateforme Web (Justificatifs & Reporting)
+left to right direction
+
+skinparam usecase {
+  BackgroundColor #EAFAF1
+  BorderColor #1E8449
+}
+
+actor "Administrateur" as Admin
+actor "Étudiant" as Student
+
+rectangle "Web - Sprint 2" {
+    usecase "Soumettre un justificatif" as UC_W04
+    usecase "Gérer les justificatifs (Validation)" as UC_W05
+    usecase "Historique d'assiduité complet" as UC_W06
+    usecase "Exporter les rapports (PDF/Excel)" as UC_W07
+}
+
+Admin -- UC_W05
+Admin -- UC_W07
+
+Student -- UC_W04
+Student -- UC_W06
+
+@enduml

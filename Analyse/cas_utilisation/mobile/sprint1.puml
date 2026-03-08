@@ -1,0 +1,26 @@
+@startuml sprint1_mobile
+title Sprint 1 - Application Mobile (Digitalisation du Pointage)
+left to right direction
+
+skinparam usecase {
+  BackgroundColor #FCF3CF
+  BorderColor #F1C40F
+}
+
+actor "Formateur" as Trainer
+actor "Administrateur" as Admin
+
+rectangle "Mobile - Sprint 1" {
+    usecase "S'authentifier" as UC_M01
+    usecase "Pointage par session (Flash)" as UC_M02
+    usecase "Saisir motif de retard" as UC_M02a
+}
+
+Trainer -- UC_M01
+Trainer -- UC_M02
+UC_M02 <.. UC_M02a : <<extend>>
+
+Admin -- UC_M01
+Admin -- UC_M02
+
+@enduml
