@@ -130,31 +130,34 @@ style: |
 
 ## 1. Contexte du projet
 
-Le projet **AttendanceFlow-AMS** est né du besoin de moderniser le processus de suivi des absences. Actuellement, l'établissement gère ce flux via des feuilles de présence manuelles, ce qui entraîne des lourdeurs administratives et un manque de réactivité.
-
-**Vision centrale :** Transformer la "saisie de données" laborieuse en une "validation de données" fluide et en temps réel.
+<div class="img-container">
+  <img src="images/contexte.png" class="img-methodo" style="max-height: 400px;" alt="Contexte du Projet">
+</div>
 
 ---
 
-## 1. Contexte : Phase d'Empathie
+## 1. Contexte : Carte d'Empathie - Mme Hannane
 
-<div class="sommaire-grid">
-  <div class="dt-card" style="margin-top:0;">
-    <h4>🔴 Douleurs (Pains)</h4>
-    <ul style="font-size: 0.85em;">
-      <li><strong>Admin :</strong> Charge cognitive élevée (lecture manuscrite), data lag de 4-6h.</li>
-      <li><strong>Formateur :</strong> Perte de temps (appel 3x/jour), manque de granularité.</li>
-      <li><strong>Étudiant :</strong> Opacité sur son quota d'absences, stress des erreurs.</li>
-    </ul>
-  </div>
-  <div class="dt-card" style="margin-top:0; border-top-color: #27ae60;">
-    <h4>🟢 Gains (Benefits)</h4>
-    <ul style="font-size: 0.85em;">
-      <li><strong>Sincérité :</strong> Synchronisation immédiate professeur/administration.</li>
-      <li><strong>Simplicité :</strong> Justificatifs numériques par simple photo.</li>
-      <li><strong>Précision :</strong> Distinction claire 9-11, 11-14, 14-17.</li>
-    </ul>
-  </div>
+<div class="img-container">
+  <img src="images/mindmap_hannane.png" class="img-methodo" style="max-height: 450px;" alt="Carte d'Empathie Hannane">
+</div>
+
+---
+
+
+## 1. Contexte : Carte d'Empathie - Anouar
+
+<div class="img-container">
+  <img src="images/mindmap_anouar.png" class="img-methodo" style="max-height: 450px;" alt="Carte d'Empathie Anouar">
+</div>
+
+---
+
+
+## 1. Contexte : Carte d'Empathie - Mme Imane
+
+<div class="img-container">
+  <img src="images/mindmap_imane.png" class="img-methodo" style="max-height: 450px;" alt="Carte d'Empathie Imane">
 </div>
 
 ---
@@ -168,20 +171,6 @@ Le projet **AttendanceFlow-AMS** est né du besoin de moderniser le processus de
 
 ---
 
-## 2. Design Thinking : Phase d'Empathie
-
-<div class="sommaire-grid">
-  <div style="text-align: center;">
-    <img src="images/mindmap_hannane.png" style="height: 250px; width: auto;" alt="Mind Map Hannane">
-    <p style="font-size: 0.8rem; color: #666;">Admin (Mme Hannane)</p>
-  </div>
-  <div style="text-align: center;">
-    <img src="images/mindmap_imane.png" style="height: 250px; width: auto;" alt="Mind Map Imane">
-    <p style="font-size: 0.8rem; color: #666;">Formateur (Mme Imane)</p>
-  </div>
-</div>
-
----
 
 ## 2. Méthodologie : Scrum (Agile)
 
@@ -190,6 +179,16 @@ Le projet **AttendanceFlow-AMS** est né du besoin de moderniser le processus de
   <p style="font-size: 1.1em; font-weight: bold; color: #088dc7;">Itérations rapides pour une livraison continue de valeur.</p>
 </div>
 
+
+---
+
+## 3. Branche Fonctionnelle : Définition du Problème
+
+<div class="dt-card">
+  <p>Le problème majeur réside dans la transition inefficace du <strong>support papier vers la saisie manuelle sur Excel</strong>.</p>
+  <p>Ce processus archaïque génère une surcharge logistique pour les formateurs et un décalage d'information critique pour l'administration.</p>
+  <p><strong>Objectif :</strong> Suppression de la "double saisie" par une automatisation directe à la source.</p>
+</div>
 
 ---
 
@@ -205,18 +204,7 @@ Le projet **AttendanceFlow-AMS** est né du besoin de moderniser le processus de
 
 ---
 
-## 3. Branche Fonctionnelle : Sprint 1 (MVP)
 
-![Sprint 1](images/sprint1.png)
-
----
-
-## 3. Branche Fonctionnelle : Sprint 2 (Extension)
-
-![Sprint 2](images/sprint2.png)
-
-
----
 
 ## Branche Fonctionnelle : Maquettes (UI/UX)
 

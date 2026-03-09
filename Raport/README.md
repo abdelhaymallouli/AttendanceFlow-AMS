@@ -31,8 +31,8 @@
 | **Submitted by:** | **Academic Year:** |
 | **Mallouli Abdelhay** | **2025 - 2026** |
 | | |
-| **Supervisor:** | **Location:** |
-| **Mr. Essarraj Fouad** | **Tangier, Morocco** |
+| **Supervisor:** | **Filière:** |
+| **Mr. Essarraj Fouad** | **Développement Mobile** |
 
 <br><br><br><br><br>
 
