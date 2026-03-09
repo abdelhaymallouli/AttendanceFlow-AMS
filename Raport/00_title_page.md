@@ -17,8 +17,8 @@
 
 <br>
 
-**QCM**
-*Development of a Management System*
+**AttendanceFlow-AMS**
+*Système de Gestion des Absences*
 
 <br>
 

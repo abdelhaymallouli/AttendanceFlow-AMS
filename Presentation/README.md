@@ -159,7 +159,6 @@ Le projet **AttendanceFlow-AMS** est né du besoin de moderniser le processus de
 
 ---
 
-
 ## 2. Méthodologie : Design Thinking
 
 <div class="img-container">
@@ -169,6 +168,20 @@ Le projet **AttendanceFlow-AMS** est né du besoin de moderniser le processus de
 
 ---
 
+## 2. Design Thinking : Phase d'Empathie
+
+<div class="sommaire-grid">
+  <div style="text-align: center;">
+    <img src="images/mindmap_hannane.png" style="height: 250px; width: auto;" alt="Mind Map Hannane">
+    <p style="font-size: 0.8rem; color: #666;">Admin (Mme Hannane)</p>
+  </div>
+  <div style="text-align: center;">
+    <img src="images/mindmap_imane.png" style="height: 250px; width: auto;" alt="Mind Map Imane">
+    <p style="font-size: 0.8rem; color: #666;">Formateur (Mme Imane)</p>
+  </div>
+</div>
+
+---
 
 ## 2. Méthodologie : Scrum (Agile)
 
@@ -176,6 +189,7 @@ Le projet **AttendanceFlow-AMS** est né du besoin de moderniser le processus de
   <img src="images/scrum.jpg" class="img-methodo" style="max-height: 400px;" alt="Scrum">
   <p style="font-size: 1.1em; font-weight: bold; color: #088dc7;">Itérations rapides pour une livraison continue de valeur.</p>
 </div>
+
 
 ---
 
@@ -191,12 +205,29 @@ Le projet **AttendanceFlow-AMS** est né du besoin de moderniser le processus de
 
 ---
 
+## 3. Branche Fonctionnelle : Sprint 1 (MVP)
+
+![Sprint 1](images/sprint1.png)
+
+---
+
+## 3. Branche Fonctionnelle : Sprint 2 (Extension)
+
+![Sprint 2](images/sprint2.png)
+
+
+---
+
 ## Branche Fonctionnelle : Maquettes (UI/UX)
 
 <div class="maquette-grid">
   <div style="text-align: center;">
     <img src="images/maquette.png" class="img-methodo" style="height: 360px; width: auto;" alt="Interface Admin">
-    <p style="font-size: 0.8rem; color: #666;">Tableau de Bord Administratif</p>
+    <p style="font-size: 0.8rem; color: #666;">Tableau de Bord Administratif (Web)</p>
+  </div>
+  <div style="text-align: center;">
+    <img src="images/maquete-m.png" class="img-methodo" style="height: 360px; width: auto;" alt="Interface Mobile">
+    <p style="font-size: 0.8rem; color: #666;">Application Mobile (Saisie Terrain)</p>
   </div>
 </div>
 

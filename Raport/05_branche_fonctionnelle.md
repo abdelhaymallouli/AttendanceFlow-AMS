@@ -114,28 +114,25 @@ L'application mobile se concentre sur la rapidité de saisie et la mobilité.
 
 ### 5. Cas d'Utilisation par Sprints
 
-Le développement est segmenté en sprints pour garantir une livraison itérative de valeur.
+Le développement est segmenté en sprints pour garantir une livraison itérative de valeur. Chaque sprint intègre à la fois les fonctionnalités Web (administration) et Mobile (terrain).
 
-#### Sprint 1 : Digitalisation du Pointage (MVP)
+#### Sprint 1 : Digitalisation du Pointage (MVP Web & Mobile)
 
-Ce sprint se concentre sur le remplacement du papier par le numérique.
+Ce sprint se concentre sur le remplacement du papier par le numérique pour les opérations critiques de pointage.
 
-**Côté Mobile (Saisie Terrain) :**
+![Sprint 1 - Web & Mobile MVP](imgs/sprint1.png)
 
-![Sprint 1 - Application Mobile](imgs/sprint1-m.png)
+**Fonctionnalités clés :**
+- **Web :** Authentification, visualisation du dashboard de base et gestion des absences.
+- **Mobile :** Pointage "Flash" par session, saisie des motifs de retard et authentification.
 
-**Côté Web (Suivi de base) :**
+#### Sprint 2 : Justificatifs & Intelligence Métier
 
-![Sprint 1 - Plateforme Web](imgs/sprint1-w.png)
+Ce sprint apporte l'interactivité pour l'étudiant et la validation administrative avancée.
 
-#### Sprint 2 : Justificatifs & Consultation
+![Sprint 2 - Extension Web & Mobile](imgs/sprint2.png)
 
-Ce sprint apporte l'interactivité pour l'étudiant et la validation administrative.
+**Fonctionnalités clés :**
+- **Web :** Soumission et validation des justificatifs, historique d'assiduité complet et export de rapports.
+- **Mobile :** Consultation de l'historique d'assiduité et vérification du statut de session.
 
-**Côté Web (Gestion Complète) :**
-
-![Sprint 2 - Plateforme Web](imgs/sprint2-w.png)
-
-**Côté Mobile (Consultation) :**
-
-![Sprint 2 - Application Mobile](imgs/sprint2-m.png)
