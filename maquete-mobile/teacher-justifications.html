@@ -46,7 +46,7 @@
             class="px-4 py-1.5 rounded-xl text-xs font-medium flex-shrink-0">All</button>
         <button @click="filter='pending'" :class="filter==='pending' ? 'bg-amber-500 text-white' : 'bg-gray-100 text-gray-600'"
             class="px-4 py-1.5 rounded-xl text-xs font-medium flex-shrink-0">Pending</button>
-        <button @click="filter='approved'" :class="filter==='approved' ? 'bg-emerald-500 text-white' : 'bg-gray-100 text-gray-600'"
+        <button @click="filter='approved'" :class="filter==='approved' ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-600'"
             class="px-4 py-1.5 rounded-xl text-xs font-medium flex-shrink-0">Approved</button>
         <button @click="filter='rejected'" :class="filter==='rejected' ? 'bg-red-500 text-white' : 'bg-gray-100 text-gray-600'"
             class="px-4 py-1.5 rounded-xl text-xs font-medium flex-shrink-0">Rejected</button>
@@ -57,13 +57,13 @@
         <template x-for="j in filtered" :key="j.id">
             <div class="bg-white rounded-2xl border border-gray-100 p-4">
                 <div class="flex items-start gap-3 mb-3">
-                    <div class="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center flex-shrink-0 font-bold text-sm text-teal-700"
+                    <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0 font-bold text-sm text-blue-700"
                          x-text="j.initials"></div>
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center justify-between">
                             <p class="text-sm font-semibold text-gray-800" x-text="j.name"></p>
                             <span class="text-xs font-medium px-2 py-0.5 rounded-lg"
-                                  :class="j.status === 'pending' ? 'bg-amber-100 text-amber-700' : j.status === 'approved' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-600'"
+                                  :class="j.status === 'pending' ? 'bg-amber-100 text-amber-700' : j.status === 'approved' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'"
                                   x-text="j.status.charAt(0).toUpperCase() + j.status.slice(1)"></span>
                         </div>
                         <p class="text-xs text-gray-500 mt-0.5" x-text="j.type + ' · ' + j.grade + ' · ' + j.date"></p>
@@ -72,7 +72,7 @@
                 <p class="text-xs text-gray-600 mb-3 line-clamp-2" x-text="j.reason"></p>
                 <template x-if="j.status === 'pending'">
                     <div class="flex gap-2">
-                        <button @click="j.status = 'approved'" class="flex-1 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold py-2.5 rounded-xl flex items-center justify-center gap-1.5">
+                        <button @click="j.status = 'approved'" class="flex-1 bg-green-50 border border-green-200 text-green-700 text-xs font-semibold py-2.5 rounded-xl flex items-center justify-center gap-1.5">
                             <i data-lucide="check" class="w-3.5 h-3.5"></i> Approve
                         </button>
                         <button @click="j.status = 'rejected'" class="flex-1 bg-red-50 border border-red-200 text-red-600 text-xs font-semibold py-2.5 rounded-xl flex items-center justify-center gap-1.5">
@@ -92,13 +92,13 @@
                 <span class="text-xs font-medium text-gray-400">Home</span>
             </a>
             <a href="attendance-entry.html" class="flex flex-col items-center gap-1 px-4 py-2">
-                <div class="w-12 h-12 bg-teal-600 rounded-2xl flex items-center justify-center -mt-5 shadow-lg shadow-teal-200">
+                <div class="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center -mt-5 shadow-lg shadow-blue-200">
                     <i data-lucide="clipboard-check" class="w-5 h-5 text-white"></i>
                 </div>
             </a>
             <a href="teacher-justifications.html" class="flex flex-col items-center gap-1 px-4 py-2">
-                <i data-lucide="file-text" class="w-5 h-5 text-teal-600"></i>
-                <span class="text-xs font-medium text-teal-600">Requests</span>
+                <i data-lucide="file-text" class="w-5 h-5 text-blue-600"></i>
+                <span class="text-xs font-medium text-blue-600">Requests</span>
             </a>
         </div>
     </div>

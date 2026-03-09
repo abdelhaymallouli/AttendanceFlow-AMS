@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicode AMS - Mobile Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+        }
+        
+        .phone-mockup {
+            width: 428px;
+            height: 926px;
+            background-color: white;
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 0 0 12px #1f2937;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Fake Camera Notch */
+        .phone-mockup::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 30px;
+            background-color: #1f2937;
+            border-bottom-left-radius: 18px;
+            border-bottom-right-radius: 18px;
+            z-index: 50;
+        }
+
+        .phone-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 28px; /* Slightly less than the outer container to fit inside the border */
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-height: 850px) {
+            .phone-mockup {
+                transform: scale(0.85);
+            }
+        }
+        @media (max-height: 750px) {
+            .phone-mockup {
+                transform: scale(0.75);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone-mockup">
+        <iframe src="index.html" class="phone-iframe" title="Mobile Simulator"></iframe>
+    </div>
+
+</body>
+</html>

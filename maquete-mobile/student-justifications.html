@@ -120,7 +120,7 @@
                             <p class="text-xs text-gray-500" x-text="j.type + ' · ' + j.session"></p>
                         </div>
                         <span class="text-xs font-medium px-2 py-1 rounded-lg"
-                              :class="j.status === 'pending' ? 'bg-amber-100 text-amber-700' : j.status === 'approved' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-600'"
+                              :class="j.status === 'pending' ? 'bg-amber-100 text-amber-700' : j.status === 'approved' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'"
                               x-text="j.status.charAt(0).toUpperCase() + j.status.slice(1)"></span>
                     </div>
                     <p class="text-xs text-gray-600 line-clamp-2" x-text="j.reason"></p>

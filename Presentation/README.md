@@ -169,19 +169,6 @@ Le projet **AttendanceFlow-AMS** est né du besoin de moderniser le processus de
 
 ---
 
-## 2. Méthodologie : Idéation (Solutions)
-
-### **Solution A : Saisie Directe par Session**
-
-- Les enseignants enregistrent les présences numériquement par tranche horaire depuis leur **Smartphone**.
-- Élimine la segmentation manuelle post-cours.
-
-### **Solution B : Hub de Validation Centralisé**
-
-- Tableau de bord web permettant de visualiser l'état global ou spécifique.
-- Madame Hannane valide les absences en un clic au lieu de les saisir.
-
----
 
 ## 2. Méthodologie : Scrum (Agile)
 
@@ -240,117 +227,12 @@ Le projet **AttendanceFlow-AMS** est né du besoin de moderniser le processus de
 
 ## 5. Conception : Diagramme de Classe
 
-```mermaid
-classDiagram
-    %% Spatie / IAM Package
-    namespace IAM_Auth_Service {
-        class User {
-            +int id
-            +string name
-            +string email
-            +string password
-            +login()
-            +logout()
-            +hasRole(role)
-            +hasPermissionTo(permission)
-        }
-
-        class Role {
-            +int id
-            +string name
-            +string guard_name
-        }
-
-        class Permission {
-            +int id
-            +string name
-            +string guard_name
-        }
-    }
-
-    %% Academic Package
-    namespace Academic_Service {
-        class StudentProfile {
-            +int id
-            +int user_id
-            +string matricule
-            +string photo
-            +int group_id
-        }
-
-        class TeacherProfile {
-            +int id
-            +int user_id
-            +string specialty
-        }
-
-        class Group {
-            +int id
-            +string name
-            +int filiere_id
-        }
-
-        class Filiere {
-            +int id
-            +string name
-            +string code
-        }
-
-        class Session {
-            +int id
-            +time start_time
-            +time end_time
-            +string type
-            +int group_id
-            +int teacher_id
-        }
-    }
-
-    %% Attendance Package
-    namespace Attendance_Service {
-        class AttendanceRecord {
-            +int id
-            +int student_id
-            +int session_id
-            +enum status
-            +date date
-            +mark()
-            +updateStatus()
-        }
-
-        class Justification {
-            +int id
-            +int attendance_record_id
-            +string reason
-            +string file_path
-            +enum status
-            +date submitted_at
-            +approve()
-            +reject()
-        }
-    }
-
-    %% Relations Spatie (IAM)
-    User "*" -- "*" Role : hasRoles
-    Role "*" -- "*" Permission : hasPermissions
-    User "*" -- "*" Permission : hasDirectPermissions
-
-    %% User to Profiles (One to One)
-    User "1" -- "0..1" StudentProfile : extends
-    User "1" -- "0..1" TeacherProfile : extends
-
-    %% Academic Relations
-    StudentProfile "*" -- "1" Group : belongsTo
-    Group "*" -- "1" Filiere : belongsTo
-    Session "*" -- "1" Group : scheduled for
-    Session "*" -- "1" TeacherProfile : assigned to
-
-    %% Attendance Relations
-    AttendanceRecord "*" -- "1" StudentProfile : has
-    AttendanceRecord "*" -- "1" Session : corresponds to
-
-    AttendanceRecord "1" -- "0..1" Justification : justified by
-```
+<div class="maquette-grid">
+  <div style="text-align: center;">
+    <img src="images/diagramme-class.png" class="img-methodo" style="height: 360px; width: auto;" alt="Diagramme de Classe">
+    <p style="font-size: 0.8rem; color: #666;">Diagramme de Classe</p>
+  </div>
+</div>
 
 ---
 

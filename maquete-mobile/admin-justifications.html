@@ -35,7 +35,7 @@
             class="px-4 py-1.5 rounded-xl text-xs font-medium flex-shrink-0">All</button>
         <button @click="filter='pending'" :class="filter==='pending' ? 'bg-amber-500 text-white' : 'bg-gray-100 text-gray-600'"
             class="px-4 py-1.5 rounded-xl text-xs font-medium flex-shrink-0">Pending</button>
-        <button @click="filter='approved'" :class="filter==='approved' ? 'bg-emerald-500 text-white' : 'bg-gray-100 text-gray-600'"
+        <button @click="filter='approved'" :class="filter==='approved' ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-600'"
             class="px-4 py-1.5 rounded-xl text-xs font-medium flex-shrink-0">Approved</button>
         <button @click="filter='rejected'" :class="filter==='rejected' ? 'bg-red-500 text-white' : 'bg-gray-100 text-gray-600'"
             class="px-4 py-1.5 rounded-xl text-xs font-medium flex-shrink-0">Rejected</button>
@@ -47,13 +47,13 @@
             <div class="bg-white rounded-2xl border border-gray-100 p-4">
                 <div class="flex items-start gap-3">
                     <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 font-bold text-sm"
-                         :class="j.status === 'pending' ? 'bg-amber-100 text-amber-700' : j.status === 'approved' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-600'"
+                         :class="j.status === 'pending' ? 'bg-amber-100 text-amber-700' : j.status === 'approved' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'"
                          x-text="j.initials"></div>
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center justify-between mb-1">
                             <p class="text-sm font-semibold text-gray-800" x-text="j.name"></p>
                             <span class="text-xs font-medium px-2 py-0.5 rounded-lg"
-                                  :class="j.status === 'pending' ? 'bg-amber-100 text-amber-700' : j.status === 'approved' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-600'"
+                                  :class="j.status === 'pending' ? 'bg-amber-100 text-amber-700' : j.status === 'approved' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'"
                                   x-text="j.status.charAt(0).toUpperCase() + j.status.slice(1)"></span>
                         </div>
                         <p class="text-xs text-gray-500 mb-0.5" x-text="j.type + ' · ' + j.grade"></p>
@@ -64,7 +64,7 @@
                 <!-- Actions for pending -->
                 <template x-if="j.status === 'pending'">
                     <div class="flex gap-2 mt-3 pt-3 border-t border-gray-50">
-                        <button @click="j.status = 'approved'" class="flex-1 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold py-2.5 rounded-xl flex items-center justify-center gap-1">
+                        <button @click="j.status = 'approved'" class="flex-1 bg-green-50 border border-green-200 text-green-700 text-xs font-semibold py-2.5 rounded-xl flex items-center justify-center gap-1">
                             <i data-lucide="check" class="w-3.5 h-3.5"></i> Approve
                         </button>
                         <button @click="j.status = 'rejected'" class="flex-1 bg-red-50 border border-red-200 text-red-600 text-xs font-semibold py-2.5 rounded-xl flex items-center justify-center gap-1">

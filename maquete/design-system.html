@@ -1570,9 +1570,9 @@
                                                 class="px-3 py-1.5 text-xs font-medium text-gray-500 hover:text-gray-700 rounded-md">Month</button>
                                         </div>
                                     </div>
-                                    <div
-                                        class="h-48 bg-slate-50 border border-dashed border-slate-200 rounded-lg flex items-center justify-center text-slate-400 text-sm font-medium italic">
-                                        Chart Placeholder</div>
+                                    <div class="relative h-48 sim-w-full">
+                                        <canvas id="dsAttendanceChartOverview"></canvas>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1823,8 +1823,11 @@
 
             // Attendance Chart
             const trendCtx = document.getElementById('dsAttendanceChart');
-            if (trendCtx) {
-                new Chart(trendCtx, {
+            const trendCtxOverview = document.getElementById('dsAttendanceChartOverview');
+
+            const initAttendanceChart = (ctx) => {
+                if (!ctx) return;
+                new Chart(ctx, {
                     type: 'bar',
                     data: {
                         labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
@@ -1836,7 +1839,10 @@
                     },
                     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#f1f5f9' } }, x: { grid: { display: false } } } }
                 });
-            }
+            };
+
+            initAttendanceChart(trendCtx);
+            initAttendanceChart(trendCtxOverview);
 
             // Justification Chart
             const justCtx = document.getElementById('dsJustificationChart');

@@ -1,5 +1,5 @@
 @startuml sprint1_web
-title Sprint 1 - Plateforme Web (Digitalisation de base)
+title Sprint 1 - Plateforme Web + Mobile MVP (Digitalisation de base)
 left to right direction
 
 skinparam usecase {
@@ -16,11 +16,25 @@ rectangle "Web - Sprint 1" {
     usecase "Visualiser le Dashboard (Lecture seule)" as UC_W03
 }
 
+rectangle "Mobile - Sprint 1 (MVP)" {
+    usecase "S'authentifier (Mobile)" as UC_M01
+    usecase "Pointer les absences (Flash)" as UC_M02
+    usecase "Saisir motif de retard" as UC_M02a
+}
+
 Admin -- UC_W01
 Admin -- UC_W_ABS
 Admin -- UC_W03
+Admin -- UC_M01
+Admin -- UC_M02
 
 Trainer -- UC_W01
 Trainer -- UC_W_ABS
+Trainer -- UC_M01
+Trainer -- UC_M02
+UC_M02 <.. UC_M02a : <<extend>>
+
+
 
 @enduml
+
