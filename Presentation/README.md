@@ -110,7 +110,7 @@ style: |
 
 **Réalisé par :** <span class="highlight">Abdelhay Mallouli</span>  
 **Encadré par :** <span class="highlight">M. ESSARRAJ Fouad</span>  
-**Filière :** Développement Mobile et Web
+**Filière :** Développement Mobile
 
 ---
 
