@@ -248,56 +248,11 @@ style: |
 
 <div class="maquette-grid">
   <div style="text-align: center;">
-    <img src="images/diagramme-class.png" class="img-methodo" style="height: 360px; width: auto;" alt="Diagramme de Classe">
+    <img src="images/diagramme-class.png" class="img-methodo" style="height: 450px; width: auto;" alt="Diagramme de Classe">
     <p style="font-size: 0.8rem; color: #666;">Diagramme de Classe</p>
   </div>
 </div>
 
 ---
 
-## 5. Conception : Architecture Modulaire
-
-<div class="sommaire-grid">
-  <div class="dt-card" style="margin-top:0; font-size: 0.8em;">
-    <h4>Services Techniques</h4>
-    <ul>
-      <li><strong>IAM Service :</strong> Spatie Permission (Roles/Permissions).</li>
-      <li><strong>Academic Service :</strong> Groupes, Filières et Sessions.</li>
-      <li><strong>Attendance Service :</strong> Pointage et Justificatifs.</li>
-      <li><strong>Design :</strong> Service Pattern pour découpler la logique.</li>
-    </ul>
-  </div>
-</div>
-
----
-
-## 5. Démonstration : Environnement & Outils
-
-<div class="sommaire-grid">
-  <div class="dt-card" style="margin-top:0;">
-    <h4>Environnement</h4>
-    <ul>
-      <li><strong>IDE :</strong> VS Code & Antigravity </li>
-      <li><strong>Serveur Local :</strong> PHP Artisan Serve</li>
-    </ul>
-  </div>
-  <div class="dt-card" style="margin-top:0; border-top-color: #27ae60;">
-    <h4>Gestion</h4>
-    <ul>
-      <li><strong>Versionning :</strong> Git / GitHub</li>
-      <li><strong>Conception :</strong> Mermaid & Trello (Scrum)</li>
-    </ul>
-  </div>
-</div>
-
----
-
-## 6. Conclusion
-
-- **Efficacité** : Suppression du support papier et de l'erreur humaine sur Excel.
-- **Réactivité** : Information disponible en moins d'une minute après l'appel.
-- **Perspectives** : Intégration de notifications SMS/Email aux parents.
-
-<br>
-
-### Merci pour votre attention !
+## Merci pour votre attention !
