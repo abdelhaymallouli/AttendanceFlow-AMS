@@ -326,6 +326,20 @@ Ce sprint apporte l'interactivité pour l'étudiant et la validation administrat
 
 # 🏗️ Branche Technique
 
+## 🎯 Définition du Problème
+
+Le problème majeur réside dans la transition inefficace du **support papier vers la saisie manuelle sur Excel**. Ce processus archaïque génère une surcharge logistique pour les formateurs (devoir segmenter manuellement les sessions 9-11, 11-14, 14-17) et un décalage d'information critique pour l'administration. Le coeur du défi est la suppression de cette "double saisie" par une automatisation directe à la source.
+
+### Questions "Comment pourrions-nous" (HMW)
+
+1. **Comment pourrions-nous** éliminer le transfert physique des fiches de présence papier de la salle de classe au bureau administratif ?
+2. **Comment pourrions-nous** permettre à l'enseignant de valider chaque session (9-11, 11-14, 14-17) en moins de 30 secondes depuis son smartphone ?
+3. **Comment pourrions-nous** numériser la soumission et l'approbation des notes/justificatifs médicaux ?
+
+```{=openxml}
+<w:p><w:r><w:br w:type="page"/></w:r></w:p>
+```
+
 ## Choix Technologiques
 
 Le projet repose sur un écosystème robuste et moderne permettant une scalabilité verticale et horizontale.

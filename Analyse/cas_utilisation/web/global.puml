@@ -1,9 +1,15 @@
 @startuml global_web
-title Cas d'Utilisation Global - Plateforme Web
+title Cas d'Utilisation Global - Plateforme Web (AttendanceFlow-AMS)
 left to right direction
 
 skinparam usecase {
   BackgroundColor #EBF5FB
+  BorderColor #2E86C1
+  ArrowColor #2E86C1
+}
+
+skinparam actor {
+  BackgroundColor #AED6F1
   BorderColor #2E86C1
 }
 
@@ -12,30 +18,56 @@ actor "Étudiant" as Student
 actor "Formateur" as Trainer
 
 rectangle "Plateforme Web (AttendanceFlow-AMS)" {
+    ' Core Authentication
     usecase "S'authentifier" as UC_W01
+    
+    ' General Access
     usecase "Visualiser le Dashboard" as UC_W03
-    usecase "Soumettre un justificatif" as UC_W04
+    
+    ' Administrative & Pedagogical Management
     usecase "Gérer les justificatifs" as UC_W05
     usecase "Valider / Réfuter un justificatif" as UC_W05a
-    usecase "Exporter les rapports" as UC_W07
-    usecase "Historique d'assiduité complet" as UC_W06
-    usecase "Gestion avancée des absences" as UC_W_ABS
+    usecase "Gérer les comptes & structures\n(Classes, Modules, Utilisateurs)" as UC_W02
+    usecase "Gestion avancée des absences\n(Correction, Clôture)" as UC_W_ABS
+    usecase "Exporter les rapports de synthèse\n(PDF, Excel)" as UC_W07
+    
+    ' Student Actions
+    usecase "Soumettre un justificatif" as UC_W04
+    usecase "Joindre un document justificatif" as UC_W04a
+    usecase "Consulter l'historique d'assiduité\net statistiques" as UC_W06
+    
+    ' System Extension
+    usecase "Recevoir des alertes / notifications" as UC_W_NOTIF
 }
 
-Admin -- UC_W01
-Admin -- UC_W03
-Admin -- UC_W05
-Admin -- UC_W02
-Admin -- UC_W07
-Admin -- UC_W_ABS
-UC_W05 <.. UC_W05a : <<extend>>
+' --- Relationships ---
 
-Student -- UC_W01
+' All major actions require authentication (Include)
+UC_W03 ..> UC_W01 : <<include>>
+UC_W04 ..> UC_W01 : <<include>>
+UC_W05 ..> UC_W01 : <<include>>
+UC_W02 ..> UC_W01 : <<include>>
+UC_W06 ..> UC_W01 : <<include>>
+UC_W_ABS ..> UC_W01 : <<include>>
+
+' Specific Flows (Extend)
+UC_W05 <.. UC_W05a : <<extend>>
+UC_W03 <.. UC_W07 : <<extend>>
+UC_W04 <.. UC_W04a : <<include>>
+UC_W03 <.. UC_W_NOTIF : <<extend>>
+
+' Actor Links
+Admin -- UC_W03
+Admin -- UC_W02
+Admin -- UC_W05
+Admin -- UC_W_ABS
+
+Trainer -- UC_W03
+Trainer -- UC_W_ABS
+Trainer -- UC_W05
+
+Student -- UC_W03
 Student -- UC_W04
 Student -- UC_W06
-
-Trainer -- UC_W01
-Trainer -- UC_W02
-Trainer -- UC_W_ABS
 
 @enduml

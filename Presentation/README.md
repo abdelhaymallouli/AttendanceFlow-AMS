@@ -6,107 +6,131 @@ _paginate: false
 paginate: true
 backgroundColor: #ffffff
 style: |
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
   section {
-    font-size: 22px;
-    color: #333;
+    font-family: 'Outfit', sans-serif;
+    font-size: 24px;
+    color: #2d3436;
     line-height: 1.6;
     padding: 60px 80px;
+    background: linear-gradient(135deg, #ffffff 0%, #f1f2f6 100%);
   }
-  footer { width: 100%; text-align: right; font-size: 14px; color: #888; }
+  footer { width: 100%; text-align: right; font-size: 14px; color: #a4b0be; font-weight: 300; }
   .logo-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: absolute;
-    top: 40px;   
-    left: 60px;
-    right: 60px;
+    top: 30px;   
+    left: 50px;
+    right: 50px;
   }
-  .logo-header img { height: 140px; margin: 0; margin-left:10px; margin-right:10px }
-  h1 { color: #088dc7; font-size: 2.8em; margin-top: 100px; text-align: left; }
-  h2 { color: #088dc7; font-size: 2em; border-bottom: 2px solid #088dc7; margin-bottom: 40px;}
-  h3 { text-align: left; color: #444; margin-top: 0; }
+  .logo-header img { height: 110px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); transition: transform 0.3s ease; }
+  .logo-header img:hover { transform: scale(1.05); }
+  
+  h1 { color: #0984e3; font-size: 3em; margin-top: 80px; text-align: left; font-weight: 700; letter-spacing: -1px; }
+  h2 { color: #0984e3; font-size: 2.2em; border-bottom: 3px solid #74b9ff; margin-bottom: 35px; font-weight: 600; padding-bottom: 10px; }
+  h3 { text-align: left; color: #636e72; margin-top: 0; font-weight: 400; font-size: 1.4em; }
+  h4 { color: #0984e3; margin-bottom: 15px; font-weight: 600; }
+
+  .highlight { color: #0984e3; font-weight: 600; }
 
   .sommaire-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-top: 20px;
+    gap: 25px;
+    margin-top: 30px;
   }
   .sommaire-item {
     display: flex;
     align-items: center;
-    background: #f4faff;
-    border-radius: 12px;
-    padding: 15px 20px;
-    border-left: 5px solid #088dc7;
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    border-left: 6px solid #0984e3;
+    transition: all 0.3s ease;
   }
+  .sommaire-item:hover { transform: translateX(10px); box-shadow: 0 15px 30px rgba(9, 132, 227, 0.1); }
   .sommaire-num {
-    background: #088dc7; color: white; width: 35px; height: 35px;
+    background: #0984e3; color: white; width: 40px; height: 40px;
     display: flex; justify-content: center; align-items: center;
-    border-radius: 50%; font-weight: bold; margin-right: 15px; flex-shrink: 0;
+    border-radius: 10px; font-weight: bold; margin-right: 20px; flex-shrink: 0; font-size: 1.1em;
   }
+  .sommaire-text { font-weight: 500; font-size: 1.1em; color: #2d3436; }
 
   .img-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     height: 100%;
+    margin-top: 20px;
   }
-  .img-methodo {
-    width: 85%;
-    height: auto;
-    max-height: 450px;
+  .img-premium {
+    width: 90%;
+    max-height: 420px;
     object-fit: contain;
-    border-radius: 10px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+    border: 1px solid rgba(255,255,255,0.5);
   }
 
-  .dt-card {
-    background: #f0f7fa;
-    padding: 30px;
-    border-radius: 10px;
-    border-top: 6px solid #088dc7;
-    text-align: left;
+  .glass-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 35px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.4);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.08);
     margin-top: 20px;
     width: 100%;
   }
+  .problem-callout {
+    background: #dfe6e9;
+    padding: 25px;
+    border-radius: 12px;
+    border-left: 5px solid #d63031;
+    margin: 20px 0;
+    font-style: italic;
+  }
 
-  /* --- FIX COULEURS TECH STACK --- */
-  .tech-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 20px;
+  .tech-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.04);
+    border-top: 6px solid #0984e3;
+    height: 100%;
   }
-  .badge-simple {
-    padding: 8px 18px;
-    border-radius: 6px;
-    font-weight: 600;
-    background-color: #545353ff; /* Gris foncé unique */
-    color: #ffffff !important;
-    font-size: 0.85em;
-    border: 1px solid #222;
+  .tech-card ul { padding-left: 20px; margin: 0; }
+  .tech-card li { margin-bottom: 12px; list-style-type: '→ '; }
+
+  .maquette-showcase {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 30px;
+    align-items: center;
   }
-  .maquette-grid {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    align-items: flex-start;
-    height: 350px;
+  .device-frame {
+    background: #2d3436;
+    padding: 10px;
+    border-radius: 25px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.25);
   }
+  .device-frame img { border-radius: 15px; display: block; }
 ---
 
 <div class="logo-header">
-  <img src="images/ofppt-logo.png" alt="Logo Left">
-  <img src="images/logo-solicode.png" alt="Logo Right">
+  <img src="images/ofppt-logo.png" alt="OFPPT">
+  <img src="images/logo-solicode.png" alt="Solicode">
 </div>
 
 # **Projet de Fin de Formation**
 
 ### AttendanceFlow-AMS
 
-**Système de Gestion des Absences**
+**Système de Gestion des Absences de Nouvelle Génération**
 
 **Réalisé par :** <span class="highlight">Abdelhay Mallouli</span>  
 **Encadré par :** <span class="highlight">M. ESSARRAJ Fouad</span>  
@@ -118,11 +142,11 @@ style: |
 
 <div class="sommaire-grid">
   <div class="sommaire-item"><div class="sommaire-num">1</div><div class="sommaire-text">Contexte du projet</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">2</div><div class="sommaire-text">Méthodologie de travail</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">2</div><div class="sommaire-text">Méthodologie & Agile</div></div>
   <div class="sommaire-item"><div class="sommaire-num">3</div><div class="sommaire-text">Branche Fonctionnelle</div></div>
   <div class="sommaire-item"><div class="sommaire-num">4</div><div class="sommaire-text">Branche Technique</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">5</div><div class="sommaire-text">Conception</div></div>
-    <div class="sommaire-item"><div class="sommaire-num">6</div><div class="sommaire-text">Démonstration</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">5</div><div class="sommaire-text">Conception (UML)</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">6</div><div class="sommaire-text">Démonstration</div></div>
   <div class="sommaire-item"><div class="sommaire-num">7</div><div class="sommaire-text">Conclusion</div></div>
 </div>
 
@@ -131,33 +155,7 @@ style: |
 ## 1. Contexte du projet
 
 <div class="img-container">
-  <img src="images/contexte.png" class="img-methodo" style="max-height: 400px;" alt="Contexte du Projet">
-</div>
-
----
-
-## 1. Contexte : Carte d'Empathie - Mme Hannane
-
-<div class="img-container">
-  <img src="images/mindmap_hannane.png" class="img-methodo" style="max-height: 450px;" alt="Carte d'Empathie Hannane">
-</div>
-
----
-
-
-## 1. Contexte : Carte d'Empathie - Anouar
-
-<div class="img-container">
-  <img src="images/mindmap_anouar.png" class="img-methodo" style="max-height: 450px;" alt="Carte d'Empathie Anouar">
-</div>
-
----
-
-
-## 1. Contexte : Carte d'Empathie - Mme Imane
-
-<div class="img-container">
-  <img src="images/mindmap_imane.png" class="img-methodo" style="max-height: 450px;" alt="Carte d'Empathie Imane">
+  <img src="images/contexte.png" class="img-premium" alt="Contexte du Projet">
 </div>
 
 ---
@@ -165,79 +163,89 @@ style: |
 ## 2. Méthodologie : Design Thinking
 
 <div class="img-container">
-  <img src="images/designThinking.png" class="img-methodo" style="max-height: 350px;" alt="Design Thinking">
-  <p style="font-size: 1.1em; font-weight: bold; color: #088dc7;">Empathie → Définition → Idéation → Prototype → Test</p>
+  <img src="images/designThinking.png" class="img-premium" style="max-height: 320px;" alt="Design Thinking">
+  <div class="glass-card" style="margin-top: 30px; text-align: center;">
+    <p style="font-size: 1.2em; font-weight: 600; color: #0984e3; margin: 0;">Empathie → Définition → Idéation → Prototype → Test</p>
+  </div>
 </div>
 
 ---
-
 
 ## 2. Méthodologie : Scrum (Agile)
 
 <div class="img-container">
-  <img src="images/scrum.jpg" class="img-methodo" style="max-height: 400px;" alt="Scrum">
-  <p style="font-size: 1.1em; font-weight: bold; color: #088dc7;">Itérations rapides pour une livraison continue de valeur.</p>
-</div>
-
-
----
-
-## 3. Branche Fonctionnelle : Définition du Problème
-
-<div class="dt-card">
-  <p>Le problème majeur réside dans la transition inefficace du <strong>support papier vers la saisie manuelle sur Excel</strong>.</p>
-  <p>Ce processus archaïque génère une surcharge logistique pour les formateurs et un décalage d'information critique pour l'administration.</p>
-  <p><strong>Objectif :</strong> Suppression de la "double saisie" par une automatisation directe à la source.</p>
-</div>
-
----
-
-## 3. Branche Fonctionnelle : Web (Global)
-
-![Web Global](images/global-w.png)
-
----
-
-## 3. Branche Fonctionnelle : Mobile (Global)
-
-![Mobile Global](images/global-m.png)
-
----
-
-
-
-## Branche Fonctionnelle : Maquettes (UI/UX)
-
-<div class="maquette-grid">
-  <div style="text-align: center;">
-    <img src="images/maquette.png" class="img-methodo" style="height: 360px; width: auto;" alt="Interface Admin">
-    <p style="font-size: 0.8rem; color: #666;">Tableau de Bord Administratif (Web)</p>
-  </div>
-  <div style="text-align: center;">
-    <img src="images/maquete-m.png" class="img-methodo" style="height: 360px; width: auto;" alt="Interface Mobile">
-    <p style="font-size: 0.8rem; color: #666;">Application Mobile (Saisie Terrain)</p>
+  <img src="images/scrum.jpg" class="img-premium" style="max-height: 380px;" alt="Scrum">
+  <div class="glass-card" style="margin-top: 25px; border-top: 4px solid #00b894;">
+    <p style="font-size: 1.1em; font-weight: 500; color: #2d3436; margin: 0;">L'agilité au cœur du développement pour une fiabilité maximale.</p>
   </div>
 </div>
 
 ---
 
-## 4. Branche Technique : Tech Stack
+## 3. Branche Fonctionnelle : Problématique
 
-<div class="sommaire-grid">
-  <div class="dt-card" style="margin-top:0;">
-    <h4>Backend & Architecture</h4>
+<div class="glass-card">
+  <div class="problem-callout">
+    "La transition inefficace du <strong>support papier</strong> vers la saisie manuelle sur <strong>Excel</strong> génère des erreurs et une perte de temps critique."
+  </div>
+  <p><strong>Impact :</strong> Surcharge logistique pour les formateurs et opacité pour l'administration.</p>
+  <p><strong>Solution :</strong> Automatisation complète dès la source (Mobile) vers le Cloud (Web & Reports).</p>
+</div>
+
+---
+
+## 3. Branche Fonctionnelle : Écosystème Web
+
+<div class="img-container">
+  <img src="images/global-w.png" class="img-premium" alt="Web Global">
+</div>
+
+---
+
+## 3. Branche Fonctionnelle : Excellence Mobile
+
+<div class="img-container">
+  <img src="images/global-m.png" class="img-premium" alt="Mobile Global">
+</div>
+
+---
+
+## Branche Fonctionnelle : Maquettes Premium
+
+<div class="maquette-showcase">
+  <div style="text-align: center;">
+    <div class="device-frame" style="border-radius: 12px;">
+       <img src="images/maquette.png" style="width: 100%; border-radius: 4px;" alt="Admin Dashboard">
+    </div>
+    <p style="font-size: 0.9em; margin-top: 15px; color: #636e72;">Dashboard Administratif (Web)</p>
+  </div>
+  <div style="text-align: center;">
+    <div class="device-frame">
+       <img src="images/maquete-m.png" style="height: 380px; width: auto;" alt="Mobile App">
+    </div>
+    <p style="font-size: 0.9em; margin-top: 15px; color: #636e72;">Application Mobile (Saisie Directe)</p>
+  </div>
+</div>
+
+---
+
+## 4. Branche Technique : Architecture & Stack
+
+<div class="sommaire-grid" style="grid-template-columns: 1fr 1fr;">
+  <div class="tech-card">
+    <h4>Backend Excellence</h4>
     <ul>
-      <li><strong>Laravel 12 (PHP 8.2+) :</strong> Coeur d'application robuste.</li>
-      <li><strong>Architecture Service-Pattern :</strong> Découplage de la logique métier.</li>
-      <li><strong>Base de données :</strong> MySQL relationnelle.</li>
+      <li><strong>Laravel 12 :</strong> Framework PHP robuste (8.2+).</li>
+      <li><strong>Service Pattern :</strong> Architecture maintenable.</li>
+      <li><strong>MySQL / Eloquent :</strong> Gestion fluide des données.</li>
     </ul>
   </div>
-  <div class="dt-card" style="margin-top:0; border-top-color: #27ae60;">
-    <h4>Frontend & Outillage</h4>
+  <div class="tech-card" style="border-top-color: #00b894;">
+    <h4>Modern Frontend</h4>
     <ul>
-      <li><strong>Blade & Tailwind CSS :</strong> Interface responsive et premium.</li>
-      <li><strong>Livewire / Alpine.js :</strong> Interactivité temps réel.</li>
-      <li><strong>Vite :</strong> Compilation ultra-rapide des assets.</li>
+      <li><strong>Tailwind CSS & Preline :</strong> Design Pixel-perfect.</li>
+      <li><strong>Livewire / Alpine.js :</strong> Interactivité temps-réel.</li>
+      <li><strong>Vite :</strong> Pipeline de build haute performance.</li>
     </ul>
   </div>
 </div>
@@ -246,13 +254,16 @@ style: |
 
 ## 5. Conception : Diagramme de Classe
 
-<div class="maquette-grid">
-  <div style="text-align: center;">
-    <img src="images/diagramme-class.png" class="img-methodo" style="height: 450px; width: auto;" alt="Diagramme de Classe">
-    <p style="font-size: 0.8rem; color: #666;">Diagramme de Classe</p>
-  </div>
+<div class="img-container" style="margin-top: 0;">
+  <img src="images/diagramme-class.png" class="img-premium" style="max-height: 520px; width: auto;" alt="UML Class Diagram">
+  <p style="font-size: 0.8em; margin-top: 10px; color: #b2bec3;">Modélisation rigoureuse de la logique métier.</p>
 </div>
 
 ---
 
 ## Merci pour votre attention !
+
+<div class="img-container">
+   <h3 style="color: #0984e3; font-weight: 700;">Avez-vous des questions ?</h3>
+   <p style="color: #636e72;">AttendanceFlow-AMS | 2026</p>
+</div>
