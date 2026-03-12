@@ -28,12 +28,10 @@ class SchedulingService extends BaseService
         $startTime = Carbon::parse($sessionData['start_time']);
         $endTime = Carbon::parse($sessionData['end_time']);
 
-        // Basic conflict check
+        // Check for literal overlap: (start_time < new_end_time) AND (end_time > new_start_time)
         $conflict = Session::where('teacher_profile_id', $sessionData['teacher_profile_id'])
-            ->where(function ($query) use ($startTime, $endTime) {
-                $query->whereBetween('start_time', [$startTime, $endTime])
-                      ->orWhereBetween('end_time', [$startTime, $endTime]);
-            })
+            ->where('start_time', '<', $endTime)
+            ->where('end_time', '>', $startTime)
             ->exists();
 
         if ($conflict) {
