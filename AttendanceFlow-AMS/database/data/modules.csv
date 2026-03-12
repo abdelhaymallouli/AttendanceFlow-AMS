@@ -1,0 +1,16 @@
+id,name,code,coefficient
+1,Base de données,M01,2.0
+2,Programmation Orientée Objet,M02,3.0
+3,Développement Web Client,M03,2.5
+4,Réseaux Informatiques,M04,2.0
+5,Sécurité Informatique,M05,2.0
+6,Algorithmique et Logique,M06,2.0
+7,Systèmes d'exploitation,M07,1.5
+8,Gestion de Projet Agile,M08,1.5
+9,Anglais Technique,M09,1.0
+10,Soft Skills,M10,1.0
+11,Développement Mobile Android,M11,3.0
+12,Développement Mobile iOS,M12,3.0
+13,Cloud Computing,M13,2.5
+14,Intelligence Artificielle de base,M14,2.0
+15,Marketing Digital,M15,1.5

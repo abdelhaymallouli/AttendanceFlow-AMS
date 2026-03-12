@@ -47,7 +47,6 @@ classDiagram
             +int id
             +int user_id
             +string matricule
-            +string photo
             +int group_id
         }
 
@@ -69,13 +68,22 @@ classDiagram
             +string code
         }
 
+        class Module {
+            +int id
+            +string name
+            +string code
+            +float coefficient
+        }
+
         class Session {
             +int id
             +time start_time
             +time end_time
+            +float duration_hours
             +string type
             +int group_id
             +int teacher_id
+            +int module_id
         }
     }
 
@@ -87,42 +95,39 @@ classDiagram
             +int session_id
             +enum status
             +date date
-            +mark()
-            +updateStatus()
         }
 
         class Justification {
             +int id
-            +int attendance_record_id
+            +int student_id
             +string reason
-            +string file_path
+            +date start_date
+            +date end_date
             +enum status
             +date submitted_at
-            +approve()
-            +reject()
         }
     }
 
-    %% Relations Spatie (IAM)
+    %% Relationships
+    User "1" -- "0..1" StudentProfile : has
+    User "1" -- "0..1" TeacherProfile : has
     User "*" -- "*" Role : hasRoles
     Role "*" -- "*" Permission : hasPermissions
-    User "*" -- "*" Permission : hasDirectPermissions
 
-    %% User to Profiles (One to One)
-    User "1" -- "0..1" StudentProfile : extends
-    User "1" -- "0..1" TeacherProfile : extends
-
-    %% Academic Relations
     StudentProfile "*" -- "1" Group : belongsTo
-    Group "*" -- "1" Filiere : belongsTo
+    Group "*" -- "1" Filiere : partOf
+    
+    TeacherProfile "*" -- "*" Module : teaches
+    TeacherProfile "*" -- "*" Group : manages
+    
     Session "*" -- "1" Group : scheduled for
     Session "*" -- "1" TeacherProfile : assigned to
+    Session "*" -- "1" Module : focused on
 
-    %% Attendance Relations
-    AttendanceRecord "*" -- "1" StudentProfile : has
-    AttendanceRecord "*" -- "1" Session : corresponds to
+    AttendanceRecord "*" -- "1" StudentProfile : associatedWith
+    AttendanceRecord "*" -- "1" Session : linkedTo
     
-    AttendanceRecord "1" -- "0..1" Justification : justified by
+    StudentProfile "1" -- "*" Justification : provides
 ```
 
 ## 🛠️ Choix Technologiques

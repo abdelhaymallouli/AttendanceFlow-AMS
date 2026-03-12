@@ -31,6 +31,10 @@ Toute l'analyse fonctionnelle et technique se trouve dans le répertoire `Analys
 - `Analyse/cas_utilisation/` : Diagrammes de cas d'utilisation (Global, Sprint 1, Sprint 2).
 - `Analyse/diagramme_de_classe/` : Modélisation des données.
 
+Pour une vue d'ensemble complète incluant les diagrammes et la structure des dossiers, consultez :
+- [Structure du Projet](PROJECT_DOCUMENTATION.md)
+- [Guide de Test et Seeding](DATABASE_TESTING_GUIDE.md)
+
 Les rapports et présentations associés sont disponibles dans les dossiers `Raport/` et `Presentation/`.
 
 ---

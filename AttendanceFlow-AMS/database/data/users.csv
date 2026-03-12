@@ -1,0 +1,15 @@
+name,email,password,role
+Admin User,admin@ams.com,password,admin
+Hannane Admin,hannane@ams.com,password,admin
+Imane Teacher,imane@ams.com,password,teacher
+Ahmed Teacher,ahmed@ams.com,password,teacher
+Student One,student1@ams.com,password,student
+Student Two,student2@ams.com,password,student
+Student Three,student3@ams.com,password,student
+Student Four,student4@ams.com,password,student
+Student Five,student5@ams.com,password,student
+Student Six,student6@ams.com,password,student
+Student Seven,student7@ams.com,password,student
+Student Eight,student8@ams.com,password,student
+Student Nine,student9@ams.com,password,student
+Student Ten,student10@ams.com,password,student
