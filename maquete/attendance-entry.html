@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://preline.co/assets/css/main.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="data.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         body {
@@ -149,58 +150,43 @@
 
                 <!-- Session Selector -->
                 <div class="bg-white border border-gray-200 rounded-xl p-4 mb-6">
-                    <label class="block text-sm font-medium text-gray-700 mb-3">Select Session</label>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <button @click="selectSession('morning')"
-                            :class="selectedSession === 'morning' ? 'ring-2 ring-blue-600 bg-blue-50 border-blue-600' : 'border-gray-200 hover:border-blue-400'"
-                            class="session-tab flex items-center p-4 border rounded-xl transition-all bg-white">
-                            <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3"
-                                :class="selectedSession === 'morning' ? 'bg-blue-600' : 'bg-gray-100'">
-                                <i data-lucide="sunrise" class="w-5 h-5"
-                                    :class="selectedSession === 'morning' ? 'text-white' : 'text-gray-600'"></i>
-                            </div>
-                            <div class="text-left">
-                                <p class="font-semibold"
-                                    :class="selectedSession === 'morning' ? 'text-blue-900' : 'text-gray-800'">Morning
-                                </p>
-                                <p class="text-xs"
-                                    :class="selectedSession === 'morning' ? 'text-blue-600' : 'text-gray-500'">9:00 -
-                                    11:00</p>
-                            </div>
-                        </button>
-                        <button @click="selectSession('midday')"
-                            :class="selectedSession === 'midday' ? 'ring-2 ring-blue-600 bg-blue-50 border-blue-600' : 'border-gray-200 hover:border-blue-400'"
-                            class="session-tab flex items-center p-4 border rounded-xl transition-all bg-white">
-                            <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3"
-                                :class="selectedSession === 'midday' ? 'bg-blue-600' : 'bg-gray-100'">
-                                <i data-lucide="sun" class="w-5 h-5"
-                                    :class="selectedSession === 'midday' ? 'text-white' : 'text-gray-600'"></i>
-                            </div>
-                            <div class="text-left">
-                                <p class="font-semibold"
-                                    :class="selectedSession === 'midday' ? 'text-blue-900' : 'text-gray-800'">Midday</p>
-                                <p class="text-xs"
-                                    :class="selectedSession === 'midday' ? 'text-blue-600' : 'text-gray-500'">11:00 -
-                                    14:00</p>
-                            </div>
-                        </button>
-                        <button @click="selectSession('afternoon')"
-                            :class="selectedSession === 'afternoon' ? 'ring-2 ring-blue-600 bg-blue-50 border-blue-600' : 'border-gray-200 hover:border-blue-400'"
-                            class="session-tab flex items-center p-4 border rounded-xl transition-all bg-white">
-                            <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3"
-                                :class="selectedSession === 'afternoon' ? 'bg-blue-600' : 'bg-gray-100'">
-                                <i data-lucide="sunset" class="w-5 h-5"
-                                    :class="selectedSession === 'afternoon' ? 'text-white' : 'text-gray-600'"></i>
-                            </div>
-                            <div class="text-left">
-                                <p class="font-semibold"
-                                    :class="selectedSession === 'afternoon' ? 'text-blue-900' : 'text-gray-800'">
-                                    Afternoon</p>
-                                <p class="text-xs"
-                                    :class="selectedSession === 'afternoon' ? 'text-blue-600' : 'text-gray-500'">14:00 -
-                                    17:00</p>
-                            </div>
-                        </button>
+                    <div class="flex items-center justify-between mb-3">
+                        <label class="block text-sm font-medium text-gray-700">Select Session</label>
+                        <div class="flex items-center space-x-2">
+                            <select x-model="selectedGroupFilter" @change="loadSessionsForGroup()"
+                                class="text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-blue-500 outline-none">
+                                <option value="all">All Groups</option>
+                                <template x-for="group in availableGroups" :key="group.id">
+                                    <option :value="group.id" x-text="group.name"></option>
+                                </template>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <template x-for="session in availableSessions" :key="session.id">
+                            <button @click="selectSession(session)"
+                                :class="selectedSession?.id === session.id ? 'ring-2 ring-blue-600 bg-blue-50 border-blue-600' : 'border-gray-200 hover:border-blue-400'"
+                                class="session-tab flex items-center p-4 border rounded-xl transition-all bg-white text-left">
+                                <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3"
+                                    :class="selectedSession?.id === session.id ? 'bg-blue-600' : getTypeBgClass(session.type)">
+                                    <i data-lucide="clock" class="w-5 h-5"
+                                        :class="selectedSession?.id === session.id ? 'text-white' : getTypeTextClass(session.type)"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-semibold truncate"
+                                        :class="selectedSession?.id === session.id ? 'text-blue-900' : 'text-gray-800'"
+                                        x-text="session.typeLabel"></p>
+                                    <p class="text-xs"
+                                        :class="selectedSession?.id === session.id ? 'text-blue-600' : 'text-gray-500'"
+                                        x-text="session.time"></p>
+                                    <p class="text-xs text-gray-400 truncate" x-text="session.moduleName + ' - ' + session.groupName"></p>
+                                </div>
+                            </button>
+                        </template>
+                    </div>
+                    <div x-show="availableSessions.length === 0" class="text-center py-8 text-gray-500">
+                        <i data-lucide="calendar-x" class="w-12 h-12 mx-auto mb-2 text-gray-300"></i>
+                        <p>No sessions available</p>
                     </div>
                 </div>
 
@@ -419,16 +405,23 @@
 
     <script>
         function attendanceApp() {
+            // Load all sessions from data.js
+            const allSessions = AppData.sessions.map(s => DataHelpers.getSessionDataForUI(s.id)).filter(Boolean);
+            const allGroups = AppData.groups;
+
             return {
                 sidebarOpen: false,
-                selectedSession: 'morning',
+                selectedSession: null,
                 selectedClass: 'all',
+                selectedGroupFilter: 'all',
                 searchQuery: '',
                 hasUnsavedChanges: false,
                 showToast: false,
                 userRole: 'Administrator',
                 userName: 'Admin User',
                 userEmail: 'admin@school.edu',
+                availableSessions: allSessions,
+                availableGroups: allGroups,
 
                 get navigationLinks() {
                     const isAdmin = this.userRole === 'Administrator';
@@ -477,33 +470,19 @@
                     `;
                 },
 
-                students: [
-                    { id: 'STU001', name: 'Emma Johnson', email: 'emma.j@school.edu', class: '10A', status: null },
-                    { id: 'STU002', name: 'Liam Smith', email: 'liam.s@school.edu', class: '10A', status: null },
-                    { id: 'STU003', name: 'Olivia Brown', email: 'olivia.b@school.edu', class: '10A', status: null },
-                    { id: 'STU004', name: 'Noah Davis', email: 'noah.d@school.edu', class: '10A', status: null },
-                    { id: 'STU005', name: 'Ava Wilson', email: 'ava.w@school.edu', class: '10A', status: null },
-                    { id: 'STU006', name: 'Elijah Moore', email: 'elijah.m@school.edu', class: '10B', status: null },
-                    { id: 'STU007', name: 'Sophia Taylor', email: 'sophia.t@school.edu', class: '10B', status: null },
-                    { id: 'STU008', name: 'James Anderson', email: 'james.a@school.edu', class: '10B', status: null },
-                    { id: 'STU009', name: 'Isabella Thomas', email: 'isabella.t@school.edu', class: '10B', status: null },
-                    { id: 'STU010', name: 'Benjamin Jackson', email: 'benjamin.j@school.edu', class: '10B', status: null },
-                    { id: 'STU011', name: 'Mia White', email: 'mia.w@school.edu', class: '11A', status: null },
-                    { id: 'STU012', name: 'Lucas Harris', email: 'lucas.h@school.edu', class: '11A', status: null },
-                    { id: 'STU013', name: 'Charlotte Martin', email: 'charlotte.m@school.edu', class: '11A', status: null },
-                    { id: 'STU014', name: 'Henry Thompson', email: 'henry.t@school.edu', class: '11A', status: null },
-                    { id: 'STU015', name: 'Amelia Garcia', email: 'amelia.g@school.edu', class: '11A', status: null },
-                    { id: 'STU016', name: 'Alexander Martinez', email: 'alex.m@school.edu', class: '11B', status: null },
-                    { id: 'STU017', name: 'Harper Robinson', email: 'harper.r@school.edu', class: '11B', status: null },
-                    { id: 'STU018', name: 'Sebastian Clark', email: 'sebastian.c@school.edu', class: '11B', status: null },
-                    { id: 'STU019', name: 'Evelyn Rodriguez', email: 'evelyn.r@school.edu', class: '11B', status: null },
-                    { id: 'STU020', name: 'Michael Lewis', email: 'michael.l@school.edu', class: '11B', status: null }
-                ],
+                students: DataHelpers.getAllStudentsForUI().map(s => ({
+                    profileId: s.profileId,
+                    matricule: s.matricule,
+                    name: s.name,
+                    email: s.email,
+                    groupName: s.groupName,
+                    status: null
+                })),
                 filteredStudents: [],
 
                 init() {
+                    this.loadSessionsForGroup();
                     this.filterStudents();
-                    this.autoSelectSession();
                     // Detect user role from URL or localStorage (demo)
                     const urlParams = new URLSearchParams(window.location.search);
                     const role = urlParams.get('role');
@@ -511,39 +490,75 @@
                         this.userRole = 'Teacher';
                         this.userName = 'Imane Bouziane';
                         this.userEmail = 'teacher@school.edu';
+                        // Filter sessions for teacher 1
+                        const teacherSessions = DataHelpers.getTeacherSessionsForUI(1);
+                        this.availableSessions = teacherSessions;
+                        const teacherGroups = DataHelpers.getTeacherGroups(1);
+                        this.availableGroups = teacherGroups;
                     }
                     setTimeout(() => lucide.createIcons(), 100);
                 },
 
-                autoSelectSession() {
-                    const hour = new Date().getHours();
-                    if (hour >= 9 && hour < 11) {
-                        this.selectedSession = 'morning';
-                    } else if (hour >= 11 && hour < 14) {
-                        this.selectedSession = 'midday';
-                    } else if (hour >= 14 && hour < 17) {
-                        this.selectedSession = 'afternoon';
+                loadSessionsForGroup() {
+                    if (this.selectedGroupFilter === 'all') {
+                        if (this.userRole === 'Teacher') {
+                            this.availableSessions = DataHelpers.getTeacherSessionsForUI(1);
+                        } else {
+                            this.availableSessions = AppData.sessions.map(s => DataHelpers.getSessionDataForUI(s.id)).filter(Boolean);
+                        }
+                    } else {
+                        this.availableSessions = DataHelpers.getSessionsForGroup(parseInt(this.selectedGroupFilter))
+                            .map(s => DataHelpers.getSessionDataForUI(s.id)).filter(Boolean);
                     }
+                    this.selectedSession = null;
+                    this.$nextTick(() => lucide.createIcons());
                 },
 
                 selectSession(session) {
                     this.selectedSession = session;
                     this.hasUnsavedChanges = false;
                     this.clearAll();
+                    // Filter students by session's group
+                    if (session) {
+                        this.selectedClass = session.groupName;
+                        this.filterStudents();
+                    }
+                    this.$nextTick(() => lucide.createIcons());
+                },
+
+                getTypeBgClass(type) {
+                    const classes = {
+                        'lecture': 'bg-purple-100',
+                        'td': 'bg-blue-100',
+                        'tp': 'bg-green-100'
+                    };
+                    return classes[type] || 'bg-gray-100';
+                },
+
+                getTypeTextClass(type) {
+                    const classes = {
+                        'lecture': 'text-purple-600',
+                        'td': 'text-blue-600',
+                        'tp': 'text-green-600'
+                    };
+                    return classes[type] || 'text-gray-600';
                 },
 
                 filterStudents() {
                     let filtered = this.students;
 
-                    if (this.selectedClass !== 'all') {
-                        filtered = filtered.filter(s => s.class === this.selectedClass);
+                    if (this.selectedSession) {
+                        // Filter by session's group
+                        filtered = filtered.filter(s => s.groupName === this.selectedSession.groupName);
+                    } else if (this.selectedClass !== 'all') {
+                        filtered = filtered.filter(s => s.groupName === this.selectedClass);
                     }
 
                     if (this.searchQuery.trim() !== '') {
                         const query = this.searchQuery.toLowerCase();
                         filtered = filtered.filter(s =>
                             s.name.toLowerCase().includes(query) ||
-                            s.id.toLowerCase().includes(query)
+                            s.matricule.toLowerCase().includes(query)
                         );
                     }
 
@@ -552,7 +567,7 @@
                 },
 
                 setStatus(studentId, status) {
-                    const student = this.students.find(s => s.id === studentId);
+                    const student = this.students.find(s => s.profileId === studentId);
                     if (student) {
                         student.status = student.status === status ? null : status;
                         this.hasUnsavedChanges = true;

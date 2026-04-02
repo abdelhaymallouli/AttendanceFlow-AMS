@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://preline.co/assets/css/main.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="data.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         body {
@@ -166,8 +167,8 @@
                         <i data-lucide="user" class="w-5 h-5 text-blue-600"></i>
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-gray-800 truncate">Imane Bouziane</p>
-                        <p class="text-xs text-gray-500 truncate">Grade 10A-10B</p>
+                        <p class="text-sm font-medium text-gray-800 truncate" x-text="teacherData?.name || 'Teacher'"></p>
+                        <p class="text-xs text-gray-500 truncate" x-text="teacherData?.groups || ''"></p>
                     </div>
                     <a href="login.html" class="text-gray-400 hover:text-gray-600">
                         <i data-lucide="log-out" class="w-5 h-5"></i>
@@ -216,8 +217,9 @@
                             </div>
                             <div>
                                 <p class="text-sm opacity-90">Current Session</p>
-                                <h3 class="text-xl font-bold" x-text="currentSession?.name"></h3>
-                                <p class="text-sm opacity-90" x-text="currentSession?.time"></p>
+                                <h3 class="text-xl font-bold" x-text="currentSession?.typeLabel"></h3>
+                                <p class="text-sm opacity-90" x-text="currentSession?.time + ' - ' + currentSession?.moduleName"></p>
+                                <p class="text-sm opacity-75" x-text="currentSession?.groupName + ' • ' + currentSession?.studentsCount + ' students'"></p>
                             </div>
                         </div>
                         <a :href="`attendance-entry.html?role=teacher&session=${currentSession?.id}`"
@@ -230,27 +232,28 @@
 
                 <!-- Today's Sessions -->
                 <h3 class="text-lg font-bold text-gray-800 mb-4">Today's Sessions</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 mb-8">
                     <template x-for="session in sessions" :key="session.id">
                         <div class="session-card bg-white border-2 rounded-xl p-6"
                             :class="session.status === 'completed' ? 'border-green-500' : session.status === 'active' ? 'border-blue-500' : 'border-gray-200'">
                             <div class="flex items-center justify-between mb-4">
                                 <div class="w-12 h-12 rounded-lg flex items-center justify-center"
-                                    :class="session.status === 'completed' ? 'bg-green-100' : session.status === 'active' ? 'bg-blue-100' : 'bg-gray-100'">
+                                    :class="getTypeBgClass(session.type)">
                                     <i data-lucide="clock" class="w-6 h-6"
-                                        :class="session.status === 'completed' ? 'text-green-600' : session.status === 'active' ? 'text-blue-600' : 'text-gray-600'"></i>
+                                        :class="getTypeTextClass(session.type)"></i>
                                 </div>
                                 <span class="text-xs font-bold px-3 py-1 rounded-full"
                                     :class="session.status === 'completed' ? 'bg-green-100 text-green-700' : session.status === 'active' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'"
                                     x-text="session.status === 'completed' ? 'Completed' : session.status === 'active' ? 'In Progress' : 'Upcoming'"></span>
                             </div>
-                            <h4 class="text-lg font-bold text-gray-800 mb-1" x-text="session.name"></h4>
-                            <p class="text-sm text-gray-500 mb-4" x-text="session.time"></p>
+                            <h4 class="text-lg font-bold text-gray-800 mb-1" x-text="session.typeLabel"></h4>
+                            <p class="text-sm text-gray-600 mb-1" x-text="session.moduleName"></p>
+                            <p class="text-sm text-gray-500 mb-4" x-text="session.time + ' (' + session.duration_hours + 'h)'"></p>
                             <div class="flex items-center justify-between">
                                 <div class="text-sm text-gray-600">
-                                    <span x-text="session.class"></span>
+                                    <span x-text="session.groupName"></span>
                                     <span class="mx-1">•</span>
-                                    <span x-text="session.students + ' students'"></span>
+                                    <span x-text="session.studentsCount + ' students'"></span>
                                 </div>
                             </div>
                             <div class="mt-4 pt-4 border-t border-gray-100">
@@ -261,6 +264,10 @@
                             </div>
                         </div>
                     </template>
+                    <div x-show="sessions.length === 0" class="col-span-full text-center py-12 bg-white rounded-xl border border-gray-200">
+                        <i data-lucide="calendar-x" class="w-16 h-16 mx-auto mb-4 text-gray-300"></i>
+                        <p class="text-gray-500">No sessions scheduled for today</p>
+                    </div>
                 </div>
 
                 <!-- Quick Stats -->
@@ -271,7 +278,7 @@
                                 <i data-lucide="users" class="w-5 h-5 text-blue-600"></i>
                             </div>
                         </div>
-                        <p class="text-2xl font-bold text-gray-800">58</p>
+                        <p class="text-2xl font-bold text-gray-800" x-text="totalStudents"></p>
                         <p class="text-sm text-gray-500">Total Students</p>
                     </div>
                     <div class="bg-white border border-gray-200 rounded-xl p-4 lg:p-6">
@@ -280,7 +287,7 @@
                                 <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
                             </div>
                         </div>
-                        <p class="text-2xl font-bold text-gray-800">94%</p>
+                        <p class="text-2xl font-bold text-gray-800" x-text="avgAttendance + '%'"></p>
                         <p class="text-sm text-gray-500">Avg. Attendance</p>
                     </div>
                     <div class="bg-white border border-gray-200 rounded-xl p-4 lg:p-6">
@@ -289,7 +296,7 @@
                                 <i data-lucide="alert-circle" class="w-5 h-5 text-amber-600"></i>
                             </div>
                         </div>
-                        <p class="text-2xl font-bold text-gray-800">3</p>
+                        <p class="text-2xl font-bold text-gray-800" x-text="pendingCount"></p>
                         <p class="text-sm text-gray-500">Pending Justifications</p>
                     </div>
                     <div class="bg-white border border-gray-200 rounded-xl p-4 lg:p-6">
@@ -298,7 +305,7 @@
                                 <i data-lucide="clock" class="w-5 h-5 text-purple-600"></i>
                             </div>
                         </div>
-                        <p class="text-2xl font-bold text-gray-800">2/3</p>
+                        <p class="text-2xl font-bold text-gray-800" x-text="sessions.filter(s => s.status === 'completed').length + '/' + sessions.length"></p>
                         <p class="text-sm text-gray-500">Sessions Today</p>
                     </div>
                 </div>
@@ -354,27 +361,76 @@
 
     <script>
         function teacherDashboard() {
+            const teacherProfileId = 1; // Imane Bouziane
+            const teacherData = DataHelpers.getTeacherDataForUI(teacherProfileId);
+            const teacherJustifications = DataHelpers.getJustificationsForTeacher(teacherProfileId);
+            const pendingJustifications = teacherJustifications.filter(j => j.status === 'pending');
+            
             return {
                 sidebarOpen: false,
                 currentSession: null,
-                sessions: [
-                    { id: 'morning', name: 'Morning Session', time: '9:00 - 11:00', class: 'Grade 10A', students: 30, status: 'completed' },
-                    { id: 'midday', name: 'Midday Session', time: '11:00 - 14:00', class: 'Grade 10B', students: 28, status: 'active' },
-                    { id: 'afternoon', name: 'Afternoon Session', time: '14:00 - 17:00', class: 'Grade 10A', students: 30, status: 'upcoming' }
-                ],
+                sessions: DataHelpers.getTeacherSessionsForUI(teacherProfileId),
+                teacherData: teacherData,
+                totalStudents: 0,
+                avgAttendance: 0,
+                pendingCount: pendingJustifications.length,
                 init() {
+                    this.calculateStats();
                     this.determineCurrentSession();
                     setTimeout(() => lucide.createIcons(), 100);
                 },
+                calculateStats() {
+                    const groupIds = this.teacherData?.groupIds || [];
+                    let totalStudents = 0;
+                    let totalRate = 0;
+                    groupIds.forEach(gId => {
+                        const groupData = DataHelpers.getGroupDataForUI(gId);
+                        if (groupData) {
+                            totalStudents += groupData.studentCount;
+                            totalRate += groupData.attendanceRate;
+                        }
+                    });
+                    this.totalStudents = totalStudents;
+                    this.avgAttendance = groupIds.length > 0 ? Math.round(totalRate / groupIds.length) : 0;
+                },
                 determineCurrentSession() {
-                    const hour = new Date().getHours();
-                    if (hour >= 9 && hour < 11) {
-                        this.currentSession = this.sessions.find(s => s.id === 'morning');
-                    } else if (hour >= 11 && hour < 14) {
-                        this.currentSession = this.sessions.find(s => s.id === 'midday');
-                    } else if (hour >= 14 && hour < 17) {
-                        this.currentSession = this.sessions.find(s => s.id === 'afternoon');
-                    }
+                    const now = new Date();
+                    const currentHour = now.getHours();
+                    const currentMinute = now.getMinutes();
+                    const currentTime = currentHour * 60 + currentMinute;
+
+                    this.sessions.forEach(session => {
+                        const [startH, startM] = session.start_time.split(':').map(Number);
+                        const [endH, endM] = session.end_time.split(':').map(Number);
+                        const startTime = startH * 60 + startM;
+                        const endTime = endH * 60 + endM;
+
+                        if (currentTime >= endTime) {
+                            session.status = 'completed';
+                        } else if (currentTime >= startTime) {
+                            session.status = 'active';
+                        } else {
+                            session.status = 'upcoming';
+                        }
+                    });
+
+                    this.currentSession = this.sessions.find(s => s.status === 'active') || null;
+                },
+                getTypeBgClass(type) {
+                    const classes = {
+                        'lecture': 'bg-purple-100',
+                        'td': 'bg-blue-100',
+                        'tp': 'bg-green-100'
+                    };
+                    return classes[type] || 'bg-gray-100';
+                },
+                getTypeTextClass(type) {
+                    const classes = {
+                        'lecture': 'text-purple-600',
+                        'td': 'text-blue-600',
+                        'tp': 'text-green-600'
+                    };
+                    return classes[type] || 'text-gray-600';
                 }
             }
         }

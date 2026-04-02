@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://preline.co/assets/css/main.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="data.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         body {
@@ -31,7 +32,7 @@
     </script>
 </head>
 
-<body class="bg-gray-50" x-data="{ sidebarOpen: false }">
+<body class="bg-gray-50" x-data="studentDashboard()">
 
     <!-- Mobile Header -->
     <header
@@ -122,8 +123,8 @@
                         <i data-lucide="user" class="w-5 h-5 text-blue-600"></i>
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-gray-800 truncate">Emma Johnson</p>
-                        <p class="text-xs text-gray-500 truncate">STU015 • Grade 11A</p>
+                        <p class="text-sm font-medium text-gray-800 truncate" x-text="studentData?.name || 'Student'"></p>
+                        <p class="text-xs text-gray-500 truncate" x-text="studentData?.matricule + ' • ' + studentData?.groupName"></p>
                     </div>
                     <a href="login.html" class="text-gray-400 hover:text-gray-600">
                         <i data-lucide="log-out" class="w-5 h-5"></i>
@@ -143,7 +144,7 @@
                     </button>
                     <div>
                         <h2 class="text-xl font-bold text-gray-800">Student Dashboard</h2>
-                        <p class="text-sm text-gray-500">Welcome back, Emma Johnson</p>
+                        <p class="text-sm text-gray-500">Welcome back, <span x-text="studentData?.name || 'Student'"></span></p>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -169,7 +170,7 @@
                             <h3 class="font-semibold text-gray-800">Total Days</h3>
                             <i data-lucide="calendar-days" class="w-6 h-6 text-gray-400"></i>
                         </div>
-                        <p class="text-3xl font-bold text-gray-800">112</p>
+                        <p class="text-3xl font-bold text-gray-800" x-text="totalDays"></p>
                         <p class="text-sm text-gray-500 mt-1">School days this year</p>
                     </div>
                     <div class="bg-white border border-gray-200 rounded-xl p-6">
@@ -177,7 +178,7 @@
                             <h3 class="font-semibold text-gray-800">Present</h3>
                             <i data-lucide="check-circle" class="w-6 h-6 text-present"></i>
                         </div>
-                        <p class="text-3xl font-bold text-present">108</p>
+                        <p class="text-3xl font-bold text-present" x-text="presentDays"></p>
                         <p class="text-sm text-gray-500 mt-1">Days marked present</p>
                     </div>
                     <div class="bg-white border border-gray-200 rounded-xl p-6">
@@ -185,8 +186,8 @@
                             <h3 class="font-semibold text-gray-800">Absences</h3>
                             <i data-lucide="x-circle" class="w-6 h-6 text-unjustified"></i>
                         </div>
-                        <p class="text-3xl font-bold text-unjustified">4</p>
-                        <p class="text-sm text-gray-500 mt-1">2 justified • 2 pending</p>
+                        <p class="text-3xl font-bold text-unjustified" x-text="absenceCount"></p>
+                        <p class="text-sm text-gray-500 mt-1" x-text="justifiedCount + ' justified • ' + pendingCount + ' pending'"></p>
                     </div>
                 </div>
 
@@ -437,6 +438,28 @@
 
 
         <script>
+            function studentDashboard() {
+                const studentProfileId = 1; // Emma Johnson
+                const studentData = DataHelpers.getStudentDataForUI(studentProfileId);
+                const attendanceRecords = DataHelpers.getAttendanceForStudent(studentProfileId);
+                const justifications = DataHelpers.getJustificationsForStudent(studentProfileId);
+                
+                const presentCount = attendanceRecords.filter(r => r.status === 'present' || r.status === 'late').length;
+                const absenceCount = attendanceRecords.filter(r => r.status === 'absent').length;
+                const justifiedCount = justifications.filter(j => j.status === 'approved').length;
+                const pendingCount = justifications.filter(j => j.status === 'pending').length;
+
+                return {
+                    sidebarOpen: false,
+                    studentData: studentData,
+                    totalDays: attendanceRecords.length,
+                    presentDays: presentCount,
+                    absenceCount: absenceCount,
+                    justifiedCount: justifiedCount,
+                    pendingCount: pendingCount
+                }
+            }
+
             lucide.createIcons();
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', options);

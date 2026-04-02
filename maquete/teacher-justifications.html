@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://preline.co/assets/css/main.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="data.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         body {
@@ -467,6 +468,36 @@
 
     <script>
         function teacherJustificationsApp() {
+            // Teacher profile ID 1 (Imane Bouziane) manages groups 1 and 2
+            const teacherProfileId = 1;
+            const teacherGroups = DataHelpers.getTeacherGroups(teacherProfileId);
+            const teacherGroupIds = teacherGroups.map(g => g.id);
+            
+            // Get all students in teacher's groups
+            const teacherStudents = AppData.studentProfiles.filter(sp => teacherGroupIds.includes(sp.group_id));
+            const teacherStudentIds = teacherStudents.map(sp => sp.id);
+            
+            // Filter justifications for teacher's students
+            const teacherJustifications = AppData.justifications.filter(j => teacherStudentIds.includes(j.student_id));
+            
+            const transformedJustifications = teacherJustifications.map(j => {
+                const studentData = DataHelpers.getStudentDataForUI(j.student_id);
+                const session = DataHelpers.getSession(j.session_id);
+                return {
+                    id: j.id,
+                    studentName: studentData?.name || 'Unknown',
+                    studentId: studentData?.matricule || 'N/A',
+                    grade: studentData?.groupName || 'N/A',
+                    absenceDate: DataHelpers.formatShortDate(j.start_date),
+                    session: session ? DataHelpers.getSessionTimeRange(session) : 'N/A',
+                    documentName: j.document_name,
+                    reason: j.reason,
+                    submittedDate: DataHelpers.formatShortDate(j.submitted_at),
+                    status: j.status,
+                    type: j.type
+                };
+            });
+
             return {
                 sidebarOpen: false,
                 searchQuery: '',
@@ -477,15 +508,9 @@
                 toastMessage: '',
                 toastType: 'success',
                 selectedJustification: null,
-                justifications: [
-                    { id: 1, studentName: 'Emma Johnson', studentId: 'STU001', grade: '10A', absenceDate: 'Dec 20, 2025', session: 'Morning (9-11)', documentName: 'medical_certificate.pdf', reason: 'Doctor appointment - fever and flu symptoms', submittedDate: 'Dec 21, 2025', status: 'pending', type: 'medical' },
-                    { id: 2, studentName: 'James Anderson', studentId: 'STU008', grade: '10B', absenceDate: 'Dec 18, 2025', session: 'Afternoon (14-17)', documentName: 'parent_letter.jpg', reason: 'Family emergency - had to travel', submittedDate: 'Dec 19, 2025', status: 'pending', type: 'family' },
-                    { id: 3, studentName: 'Amelia Garcia', studentId: 'STU015', grade: '10A', absenceDate: 'Dec 15, 2025', session: 'Midday (11-14)', documentName: 'hospital_note.pdf', reason: 'Hospital visit for annual checkup', submittedDate: 'Dec 16, 2025', status: 'pending', type: 'medical' },
-                    { id: 4, studentName: 'Elijah Moore', studentId: 'STU006', grade: '10B', absenceDate: 'Dec 10, 2025', session: 'Morning (9-11)', documentName: 'dentist_appointment.pdf', reason: 'Scheduled dental surgery', submittedDate: 'Dec 11, 2025', status: 'approved', type: 'medical' },
-                    { id: 5, studentName: 'Olivia Brown', studentId: 'STU003', grade: '10A', absenceDate: 'Dec 5, 2025', session: 'Afternoon (14-17)', documentName: 'court_summons.pdf', reason: 'Required court appearance', submittedDate: 'Dec 6, 2025', status: 'approved', type: 'other' },
-                    { id: 6, studentName: 'Lucas Harris', studentId: 'STU012', grade: '10B', absenceDate: 'Dec 1, 2025', session: 'Morning (9-11)', documentName: 'travel_document.pdf', reason: 'Family vacation - no valid reason', submittedDate: 'Dec 2, 2025', status: 'rejected', type: 'other' }
-                ],
+                justifications: transformedJustifications,
                 filteredJustifications: [],
+                teacherGroups: teacherGroups,
 
                 init() {
                     this.filterJustifications();

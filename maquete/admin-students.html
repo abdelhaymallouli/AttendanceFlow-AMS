@@ -10,6 +10,7 @@
       rel="stylesheet"
     />
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="data.js"></script>
     <script
       defer
       src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
@@ -460,7 +461,7 @@
                 <tbody class="divide-y divide-gray-200">
                   <template
                     x-for="student in filteredStudents"
-                    :key="student.id"
+                    :key="student.profileId"
                   >
                     <tr class="student-card hover:bg-gray-50">
                       <td class="px-6 py-4">
@@ -488,7 +489,7 @@
                       <td class="px-6 py-4">
                         <span
                           class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800"
-                          x-text="'Grade ' + student.grade"
+                          x-text="student.groupName"
                         ></span>
                       </td>
                       <td class="px-6 py-4">
@@ -546,7 +547,7 @@
 
             <!-- Mobile Cards -->
             <div class="md:hidden divide-y divide-gray-200">
-              <template x-for="student in filteredStudents" :key="student.id">
+              <template x-for="student in filteredStudents" :key="student.profileId">
                 <div class="p-4 student-card">
                   <div class="flex items-center justify-between mb-3">
                     <div class="flex items-center">
@@ -565,7 +566,7 @@
                         ></p>
                         <p
                           class="text-xs text-gray-500"
-                          x-text="student.id"
+                          x-text="student.matricule"
                         ></p>
                       </div>
                     </div>
@@ -580,8 +581,8 @@
                   </div>
                   <div class="grid grid-cols-2 gap-2 text-sm mb-3">
                     <div>
-                      <span class="text-gray-500">Grade:</span>
-                      <span class="text-gray-800" x-text="student.grade"></span>
+                      <span class="text-gray-500">Group:</span>
+                      <span class="text-gray-800" x-text="student.groupName"></span>
                     </div>
                     <div>
                       <span class="text-gray-500">Attendance:</span>
@@ -691,7 +692,7 @@
                 ></h3>
                 <p
                   class="text-sm text-gray-500"
-                  x-text="selectedStudent?.id + ' • Grade ' + selectedStudent?.grade"
+                  x-text="selectedStudent?.matricule + ' • ' + selectedStudent?.groupName"
                 ></p>
 
                 <div class="mt-6 grid grid-cols-2 gap-4">
@@ -799,6 +800,7 @@
                 >
                 <input
                   type="text"
+                  x-model="addForm.name"
                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                   placeholder="Enter student name"
                 />
@@ -809,6 +811,7 @@
                 >
                 <input
                   type="email"
+                  x-model="addForm.email"
                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                   placeholder="student@school.edu"
                 />
@@ -819,13 +822,11 @@
                 >
                 <select
                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                  x-model="addForm.groupId"
                 >
-                  <option value="10A">Grade 10A</option>
-                  <option value="10B">Grade 10B</option>
-                  <option value="11A">Grade 11A</option>
-                  <option value="11B">Grade 11B</option>
-                  <option value="12A">Grade 12A</option>
-                  <option value="12B">Grade 12B</option>
+                  <template x-for="group in AppData.groups" :key="group.id">
+                    <option :value="group.id" x-text="'Grade ' + group.name"></option>
+                  </template>
                 </select>
               </div>
               <div>
@@ -834,6 +835,7 @@
                 >
                 <input
                   type="tel"
+                  x-model="addForm.phone"
                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                   placeholder="+1 234 567 890"
                 />
@@ -842,7 +844,7 @@
           </div>
           <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
             <button
-              @click="showAddModal = false"
+              @click="addStudent()"
               type="button"
               class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none sm:text-sm"
             >
@@ -891,14 +893,11 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Grade</label>
-                            <select x-model="editForm.grade"
+                            <select x-model="editForm.groupId" @change="editForm.groupName = AppData.groups.find(g => g.id == editForm.groupId).name"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none">
-                                <option value="10A">Grade 10A</option>
-                                <option value="10B">Grade 10B</option>
-                                <option value="11A">Grade 11A</option>
-                                <option value="11B">Grade 11B</option>
-                                <option value="12A">Grade 12A</option>
-                                <option value="12B">Grade 12B</option>
+                                <template x-for="group in AppData.groups" :key="group.id">
+                                    <option :value="group.id" x-text="'Grade ' + group.name"></option>
+                                </template>
                             </select>
                         </div>
                         <div>
@@ -935,228 +934,8 @@
           showEditModal: false,
           selectedStudent: null,
           editForm: {},
-          students: [
-            {
-              id: "STU001",
-              name: "Emma Johnson",
-              email: "emma.j@school.edu",
-              phone: "+1 234 567 8901",
-              grade: "10A",
-              attendance: 96,
-              absences: 4,
-              justified: 3,
-              status: "good",
-            },
-            {
-              id: "STU002",
-              name: "Liam Smith",
-              email: "liam.s@school.edu",
-              phone: "+1 234 567 8902",
-              grade: "10A",
-              attendance: 98,
-              absences: 2,
-              justified: 2,
-              status: "good",
-            },
-            {
-              id: "STU003",
-              name: "Olivia Brown",
-              email: "olivia.b@school.edu",
-              phone: "+1 234 567 8903",
-              grade: "10A",
-              attendance: 94,
-              absences: 6,
-              justified: 4,
-              status: "good",
-            },
-            {
-              id: "STU004",
-              name: "Noah Davis",
-              email: "noah.d@school.edu",
-              phone: "+1 234 567 8904",
-              grade: "10A",
-              attendance: 97,
-              absences: 3,
-              justified: 2,
-              status: "good",
-            },
-            {
-              id: "STU005",
-              name: "Ava Wilson",
-              email: "ava.w@school.edu",
-              phone: "+1 234 567 8905",
-              grade: "10A",
-              attendance: 95,
-              absences: 5,
-              justified: 3,
-              status: "good",
-            },
-            {
-              id: "STU006",
-              name: "Elijah Moore",
-              email: "elijah.m@school.edu",
-              phone: "+1 234 567 8906",
-              grade: "10B",
-              attendance: 92,
-              absences: 8,
-              justified: 5,
-              status: "atrisk",
-            },
-            {
-              id: "STU007",
-              name: "Sophia Taylor",
-              email: "sophia.t@school.edu",
-              phone: "+1 234 567 8907",
-              grade: "10B",
-              attendance: 96,
-              absences: 4,
-              justified: 3,
-              status: "good",
-            },
-            {
-              id: "STU008",
-              name: "James Anderson",
-              email: "james.a@school.edu",
-              phone: "+1 234 567 8908",
-              grade: "10B",
-              attendance: 78,
-              absences: 22,
-              justified: 8,
-              status: "critical",
-            },
-            {
-              id: "STU009",
-              name: "Isabella Thomas",
-              email: "isabella.t@school.edu",
-              phone: "+1 234 567 8909",
-              grade: "10B",
-              attendance: 95,
-              absences: 5,
-              justified: 4,
-              status: "good",
-            },
-            {
-              id: "STU010",
-              name: "Benjamin Jackson",
-              email: "benjamin.j@school.edu",
-              phone: "+1 234 567 8910",
-              grade: "10B",
-              attendance: 97,
-              absences: 3,
-              justified: 2,
-              status: "good",
-            },
-            {
-              id: "STU011",
-              name: "Mia White",
-              email: "mia.w@school.edu",
-              phone: "+1 234 567 8911",
-              grade: "11A",
-              attendance: 94,
-              absences: 6,
-              justified: 4,
-              status: "good",
-            },
-            {
-              id: "STU012",
-              name: "Lucas Harris",
-              email: "lucas.h@school.edu",
-              phone: "+1 234 567 8912",
-              grade: "11A",
-              attendance: 91,
-              absences: 9,
-              justified: 6,
-              status: "atrisk",
-            },
-            {
-              id: "STU013",
-              name: "Charlotte Martin",
-              email: "charlotte.m@school.edu",
-              phone: "+1 234 567 8913",
-              grade: "11A",
-              attendance: 98,
-              absences: 2,
-              justified: 1,
-              status: "good",
-            },
-            {
-              id: "STU014",
-              name: "Henry Thompson",
-              email: "henry.t@school.edu",
-              phone: "+1 234 567 8914",
-              grade: "11A",
-              attendance: 96,
-              absences: 4,
-              justified: 3,
-              status: "good",
-            },
-            {
-              id: "STU015",
-              name: "Amelia Garcia",
-              email: "amelia.g@school.edu",
-              phone: "+1 234 567 8915",
-              grade: "11A",
-              attendance: 86,
-              absences: 14,
-              justified: 10,
-              status: "atrisk",
-            },
-            {
-              id: "STU016",
-              name: "Alexander Martinez",
-              email: "alex.m@school.edu",
-              phone: "+1 234 567 8916",
-              grade: "11B",
-              attendance: 97,
-              absences: 3,
-              justified: 2,
-              status: "good",
-            },
-            {
-              id: "STU017",
-              name: "Harper Robinson",
-              email: "harper.r@school.edu",
-              phone: "+1 234 567 8917",
-              grade: "11B",
-              attendance: 95,
-              absences: 5,
-              justified: 4,
-              status: "good",
-            },
-            {
-              id: "STU018",
-              name: "Sebastian Clark",
-              email: "sebastian.c@school.edu",
-              phone: "+1 234 567 8918",
-              grade: "11B",
-              attendance: 93,
-              absences: 7,
-              justified: 5,
-              status: "good",
-            },
-            {
-              id: "STU019",
-              name: "Evelyn Rodriguez",
-              email: "evelyn.r@school.edu",
-              phone: "+1 234 567 8919",
-              grade: "11B",
-              attendance: 96,
-              absences: 4,
-              justified: 3,
-              status: "good",
-            },
-            {
-              id: "STU020",
-              name: "Michael Lewis",
-              email: "michael.l@school.edu",
-              phone: "+1 234 567 8920",
-              grade: "11B",
-              attendance: 88,
-              absences: 12,
-              justified: 7,
-              status: "atrisk",
-            },
-          ],
+          addForm: { name: '', email: '', groupId: 1, phone: '' },
+          students: DataHelpers.getAllStudentsForUI(),
           filteredStudents: [],
 
           init() {
@@ -1174,7 +953,7 @@
             let filtered = this.students;
 
             if (this.filterGrade !== "all") {
-              filtered = filtered.filter((s) => s.grade === this.filterGrade);
+              filtered = filtered.filter((s) => s.groupName === this.filterGrade);
             }
 
             if (this.filterStatus !== "all") {
@@ -1186,7 +965,7 @@
               filtered = filtered.filter(
                 (s) =>
                   s.name.toLowerCase().includes(query) ||
-                  s.id.toLowerCase().includes(query),
+                  s.matricule.toLowerCase().includes(query),
               );
             }
 
@@ -1209,7 +988,7 @@
 
           saveStudent() {
             const index = this.students.findIndex(
-              (s) => s.id === this.editForm.id,
+              (s) => s.profileId === this.editForm.profileId,
             );
             if (index !== -1) {
               this.students[index] = { ...this.editForm };
@@ -1217,6 +996,23 @@
               this.showEditModal = false;
             }
           },
+
+          addStudent() {
+            const newStudent = {
+              ...this.addForm,
+              profileId: this.students.length + 1,
+              matricule: `STU0${String(this.students.length + 1).padStart(2, '0')}`,
+              groupName: AppData.groups.find(g => g.id == this.addForm.groupId).name,
+              attendance: 100,
+              absences: 0,
+              justified: 0,
+              status: 'good'
+            };
+            this.students.push(newStudent);
+            this.filterStudents();
+            this.showAddModal = false;
+            this.addForm = { name: '', email: '', groupId: 1, phone: '' };
+          }
         };
       }
 

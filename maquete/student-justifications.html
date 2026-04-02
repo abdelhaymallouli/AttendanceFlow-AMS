@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://preline.co/assets/css/main.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="data.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         body {
@@ -220,10 +221,10 @@
                                             x-model="newJustification.session"
                                             required>
                                             <option value="">Select session</option>
-                                            <option value="morning">Morning (9:00 - 11:00)</option>
-                                            <option value="midday">Midday (11:00 - 14:00)</option>
-                                            <option value="afternoon">Afternoon (14:00 - 17:00)</option>
                                             <option value="full">Full Day</option>
+                                            <template x-for="session in availableSessions" :key="session.id">
+                                                <option :value="session.id" x-text="session.typeLabel + ' (' + session.time + ') - ' + session.moduleName"></option>
+                                            </template>
                                         </select>
                                     </div>
                                 </div>
@@ -512,6 +513,31 @@
 
         <script>
             function studentJustificationsApp() {
+                // Student profile ID 1 (Emma Johnson)
+                const studentProfileId = 1;
+                const studentJustifications = DataHelpers.getJustificationsForStudent(studentProfileId);
+                
+                const transformedJustifications = studentJustifications.map(j => {
+                    const session = DataHelpers.getSession(j.session_id);
+                    return {
+                        id: j.id,
+                        date: j.start_date,
+                        session: j.session_id || 'full',
+                        type: j.type,
+                        reason: j.reason,
+                        submittedDate: j.submitted_at,
+                        status: j.status,
+                        documentName: j.document_name
+                    };
+                });
+
+                // Get available sessions for the student's group
+                const studentData = DataHelpers.getStudentDataForUI(studentProfileId);
+                const studentGroupId = studentData?.groupId;
+                const availableSessions = studentGroupId 
+                    ? DataHelpers.getSessionsForGroup(studentGroupId).map(s => DataHelpers.getSessionDataForUI(s.id)).filter(Boolean)
+                    : [];
+
                 return {
                     sidebarOpen: false,
                     mobileMenuOpen: false,
@@ -522,6 +548,7 @@
                     toastMessage: '',
                     filterStatus: 'all',
                     selectedJustification: null,
+                    availableSessions: availableSessions,
                     newJustification: {
                         date: '',
                         session: '',
@@ -529,12 +556,7 @@
                         reason: '',
                         file: null
                     },
-                    justifications: [
-                        { id: 1, date: '2025-12-24', session: 'morning', type: 'family', reason: 'Family emergency - had to travel urgently', submittedDate: '2025-12-24', status: 'pending', documentName: 'parent_letter.jpg' },
-                        { id: 2, date: '2025-12-12', session: 'full', type: 'medical', reason: 'Annual health checkup at hospital', submittedDate: '2025-12-13', status: 'approved', documentName: 'medical_certificate.pdf' },
-                        { id: 3, date: '2025-11-28', session: 'midday', type: 'appointment', reason: 'Dentist appointment for root canal', submittedDate: '2025-11-29', status: 'approved', documentName: 'dentist_note.pdf' },
-                        { id: 4, date: '2025-10-15', session: 'afternoon', type: 'other', reason: 'Participating in school sports competition', submittedDate: '2025-10-16', status: 'rejected', documentName: 'sports_event.jpg' }
-                    ],
+                    justifications: transformedJustifications,
                     filteredJustifications: [],
 
                     init() {
@@ -592,14 +614,24 @@
                         return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
                     },
 
-                    formatSession(session) {
-                        const sessions = {
-                            'morning': 'Morning (9:00 - 11:00)',
-                            'midday': 'Midday (11:00 - 14:00)',
-                            'afternoon': 'Afternoon (14:00 - 17:00)',
-                            'full': 'Full Day'
-                        };
-                        return sessions[session] || session;
+                    formatSession(sessionId) {
+                        // If it's a string like 'morning', 'midday', 'afternoon', 'full', keep old format
+                        if (typeof sessionId === 'string' && ['morning', 'midday', 'afternoon', 'full'].includes(sessionId)) {
+                            const sessions = {
+                                'morning': 'Morning (9:00 - 11:00)',
+                                'midday': 'Midday (11:00 - 14:00)',
+                                'afternoon': 'Afternoon (14:00 - 17:00)',
+                                'full': 'Full Day'
+                            };
+                            return sessions[sessionId] || sessionId;
+                        }
+                        // If it's a number, get session from data.js
+                        const session = DataHelpers.getSession(parseInt(sessionId));
+                        if (session) {
+                            const module = DataHelpers.getModule(session.module_id);
+                            return DataHelpers.getSessionTimeRange(session) + ' - ' + (module?.name || 'Session');
+                        }
+                        return 'Full Day';
                     },
 
                     submitJustification() {

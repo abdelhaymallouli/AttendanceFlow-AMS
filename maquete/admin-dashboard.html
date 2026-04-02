@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://preline.co/assets/css/main.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="data.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         body {
@@ -204,7 +205,7 @@
                             <span
                                 class="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">+2.5%</span>
                         </div>
-                        <p class="text-2xl font-bold text-gray-800 mb-1">847</p>
+                        <p class="text-2xl font-bold text-gray-800 mb-1" id="totalStudents">0</p>
                         <p class="text-sm text-gray-500">Total Students</p>
                     </div>
 
@@ -214,10 +215,9 @@
                             <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
                                 <i data-lucide="check-circle" class="w-6 h-6 text-green-600"></i>
                             </div>
-                            <span
-                                class="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">96.5%</span>
+                            <span class="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full" id="presentRate">0%</span>
                         </div>
-                        <p class="text-2xl font-bold text-gray-800 mb-1">817</p>
+                        <p class="text-2xl font-bold text-gray-800 mb-1" id="presentToday">0</p>
                         <p class="text-sm text-gray-500">Present Today</p>
                     </div>
 
@@ -227,9 +227,9 @@
                             <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
                                 <i data-lucide="x-circle" class="w-6 h-6 text-red-600"></i>
                             </div>
-                            <span class="text-xs font-medium text-red-600 bg-red-50 px-2 py-1 rounded-full">3.5%</span>
+                            <span class="text-xs font-medium text-red-600 bg-red-50 px-2 py-1 rounded-full" id="absentRate">0%</span>
                         </div>
-                        <p class="text-2xl font-bold text-gray-800 mb-1">30</p>
+                        <p class="text-2xl font-bold text-gray-800 mb-1" id="absentToday">0</p>
                         <p class="text-sm text-gray-500">Absent Today</p>
                     </div>
 
@@ -243,7 +243,7 @@
                             <span
                                 class="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded-full">Action</span>
                         </div>
-                        <p class="text-2xl font-bold text-gray-800 mb-1">7</p>
+                        <p class="text-2xl font-bold text-gray-800 mb-1" id="pendingJustifications">0</p>
                         <p class="text-sm text-gray-500">Pending Justifications</p>
                     </a>
                 </div>
@@ -277,23 +277,7 @@
                         <!-- Class Summary -->
                         <div class="mt-6 pt-6 border-t border-gray-200">
                             <h4 class="text-sm font-semibold text-gray-700 mb-3">Classes Overview</h4>
-                            <div class="space-y-2 text-sm">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-gray-600">Grade 10A</span>
-                                    <span class="font-medium text-green-600">98% present</span>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-gray-600">Grade 10B</span>
-                                    <span class="font-medium text-green-600">95% present</span>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-gray-600">Grade 11A</span>
-                                    <span class="font-medium text-amber-600">92% present</span>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-gray-600">Grade 11B</span>
-                                    <span class="font-medium text-green-600">97% present</span>
-                                </div>
+                            <div class="space-y-2 text-sm" id="classesOverview">
                             </div>
                         </div>
                     </div>
@@ -308,77 +292,8 @@
                             <button class="text-sm text-blue-600 hover:text-blue-700 font-medium">View All</button>
                         </div>
 
-                        <div class="space-y-4">
-                            <!-- Activity Item -->
-                            <div
-                                class="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                                <div
-                                    class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <i data-lucide="check" class="w-5 h-5 text-green-600"></i>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-medium text-gray-800">Attendance recorded for Grade 10A</p>
-                                    <p class="text-xs text-gray-500 mt-1">28 students present, 2 absent • 10 minutes ago
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- Activity Item -->
-                            <div
-                                class="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                                <div
-                                    class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <i data-lucide="file-check" class="w-5 h-5 text-blue-600"></i>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-medium text-gray-800">Justification approved for Sarah
-                                        Johnson</p>
-                                    <p class="text-xs text-gray-500 mt-1">Medical certificate accepted • 25 minutes ago
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- Activity Item -->
-                            <div
-                                class="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                                <div
-                                    class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <i data-lucide="clock" class="w-5 h-5 text-amber-600"></i>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-medium text-gray-800">Late arrival recorded for Michael Chen
-                                    </p>
-                                    <p class="text-xs text-gray-500 mt-1">Arrived at 8:45 AM • 1 hour ago</p>
-                                </div>
-                            </div>
-
-                            <!-- Activity Item -->
-                            <div
-                                class="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                                <div
-                                    class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <i data-lucide="alert-circle" class="w-5 h-5 text-red-600"></i>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-medium text-gray-800">New justification request from Emma
-                                        Davis</p>
-                                    <p class="text-xs text-gray-500 mt-1">Awaiting review • 2 hours ago</p>
-                                </div>
-                            </div>
-
-                            <!-- Activity Item -->
-                            <div
-                                class="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                                <div
-                                    class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <i data-lucide="check" class="w-5 h-5 text-green-600"></i>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-medium text-gray-800">Attendance recorded for Grade 11B</p>
-                                    <p class="text-xs text-gray-500 mt-1">32 students present, 1 absent • 3 hours ago
-                                    </p>
-                                </div>
-                            </div>
+                        <div class="space-y-4" id="recentActivity">
+                            <!-- Activities will be loaded here -->
                         </div>
                     </div>
                 </div>
@@ -392,6 +307,53 @@
         lucide.createIcons();
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', options);
+
+        // Load statistics from centralized data
+        document.getElementById('totalStudents').textContent = DataHelpers.getTotalStudents();
+        document.getElementById('presentToday').textContent = DataHelpers.getPresentToday();
+        document.getElementById('absentToday').textContent = DataHelpers.getAbsentToday();
+        document.getElementById('pendingJustifications').textContent = DataHelpers.getPendingJustificationCount();
+
+        const total = DataHelpers.getTotalStudents();
+        const present = DataHelpers.getPresentToday();
+        const absent = DataHelpers.getAbsentToday();
+        document.getElementById('presentRate').textContent = total > 0 ? Math.round((present / total) * 100) + '%' : '0%';
+        document.getElementById('absentRate').textContent = total > 0 ? Math.round((absent / total) * 100) + '%' : '0%';
+
+        // Load classes overview
+        const classesContainer = document.getElementById('classesOverview');
+        AppData.groups.forEach(group => {
+            const groupData = DataHelpers.getGroupDataForUI(group.id);
+            const rateColor = groupData.attendanceRate >= 95 ? 'text-green-600' : groupData.attendanceRate >= 90 ? 'text-amber-600' : 'text-red-600';
+            classesContainer.innerHTML += `
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-600">${group.name}</span>
+                    <span class="font-medium ${rateColor}">${groupData.attendanceRate}% present</span>
+                </div>
+            `;
+        });
+
+        // Load recent activity
+        const activityContainer = document.getElementById('recentActivity');
+        const activities = DataHelpers.getRecentActivity();
+        activities.forEach(activity => {
+            const dateObj = new Date(activity.date);
+            const timeDiff = Math.floor((new Date('2025-12-21') - dateObj) / (1000 * 60 * 60)); // Simulate time ago
+            const timeAgo = timeDiff < 24 ? `${timeDiff} hours ago` : `${Math.floor(timeDiff/24)} days ago`;
+
+            activityContainer.innerHTML += `
+                <div class="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <div class="w-10 h-10 bg-${activity.color}-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="${activity.icon}" class="w-5 h-5 text-${activity.color}-600"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-800">${activity.title}</p>
+                        <p class="text-xs text-gray-500 mt-1">${activity.description} • ${timeAgo}</p>
+                    </div>
+                </div>
+            `;
+        });
+        lucide.createIcons();
     </script>
 </body>
 

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://preline.co/assets/css/main.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="data.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         body {
@@ -404,33 +405,30 @@
                     // Current month days
                     for (let i = 1; i <= daysInMonth; i++) {
                         const date = new Date(year, month, i);
+                        const dateString = date.toISOString().split('T')[0];
                         const isToday = date.toDateString() === today.toDateString();
                         const dayOfWeek = date.getDay();
 
-                        // Sample data for demonstration
+                        // Get events from AppData
+                        const appEvent = AppData.events.find(e => e.date === dateString);
+                        
                         let attendance = null;
-                        let event = null;
-                        let eventColor = '';
-                        let eventBgClass = '';
+                        let event = appEvent ? appEvent.name : null;
+                        let eventColor = appEvent ? (appEvent.type === 'holiday' ? 'bg-blue-500' : 'bg-purple-500') : '';
+                        let eventBgClass = appEvent ? (appEvent.type === 'holiday' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700') : '';
 
-                        if (dayOfWeek !== 0 && dayOfWeek !== 6) { // Weekdays only
-                            attendance = Math.floor(Math.random() * 15) + 85; // 85-100%
-                        }
-
-                        // Add some sample events
-                        if (i === 25) {
-                            event = 'Christmas Break';
-                            eventColor = 'bg-blue-500';
-                            eventBgClass = 'bg-blue-100 text-blue-700';
-                            attendance = null;
-                        } else if (i === 15) {
-                            event = 'Parent Meeting';
-                            eventColor = 'bg-purple-500';
-                            eventBgClass = 'bg-purple-100 text-purple-700';
+                        // Calculate attendance from real records if available
+                        const records = DataHelpers.getAttendanceForDate(dateString);
+                        if (records.length > 0) {
+                            const present = records.filter(r => r.status === 'present' || r.status === 'late').length;
+                            attendance = Math.round((present / records.length) * 100);
+                        } else if (dayOfWeek !== 0 && dayOfWeek !== 6 && !event) {
+                            // Fallback mock for demonstration if no records exist for a school day
+                            attendance = Math.floor(Math.random() * 10) + 90;
                         }
 
                         this.calendarDays.push({
-                            date: date.toISOString().split('T')[0],
+                            date: dateString,
                             dayNumber: i,
                             isCurrentMonth: true,
                             isToday: isToday,
@@ -439,8 +437,8 @@
                             eventColor: eventColor,
                             eventBgClass: eventBgClass,
                             fullDate: date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
-                            present: attendance ? Math.floor(847 * attendance / 100) : null,
-                            absent: attendance ? 847 - Math.floor(847 * attendance / 100) : null
+                            present: attendance ? Math.floor(DataHelpers.getTotalStudents() * attendance / 100) : null,
+                            absent: attendance ? DataHelpers.getTotalStudents() - Math.floor(DataHelpers.getTotalStudents() * attendance / 100) : null
                         });
                     }
 

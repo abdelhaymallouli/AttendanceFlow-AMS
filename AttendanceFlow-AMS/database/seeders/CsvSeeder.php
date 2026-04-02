@@ -37,7 +37,7 @@ class CsvSeeder extends Seeder
             unset($userData['role']);
             $userData['password'] = \Illuminate\Support\Facades\Hash::make($userData['password']);
             $user = \App\Models\User::create($userData);
-            // $user->assignRole($role); // Roles will be set after Spatie setup
+            $user->assignRole($role);
         }
         fclose($file);
     }

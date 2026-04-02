@@ -7,7 +7,7 @@ Ce document présente l'architecture technique détaillée et le diagramme de cl
 - **Frontend (UI Layer)** : Construit en Blade avec un design système en **Tailwind CSS** pour l'interface réactive, et **Alpine.js** pour l'interactivité légère côté client.
 - **Microservices (Backend / API Layer)** : 
   - **Auth & IAM Service** : Gère l'authentification et les autorisations (intégré avec Spatie).
-  - **Academic Service** : Gère les filières, groupes et sessions.
+  - **Academic Service** : Gère les filières, groupes, modules et **sessions dynamiques**.
   - **Attendance Service** : Gère les pointages d'absences et les justifications.
 - **Base de données** : Relations inter-services modélisées.
 
@@ -85,6 +85,16 @@ classDiagram
             +int teacher_id
             +int module_id
         }
+
+        class TeacherModule {
+            +int teacher_id
+            +int module_id
+        }
+
+        class TeacherGroup {
+            +int teacher_id
+            +int group_id
+        }
     }
 
     %% Attendance Package
@@ -105,6 +115,16 @@ classDiagram
             +date end_date
             +enum status
             +date submitted_at
+            +string document_name
+            +string type
+            +int session_id
+        }
+
+        class Event {
+            +int id
+            +date date
+            +string name
+            +string type
         }
     }
 
@@ -128,6 +148,62 @@ classDiagram
     AttendanceRecord "*" -- "1" Session : linkedTo
     
     StudentProfile "1" -- "*" Justification : provides
+    Justification "*" -- "1" Session : references
+```
+
+## 🔄 Sessions Dynamiques (Changeables)
+
+### Concept
+Les sessions dans AttendanceFlow-AMS sont **dynamiques et configurables**, contrairement à des créneaux fixes (matin/midi/après-midi). Chaque session est créée avec des paramètres spécifiques :
+
+### Caractéristiques des Sessions Dynamiques
+
+| Champ | Description | Exemple |
+|-------|-------------|---------|
+| `id` | Identifiant unique | 1, 2, 3... |
+| `start_time` | Heure de début configurable | 09:00, 11:00, 14:00 |
+| `end_time` | Heure de fin configurable | 11:00, 14:00, 17:00 |
+| `duration_hours` | Durée calculée (end - start) | 2.0, 3.0 heures |
+| `type` | Type de cours | lecture, td, tp |
+| `group_id` | Groupe concerné | 1 (10A), 2 (10B) |
+| `teacher_id` | Enseignant assigné | 1 (Imane Bouziane) |
+| `module_id` | Module enseigné | 1 (Web Development) |
+
+### Avantages des Sessions Dynamiques
+
+1. **Flexibilité** : Pas de créneaux fixes imposés
+2. **Personnalisation** : Chaque groupe peut avoir son propre emploi du temps
+3. **Multi-modules** : Un enseignant peut enseigner plusieurs modules
+4. **Types variés** : Cours magistral (lecture), TD, TP
+5. **Durées variables** : Sessions de 2h, 3h ou plus
+
+### Exemple d'Emploi du Temps Dynamique
+
+```
+Groupe 10A (Teacher: Imane Bouziane)
+├── Lundi:   09:00-11:00  Web Development (lecture)
+├── Lundi:   11:00-14:00  Mobile Development (td)
+├── Mardi:   09:00-11:00  Web Development (tp)
+└── Mercredi: 14:00-17:00  Database Systems (lecture)
+
+Groupe 10B (Teacher: Imane Bouziane)
+├── Lundi:   09:00-11:00  Mobile Development (lecture)
+├── Mardi:   11:00-14:00  Web Development (td)
+└── Jeudi:   09:00-12:00  Web Development (tp)
+```
+
+### Relations Impliquées
+
+```
+Session ──── Group (scheduled for)
+     │
+     ├─── TeacherProfile (assigned to)
+     │
+     └─── Module (focused on)
+
+TeacherProfile ──── Module (teaches via TeacherModule)
+     │
+     └─── Group (manages via TeacherGroup)
 ```
 
 ## 🛠️ Choix Technologiques
@@ -143,3 +219,6 @@ classDiagram
 4. **Alpine.js & TailwindCSS** :
    - Ils n'apparaissent pas sur le diagramme de *classe du domaine backend* présenté ci-dessus car ils gèrent la **couche Vue**. 
    - Les composants Alpine invoqueront des APIs Laravel ou masqueront/afficheront des éléments UI (Tailwind classes) basé sur les Permissions Spatie réinjectées en variables Blade.
+5. **Sessions Dynamiques** :
+   - Implémentées dans `data.js` avec des helpers pour calculer les statuts (completed, active, upcoming)
+   - Permettent une gestion flexible des emplois du temps par groupe/enseignant/module
