@@ -28,13 +28,19 @@ class AcademicController extends Controller
 
     public function getSessions()
     {
-        return response()->json(Session::with(['group', 'module', 'teacherProfile.user'])->get());
+        return response()->json(Session::with(['group.studentProfiles.user', 'module', 'teacherProfile.user'])->get());
     }
 
     public function getTeacherSessions($id)
     {
         return response()->json(Session::where('teacher_profile_id', $id)
-            ->with(['group', 'module'])
+            ->with(['group.studentProfiles.user', 'module'])
             ->get());
+    }
+
+    public function getSession($id)
+    {
+        return response()->json(Session::with(['group.studentProfiles.user', 'module', 'teacherProfile.user'])
+            ->findOrFail($id));
     }
 }

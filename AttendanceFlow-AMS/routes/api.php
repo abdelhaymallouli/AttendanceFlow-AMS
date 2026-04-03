@@ -28,6 +28,7 @@ Route::prefix('academic')->group(function () {
     Route::get('filieres', [AcademicController::class, 'getFilieres']);
     Route::get('groups', [AcademicController::class, 'getGroups']);
     Route::get('modules', [AcademicController::class, 'getModules']);
+    Route::get('session/{id}', [AcademicController::class, 'getSession']);
     Route::get('sessions', [AcademicController::class, 'getSessions']);
     Route::get('sessions/teacher/{id}', [AcademicController::class, 'getTeacherSessions']);
 });
@@ -44,3 +45,7 @@ Route::prefix('justifications')->group(function () {
     Route::get('pending', [JustificationController::class, 'getPending']);
     Route::post('submit', [JustificationController::class, 'submit']);
 });
+
+// Stats Routes
+Route::get('stats/admin', [\App\Http\Controllers\Api\StatsController::class, 'getAdminStats']);
+Route::get('stats/student/{id}', [\App\Http\Controllers\Api\StatsController::class, 'getStudentStats']);
