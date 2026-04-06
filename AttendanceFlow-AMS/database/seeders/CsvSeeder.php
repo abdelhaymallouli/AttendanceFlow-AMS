@@ -35,9 +35,18 @@ class CsvSeeder extends Seeder
             $userData = array_combine($header, $row);
             $role = $userData['role'];
             unset($userData['role']);
-            $userData['password'] = \Illuminate\Support\Facades\Hash::make($userData['password']);
-            $user = \App\Models\User::create($userData);
-            $user->assignRole($role);
+            
+            $user = \App\Models\User::updateOrCreate(
+                ['email' => $userData['email']],
+                [
+                    'name' => $userData['name'],
+                    'password' => \Illuminate\Support\Facades\Hash::make($userData['password']),
+                ]
+            );
+
+            if (!$user->hasRole($role)) {
+                $user->assignRole($role);
+            }
         }
         fclose($file);
     }
@@ -51,13 +60,15 @@ class CsvSeeder extends Seeder
             $data = array_combine($header, $row);
             $user = \App\Models\User::where('email', $data['email'])->first();
             if ($user) {
-                DB::table('student_profiles')->insert([
-                    'user_id' => $user->id,
-                    'matricule' => $data['matricule'],
-                    'group_id' => $data['group_id'],
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
+                DB::table('student_profiles')->updateOrInsert(
+                    ['user_id' => $user->id],
+                    [
+                        'matricule' => $data['matricule'],
+                        'group_id' => $data['group_id'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]
+                );
             }
         }
         fclose($file);
@@ -72,12 +83,14 @@ class CsvSeeder extends Seeder
             $data = array_combine($header, $row);
             $user = \App\Models\User::where('email', $data['email'])->first();
             if ($user) {
-                DB::table('teacher_profiles')->insert([
-                    'user_id' => $user->id,
-                    'specialty' => $data['specialty'],
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
+                DB::table('teacher_profiles')->updateOrInsert(
+                    ['user_id' => $user->id],
+                    [
+                        'specialty' => $data['specialty'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]
+                );
             }
         }
         fclose($file);
