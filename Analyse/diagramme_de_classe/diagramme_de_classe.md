@@ -45,21 +45,17 @@ classDiagram
     namespace Academic_Service {
         class StudentProfile {
             +int id
-            +int user_id
             +string matricule
-            +int group_id
         }
 
         class TeacherProfile {
             +int id
-            +int user_id
             +string specialty
         }
 
         class Group {
             +int id
             +string name
-            +int filiere_id
         }
 
         class Filiere {
@@ -81,35 +77,20 @@ classDiagram
             +time end_time
             +float duration_hours
             +string type
-            +int group_id
-            +int teacher_id
-            +int module_id
         }
 
-        class TeacherModule {
-            +int teacher_id
-            +int module_id
-        }
-
-        class TeacherGroup {
-            +int teacher_id
-            +int group_id
-        }
     }
 
     %% Attendance Package
     namespace Attendance_Service {
         class AttendanceRecord {
             +int id
-            +int student_id
-            +int session_id
             +enum status
             +date date
         }
 
         class Justification {
             +int id
-            +int student_id
             +string reason
             +date start_date
             +date end_date
@@ -117,7 +98,6 @@ classDiagram
             +date submitted_at
             +string document_name
             +string type
-            +int session_id
         }
 
         class Event {
@@ -165,9 +145,6 @@ Les sessions dans AttendanceFlow-AMS sont **dynamiques et configurables**, contr
 | `end_time` | Heure de fin configurable | 11:00, 14:00, 17:00 |
 | `duration_hours` | Durée calculée (end - start) | 2.0, 3.0 heures |
 | `type` | Type de cours | lecture, td, tp |
-| `group_id` | Groupe concerné | 1 (10A), 2 (10B) |
-| `teacher_id` | Enseignant assigné | 1 (Imane Bouziane) |
-| `module_id` | Module enseigné | 1 (Web Development) |
 
 ### Avantages des Sessions Dynamiques
 
@@ -201,9 +178,9 @@ Session ──── Group (scheduled for)
      │
      └─── Module (focused on)
 
-TeacherProfile ──── Module (teaches via TeacherModule)
+TeacherProfile ──── Module (teaches)
      │
-     └─── Group (manages via TeacherGroup)
+     └─── Group (manages)
 ```
 
 ## 🛠️ Choix Technologiques
