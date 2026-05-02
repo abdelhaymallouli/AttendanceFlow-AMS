@@ -63,7 +63,7 @@
             Quick Actions
         </h3>
         <div class="space-y-3">
-            <a href="#" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center shadow-sm">
+            <a href="{{ route('admin.sessions.create') }}" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center shadow-sm">
                 <i data-lucide="plus-circle" class="w-5 h-5 mr-2"></i>
                 New Session
             </a>
