@@ -14,10 +14,7 @@ use Illuminate\Support\Facades\Log;
  */
 class IdentityService extends BaseService
 {
-    public function getServiceName(): string
-    {
-        return 'IdentityService';
-    }
+    // Service name is now automatically handled by BaseService
 
     /**
      * Authenticate a user with email and password.

@@ -4,109 +4,98 @@
 @section('page_title', 'Session Selection')
 
 @section('content')
-<div class="space-y-8">
+<div class="space-y-6" x-data="attendanceApp(initialSessions, '{{ $date }}')">
     
-    <!-- Today's Active Sessions (Mockup Style) -->
-    <div class="bg-white border border-gray-200 rounded-[2.5rem] p-8 lg:p-10 shadow-sm relative overflow-hidden group">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-blue-600/5 rounded-full -mr-16 -mt-16 group-hover:scale-110 transition-transform duration-700"></div>
-        
-        <div class="flex items-center justify-between mb-8 relative z-10">
+    <!-- Step 1: Date + Session Selector -->
+<x-ui.section-card padding="p-4" class="mb-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <!-- Step label -->
             <div>
-                <h3 class="text-2xl font-black text-gray-800 uppercase italic tracking-tighter">Today's Schedule</h3>
-                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mt-1">Sessions for {{ now()->format('l, M d Y') }}</p>
+                <h3 class="text-sm font-semibold text-gray-800 flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold shadow-sm shadow-blue-500/30">1</span>
+                    Select Date &amp; Session
+                </h3>
+                <p class="text-xs text-gray-500 mt-1 ml-8">Sessions are filtered by the selected date</p>
             </div>
-            <div class="bg-blue-600 text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">
-                {{ $todaySessions->count() }} Sessions
+
+            <!-- Date Input -->
+            <div class="flex items-center gap-3 bg-gray-50 p-2 rounded-lg border border-gray-100">
+                <label class="text-sm font-medium text-gray-700 whitespace-nowrap ml-1"><i data-lucide="calendar" class="w-4 h-4 inline-block mr-1 text-blue-600"></i> Date:</label>
+                <input
+                    type="date"
+                    x-model="selectedDate"
+                    @change="onDateChange()"
+                    class="text-sm border border-gray-300 rounded-md px-3 py-1.5 focus:ring-2 focus:ring-blue-500 outline-none bg-white shadow-sm"
+                >
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
-            @forelse($todaySessions as $session)
-            <div class="bg-gray-50 border border-gray-100 rounded-3xl p-6 hover:shadow-xl hover:shadow-slate-200/50 transition-all group/item">
-                <div class="flex items-start justify-between mb-4">
-                    <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm text-blue-600">
-                        <i data-lucide="book-open" class="w-6 h-6"></i>
+        <!-- Session Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <template x-for="session in availableSessions" :key="session.id">
+                <a :href="session.url" class="session-tab flex items-start p-4 border rounded-xl transition-all bg-white text-left hover:border-blue-400 hover:shadow-md border-gray-200 group">
+                    
+                    <!-- Type icon -->
+                    <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3 flex-shrink-0 mt-0.5 bg-blue-50 group-hover:bg-blue-600 transition-colors">
+                        <i data-lucide="clock" class="w-5 h-5 text-blue-600 group-hover:text-white transition-colors"></i>
                     </div>
-                    <span class="text-[10px] font-black {{ \Carbon\Carbon::parse($session->start_time)->isPast() ? 'text-gray-400 bg-gray-100' : 'text-blue-600 bg-blue-50' }} px-3 py-1 rounded-full uppercase tracking-widest">
-                        {{ \Carbon\Carbon::parse($session->start_time)->format('H:i') }}
-                    </span>
-                </div>
-                <h4 class="text-base font-black text-gray-800 uppercase italic leading-tight mb-2">{{ $session->module->name }}</h4>
-                <div class="space-y-2 mb-6">
-                    <div class="flex items-center gap-2 text-xs font-bold text-gray-400">
-                        <i data-lucide="users" class="w-3.5 h-3.5"></i>
-                        <span>{{ $session->group->name }}</span>
+
+                    <!-- Session info -->
+                    <div class="flex-1 min-w-0">
+                        <!-- Time + duration -->
+                        <p class="font-semibold text-sm text-gray-800">
+                            <span x-text="session.time"></span>
+                            <span class="font-normal text-xs ml-1 text-gray-400" x-text="'(' + session.duration + 'h)'"></span>
+                        </p>
+                        
+                        <!-- Module & Group -->
+                        <p class="text-xs text-gray-500 truncate mt-1">
+                            <span class="font-medium text-gray-700" x-text="session.module"></span>
+                            <span class="mx-1 text-gray-300">·</span>
+                            <span x-text="'Group ' + session.group"></span>
+                        </p>
+                        
+                        <!-- Teacher -->
+                        <p class="text-xs mt-1.5 text-gray-500 flex items-center">
+                            <i data-lucide="user" class="w-3 h-3 mr-1 opacity-70"></i>
+                            <span x-text="session.teacher"></span>
+                        </p>
                     </div>
-                    <div class="flex items-center gap-2 text-xs font-bold text-gray-400">
-                        <i data-lucide="user" class="w-3.5 h-3.5"></i>
-                        <span>{{ $session->teacherProfile->user->name }}</span>
-                    </div>
-                </div>
-                <a href="{{ route('teacher.sessions.attendance.show', $session) }}" 
-                    class="w-full bg-slate-900 border border-slate-900 hover:bg-blue-600 hover:border-blue-600 text-white font-black py-3 rounded-2xl flex items-center justify-center gap-2 transition-all active:scale-95 text-xs uppercase tracking-widest">
-                    <span>Mark Attendance</span>
-                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </a>
-            </div>
-            @empty
-            <div class="col-span-full py-12 text-center bg-gray-50/50 rounded-3xl border-2 border-dashed border-gray-100">
-                <i data-lucide="calendar-off" class="w-12 h-12 text-gray-200 mx-auto mb-4"></i>
-                <p class="text-sm font-bold text-gray-400 uppercase tracking-widest">No sessions scheduled for today</p>
-            </div>
-            @endforelse
+            </template>
         </div>
-    </div>
 
-    <!-- Other Sessions (Mockup Style List) -->
-    <div class="bg-white border border-gray-200 rounded-[2.5rem] p-8 lg:p-10 shadow-sm">
-        <h3 class="text-lg font-black text-gray-800 uppercase tracking-widest mb-8 flex items-center">
-            <i data-lucide="list" class="w-5 h-5 mr-3 text-blue-600"></i>
-            All Planned Sessions
-        </h3>
-
-        <div class="overflow-x-auto">
-            <table class="w-full text-left">
-                <thead>
-                    <tr class="border-b border-gray-100">
-                        <th class="pb-4 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Module / Group</th>
-                        <th class="pb-4 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Teacher</th>
-                        <th class="pb-4 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Date & Time</th>
-                        <th class="pb-4 text-right text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Action</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-50">
-                    @foreach($pastSessions->merge($upcomingSessions) as $session)
-                    <tr class="group hover:bg-gray-50 transition-colors">
-                        <td class="py-5 pr-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-gray-400 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
-                                    <i data-lucide="book-open" class="w-5 h-5"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-black text-gray-800 uppercase italic tracking-tighter">{{ $session->module->name }}</p>
-                                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ $session->group->name }}</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="py-5 pr-4">
-                            <p class="text-sm font-bold text-gray-600">{{ $session->teacherProfile->user->name }}</p>
-                        </td>
-                        <td class="py-5 pr-4">
-                            <p class="text-sm font-black text-gray-800">{{ \Carbon\Carbon::parse($session->start_time)->format('M d, Y') }}</p>
-                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ \Carbon\Carbon::parse($session->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($session->end_time)->format('H:i') }}</p>
-                        </td>
-                        <td class="py-5 text-right">
-                            <a href="{{ route('teacher.sessions.attendance.show', $session) }}" 
-                                class="inline-flex items-center gap-2 text-[10px] font-black text-blue-600 bg-blue-50 hover:bg-blue-600 hover:text-white px-4 py-2 rounded-xl transition-all uppercase tracking-widest">
-                                Mark 
-                                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+        <!-- No sessions state -->
+        <div x-show="availableSessions.length === 0" style="display: none;">
+            <x-ui.empty-state 
+                icon="calendar-x"
+                title="No sessions scheduled for this date"
+                class="border-dashed"
+            />
         </div>
-    </div>
+</x-ui.section-card>
 </div>
+
+@push('scripts')
+@php
+    $allSessionsData = $sessions->map(function($session) {
+        $start = \Carbon\Carbon::parse($session->start_time);
+        $end = \Carbon\Carbon::parse($session->end_time);
+        return [
+            'id' => $session->id,
+            'start_time' => $start->format('Y-m-d H:i:s'),
+            'time' => $start->format('H:i') . ' - ' . $end->format('H:i'),
+            'duration' => $end->diffInHours($start),
+            'module' => $session->module->name,
+            'group' => $session->group->name,
+            'teacher' => $session->teacherProfile->user->name,
+            'url' => route('admin.attendance.show', $session->id)
+        ];
+    })->values();
+@endphp
+
+<script>
+    const initialSessions = @json($allSessionsData);
+</script>
+@endpush
 @endsection

@@ -137,13 +137,41 @@
             <!-- Page Content (Mockup Style) -->
             <main class="flex-1 overflow-y-auto p-4 lg:p-6 bg-gray-50">
                 <div class="max-w-7xl mx-auto">
+                    @if(session('success'))
+                        <div x-data="{ show: true }" x-show="show" class="mb-6 bg-green-50 border border-green-200 text-green-800 rounded-xl p-4 flex items-center justify-between shadow-sm">
+                            <div class="flex items-center">
+                                <div class="bg-green-100 p-2 rounded-lg mr-3">
+                                    <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
+                                </div>
+                                <p class="text-sm font-medium">{{ session('success') }}</p>
+                            </div>
+                            <button @click="show = false" class="text-green-600 hover:text-green-800 transition-colors p-1 hover:bg-green-100 rounded-md">
+                                <i data-lucide="x" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    @endif
+                    
+                    @if(session('error'))
+                        <div x-data="{ show: true }" x-show="show" class="mb-6 bg-red-50 border border-red-200 text-red-800 rounded-xl p-4 flex items-center justify-between shadow-sm">
+                            <div class="flex items-center">
+                                <div class="bg-red-100 p-2 rounded-lg mr-3">
+                                    <i data-lucide="alert-circle" class="w-5 h-5 text-red-600"></i>
+                                </div>
+                                <p class="text-sm font-medium">{{ session('error') }}</p>
+                            </div>
+                            <button @click="show = false" class="text-red-600 hover:text-red-800 transition-colors p-1 hover:bg-red-100 rounded-md">
+                                <i data-lucide="x" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    @endif
+
                     @yield('content')
                 </div>
             </main>
         </div>
     </div>
 
-    @yield('scripts')
+    @stack('scripts')
 </body>
 
 </html>

@@ -16,10 +16,7 @@ use Illuminate\Support\Facades\DB;
  */
 class AcademicService extends BaseService
 {
-    public function getServiceName(): string
-    {
-        return 'AcademicService';
-    }
+    // Service name is now automatically handled by BaseService
 
     /**
      * Enroll a user as a student in a specific group.

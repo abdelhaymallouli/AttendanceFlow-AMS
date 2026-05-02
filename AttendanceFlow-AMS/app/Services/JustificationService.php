@@ -12,10 +12,7 @@ use App\Models\AttendanceRecord;
  */
 class JustificationService extends BaseService
 {
-    public function getServiceName(): string
-    {
-        return 'JustificationService';
-    }
+    // Service name is now automatically handled by BaseService
 
     /**
      * Submit a new justification.

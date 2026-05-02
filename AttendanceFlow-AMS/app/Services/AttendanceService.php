@@ -12,10 +12,7 @@ use Illuminate\Support\Collection;
  */
 class AttendanceService extends BaseService
 {
-    public function getServiceName(): string
-    {
-        return 'AttendanceService';
-    }
+    // Service name is now automatically handled by BaseService
 
     /**
      * Mark attendance for a single student.

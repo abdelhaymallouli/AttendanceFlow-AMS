@@ -1,112 +1,198 @@
 @extends('layouts.dashboard')
 
 @section('title', 'Global Analytics')
-@section('page_title', 'Attendance Reports')
+@section('page_title', 'Reports & Analytics')
+
+
 
 @section('header_actions')
-<button class="bg-blue-600 hover:bg-blue-700 text-white font-black py-2.5 px-6 rounded-2xl transition-all shadow-xl shadow-blue-500/20 active:scale-95 flex items-center gap-2 text-xs uppercase tracking-widest leading-none">
-    <i data-lucide="download" class="w-4 h-4"></i> Export PDF
+<button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center text-sm shadow-sm">
+    <i data-lucide="download" class="w-4 h-4 mr-2"></i> Export PDF
 </button>
 @endsection
 
 @section('content')
-<div class="space-y-8">
+<div class="space-y-6" x-data="{ activeTab: 'overview' }" x-init="$watch('activeTab', value => { if(value === 'trends') window.initTrendsChart(); })">
     
-    <!-- Analytics High-Level Grid (Mockup Style) -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white border border-gray-100 rounded-[2rem] p-8 shadow-sm">
-            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4 opacity-70">General Rate</p>
-            <div class="flex items-center gap-6">
-                <div class="text-5xl font-black text-gray-800 italic">94.2<span class="text-2xl text-blue-600">%</span></div>
-                <div class="flex-1 h-3 bg-gray-50 rounded-full overflow-hidden">
-                    <div class="h-full bg-blue-600 rounded-full" style="width: 94%"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-white border border-gray-100 rounded-[2rem] p-8 shadow-sm">
-            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4 opacity-70">Total Absences</p>
-            <div class="flex items-center gap-4">
-                <div class="w-14 h-14 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center font-black shadow-sm">
-                    <i data-lucide="trending-up" class="w-8 h-8"></i>
-                </div>
-                <div>
-                    <p class="text-3xl font-black text-gray-800">142h</p>
-                    <p class="text-[10px] font-bold text-red-500 uppercase tracking-widest">+12% vs last month</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-white border border-gray-100 rounded-[2rem] p-8 shadow-sm">
-            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4 opacity-70">At-Risk Students</p>
-            <div class="flex items-center gap-4">
-                <div class="w-14 h-14 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center font-black shadow-sm">
-                    <i data-lucide="alert-triangle" class="w-8 h-8"></i>
-                </div>
-                <div>
-                    <p class="text-3xl font-black text-gray-800">08</p>
-                    <p class="text-[10px] font-bold text-amber-500 uppercase tracking-widest">Attendance < 85%</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Chart & Table Area (Mockup Style) -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        <!-- Large Chart Block -->
-        <div class="lg:col-span-2 bg-white border border-gray-100 rounded-[2.5rem] p-8 lg:p-10 shadow-sm relative">
-            <div class="flex items-center justify-between mb-8">
-                <h3 class="text-lg font-black text-gray-800 uppercase tracking-widest">Attendance Trends</h3>
-                <div class="flex gap-2">
-                    <button class="px-4 py-2 bg-gray-50 text-[10px] font-black uppercase rounded-xl border border-gray-100 text-gray-400">Weekly</button>
-                    <button class="px-4 py-2 bg-blue-600 text-[10px] font-black uppercase rounded-xl border border-blue-600 text-white">Monthly</button>
-                </div>
-            </div>
-            
-            <!-- Chart Placeholder (Mockup Style) -->
-            <div class="h-80 bg-gray-50/50 rounded-[2rem] border border-dashed border-gray-200 flex flex-col items-center justify-center relative overflow-hidden group">
-                <div class="absolute inset-x-0 bottom-0 flex items-end justify-around h-full px-10 pb-8 space-x-1">
-                    @php $heights = [45, 62, 85, 74, 91, 55, 88, 92, 40, 68, 77, 83]; @endphp
-                    @foreach($heights as $h)
-                    <div class="w-full max-w-[20px] bg-blue-100 group-hover:bg-blue-600 transition-all rounded-t-lg shadow-blue-500/10" style="height: {{ $h }}%"></div>
-                    @endforeach
-                </div>
-                <div class="relative z-10 text-center pointer-events-none">
-                    <i data-lucide="bar-chart-2" class="w-12 h-12 text-blue-600/20 mb-4 mx-auto"></i>
-                    <p class="text-xs font-black text-gray-400 uppercase tracking-[0.3em]">Live Analytics Feed</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- At-Risk Preview (Mockup Style) -->
-        <div class="bg-white border border-gray-100 rounded-[2.5rem] p-8 shadow-sm">
-            <h3 class="text-lg font-black text-gray-800 mb-8 uppercase tracking-widest">At-Risk Students</h3>
-            <div class="space-y-6">
-                @foreach(\App\Models\StudentProfile::with('user')->take(5)->get() as $student)
-                <div class="flex items-center justify-between group">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-gray-50 text-gray-400 rounded-xl flex items-center justify-center font-black group-hover:bg-red-50 group-hover:text-red-600 transition-colors">
-                            {{ substr($student->user->name, 0, 1) }}
-                        </div>
-                        <div>
-                            <p class="text-sm font-black text-gray-800">{{ $student->user->name }}</p>
-                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ $student->group->name ?? 'G1' }}</p>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-xs font-black text-red-600 italic">82%</p>
-                        <p class="text-[8px] font-black text-gray-300 uppercase tracking-widest">Critical</p>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-            
-            <button class="w-full mt-10 p-5 bg-gray-50 hover:bg-gray-100 text-gray-400 hover:text-red-600 font-black rounded-2xl text-[10px] uppercase tracking-[0.2em] transition-all border border-transparent hover:border-red-100">
-                View Critical List
+    <!-- Tabs -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 mb-6">
+        <div class="flex border-b border-gray-200 overflow-x-auto">
+            <button @click="activeTab = 'overview'" :class="activeTab === 'overview' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-600 hover:text-gray-800'" class="px-6 py-4 font-medium text-sm whitespace-nowrap transition-colors">
+                Overview
+            </button>
+            <button @click="activeTab = 'trends'" :class="activeTab === 'trends' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-600 hover:text-gray-800'" class="px-6 py-4 font-medium text-sm whitespace-nowrap transition-colors">
+                Trends
+            </button>
+            <button @click="activeTab = 'classes'" :class="activeTab === 'classes' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-600 hover:text-gray-800'" class="px-6 py-4 font-medium text-sm whitespace-nowrap transition-colors">
+                By Class
+            </button>
+            <button @click="activeTab = 'students'" :class="activeTab === 'students' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-600 hover:text-gray-800'" class="px-6 py-4 font-medium text-sm whitespace-nowrap transition-colors">
+                At-Risk Students
             </button>
         </div>
     </div>
 
+    <!-- Overview Tab -->
+    <div x-show="activeTab === 'overview'" class="space-y-6">
+
+        <!-- Key Metrics -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <x-ui.stat-card 
+                title="Average Attendance" 
+                value="95.8%" 
+                icon="trending-up" 
+                color="green" 
+                trend="+1.2% from last month" 
+            />
+            <x-ui.stat-card 
+                title="Absence Rate" 
+                value="4.2%" 
+                icon="alert-triangle" 
+                color="red" 
+                trend="-0.8% from last month" 
+                trendColor="green" 
+            />
+            <x-ui.stat-card 
+                title="Late Arrivals (Month)" 
+                value="124" 
+                icon="clock" 
+                color="amber" 
+                trend="+15 from last month" 
+                trendColor="red" 
+            />
+            <x-ui.stat-card 
+                title="Justified Absences" 
+                value="87%" 
+                icon="file-check" 
+                color="blue" 
+                trend="342 of 394 absences" 
+                trendColor="blue" 
+            />
+        </div>
+
+        <!-- Charts Row -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">Monthly Attendance Trend</h3>
+                <div class="relative h-[300px]"> <canvas id="monthlyTrendChart"></canvas></div>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">Current Month Distribution</h3>
+                <div class="relative h-[300px]"> <canvas id="statusDistributionChart"></canvas></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trends Tab -->
+    <div x-show="activeTab === 'trends'" style="display: none;" class="space-y-6">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-4">Absence Trends by Day of Week</h3>
+            <div class="relative h-[350px]"> <canvas id="weekdayTrendChart"></canvas></div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">Peak Absence Days</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                        <span class="text-sm font-medium text-gray-800">Monday, Dec 16</span>
+                        <span class="text-sm font-bold text-red-600">42 absences</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                        <span class="text-sm font-medium text-gray-800">Friday, Dec 13</span>
+                        <span class="text-sm font-bold text-red-600">38 absences</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-amber-50 rounded-lg">
+                        <span class="text-sm font-medium text-gray-800">Monday, Dec 9</span>
+                        <span class="text-sm font-bold text-amber-600">35 absences</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">Seasonal Patterns</h3>
+                <div class="space-y-3 text-sm">
+                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                        <span class="text-gray-700">September</span>
+                        <span class="font-medium text-green-600">97.2% attendance</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                        <span class="text-gray-700">October</span>
+                        <span class="font-medium text-green-600">96.5% attendance</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Classes Tab -->
+    <div x-show="activeTab === 'classes'" style="display: none;" class="space-y-6">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-bold text-gray-800">Class Performance Ranking</h3>
+            </div>
+            <div class="divide-y divide-gray-200">
+                @foreach(\App\Models\Group::take(5)->get() as $index => $group)
+                <div class="p-6 hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-4">
+                            <div class="flex items-center justify-center w-10 h-10 {{ $index < 3 ? 'bg-green-100 text-green-600' : 'bg-amber-100 text-amber-600' }} rounded-full font-bold">
+                                {{ $index + 1 }}
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">{{ $group->name }}</h4>
+                                <p class="text-sm text-gray-500">{{ $group->students->count() ?? rand(20, 35) }} students</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-2xl font-bold {{ $index < 3 ? 'text-green-600' : 'text-amber-600' }}">{{ 98 - $index * 1.5 }}%</p>
+                            <p class="text-xs text-gray-500">attendance rate</p>
+                        </div>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="{{ $index < 3 ? 'bg-green-600' : 'bg-amber-600' }} h-2 rounded-full" style="width: {{ 98 - $index * 1.5 }}%"></div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
+    <!-- At-Risk Students Tab -->
+    <div x-show="activeTab === 'students'" style="display: none;" class="space-y-6">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-bold text-gray-800">Students Requiring Attention</h3>
+                <p class="text-sm text-gray-500 mt-1">Students with attendance below 90% or pattern concerns</p>
+            </div>
+            <div class="divide-y divide-gray-200">
+                @foreach(\App\Models\StudentProfile::with(['user', 'group'])->take(3)->get() as $student)
+                <div class="p-6 hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                                <i data-lucide="alert-circle" class="w-6 h-6 text-red-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">{{ $student->user->name }}</h4>
+                                <p class="text-sm text-gray-500">{{ $student->student_id }} • {{ $student->group->name ?? 'G1' }}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xl font-bold text-red-600">{{ rand(75, 89) }}.5%</p>
+                            <p class="text-xs text-gray-500">{{ rand(5, 15) }} absences this month</p>
+                        </div>
+                    </div>
+                    <div class="mt-3 flex items-center space-x-2">
+                        <span class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full">Critical</span>
+                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">Parent contact needed</span>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
 </div>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+@endpush
 @endsection

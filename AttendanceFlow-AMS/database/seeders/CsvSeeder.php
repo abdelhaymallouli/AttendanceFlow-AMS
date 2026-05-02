@@ -106,21 +106,15 @@ class CsvSeeder extends Seeder
         $file = fopen($path, 'r');
         $header = fgetcsv($file);
 
-        $data = [];
         while (($row = fgetcsv($file)) !== false) {
             $item = array_combine($header, $row);
             $item['created_at'] = now();
             $item['updated_at'] = now();
-            $data[] = $item;
             
-            if (count($data) >= 100) {
-                DB::table($table)->insert($data);
-                $data = [];
-            }
-        }
-
-        if (!empty($data)) {
-            DB::table($table)->insert($data);
+            // Use ID as the unique key for updateOrInsert if it exists in CSV
+            $key = isset($item['id']) ? ['id' => $item['id']] : $item;
+            
+            DB::table($table)->updateOrInsert($key, $item);
         }
 
         fclose($file);

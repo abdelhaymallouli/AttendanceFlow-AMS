@@ -13,10 +13,7 @@ use Carbon\Carbon;
  */
 class SchedulingService extends BaseService
 {
-    public function getServiceName(): string
-    {
-        return 'SchedulingService';
-    }
+    // Service name is now automatically handled by BaseService
 
     /**
      * Schedule a new session, checking for basic teacher conflicts.

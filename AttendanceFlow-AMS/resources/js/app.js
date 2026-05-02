@@ -1,19 +1,28 @@
 import './bootstrap';
-
-import 'preline';
 import Alpine from 'alpinejs';
+import { createIcons, icons } from 'lucide';
+import './attendance';
+import './justifications';
+import './calendar';
+import './reports';
 
 window.Alpine = Alpine;
-Alpine.start();
+window.createIcons = createIcons;
+window.lucideIcons = icons;
 
-// Lucide icons initialization for dynamic content or Alpine components
-import { createIcons, icons } from 'lucide';
-
-document.addEventListener('DOMContentLoaded', () => {
+// Initialize Lucide icons — call this any time new DOM is rendered
+window.initIcons = () => {
     createIcons({ icons });
+};
+
+// On first load
+document.addEventListener('DOMContentLoaded', () => {
+    window.initIcons();
 });
 
-// Preline re-initialization for SPA-like navigation if needed (e.g. Livewire)
-document.addEventListener('livewire:navigated', () => {
-    window.HSStaticMethods.autoInit();
+// After every Alpine.js component finishes rendering
+document.addEventListener('alpine:initialized', () => {
+    window.initIcons();
 });
+
+Alpine.start();

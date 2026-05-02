@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Services;
 
 use App\Models\AttendanceRecord;
 use App\Models\Justification;
@@ -114,5 +114,10 @@ class JustificationServiceTest extends TestCase
 
         // Attendance record must remain 'absent'
         $this->assertDatabaseHas('attendance_records', ['date' => '2026-03-10', 'status' => 'absent']);
+    }
+    public function test_it_fails_to_review_non_existent_justification(): void
+    {
+        $this->expectException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
+        $this->service->reviewJustification(9999, 'accepted');
     }
 }

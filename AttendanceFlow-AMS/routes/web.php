@@ -37,11 +37,18 @@ Route::group(['middleware' => ['auth']], function () {
         // Student Management
         Route::get('/students', [\App\Http\Controllers\Admin\StudentController::class, 'index'])->name('admin.students.index');
 
-        // Calendar
-        Route::get('/calendar', [\App\Http\Controllers\Admin\CalendarController::class, 'index'])->name('admin.calendar.index');
+        // Session Management (Replaces Calendar)
+        Route::get('/sessions', [\App\Http\Controllers\Admin\SessionController::class, 'index'])->name('admin.sessions.index');
+        Route::get('/sessions/create', [\App\Http\Controllers\Admin\SessionController::class, 'create'])->name('admin.sessions.create');
+        Route::post('/sessions', [\App\Http\Controllers\Admin\SessionController::class, 'store'])->name('admin.sessions.store');
+        Route::get('/sessions/{session}/edit', [\App\Http\Controllers\Admin\SessionController::class, 'edit'])->name('admin.sessions.edit');
+        Route::put('/sessions/{session}', [\App\Http\Controllers\Admin\SessionController::class, 'update'])->name('admin.sessions.update');
+        Route::delete('/sessions/{session}', [\App\Http\Controllers\Admin\SessionController::class, 'destroy'])->name('admin.sessions.destroy');
 
         // Attendance Selection
         Route::get('/attendance', [\App\Http\Controllers\Admin\AttendanceController::class, 'index'])->name('admin.attendance.index');
+        Route::get('/attendance/{session}', [\App\Http\Controllers\Admin\AttendanceController::class, 'show'])->name('admin.attendance.show');
+        Route::post('/attendance/{session}', [\App\Http\Controllers\Admin\AttendanceController::class, 'store'])->name('admin.attendance.store');
     });
 
     // Student Group

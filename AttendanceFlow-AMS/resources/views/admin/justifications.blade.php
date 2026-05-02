@@ -1,128 +1,178 @@
 @extends('layouts.dashboard')
 
 @section('title', 'Justification Hub')
-@section('page_title', 'Validation Center')
+@section('page_title', 'Absence Justifications')
+
+
 
 @section('header_actions')
 <div class="flex items-center gap-3">
-    <span class="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-[10px] font-black bg-amber-50 text-amber-600 border border-amber-100 uppercase tracking-widest">
-        7 Pending Approval
+    <span class="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-amber-50 text-amber-600 border border-amber-100">
+        {{ \App\Models\Justification::where('status', 'pending')->count() }} Pending Approval
     </span>
 </div>
 @endsection
 
 @section('content')
-<div class="space-y-8">
+<div class="space-y-6" x-data="justificationsApp(serverJustifications)">
     
-    <!-- Hero Stats for Justifications (Mockup Style) -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div class="bg-white border border-gray-100 rounded-[2rem] p-6 shadow-sm overflow-hidden relative group">
-            <div class="absolute -right-4 -top-4 w-16 h-16 bg-blue-50 rounded-full group-hover:scale-125 transition-transform"></div>
-            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 opacity-70">Total Submitted</p>
-            <p class="text-3xl font-black text-gray-800 italic">{{ \App\Models\Justification::count() }}</p>
-        </div>
-        <div class="bg-white border border-gray-100 rounded-[2rem] p-6 shadow-sm overflow-hidden relative group">
-            <div class="absolute -right-4 -top-4 w-16 h-16 bg-amber-50 rounded-full group-hover:scale-125 transition-transform"></div>
-            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 opacity-70">Pending</p>
-            <p class="text-3xl font-black text-amber-600 italic">{{ \App\Models\Justification::where('status', 'pending')->count() }}</p>
-        </div>
-        <div class="bg-white border border-gray-100 rounded-[2rem] p-6 shadow-sm overflow-hidden relative group">
-            <div class="absolute -right-4 -top-4 w-16 h-16 bg-green-50 rounded-full group-hover:scale-125 transition-transform"></div>
-            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 opacity-70">Approved</p>
-            <p class="text-3xl font-black text-green-600 italic">{{ \App\Models\Justification::where('status', 'approved')->count() }}</p>
-        </div>
-        <div class="bg-white border border-gray-100 rounded-[2rem] p-6 shadow-sm overflow-hidden relative group">
-            <div class="absolute -right-4 -top-4 w-16 h-16 bg-red-50 rounded-full group-hover:scale-125 transition-transform"></div>
-            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 opacity-70">Denied</p>
-            <p class="text-3xl font-black text-red-600 italic">{{ \App\Models\Justification::where('status', 'rejected')->count() }}</p>
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <x-ui.stat-card 
+            title="Pending" 
+            alpineValue="pendingCount" 
+            icon="clock" 
+            color="amber" 
+        />
+        <x-ui.stat-card 
+            title="Approved" 
+            alpineValue="approvedCount" 
+            icon="check-circle" 
+            color="green" 
+        />
+        <x-ui.stat-card 
+            title="Rejected" 
+            alpineValue="rejectedCount" 
+            icon="x-circle" 
+            color="red" 
+        />
+        <x-ui.stat-card 
+            title="Total" 
+            alpineValue="justifications.length" 
+            icon="file-text" 
+            color="blue" 
+        />
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
+        <div class="flex flex-col md:flex-row gap-4">
+            <div class="flex-1">
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i data-lucide="search" class="w-5 h-5 text-gray-400"></i>
+                    </div>
+                    <input x-model="searchQuery" @input="filterJustifications()" type="text" class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none" placeholder="Search by student name or ID...">
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <div class="relative min-w-[150px]">
+                    <select x-model="filterStatus" @change="filterJustifications()" class="w-full py-2 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-white text-sm">
+                        <option value="all">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Justification List (Mockup Style Table) -->
-    <div class="bg-white border border-gray-100 rounded-[2.5rem] p-8 lg:p-10 shadow-sm relative overflow-hidden">
-        <div class="flex items-center justify-between mb-10">
-            <h3 class="text-xl font-black text-gray-800 uppercase italic tracking-tighter">Validation Queue</h3>
-            <div class="flex gap-2">
-                <input type="text" placeholder="Search by name..." class="bg-gray-50 border border-gray-100 rounded-xl px-5 py-2.5 text-xs font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-600 outline-none transition-all w-64 shadow-sm">
-                <button class="bg-gray-50 hover:bg-gray-100 p-2.5 rounded-xl border border-gray-100 transition-all">
-                    <i data-lucide="filter" class="w-5 h-5 text-gray-400"></i>
-                </button>
-            </div>
-        </div>
+    <!-- Justifications List -->
+    <div class="space-y-4">
+        <template x-for="justification in filteredJustifications" :key="justification.id">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 transition-all hover:shadow-md">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <!-- Student Info -->
+                    <div class="flex items-center space-x-4 w-full lg:w-1/4">
+                        <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-blue-600 font-bold" x-text="justification.studentName.charAt(0)"></span>
+                        </div>
+                        <div class="min-w-0">
+                            <h4 class="font-semibold text-gray-800 truncate" x-text="justification.studentName"></h4>
+                            <p class="text-sm text-gray-500 truncate" x-text="justification.studentId + ' • ' + justification.grade"></p>
+                        </div>
+                    </div>
 
-        <div class="overflow-x-auto">
-            <table class="w-full text-left">
-                <thead>
-                    <tr class="text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-50">
-                        <th class="px-6 py-4">Student</th>
-                        <th class="px-6 py-4">Reason / Type</th>
-                        <th class="px-6 py-4">Document</th>
-                        <th class="px-6 py-4">Status</th>
-                        <th class="px-6 py-4 text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-50">
-                    @forelse(\App\Models\Justification::with('studentProfile.user')->latest()->get() as $just)
-                    <tr class="hover:bg-gray-50/50 transition-colors">
-                        <td class="px-6 py-6">
-                            <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center font-black text-blue-600 shadow-sm border border-gray-50">
-                                    {{ substr($just->studentProfile->user->name, 0, 1) }}
-                                </div>
-                                <div>
-                                    <p class="text-sm font-black text-gray-800 uppercase tracking-tight italic">{{ $just->studentProfile->user->name }}</p>
-                                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">{{ $just->studentProfile->student_id }}</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-6 font-bold text-gray-600 opacity-80 text-xs">
-                            {{ $just->reason }}
-                        </td>
-                        <td class="px-6 py-6">
-                            <a href="{{ Storage::url($just->file_path) }}" target="_blank" class="inline-flex items-center gap-2 text-xs font-black text-blue-600 hover:text-blue-800 uppercase tracking-widest bg-blue-50 px-3 py-2 rounded-xl transition-all">
-                                <i data-lucide="file-text" class="w-4 h-4"></i> View Doc
-                            </a>
-                        </td>
-                        <td class="px-6 py-6">
-                            <span class="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-[10px] font-black uppercase tracking-widest border 
-                                {{ $just->status == 'pending' ? 'bg-amber-50 text-amber-600 border-amber-100' : '' }}
-                                {{ $just->status == 'approved' ? 'bg-green-50 text-green-600 border-green-100' : '' }}
-                                {{ $just->status == 'rejected' ? 'bg-red-50 text-red-600 border-red-100' : '' }}">
-                                {{ $just->status }}
-                            </span>
-                        </td>
-                        <td class="px-6 py-6 text-center">
-                            @if($just->status == 'pending')
-                            <div class="flex items-center justify-center gap-2">
-                                <form action="{{ route('admin.justifications.update', $just) }}" method="POST">
+                    <!-- Absence Info -->
+                    <div class="flex items-center space-x-4 text-sm w-full lg:w-1/4">
+                        <div class="flex items-center space-x-2">
+                            <i data-lucide="calendar" class="w-4 h-4 text-gray-400"></i>
+                            <span class="text-gray-600" x-text="justification.absenceDate"></span>
+                        </div>
+                    </div>
+
+                    <!-- Document -->
+                    <div class="flex items-center space-x-3 w-full lg:w-1/5">
+                        <a :href="justification.documentUrl" target="_blank" class="flex items-center space-x-2 px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-100">
+                            <i data-lucide="file-text" class="w-4 h-4 text-gray-500"></i>
+                            <span class="text-sm text-blue-600 font-medium">View Doc</span>
+                        </a>
+                    </div>
+
+                    <!-- Status & Actions -->
+                    <div class="flex items-center justify-between lg:justify-end space-x-3 w-full lg:w-auto">
+                        <x-ui.badge alpineType="justification.status" alpineText="justification.status.charAt(0).toUpperCase() + justification.status.slice(1)" />
+                        
+                        <template x-if="justification.status === 'pending'">
+                            <div class="flex space-x-2">
+                                <form :action="justification.updateUrl" method="POST" class="inline">
                                     @csrf @method('PATCH')
                                     <input type="hidden" name="status" value="approved">
-                                    <button class="w-10 h-10 bg-green-50 hover:bg-green-100 text-green-600 rounded-xl flex items-center justify-center transition-all shadow-sm active:scale-90" title="Approve">
-                                        <i data-lucide="check" class="w-5 h-5"></i>
+                                    <button type="submit" class="bg-green-50 hover:bg-green-100 text-green-600 p-2 rounded-lg transition-colors" title="Approve">
+                                        <i data-lucide="check" class="w-4 h-4"></i>
                                     </button>
                                 </form>
-                                <form action="{{ route('admin.justifications.update', $just) }}" method="POST">
+                                <form :action="justification.updateUrl" method="POST" class="inline">
                                     @csrf @method('PATCH')
                                     <input type="hidden" name="status" value="rejected">
-                                    <button class="w-10 h-10 bg-red-50 hover:bg-red-100 text-red-600 rounded-xl flex items-center justify-center transition-all shadow-sm active:scale-90" title="Reject">
-                                        <i data-lucide="x" class="w-5 h-5"></i>
+                                    <button type="submit" class="bg-red-50 hover:bg-red-100 text-red-600 p-2 rounded-lg transition-colors" title="Reject">
+                                        <i data-lucide="x" class="w-4 h-4"></i>
                                     </button>
                                 </form>
                             </div>
-                            @else
-                            <span class="text-[10px] font-black text-gray-300 uppercase tracking-widest italic">Processed</span>
-                            @endif
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" class="px-6 py-12 text-center text-gray-400 font-bold uppercase tracking-[0.2em] opacity-40">No pending justifications found</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Reason -->
+                <div class="mt-4 pt-4 border-t border-gray-50">
+                    <p class="text-sm text-gray-600">
+                        <span class="font-medium text-gray-800">Reason:</span>
+                        <span x-text="justification.reason"></span>
+                    </p>
+                    <p class="text-xs text-gray-400 mt-1" x-text="'Submitted on ' + justification.submittedDate"></p>
+                </div>
+            </div>
+        </template>
+
+        <!-- Empty State -->
+        <div x-show="filteredJustifications.length === 0" style="display: none;">
+            <x-ui.empty-state 
+                icon="inbox"
+                title="No justifications found"
+                subtitle="Try adjusting your search or filters to find what you're looking for."
+            />
         </div>
     </div>
 
 </div>
+
+@php
+    $serverJustifications = \App\Models\Justification::with(['studentProfile.user', 'studentProfile.group'])
+        ->latest()
+        ->get()
+        ->map(function($j) {
+            return [
+                'id'            => $j->id,
+                'studentName'   => $j->studentProfile->user->name ?? 'Unknown',
+                'studentId'     => $j->studentProfile->student_id ?? 'N/A',
+                'grade'         => $j->studentProfile->group->name ?? 'G1',
+                'absenceDate'   => \Carbon\Carbon::parse($j->start_date)->format('M d, Y'),
+                'documentUrl'   => \Illuminate\Support\Facades\Storage::url($j->file_path),
+                'reason'        => $j->reason,
+                'submittedDate' => \Carbon\Carbon::parse($j->created_at)->format('M d, Y'),
+                'status'        => $j->status,
+                'updateUrl'     => route('admin.justifications.update', $j->id),
+            ];
+        })
+        ->values();
+@endphp
+
+@push('scripts')
+<script>
+    // Server data passed to the Alpine component (see resources/js/justifications.js)
+    const serverJustifications = @json($serverJustifications);
+</script>
+@endpush
 @endsection
