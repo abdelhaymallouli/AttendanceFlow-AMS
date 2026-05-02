@@ -22,11 +22,11 @@ class AttendanceController extends Controller
 
         // Load the group's students
         $students = $session->group->studentProfiles()->with('user')->get();
-        
+
         // Load existing records for this session
         $existingRecords = AttendanceRecord::where('session_id', $session->id)->get()->pluck('status', 'student_profile_id');
 
-        return view('teacher.attendance.show', compact('session', 'students', 'existingRecords'));
+        return view('teacher.attendance', compact('session', 'students', 'existingRecords'));
     }
 
     /**

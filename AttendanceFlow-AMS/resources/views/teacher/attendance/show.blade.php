@@ -1,163 +1,126 @@
 @extends('layouts.dashboard')
 
 @section('title', 'Attendance Entry')
-@section('page_title', 'Mark Attendance')
+@section('page_title', 'Pointage Terminal')
+
+@section('header_actions')
+<div class="flex items-center gap-3">
+    <div class="hidden sm:flex flex-col items-end pr-4 border-r border-gray-100">
+        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Target Group</span>
+        <span class="text-xs font-black text-blue-600 uppercase">{{ $session->group->name }}</span>
+    </div>
+    <div class="bg-slate-900 text-white px-5 py-2 rounded-xl text-[10px] font-black tracking-[0.2em] uppercase shadow-lg shadow-slate-200">
+        Session: {{ $session->start_time }} - {{ $session->end_time }}
+    </div>
+</div>
+@endsection
 
 @section('content')
-<div class="space-y-6" x-data="{ 
-    searchQuery: '',
-    stats: { present: 0, absent: 0, late: 0, unmarked: {{ $students->count() }} },
+<div class="space-y-8" x-data="{ 
+    markingMode: 'individual',
+    stats: { present: 0, absent: 0, late: 0 },
     updateStats() {
         const statuses = Array.from(document.querySelectorAll('input[type=radio]:checked')).map(r => r.value);
         this.stats.present = statuses.filter(s => s === 'present').length;
         this.stats.absent = statuses.filter(s => s === 'absent').length;
         this.stats.late = statuses.filter(s => s === 'late').length;
-        this.stats.unmarked = {{ $students->count() }} - statuses.length;
-    },
-    markAllPresent() {
-        document.querySelectorAll('input[type=radio][value=present]').forEach(el => el.checked = true);
-        this.updateStats();
-    },
-    clearAll() {
-        document.querySelectorAll('input[type=radio]').forEach(el => el.checked = false);
-        this.updateStats();
-    },
-    filterRows() {
-        const query = this.searchQuery.toLowerCase();
-        document.querySelectorAll('.student-row').forEach(row => {
-            const text = row.innerText.toLowerCase();
-            if (text.includes(query)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
     }
 }" x-init="updateStats()">
 
-    <!-- Session Context Banner -->
-    <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-sm">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm">
-                <i data-lucide="clipboard-check" class="w-5 h-5 text-white"></i>
-            </div>
-            <div>
-                <p class="text-sm font-bold text-blue-900">
-                    {{ $session->module->name }}
-                    <span class="opacity-50">·</span> Group {{ $session->group->name }}
-                </p>
-                <p class="text-xs text-blue-700 mt-0.5">
-                    {{ \Carbon\Carbon::parse($session->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($session->end_time)->format('H:i') }}
-                    <span class="opacity-50">·</span> {{ $students->count() }} students
-                </p>
-            </div>
-        </div>
-        <a href="{{ url()->previous() }}" class="text-xs text-blue-600 hover:text-blue-800 underline font-medium self-start sm:self-center bg-white px-3 py-1.5 rounded-lg border border-blue-200 transition-colors">
-            Change session
-        </a>
-    </div>
-
-    <!-- Controls Bar -->
-    <div class="bg-white border border-gray-200 rounded-xl p-4 mb-4 shadow-sm">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            
-            <!-- Search -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Search Student</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i data-lucide="search" class="w-4 h-4 text-gray-400"></i>
-                    </div>
-                    <input x-model="searchQuery" @input="filterRows()" type="text"
-                        class="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 hover:bg-white transition-colors"
-                        placeholder="Name or ID...">
+    <!-- Session Hero Header (Mockup Style) -->
+    <div class="bg-white border border-gray-100 rounded-[3rem] p-8 lg:p-12 shadow-2xl shadow-slate-200/50 relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 rounded-full -mr-32 -mt-32 group-hover:scale-110 transition-transform duration-1000 opacity-50"></div>
+        
+        <div class="max-w-4xl relative z-10">
+            <h2 class="text-4xl lg:text-5xl font-black text-gray-800 tracking-tighter mb-4 uppercase italic">
+                {{ $session->module->name }}
+            </h2>
+            <div class="flex flex-wrap items-center gap-6 mt-8">
+                <div class="flex items-center gap-3 px-5 py-3 bg-gray-50 rounded-2xl border border-gray-100">
+                    <i data-lucide="users" class="w-5 h-5 text-blue-600"></i>
+                    <span class="text-xs font-black text-gray-600 uppercase tracking-widest">{{ $session->group->name }} ({{ $students->count() }} Students)</span>
+                </div>
+                <div class="flex items-center gap-3 px-5 py-3 bg-gray-100 rounded-2xl border border-gray-100">
+                    <i data-lucide="map-pin" class="w-5 h-5 text-gray-400"></i>
+                    <span class="text-xs font-black text-gray-500 uppercase tracking-widest">Main Lab / Room 02</span>
                 </div>
             </div>
-
-            <!-- Bulk Actions -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Quick Actions</label>
-                <div class="flex space-x-2">
-                    <button @click="markAllPresent()" type="button"
-                        class="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm flex items-center justify-center shadow-sm">
-                        <i data-lucide="check-circle" class="w-4 h-4 mr-1.5"></i>
-                        All Present
-                    </button>
-                    <button @click="clearAll()" type="button"
-                        class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-3 rounded-lg transition-colors text-sm flex items-center justify-center border border-gray-200">
-                        <i data-lucide="rotate-ccw" class="w-4 h-4 mr-1.5"></i>
-                        Reset
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Summary + Save Bar -->
-        <div class="mt-4 pt-4 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4">
-            <div class="flex flex-wrap justify-center md:justify-start gap-4 text-sm bg-gray-50 px-4 py-2 rounded-lg border border-gray-100">
-                <div class="flex items-center">
-                    <span class="w-2.5 h-2.5 bg-green-500 rounded-full mr-2"></span>
-                    <span class="text-gray-500 text-xs font-medium uppercase tracking-wider">Present: <strong class="text-gray-800 ml-1 text-sm" x-text="stats.present"></strong></span>
-                </div>
-                <div class="flex items-center">
-                    <span class="w-2.5 h-2.5 bg-red-500 rounded-full mr-2"></span>
-                    <span class="text-gray-500 text-xs font-medium uppercase tracking-wider">Absent: <strong class="text-gray-800 ml-1 text-sm" x-text="stats.absent"></strong></span>
-                </div>
-                <div class="flex items-center">
-                    <span class="w-2.5 h-2.5 bg-amber-500 rounded-full mr-2"></span>
-                    <span class="text-gray-500 text-xs font-medium uppercase tracking-wider">Late: <strong class="text-gray-800 ml-1 text-sm" x-text="stats.late"></strong></span>
-                </div>
-                <div class="flex items-center">
-                    <span class="w-2.5 h-2.5 bg-gray-300 rounded-full mr-2"></span>
-                    <span class="text-gray-500 text-xs font-medium uppercase tracking-wider">Unmarked: <strong class="text-gray-800 ml-1 text-sm" x-text="stats.unmarked"></strong></span>
-                </div>
-            </div>
-            <button onclick="document.getElementById('attendanceForm').submit()"
-                class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-6 rounded-lg transition-all flex items-center justify-center shadow-md hover:shadow-lg active:scale-95">
-                <i data-lucide="save" class="w-4 h-4 mr-2"></i>
-                Save Attendance
-            </button>
         </div>
     </div>
 
-    <!-- Student List -->
+    <!-- Live Status Overview -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-6 shadow-sm shadow-emerald-500/5">
+            <p class="text-[9px] font-black text-emerald-600/60 uppercase tracking-widest mb-1">Present Today</p>
+            <p class="text-3xl font-black text-emerald-600 italic" x-text="stats.present">0</p>
+        </div>
+        <div class="bg-red-50 border border-red-100 rounded-2xl p-6 shadow-sm shadow-red-500/5">
+            <p class="text-[9px] font-black text-red-600/60 uppercase tracking-widest mb-1">Total Absent</p>
+            <p class="text-3xl font-black text-red-600 italic" x-text="stats.absent">0</p>
+        </div>
+        <div class="bg-amber-50 border border-amber-100 rounded-2xl p-6 shadow-sm shadow-amber-500/5">
+            <p class="text-[9px] font-black text-amber-600/60 uppercase tracking-widest mb-1">Late Arrival</p>
+            <p class="text-3xl font-black text-amber-600 italic" x-text="stats.late">0</p>
+        </div>
+        <button @click="document.getElementById('attendanceForm').submit()" 
+                class="bg-blue-600 hover:bg-blue-700 text-white border border-blue-500 rounded-2xl p-6 shadow-xl shadow-blue-500/20 active:scale-95 transition-all text-left">
+            <p class="text-[9px] font-black text-white/60 uppercase tracking-widest mb-1">Action</p>
+            <p class="text-xl font-black uppercase italic leading-none">COMMIT POINTAGE</p>
+        </button>
+    </div>
+
     <form id="attendanceForm" action="{{ route('teacher.sessions.attendance.store', $session) }}" method="POST">
         @csrf
-        <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-            
-            <!-- Table Header (Desktop) -->
-            <div class="hidden md:grid grid-cols-12 gap-4 p-4 bg-gray-50 border-b border-gray-200 font-bold text-xs text-gray-500 uppercase tracking-wider">
-                <div class="col-span-1">#</div>
-                <div class="col-span-2">Student ID</div>
-                <div class="col-span-4">Name</div>
-                <div class="col-span-5 text-center">Status</div>
-            </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            @foreach($students as $student)
+            @php 
+                $record = $session->attendanceRecords->where('student_profile_id', $student->id)->first();
+                $currentStatus = $record ? $record->status : 'absent';
+            @endphp
+            <div class="bg-white border border-gray-100 rounded-[2rem] p-6 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all group overflow-hidden relative">
+                <div class="flex items-center gap-5 relative z-10">
+                    <div class="w-14 h-14 bg-gray-50 text-gray-400 rounded-2xl flex items-center justify-center font-black group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors uppercase italic shadow-inner">
+                        {{ substr($student->user->name, 0, 1) }}
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-sm font-black text-gray-800 uppercase italic tracking-tighter truncate">{{ $student->user->name }}</p>
+                        <p class="text-[10px] font-bold text-gray-300 uppercase tracking-widest mt-1">{{ $student->student_id }}</p>
+                    </div>
+                </div>
 
-            <!-- Mobile Header -->
-            <div class="md:hidden p-4 bg-gray-50 border-b border-gray-200 font-bold text-xs text-gray-500 uppercase tracking-wider">
-                <div class="flex justify-between">
-                    <span>Student</span>
-                    <span>Status</span>
+                <div class="mt-8 grid grid-cols-3 gap-3 relative z-10">
+                    <label class="cursor-pointer">
+                        <input type="radio" name="attendance[{{ $student->id }}]" value="present" 
+                               class="peer hidden" {{ $currentStatus == 'present' ? 'checked' : '' }} @change="updateStats()">
+                        <div class="bg-gray-50 text-gray-400 border border-transparent py-3 px-2 rounded-xl text-center text-[10px] font-black uppercase tracking-widest transition-all peer-checked:bg-emerald-500 peer-checked:text-white peer-checked:shadow-lg peer-checked:shadow-emerald-500/20 active:scale-90">
+                            Present
+                        </div>
+                    </label>
+                    <label class="cursor-pointer">
+                        <input type="radio" name="attendance[{{ $student->id }}]" value="absent" 
+                               class="peer hidden" {{ $currentStatus == 'absent' ? 'checked' : '' }} @change="updateStats()">
+                        <div class="bg-gray-50 text-gray-400 border border-transparent py-3 px-2 rounded-xl text-center text-[10px] font-black uppercase tracking-widest transition-all peer-checked:bg-red-500 peer-checked:text-white peer-checked:shadow-lg peer-checked:shadow-red-500/20 active:scale-90">
+                            Absent
+                        </div>
+                    </label>
+                    <label class="cursor-pointer">
+                        <input type="radio" name="attendance[{{ $student->id }}]" value="late" 
+                               class="peer hidden" {{ $currentStatus == 'late' ? 'checked' : '' }} @change="updateStats()">
+                        <div class="bg-gray-50 text-gray-400 border border-transparent py-3 px-2 rounded-xl text-center text-[10px] font-black uppercase tracking-widest transition-all peer-checked:bg-amber-500 peer-checked:text-white peer-checked:shadow-lg peer-checked:shadow-amber-500/20 active:scale-90">
+                            Late
+                        </div>
+                    </label>
                 </div>
             </div>
+            @endforeach
+        </div>
 
-            <!-- Student Rows -->
-            <div class="divide-y divide-gray-100">
-                @foreach($students as $student)
-                    @php 
-                        $record = $session->attendanceRecords->where('student_profile_id', $student->id)->first();
-                        $currentStatus = $record ? $record->status : 'absent';
-                    @endphp
-                    <x-student-attendance-row :student="$student" :currentStatus="$currentStatus" :loop="$loop" />
-                @endforeach
-            </div>
-            
-            @if($students->isEmpty())
-                <div class="p-12 text-center text-gray-500">
-                    <i data-lucide="users" class="w-12 h-12 text-gray-300 mx-auto mb-3"></i>
-                    <p class="font-medium">No students found in this group.</p>
-                </div>
-            @endif
+        <div class="mt-16 flex justify-center pb-20">
+            <button type="submit" 
+                    class="bg-slate-900 hover:bg-blue-600 text-white font-black py-6 px-12 rounded-[2rem] transition-all duration-300 flex items-center gap-4 shadow-2xl shadow-slate-200 hover:shadow-blue-500/20 active:scale-95 text-lg uppercase tracking-widest leading-none italic group">
+                <i data-lucide="save" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+                Commit Official Attendance
+            </button>
         </div>
     </form>
 

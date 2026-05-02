@@ -95,7 +95,7 @@
                         </div>
                         <div>
                             <p class="text-sm font-black text-gray-800">{{ $student->user->name }}</p>
-                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ $student->student_id }}</p>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ $student->matricule }}</p>
                         </div>
                     </div>
                     <span class="text-[10px] font-black text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full uppercase tracking-widest border border-blue-100">92% Attendance</span>
@@ -147,7 +147,7 @@
             <div class="space-y-6 relative">
                 <div class="absolute left-[20px] top-4 bottom-4 w-px bg-gray-100"></div>
                 
-                @forelse($sessions->limit(3)->get() as $session)
+                @forelse($sessions->take(3) as $session)
                 <div class="relative pl-12 {{ \Carbon\Carbon::parse($session->start_time)->isPast() ? 'opacity-50' : '' }}">
                     <div class="absolute left-0 top-1 w-10 h-10 {{ \Carbon\Carbon::parse($session->start_time)->isToday() ? 'bg-blue-600' : 'bg-gray-100' }} rounded-full border-4 border-white shadow-lg transition-colors z-10 flex items-center justify-center">
                         <i data-lucide="{{ \Carbon\Carbon::parse($session->start_time)->isPast() ? 'check' : 'clock' }}" class="w-4 h-4 {{ \Carbon\Carbon::parse($session->start_time)->isToday() ? 'text-white' : 'text-gray-400' }}"></i>

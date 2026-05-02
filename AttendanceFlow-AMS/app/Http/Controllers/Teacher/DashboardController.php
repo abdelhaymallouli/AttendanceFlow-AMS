@@ -36,10 +36,11 @@ class DashboardController extends Controller
 
         // Basic Stats
         $stats = [
-            'total_students' => $user->teacherProfile->groups()->withCount('studentProfiles')->get()->sum('student_profiles_count'),
+            'total_students' => $teacherProfile->groups()->withCount('studentProfiles')->get()->sum('student_profiles_count'),
             'today_sessions_count' => $sessions->filter(fn($s) => Carbon::parse($s->start_time)->isToday())->count(),
             'pending_justifications' => \App\Models\Justification::where('status', 'pending')->count(),
-            'avg_attendance' => 92, // Still mocked for now
+            'avg_attendance' => \App\Models\AttendanceRecord::whereIn('session_id', $sessions->pluck('id'))->where('status', 'present')->count() / 
+                               max(1, \App\Models\AttendanceRecord::whereIn('session_id', $sessions->pluck('id'))->count()) * 100,
         ];
 
         return view('teacher.dashboard', compact('teacherProfile', 'sessions', 'currentSession', 'stats'));
