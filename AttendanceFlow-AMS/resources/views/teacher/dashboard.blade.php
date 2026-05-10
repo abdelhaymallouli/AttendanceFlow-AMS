@@ -1,165 +1,263 @@
 @extends('layouts.dashboard')
 
 @section('title', 'Teacher Dashboard')
-@section('page_title', 'My Dashboard')
-
-@section('header_actions')
-<div class="flex items-center gap-3">
-    <span class="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-black bg-brand-50 text-blue-600 border border-brand-100 uppercase tracking-widest">
-        <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
-        </span>
-        Live Session
-    </span>
-</div>
-@endsection
+@section('page_title', 'Teacher Dashboard')
 
 @section('content')
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-    
-    <!-- Left Column: Active Session & Controls -->
-    <div class="lg:col-span-2 space-y-8">
-        
-        <!-- Active Session Card (Mockup Style) -->
-        <div class="bg-white border border-gray-200 rounded-[2.5rem] p-8 lg:p-10 shadow-2xl shadow-slate-200/50 relative overflow-hidden group">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-blue-600/5 rounded-full -mr-16 -mt-16 group-hover:scale-110 transition-transform duration-700"></div>
-            
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 relative z-10">
+<div class="space-y-6" x-data="teacherDashboard()">
+
+    <!-- Current Session Alert -->
+    <div x-show="currentSession"
+        class="mb-6 bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg p-6 text-white">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                    <span class="pulse-dot w-3 h-3 bg-green-400 rounded-full inline-block"></span>
+                </div>
                 <div>
-                    <h3 class="text-3xl font-black text-gray-800 tracking-tight mb-2 uppercase italic">Active Pointage</h3>
-                    <p class="text-slate-400 font-bold text-sm tracking-widest uppercase">Current Academic Session</p>
-                </div>
-                <div class="bg-slate-900 text-white px-6 py-3 rounded-2xl font-black text-sm tracking-widest shadow-xl shadow-slate-200">
-                    {{ now()->format('H:i') }} • LIVE
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
-                <div class="p-6 bg-gray-50 rounded-[2rem] border border-gray-100 flex items-center gap-4 group-hover:translate-x-1 transition-transform">
-                    <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm text-blue-600">
-                        <i data-lucide="book-open" class="w-7 h-7"></i>
-                    </div>
-                    <div>
-                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Current Module</p>
-                        <p class="text-sm font-black text-gray-800 uppercase tracking-tight">{{ $currentSession->module->name ?? 'None' }}</p>
-                    </div>
-                </div>
-
-                <div class="p-6 bg-gray-50 rounded-[2rem] border border-gray-100 flex items-center gap-4 group-hover:-translate-x-1 transition-transform">
-                    <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm text-blue-600">
-                        <i data-lucide="users" class="w-7 h-7"></i>
-                    </div>
-                    <div>
-                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Target Group</p>
-                        <p class="text-sm font-black text-gray-800 uppercase tracking-tight">{{ $currentSession->group->name ?? 'None' }}</p>
-                    </div>
+                    <p class="text-sm opacity-90">Current Session</p>
+                    <h3 class="text-xl font-bold" x-text="currentSession.typeLabel"></h3>
+                    <p class="text-sm opacity-90" x-text="currentSession.time + ' - ' + currentSession.moduleName"></p>
+                    <p class="text-sm opacity-75" x-text="currentSession.groupName + ' \u2022 ' + currentSession.studentsCount + ' students'"></p>
                 </div>
             </div>
+            <a :href="currentSession.url"
+                class="bg-white text-blue-600 font-semibold py-3 px-6 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center whitespace-nowrap">
+                <i data-lucide="clipboard-check" class="w-5 h-5 mr-2"></i>
+                Take Attendance
+            </a>
+        </div>
+    </div>
 
-            <div class="mt-10 flex flex-col sm:flex-row gap-4 relative z-10">
-                @if($currentSession)
-                <a href="{{ route('teacher.sessions.attendance.show', $currentSession) }}" 
-                   class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-black py-5 px-8 rounded-2xl flex items-center justify-center gap-3 transition-all shadow-xl shadow-blue-500/20 active:scale-95">
-                    <i data-lucide="scan-face" class="w-6 h-6"></i>
-                    <span>START POINTAGE NOW</span>
+    <!-- Today's Stats -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6">
+
+        <!-- Total Students -->
+        <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <i data-lucide="users" class="w-6 h-6 text-blue-600"></i>
+                </div>
+                <span class="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">+2.5%</span>
+            </div>
+            <p class="text-2xl font-bold text-gray-800 mb-1" x-text="totalStudents"></p>
+            <p class="text-sm text-gray-500">Total Students</p>
+        </div>
+
+        <!-- Present Today -->
+        <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                    <i data-lucide="check-circle" class="w-6 h-6 text-green-600"></i>
+                </div>
+                <span class="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full" x-text="avgAttendance + '%'"></span>
+            </div>
+            <p class="text-2xl font-bold text-gray-800 mb-1" x-text="Math.round((avgAttendance/100) * totalStudents)"></p>
+            <p class="text-sm text-gray-500">Present Today</p>
+        </div>
+
+        <!-- Absent Today -->
+        <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                    <i data-lucide="x-circle" class="w-6 h-6 text-red-600"></i>
+                </div>
+                <span class="text-xs font-medium text-red-600 bg-red-50 px-2 py-1 rounded-full" x-text="(100 - avgAttendance) + '%'"></span>
+            </div>
+            <p class="text-2xl font-bold text-gray-800 mb-1" x-text="totalStudents - Math.round((avgAttendance/100) * totalStudents)"></p>
+            <p class="text-sm text-gray-500">Absent Today</p>
+        </div>
+
+        <!-- Pending Justifications -->
+        <a href="#"
+            class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow cursor-pointer block">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
+                    <i data-lucide="file-text" class="w-6 h-6 text-amber-600"></i>
+                </div>
+                <span class="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded-full">Action</span>
+            </div>
+            <p class="text-2xl font-bold text-gray-800 mb-1" x-text="pendingCount"></p>
+            <p class="text-sm text-gray-500">Pending Justifications</p>
+        </a>
+    </div>
+
+    <!-- Two-Column Layout: Quick Actions + Sessions -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Left Column: Quick Actions -->
+        <div class="lg:col-span-1 bg-white border border-gray-200 rounded-xl p-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                <i data-lucide="zap" class="w-5 h-5 mr-2 text-blue-600"></i>
+                Quick Actions
+            </h3>
+            <div class="space-y-3">
+                <a :href="currentSession ? currentSession.url : '#'"
+                    class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center shadow-sm">
+                    <i data-lucide="clipboard-check" class="w-5 h-5 mr-2"></i>
+                    Take Attendance
                 </a>
-                @else
-                <button disabled class="flex-1 bg-gray-100 text-gray-400 font-black py-5 px-8 rounded-2xl flex items-center justify-center gap-3 cursor-not-allowed">
-                    <i data-lucide="clock" class="w-6 h-6"></i>
-                    <span>NO ACTIVE SESSION</span>
+                <a href="#"
+                    class="block w-full bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-lg border border-gray-200 transition-colors flex items-center justify-center">
+                    <i data-lucide="clock" class="w-5 h-5 mr-2"></i>
+                    View Sessions
+                </a>
+                <a href="#"
+                    class="block w-full bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-lg border border-gray-200 transition-colors flex items-center justify-center">
+                    <i data-lucide="download" class="w-5 h-5 mr-2"></i>
+                    Export Report
+                </a>
+                <button
+                    class="w-full bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-lg border border-gray-200 transition-colors flex items-center justify-center">
+                    <i data-lucide="send" class="w-5 h-5 mr-2"></i>
+                    Send Notifications
                 </button>
-                @endif
-                <button class="bg-white border border-gray-200 hover:bg-gray-50 text-slate-800 font-bold py-5 px-8 rounded-2xl flex items-center justify-center gap-3 transition-all active:scale-95">
-                    <i data-lucide="history" class="w-6 h-6 text-slate-400"></i>
-                    <span>VIEW HISTORY</span>
-                </button>
+            </div>
+
+            <!-- My Classes Overview -->
+            <div class="mt-6 pt-6 border-t border-gray-200">
+                <h4 class="text-sm font-semibold text-gray-700 mb-3">My Classes Overview</h4>
+                <div class="space-y-2 text-sm">
+                    <template x-for="group in teacherGroups" :key="group.id">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600" x-text="group.name"></span>
+                            <span class="font-medium"
+                                :class="group.attendanceRate >= 95 ? 'text-green-600' : group.attendanceRate >= 90 ? 'text-amber-600' : 'text-red-600'"
+                                x-text="group.attendanceRate + '% present'"></span>
+                        </div>
+                    </template>
+                    <div x-show="teacherGroups.length === 0" class="text-center py-4 text-gray-400 text-sm">
+                        No classes assigned
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Student List Summary (Mockup Style Table) -->
-        <div class="bg-white border border-gray-200 rounded-[2.5rem] p-8 lg:p-10 shadow-sm relative">
-            <div class="flex items-center justify-between mb-8">
-                <h3 class="text-lg font-black text-gray-800 uppercase tracking-widest flex items-center">
-                    <i data-lucide="user-check" class="w-5 h-5 mr-3 text-blue-600"></i>
-                    Quick List Overview
+        <!-- Right Column: Today's Sessions -->
+        <div class="lg:col-span-2 bg-white border border-gray-200 rounded-xl p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-gray-800 flex items-center">
+                    <i data-lucide="calendar" class="w-5 h-5 mr-2 text-blue-600"></i>
+                    Today's Sessions
                 </h3>
+                <a href="#" class="text-sm text-blue-600 hover:text-blue-700 font-medium">View All</a>
             </div>
 
             <div class="space-y-4">
-                @foreach(\App\Models\StudentProfile::with('user')->take(4)->get() as $student)
-                <div class="flex items-center justify-between p-4 bg-gray-50/50 rounded-2xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center font-black text-blue-600 shadow-sm border border-gray-100">
-                            {{ substr($student->user->name, 0, 1) }}
+                <template x-for="session in sessions" :key="session.id">
+                    <div class="flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-50 transition-colors"
+                        :class="session.status === 'active' ? 'bg-blue-50 border border-blue-200' : session.status === 'completed' ? 'bg-green-50 border border-green-200' : 'bg-gray-50 border border-gray-200'">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                            :class="getTypeBgClass(session.type)">
+                            <i data-lucide="clock" class="w-5 h-5" :class="getTypeTextClass(session.type)"></i>
                         </div>
-                        <div>
-                            <p class="text-sm font-black text-gray-800">{{ $student->user->name }}</p>
-                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ $student->matricule }}</p>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm font-medium text-gray-800" x-text="session.typeLabel + ' - ' + session.moduleName"></p>
+                                <span class="text-xs font-bold px-2 py-1 rounded-full"
+                                    :class="session.status === 'completed' ? 'bg-green-100 text-green-700' : session.status === 'active' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'"
+                                    x-text="session.status === 'completed' ? 'Completed' : session.status === 'active' ? 'In Progress' : 'Upcoming'"></span>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1" x-text="session.time + ' (' + session.duration_hours + 'h) \u2022 ' + session.groupName + ' \u2022 ' + session.studentsCount + ' students'"></p>
                         </div>
+                        <a :href="session.url"
+                            class="text-sm font-medium px-3 py-1 rounded-lg transition-colors flex-shrink-0 whitespace-nowrap"
+                            :class="session.status === 'completed' ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-blue-600 text-white hover:bg-blue-700'"
+                            x-text="session.status === 'completed' ? 'View' : 'Take'"></a>
                     </div>
-                    <span class="text-[10px] font-black text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full uppercase tracking-widest border border-blue-100">92% Attendance</span>
+                </template>
+                <div x-show="sessions.length === 0" class="text-center py-8">
+                    <i data-lucide="calendar-x" class="w-12 h-12 mx-auto mb-3 text-gray-300"></i>
+                    <p class="text-gray-500 text-sm">No sessions scheduled for today</p>
                 </div>
-                @endforeach
             </div>
         </div>
     </div>
 
-    <!-- Right Column: Stats & Schedule -->
-    <div class="space-y-8">
-        <!-- Daily Progress (Mockup Style) -->
-        <div class="bg-slate-900 border border-slate-800 rounded-[2.5rem] p-8 text-white shadow-2xl shadow-slate-300 relative overflow-hidden">
-            <div class="absolute bottom-0 right-0 w-32 h-32 bg-white/5 rounded-full -mb-16 -mr-16"></div>
-            
-            <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 py-1 border-b border-slate-800">Pointage Insight</h4>
-            
-            <div class="space-y-6">
-                <div>
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm font-black uppercase tracking-widest">Global Rate</span>
-                        <span class="text-sm font-black">88%</span>
-                    </div>
-                    <div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
-                        <div class="h-full bg-blue-500 rounded-full" style="width: 88%"></div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4 pt-4">
-                    <div class="p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50">
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Students</p>
-                        <p class="text-2xl font-black italic">{{ $stats['total_students'] }}</p>
-                    </div>
-                    <div class="p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50">
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Justif. </p>
-                        <p class="text-2xl font-black italic text-amber-400">{{ $stats['pending_justifications'] }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Today's Schedule (Mockup Style) -->
-        <div class="bg-white border border-gray-200 rounded-[2.5rem] p-8 shadow-sm">
-            <h3 class="text-lg font-black text-gray-800 mb-6 uppercase tracking-widest flex items-center">
-                <i data-lucide="calendar" class="w-5 h-5 mr-3 text-blue-600"></i>
-                Schedule
+    <!-- Recent Activity -->
+    <div class="mt-6 bg-white border border-gray-200 rounded-xl p-6">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold text-gray-800 flex items-center">
+                <i data-lucide="activity" class="w-5 h-5 mr-2 text-blue-600"></i>
+                Recent Activity
             </h3>
-            
-            <div class="space-y-6 relative">
-                <div class="absolute left-[20px] top-4 bottom-4 w-px bg-gray-100"></div>
-                
-                @forelse($sessions->take(3) as $session)
-                <div class="relative pl-12 {{ \Carbon\Carbon::parse($session->start_time)->isPast() ? 'opacity-50' : '' }}">
-                    <div class="absolute left-0 top-1 w-10 h-10 {{ \Carbon\Carbon::parse($session->start_time)->isToday() ? 'bg-blue-600' : 'bg-gray-100' }} rounded-full border-4 border-white shadow-lg transition-colors z-10 flex items-center justify-center">
-                        <i data-lucide="{{ \Carbon\Carbon::parse($session->start_time)->isPast() ? 'check' : 'clock' }}" class="w-4 h-4 {{ \Carbon\Carbon::parse($session->start_time)->isToday() ? 'text-white' : 'text-gray-400' }}"></i>
-                    </div>
-                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">{{ \Carbon\Carbon::parse($session->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($session->end_time)->format('H:i') }}</p>
-                    <p class="text-sm font-black text-gray-800 uppercase tracking-tighter italic">{{ $session->module->name }} / {{ $session->group->name }}</p>
+            <button class="text-sm text-blue-600 hover:text-blue-700 font-medium">View All</button>
+        </div>
+        <div class="space-y-4">
+            @forelse($recentActivity as $activity)
+            <div class="flex items-start space-x-4 p-4 {{ $activity['bg'] }} rounded-lg">
+                <div class="w-10 h-10 {{ $activity['iconBg'] }} rounded-full flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="{{ $activity['icon'] }}" class="w-5 h-5 {{ $activity['iconColor'] }}"></i>
                 </div>
-                @empty
-                <p class="text-xs font-bold text-gray-400 italic text-center py-8">No sessions scheduled</p>
-                @endforelse
+                <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-800">{{ $activity['message'] }}</p>
+                    <p class="text-xs text-gray-500 mt-1">{{ $activity['detail'] }} &bull; {{ $activity['time'] }}</p>
+                </div>
             </div>
+            @empty
+            <div class="text-center py-8 text-gray-500">
+                <i data-lucide="activity" class="w-12 h-12 mx-auto mb-2 text-gray-300"></i>
+                <p class="text-sm">No recent activity</p>
+            </div>
+            @endforelse
         </div>
     </div>
 </div>
+
+@push('scripts')
+<style>
+    .pulse-dot {
+        animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+</style>
+<script>
+    function teacherDashboard() {
+        return {
+            sessions: @json($sessionsData),
+            currentSession: null,
+            totalStudents: {{ $stats['total_students'] }},
+            avgAttendance: {{ $stats['avg_attendance'] }},
+            pendingCount: {{ $stats['pending_justifications'] }},
+            teacherGroups: @json($teacherGroups),
+            init() {
+                this.determineStatuses();
+                setTimeout(() => lucide.createIcons(), 50);
+            },
+            determineStatuses() {
+                const now = new Date();
+                const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+                this.sessions.forEach(s => {
+                    const [startH, startM] = s.start_time.split(':').map(Number);
+                    const [endH, endM] = s.end_time.split(':').map(Number);
+                    const startMinutes = startH * 60 + startM;
+                    const endMinutes = endH * 60 + endM;
+
+                    if (currentMinutes >= endMinutes) {
+                        s.status = 'completed';
+                    } else if (currentMinutes >= startMinutes) {
+                        s.status = 'active';
+                    } else {
+                        s.status = 'upcoming';
+                    }
+                });
+
+                this.currentSession = this.sessions.find(s => s.status === 'active') || null;
+            },
+            getTypeBgClass(type) {
+                const classes = { 'lecture': 'bg-purple-100', 'td': 'bg-blue-100', 'tp': 'bg-green-100' };
+                return classes[type] || 'bg-gray-100';
+            },
+            getTypeTextClass(type) {
+                const classes = { 'lecture': 'text-purple-600', 'td': 'text-blue-600', 'tp': 'text-green-600' };
+                return classes[type] || 'text-gray-600';
+            }
+        }
+    }
+</script>
+@endpush
 @endsection

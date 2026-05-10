@@ -18,7 +18,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'teacher', 'middleware' => ['role:teacher']], function () {
         Route::get('/dashboard', [\App\Http\Controllers\Teacher\DashboardController::class, 'index'])->name('teacher.dashboard');
 
+        // Session Management (Create own sessions)
+        Route::get('/sessions/create', [\App\Http\Controllers\Teacher\SessionController::class, 'create'])->name('teacher.sessions.create');
+        Route::post('/sessions', [\App\Http\Controllers\Teacher\SessionController::class, 'store'])->name('teacher.sessions.store');
+
         // Attendance Routes
+        Route::get('/attendance', [\App\Http\Controllers\Teacher\AttendanceController::class, 'index'])->name('teacher.attendance.index');
         Route::get('/sessions/{session}/attendance', [\App\Http\Controllers\Teacher\AttendanceController::class, 'show'])->name('teacher.sessions.attendance.show');
         Route::post('/sessions/{session}/attendance', [\App\Http\Controllers\Teacher\AttendanceController::class, 'store'])->name('teacher.sessions.attendance.store');
     });

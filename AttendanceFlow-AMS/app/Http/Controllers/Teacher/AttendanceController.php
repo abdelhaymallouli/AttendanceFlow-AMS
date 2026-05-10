@@ -7,9 +7,32 @@ use App\Models\Session;
 use App\Models\AttendanceRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class AttendanceController extends Controller
 {
+    /**
+     * Display a list of the teacher's sessions for attendance marking.
+     */
+    public function index(Request $request)
+    {
+        $teacherProfile = Auth::user()->teacherProfile;
+
+        if (!$teacherProfile) {
+            return redirect()->route('teacher.dashboard')->with('error', 'Teacher profile not found.');
+        }
+
+        $date = $request->input('date', Carbon::today()->toDateString());
+
+        $sessions = Session::with(['module', 'group'])
+            ->where('teacher_profile_id', $teacherProfile->id)
+            ->whereDate('start_time', $date)
+            ->orderBy('start_time')
+            ->get();
+
+        return view('teacher.attendance.index', compact('sessions', 'date'));
+    }
+
     /**
      * Show the attendance marking form for a session.
      */
@@ -23,10 +46,17 @@ class AttendanceController extends Controller
         // Load the group's students
         $students = $session->group->studentProfiles()->with('user')->get();
 
+        $studentsData = $students->map(fn($s) => [
+            'id' => $s->id,
+            'name' => $s->user->name,
+            'email' => $s->user->email,
+            'matricule' => $s->matricule,
+        ]);
+
         // Load existing records for this session
         $existingRecords = AttendanceRecord::where('session_id', $session->id)->get()->pluck('status', 'student_profile_id');
 
-        return view('teacher.attendance', compact('session', 'students', 'existingRecords'));
+        return view('teacher.attendance.show', compact('session', 'students', 'studentsData', 'existingRecords'));
     }
 
     /**

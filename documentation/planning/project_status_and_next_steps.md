@@ -12,6 +12,10 @@ The foundational architecture is robust and well-implemented:
 - **TDD Compliance**: Comprehensive test suite (31 tests passing, 81 assertions) covering core service logic with both positive and negative cases.
 - **Frontend Architecture**: Role-based layouts (Admin, Teacher, Student) using Tailwind CSS and Alpine.js, integrated via Vite.
 - **API Foundation**: Initial stateless endpoints in `Api\` controllers with Sanctum authentication.
+- **Teacher Dashboard (Redesigned)**: Matches maquete with gradient current-session banner, 4 stat cards (Total Students, Present/Absent Today, Pending Justifications), Quick Actions panel, My Classes Overview with per-group attendance rates, session list view with status-colored rows, and dynamic recent activity feed.
+- **Teacher Attendance Entry (Fixed & Redesigned)**: Session picker with date filter (`index`) now works — fixed `attendanceApp` undefined JS bug. Attendance marking form (`show`) redesigned to match admin style: radio buttons with `peer-checked:` CSS, `<x-student-attendance-row>` component, inline Alpine with DOM-based stats/search, no custom JS/CSS.
+- **Teacher Session Creation**: Self-service `Teacher\SessionController` with filtered dropdowns (constrained to assigned module+group pairs via `module_teacher_group` pivot) and SchedulingService conflict detection.
+- **Database Seed Data**: 27 `module_teacher_group` pivot rows linking teachers to modules/groups, 20 sessions across May 11–15 2026, 24 student profiles with attendance records and justifications.
 
 ---
 
@@ -25,6 +29,9 @@ Comparing the implemented code against the original `Analyse` folder (Cahier des
 - ❌ **Automated Reminders**: The system lacks a scheduled task (cron/job) to automatically notify teachers who forgot to mark attendance for a past session.
 
 ### B. Teacher Features
+- ✅ **Teacher Dashboard**: Redesigned to match maquete — stat cards, quick actions, classes overview, session list, recent activity feed.
+- ✅ **Attendance Entry Page**: Session picker (`index`) fixed (was broken: `attendanceApp` undefined). Marking form (`show`) redesigned to match admin style (radio buttons, inline Alpine, component-based rows).
+- ✅ **Self-Service Session Creation**: Fully implemented with pivot validation and conflict detection.
 - ❌ **Detailed Delay Motifs**: The `AttendanceService` handles 'present', 'absent', and 'late' statuses, but the UI/Service currently lacks the ability for the teacher to input *real-time specific reasons* for a delay (as defined in the Mobile-First specs).
 - ❌ **Conflict Warning UI**: While `SchedulingService` throws exceptions for conflicts, the frontend UI does not gracefully handle or proactively warn about these conflicts during manual session creation.
 
@@ -82,6 +89,11 @@ Implement the remaining functional requirements.
 
 ## 🔄 5. Recommended Immediate Next Steps
 
-1. **Commit and Push**: Commit this documentation and recent test/factory updates to the current active branch (`feat/Admin-Side`).
-2. **Merge**: Create a Pull Request and merge `feat/Admin-Side` into `develop`.
-3. **Branch Out**: Create a new branch from `develop` for the first refactoring task (e.g., `refactor/clean-controllers`) to begin addressing the technical debt before tackling the PDF export feature.
+1. **Commit and Push**: Commit the session's work (dashboard redesign, attendance entry fix/redesign, session creation, documentation updates) to the current branch.
+2. **Review New Issues Fixed in This Session**:
+   - `pluck('groups')` bug — replaced with `$teacherProfile->groups()->pluck('groups.id')` in `DashboardController`.
+   - Dashboard date filter — sessions now filtered to today via `whereDate('start_time', Carbon::today())`.
+   - `attendanceApp` undefined — defined the missing function in `index.blade.php` with date change redirect.
+   - `$studentsData` undefined — removed from `show.blade.php` (now uses DOM-based stats like admin).
+   - Teacher attendance `show.blade.php` aligned with admin style — radio buttons, `<x-student-attendance-row>` component, inline Alpine.
+3. **Branch Out**: Create a new branch for remaining features (e.g., "My Schedule" and "My Students" teacher pages, sidebar links still `#`).

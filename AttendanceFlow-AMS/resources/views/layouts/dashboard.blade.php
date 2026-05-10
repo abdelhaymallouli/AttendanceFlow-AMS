@@ -131,6 +131,9 @@
                         <i data-lucide="bell" class="w-5 h-5"></i>
                         <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
                     </button>
+                    <button class="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center hover:bg-blue-200 transition-colors">
+                        <span class="text-sm font-bold text-blue-600">{{ substr(Auth::user()->name, 0, 1) }}</span>
+                    </button>
                 </div>
             </header>
 

@@ -21,9 +21,11 @@ class CsvSeeder extends Seeder
         $this->seedStudentProfiles(database_path('data/student_profiles.csv'));
         $this->seedTeacherProfiles(database_path('data/teacher_profiles.csv'));
 
+        $this->seedModuleTeacherGroup(database_path('data/module_teacher_group.csv'));
+
         $this->seedFromCsv('academic_sessions', database_path('data/sessions.csv'));
-        // $this->seedFromCsv('attendance_records', database_path('data/attendance_records.csv'));
-        // $this->seedFromCsv('justifications', database_path('data/justifications.csv'));
+        $this->seedFromCsv('attendance_records', database_path('data/attendance_records.csv'));
+        $this->seedFromCsv('justifications', database_path('data/justifications.csv'));
     }
 
     protected function seedUsers(string $path)
@@ -94,6 +96,29 @@ class CsvSeeder extends Seeder
             }
         }
         fclose($file);
+    }
+
+    protected function seedModuleTeacherGroup(string $path)
+    {
+        if (!File::exists($path)) return;
+        $file = fopen($path, 'r');
+        $header = fgetcsv($file);
+        while (($row = fgetcsv($file)) !== false) {
+            $data = array_combine($header, $row);
+            DB::table('module_teacher_group')->updateOrInsert(
+                [
+                    'module_id' => $data['module_id'],
+                    'teacher_profile_id' => $data['teacher_profile_id'],
+                    'group_id' => $data['group_id'],
+                ],
+                [
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
+        }
+        fclose($file);
+        $this->command->info('Seeded module_teacher_group from CSV.');
     }
 
     protected function seedFromCsv(string $table, string $path)

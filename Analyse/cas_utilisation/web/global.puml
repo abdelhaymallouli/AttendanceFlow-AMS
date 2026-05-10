@@ -31,6 +31,9 @@ rectangle "Plateforme Web (AttendanceFlow-AMS)" {
     usecase "Gestion avancée des absences\n(Correction, Clôture)" as UC_W_ABS
     usecase "Exporter les rapports de synthèse\n(PDF, Excel)" as UC_W07
     
+    ' Teacher Actions
+    usecase "Créer ses séances\n(Modules/Groups assignés)" as UC_W08
+    
     ' Student Actions
     usecase "Soumettre un justificatif" as UC_W04
     usecase "Joindre un document justificatif" as UC_W04a
@@ -49,6 +52,7 @@ UC_W05 ..> UC_W01 : <<include>>
 UC_W02 ..> UC_W01 : <<include>>
 UC_W06 ..> UC_W01 : <<include>>
 UC_W_ABS ..> UC_W01 : <<include>>
+UC_W08 ..> UC_W01 : <<include>>
 
 ' Specific Flows (Extend)
 UC_W05 <.. UC_W05a : <<extend>>
@@ -65,6 +69,7 @@ Admin -- UC_W_ABS
 Trainer -- UC_W03
 Trainer -- UC_W_ABS
 Trainer -- UC_W05
+Trainer -- UC_W08
 
 Student -- UC_W03
 Student -- UC_W04

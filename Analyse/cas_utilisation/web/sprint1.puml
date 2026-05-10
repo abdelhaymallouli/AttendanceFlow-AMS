@@ -14,6 +14,7 @@ rectangle "Web - Sprint 1" {
     usecase "S'authentifier" as UC_W01
     usecase "Gestion avancée des absences" as UC_W_ABS
     usecase "Visualiser le Dashboard (Lecture seule)" as UC_W03
+    usecase "Créer ses séances\n(Modules/Groups assignés)" as UC_W08
 }
 
 rectangle "Mobile - Sprint 1 (MVP)" {
@@ -30,9 +31,11 @@ Admin -- UC_M02
 
 Trainer -- UC_W01
 Trainer -- UC_W_ABS
+Trainer -- UC_W08
 Trainer -- UC_M01
 Trainer -- UC_M02
 UC_M02 <.. UC_M02a : <<extend>>
+UC_W08 ..> UC_W01 : <<include>>
 
 
 
