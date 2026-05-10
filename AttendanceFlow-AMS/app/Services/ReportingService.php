@@ -12,10 +12,7 @@ use App\Models\Group;
  */
 class ReportingService extends BaseService
 {
-    public function getServiceName(): string
-    {
-        return 'ReportingService';
-    }
+    // Service name is now automatically handled by BaseService
 
     /**
      * Generate basic attendance statistics for a specific group.
@@ -30,9 +27,18 @@ class ReportingService extends BaseService
             ->whereBetween('date', [$startDate, $endDate])
             ->get();
 
+        return $this->calculateStats($records);
+    }
+
+    /**
+     * Calculate statistics from a collection of attendance records.
+     * Pure logic, can be unit tested without a database.
+     */
+    public function calculateStats(\Illuminate\Support\Collection $records): array
+    {
         $total = $records->count();
         $present = $records->where('status', 'present')->count();
-        $absent = $records->whereIn('status', ['absent', 'justified'])->count(); // justified is still an absence
+        $absent = $records->whereIn('status', ['absent', 'justified'])->count(); 
         
         $rate = $total > 0 ? round(($present / $total) * 100, 2) : 0;
 

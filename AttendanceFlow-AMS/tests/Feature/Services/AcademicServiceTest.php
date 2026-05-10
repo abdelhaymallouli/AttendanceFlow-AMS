@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Services;
 
 use App\Models\Filiere;
 use App\Models\Group;
@@ -86,5 +86,17 @@ class AcademicServiceTest extends TestCase
         $this->assertCount(1, $hierarchy);
         $this->assertEquals($filiere->id, $hierarchy->first()->id);
         $this->assertCount(2, $hierarchy->first()->groups);
+    }
+    public function test_it_fails_to_enroll_student_with_duplicate_matricule()
+    {
+        $group = Group::factory()->create();
+        $matricule = 'DUP123';
+        
+        // First enrollment
+        $this->service->enrollStudent(User::factory()->create()->id, $group->id, $matricule);
+
+        // Second enrollment with same matricule should fail
+        $this->expectException(\Illuminate\Database\UniqueConstraintViolationException::class);
+        $this->service->enrollStudent(User::factory()->create()->id, $group->id, $matricule);
     }
 }

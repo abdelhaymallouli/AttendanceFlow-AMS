@@ -7,6 +7,7 @@ skinparam usecase {
   BorderColor #F1C40F
 }
 
+
 actor "Formateur" as Trainer
 actor "Administrateur" as Admin
 actor "Étudiant" as Student

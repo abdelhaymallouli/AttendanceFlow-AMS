@@ -30,4 +30,16 @@ class SessionFactory extends Factory
             'type'               => $this->faker->randomElement(['CM', 'TD', 'TP']),
         ];
     }
+
+    /**
+     * Indicate that the session is happening right now.
+     */
+    public function active(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'start_time' => now()->subHour(),
+            'end_time'   => now()->addHours(2),
+            'duration_hours' => 3.0,
+        ]);
+    }
 }

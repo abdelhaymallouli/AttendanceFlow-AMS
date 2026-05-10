@@ -21,6 +21,11 @@ class Session extends Model
         'type'
     ];
 
+    protected $casts = [
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
+    ];
+
     public function module()
     {
         return $this->belongsTo(Module::class);
