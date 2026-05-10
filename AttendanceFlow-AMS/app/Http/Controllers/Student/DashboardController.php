@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Session;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -12,23 +12,36 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         $studentProfile = $user->studentProfile;
+        
+        if (!$studentProfile) {
+            return redirect()->route('home')->with('error', 'Student profile not found.');
+        }
 
-        // Calculate real stats
-        $totalSessions = $studentProfile->attendanceRecords()->count();
-        $presentSessions = $studentProfile->attendanceRecords()->whereIn('status', ['present', 'late'])->count();
+        $attendanceRecords = $studentProfile->attendanceRecords()->with('session.module')->get();
+        $totalSessions = $attendanceRecords->count();
+        $presentSessions = $attendanceRecords->whereIn('status', ['present', 'late'])->count();
         $attendanceRate = $totalSessions > 0 ? round(($presentSessions / $totalSessions) * 100) : 100;
+
+        $totalAbsenceHours = $attendanceRecords->where('status', 'absent')->sum(fn($r) => $r->session->duration_hours ?? 0);
 
         $stats = [
             'attendance_rate' => $attendanceRate,
-            'total_absences' => $studentProfile->attendanceRecords()->where('status', 'absent')->count() * 2.5, // assuming 2.5h per session
-            'justified_absences' => $studentProfile->attendanceRecords()->where('status', 'justified')->count() * 2.5,
+            'total_absences' => round($totalAbsenceHours, 1),
             'upcoming_sessions' => Session::where('group_id', $studentProfile->group_id)
                 ->where('start_time', '>=', now())
                 ->orderBy('start_time', 'asc')
+                ->with('module')
                 ->take(3)
                 ->get(),
         ];
 
-        return view('student.dashboard', compact('studentProfile', 'stats'));
+        $recentAbsences = $attendanceRecords->whereIn('status', ['absent', 'late'])
+            ->sortByDesc('date')
+            ->take(10)
+            ->values();
+
+        $recentHistory = $attendanceRecords->sortByDesc('date')->take(5)->values();
+
+        return view('student.dashboard', compact('studentProfile', 'stats', 'recentAbsences', 'recentHistory'));
     }
 }

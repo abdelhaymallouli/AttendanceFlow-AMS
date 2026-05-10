@@ -96,3 +96,52 @@ npm run dev
 *Développé avec ❤️ par Abdelhay Mallouli dans le cadre d'un Projet de Fin de Formation.*
 
 
+## What's Changed                                                                                                                                                                                     
+                                                                                                                        LSP   ill activate as files are read       ▼ Modified Files                        
+     ### Dashboard (`teacher/dashboard.blade.php`)                                                                      LSPs w                                     Analyse/cas_utilisation/mobile/glo+1    
+     - Redesigned to match `maquete/teacher-dashboard.html` and Preline design                                                fied Files                            Analyse/cas_utilisation/web/global+5   
+       system                                                                                                           ▼ Modise/cas_utilisation/mobile/glo+1   
+     - Gradient current-session banner with pulse dot indicator                                                         Analys────────────────────────────+1────   Analyse/cas_utilisation/web/sprint+3         - 4 stat cards: Total Students, Present Today, Absent Today, Pending                                               Analyse/cas_utilisation/web/global+5       AttendanceFlow-AMS/app/Http/Co+31 -1    
+       Justifications                                                                                                   Analyse/cas_utilisation/web/sprint+3       AttendanceFlow-AMS/app/Http/C+95 -13    
+     - Quick Actions panel (Take Attendance, View Sessions, Export Report, etc.)                                        AttendanceFlow-AMS/app/Http/Co+31 -1       AttendanceFlow-AMS/app/Http/Contr+89    
+     - My Classes Overview with per-group attendance rates (color-coded)                                                AttendanceFlow-AMS/app/Http/C+95 -13       AttendanceFlow-AMS/app/Models/Sess+5    
+     - Session list view with status-colored rows (blue=active, green=completed,
+        gray=upcoming)                                                                                                   LSP   ill activate as files are read       ▼ Modified Files                        
+     - Dynamic recent activity feed from DB (last 5 attendance + last 3                                                 LSPs w                                     Analyse/cas_utilisation/mobile/glo+1    
+       justifications)                                                                                                        fied Files                            Analyse/cas_utilisation/web/global+5   
+     - Bugfix: sessions filtered to `whereDate('start_time', today())` —                                                ▼ Modise/cas_utilisation/mobile/glo+1   
+       previously showed ALL sessions regardless of date                                                                Analys────────────────────────────+1────   Analyse/cas_utilisation/web/sprint+3                                                                                                                            Analyse/cas_utilisation/web/global+5       AttendanceFlow-AMS/app/Http/Co+31 -1    
+     ### Attendance Entry (index + show)                                                                                Analyse/cas_utilisation/web/sprint+3       AttendanceFlow-AMS/app/Http/C+95 -13    
+     - **index**: Session picker with date filter — was completely broken                                               AttendanceFlow-AMS/app/Http/Co+31 -1       AttendanceFlow-AMS/app/Http/Contr+89    
+       (`attendanceApp` function undefined). Now works: Alpine component stores                                         AttendanceFlow-AMS/app/Http/C+95 -13       AttendanceFlow-AMS/app/Models/Sess+5    
+       sessions, date change redirects to `?date=YYYY-MM-DD`  
+        - Radio buttons with `peer-checked:` CSS (replaces Alpine @click +                                                                                                                                  
+         hidden inputs)                                                                                                 LSP   ill activate as files are read       ▼ Modified Files                        
+       - `<x-student-attendance-row>` component (shared with admin)                                                     LSPs w                                     Analyse/cas_utilisation/mobile/glo+1    
+       - Inline Alpine `x-data` with DOM-based stats and search                                                               fied Files                            Analyse/cas_utilisation/web/global+5   
+       - Removed broken `$studentsData` reference                                                                       ▼ Modise/cas_utilisation/mobile/glo+1   
+       - Removed custom `@push('scripts')` and `<style>` block                                                          Analys────────────────────────────+1────   Analyse/cas_utilisation/web/sprint+3           - Removed toast notification (wasn't in admin version)                                                           Analyse/cas_utilisation/web/global+5       AttendanceFlow-AMS/app/Http/Co+31 -1    
+                                                                                                                        Analyse/cas_utilisation/web/sprint+3       AttendanceFlow-AMS/app/Http/C+95 -13    
+     ### Self-Service Session Creation (new)                                                                            AttendanceFlow-AMS/app/Http/Co+31 -1       AttendanceFlow-AMS/app/Http/Contr+89    
+     - `Teacher\SessionController` with `create()` and `store()` methods                                                AttendanceFlow-AMS/app/Http/C+95 -13       AttendanceFlow-AMS/app/Models/Sess+5    
+     - Module + group dropdowns filtered to teacher's assigned pairs via
+         `module_teacher_group` pivot                                                                                                                                                                        
+     - Pivot validation on store (rejects unassigned combinations)                                                      LSP   ill activate as files are read       ▼ Modified Files                        
+     - SchedulingService conflict detection                                                                             LSPs w                                     Analyse/cas_utilisation/mobile/glo+1    
+     - Alpine.js duration calculator on the form                                                                              fied Files                            Analyse/cas_utilisation/web/global+5   
+                                                                                                                        ▼ Modise/cas_utilisation/mobile/glo+1   
+     ### Bug Fixes                                                                                                      Analys────────────────────────────+1────   Analyse/cas_utilisation/web/sprint+3         - `SQLSTATE[42S22]: Unknown column 'groups'`: `pluck('groups')` →                                                  Analyse/cas_utilisation/web/global+5       AttendanceFlow-AMS/app/Http/Co+31 -1    
+       `pluck('groups.id')` in `DashboardController`                                                                    Analyse/cas_utilisation/web/sprint+3       AttendanceFlow-AMS/app/Http/C+95 -13    
+     - `attendanceApp is not defined`: defined the missing Alpine function in                                           AttendanceFlow-AMS/app/Http/Co+31 -1       AttendanceFlow-AMS/app/Http/Contr+89    
+       `index.blade.php`                                                                                                AttendanceFlow-AMS/app/Http/C+95 -13       AttendanceFlow-AMS/app/Models/Sess+5    
+     - `$studentsData` undefined: removed from `show.blade.php` (DOM-based
+          approach)                                                                                                                                                                                           
+                                                                                                                        LSP   ill activate as files are read       ▼ Modified Files                        
+     ### Seed Data                                                                                                      LSPs w                                     Analyse/cas_utilisation/mobile/glo+1    
+     - New `database/data/module_teacher_group.csv` with 27 pivot rows                                                        fied Files                            Analyse/cas_utilisation/web/global+5   
+     - Expanded users from 10→24, sessions updated to May 11–15 2026                                                    ▼ Modise/cas_utilisation/mobile/glo+1   
+     - Uncommented attendance_records and justifications CSV seeding                                                    Analys────────────────────────────+1────   Analyse/cas_utilisation/web/sprint+3         - Added `seedModuleTeacherGroup()` to `CsvSeeder`                                                                  Analyse/cas_utilisation/web/global+5       AttendanceFlow-AMS/app/Http/Co+31 -1    
+                                                                                                                        Analyse/cas_utilisation/web/sprint+3       AttendanceFlow-AMS/app/Http/C+95 -13    
+     ### Routes Added                                                                                                   AttendanceFlow-AMS/app/Http/Co+31 -1       AttendanceFlow-AMS/app/Http/Contr+89    
+     - `GET /teacher/sessions/create` → `teacher.sessions.create`                                                       AttendanceFlow-AMS/app/Http/C+95 -13       AttendanceFlow-AMS/app/Models/Sess+5    
+     - `POST /teacher/sessions` → `teacher.sessions.store` 
