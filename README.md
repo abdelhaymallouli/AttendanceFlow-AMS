@@ -96,27 +96,3 @@ npm run dev
 *Développé avec ❤️ par Abdelhay Mallouli dans le cadre d'un Projet de Fin de Formation.*
 
 
- feat(teacher): redesign dashboard, fix attendance entry, add self-session creation  
-     - Redesign teacher dashboard to match maquete: gradient current-session                                            
-       banner, 4 stat cards, quick actions panel, classes overview
-       with per-group attendance rates, session list view, dynamic activity feed                                          
-     - Fix DashboardController pluck('groups') SQL error → pluck('groups.id')                                           
-     - Filter dashboard sessions to today only (whereDate) for consistency                                                    
-     - Fix attendance entry index: define missing attendanceApp Alpine function                                         
-       to resolve "attendanceApp is not defined" JS error                                                             
-     - Redesign attendance entry show to match admin style: radio buttons with                                        
-       peer-checked CSS, <x-student-attendance-row> component, inline Alpine                                            
-       with DOM-based stats/search, remove broken $studentsData reference                                           
-     - Add Teacher\SessionController with pivot validation + conflict detection                                         
-     - Add teacher session routes (create/store) and new session form view
-     - Add route teacher.sessions.attendance.store for attendance form POST                                              
-     - Add module_teacher_group CSV seed data (27 pivot rows)                                                               
-     - Expand seed data: 24 students, 20 sessions (May 11-15), attendance                                                     
-       records, justifications                                                                                         
-     - Update use case diagrams (sprint1.puml, global.puml) with UC_W08                                                 
-     - Update sidebar-teacher with live links (New Session, Attendance Entry)                                            
-     - Add user avatar initial button to dashboard layout topbar                                                        
-     - Rebuild documentation (views/teacher.md, http/teacher_controllers.md,                                            
-       planning/project_status_and_next_steps.md)                                                                       
-     - Rebuild documentation (views/teacher.md, http/teacher_controllers.md,                                            AttendanceFlow-AMS/app/Http/Co+31 -1       AttendanceFlow-AMS/app/Http/Contr+89    
-       planning/project_status_and_next_steps.md)                                                                      
