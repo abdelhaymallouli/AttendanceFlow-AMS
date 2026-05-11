@@ -1,0 +1,148 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+
+class CsvSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $this->seedFromCsv('filieres', database_path('data/filieres.csv'));
+        $this->seedFromCsv('groups', database_path('data/groups.csv'));
+        $this->seedFromCsv('modules', database_path('data/modules.csv'));
+        
+        $this->seedUsers(database_path('data/users.csv'));
+        $this->seedStudentProfiles(database_path('data/student_profiles.csv'));
+        $this->seedTeacherProfiles(database_path('data/teacher_profiles.csv'));
+
+        $this->seedModuleTeacherGroup(database_path('data/module_teacher_group.csv'));
+
+        $this->seedFromCsv('academic_sessions', database_path('data/sessions.csv'));
+        $this->seedFromCsv('attendance_records', database_path('data/attendance_records.csv'));
+        $this->seedFromCsv('justifications', database_path('data/justifications.csv'));
+    }
+
+    protected function seedUsers(string $path)
+    {
+        if (!File::exists($path)) return;
+        $file = fopen($path, 'r');
+        $header = fgetcsv($file);
+        while (($row = fgetcsv($file)) !== false) {
+            $userData = array_combine($header, $row);
+            $role = $userData['role'];
+            unset($userData['role']);
+            
+            $user = \App\Models\User::updateOrCreate(
+                ['email' => $userData['email']],
+                [
+                    'name' => $userData['name'],
+                    'password' => \Illuminate\Support\Facades\Hash::make($userData['password']),
+                ]
+            );
+
+            if (!$user->hasRole($role)) {
+                $user->assignRole($role);
+            }
+        }
+        fclose($file);
+    }
+
+    protected function seedStudentProfiles(string $path)
+    {
+        if (!File::exists($path)) return;
+        $file = fopen($path, 'r');
+        $header = fgetcsv($file);
+        while (($row = fgetcsv($file)) !== false) {
+            $data = array_combine($header, $row);
+            $user = \App\Models\User::where('email', $data['email'])->first();
+            if ($user) {
+                DB::table('student_profiles')->updateOrInsert(
+                    ['user_id' => $user->id],
+                    [
+                        'matricule' => $data['matricule'],
+                        'group_id' => $data['group_id'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]
+                );
+            }
+        }
+        fclose($file);
+    }
+
+    protected function seedTeacherProfiles(string $path)
+    {
+        if (!File::exists($path)) return;
+        $file = fopen($path, 'r');
+        $header = fgetcsv($file);
+        while (($row = fgetcsv($file)) !== false) {
+            $data = array_combine($header, $row);
+            $user = \App\Models\User::where('email', $data['email'])->first();
+            if ($user) {
+                DB::table('teacher_profiles')->updateOrInsert(
+                    ['user_id' => $user->id],
+                    [
+                        'specialty' => $data['specialty'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]
+                );
+            }
+        }
+        fclose($file);
+    }
+
+    protected function seedModuleTeacherGroup(string $path)
+    {
+        if (!File::exists($path)) return;
+        $file = fopen($path, 'r');
+        $header = fgetcsv($file);
+        while (($row = fgetcsv($file)) !== false) {
+            $data = array_combine($header, $row);
+            DB::table('module_teacher_group')->updateOrInsert(
+                [
+                    'module_id' => $data['module_id'],
+                    'teacher_profile_id' => $data['teacher_profile_id'],
+                    'group_id' => $data['group_id'],
+                ],
+                [
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
+        }
+        fclose($file);
+        $this->command->info('Seeded module_teacher_group from CSV.');
+    }
+
+    protected function seedFromCsv(string $table, string $path)
+    {
+        if (!File::exists($path)) {
+            $this->command->warn("CSV file not found: {$path}");
+            return;
+        }
+
+        $file = fopen($path, 'r');
+        $header = fgetcsv($file);
+
+        while (($row = fgetcsv($file)) !== false) {
+            $item = array_combine($header, $row);
+            $item['created_at'] = now();
+            $item['updated_at'] = now();
+            
+            // Use ID as the unique key for updateOrInsert if it exists in CSV
+            $key = isset($item['id']) ? ['id' => $item['id']] : $item;
+            
+            DB::table($table)->updateOrInsert($key, $item);
+        }
+
+        fclose($file);
+        $this->command->info("Seeded {$table} from CSV.");
+    }
+}

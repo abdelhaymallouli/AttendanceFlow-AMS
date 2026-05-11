@@ -1,0 +1,3 @@
+student_profile_id,reason,file_path,start_date,end_date,status
+2,Maladie grippe,justifications/abs1.pdf,2026-03-12,2026-03-14,accepted
+5,Rendez-vous médical,justifications/abs2.pdf,2026-03-12,2026-03-12,pending
