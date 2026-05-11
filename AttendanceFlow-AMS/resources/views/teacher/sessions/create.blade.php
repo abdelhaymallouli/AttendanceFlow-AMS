@@ -11,7 +11,7 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto">
-    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden" x-data="sessionForm()">
+    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden" x-data="sessionForm('{{ old('start_time', '09:00') }}', '{{ old('end_time', '11:00') }}')">
         <div class="p-6 border-b border-gray-200 bg-gray-50/50">
             <h3 class="text-lg font-semibold text-gray-800">Session Configuration</h3>
             <p class="text-sm text-gray-500">Choose your module, group, and schedule for this session.</p>
@@ -32,7 +32,7 @@
                     </select>
                     @error('module_id') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                 </div>
-
+                
                 <!-- Group Selection (filtered by teacher's assignments) -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Group</label>
@@ -44,7 +44,7 @@
                     </select>
                     @error('group_id') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                 </div>
-
+                
                 <!-- Session Type -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Session Type</label>
@@ -56,9 +56,9 @@
                     @error('type') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                 </div>
             </div>
-
+            
             <hr class="border-gray-100">
-
+            
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <!-- Date -->
                 <div class="md:col-span-2">
@@ -83,7 +83,7 @@
                     </div>
                     @error('start_time') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                 </div>
-
+                
                 <!-- End Time -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">End Time</label>
@@ -102,7 +102,7 @@
                 <span class="text-sm font-medium text-gray-700">Calculated Duration:</span>
                 <span class="font-bold text-blue-700" x-text="durationText"></span>
             </div>
-
+            
             <div class="flex justify-end space-x-4 pt-6 border-t border-gray-200">
                 <a href="{{ route('teacher.dashboard') }}" class="px-6 py-3 rounded-xl text-gray-700 font-medium hover:bg-gray-100 transition-colors">
                     Cancel
@@ -115,35 +115,3 @@
         </form>
     </div>
 </div>
-
-@push('scripts')
-<script>
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('sessionForm', () => ({
-            startTime: '{{ old('start_time', '09:00') }}',
-            endTime: '{{ old('end_time', '11:00') }}',
-            
-            get durationText() {
-                if (!this.startTime || !this.endTime) return '--';
-                
-                const start = this.startTime.split(':');
-                const end = this.endTime.split(':');
-                
-                const startMins = parseInt(start[0]) * 60 + parseInt(start[1]);
-                const endMins = parseInt(end[0]) * 60 + parseInt(end[1]);
-                
-                const diff = endMins - startMins;
-                
-                if (diff <= 0) return 'Invalid Time';
-                
-                const hours = Math.floor(diff / 60);
-                const mins = diff % 60;
-                
-                if (mins === 0) return `${hours} Hour${hours > 1 ? 's' : ''}`;
-                return `${hours}h ${mins}m`;
-            }
-        }));
-    });
-</script>
-@endpush
-@endsection

@@ -3,12 +3,10 @@
 @section('title', 'Justification Hub')
 @section('page_title', 'Absence Justifications')
 
-
-
 @section('header_actions')
 <div class="flex items-center gap-3">
     <span class="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-amber-50 text-amber-600 border border-amber-100">
-        {{ \App\Models\Justification::where('status', 'pending')->count() }} Pending Approval
+        {{ $pendingCount ?? 0 }} Pending Approval
     </span>
 </div>
 @endsection
@@ -148,31 +146,9 @@
 
 </div>
 
-@php
-    $serverJustifications = \App\Models\Justification::with(['studentProfile.user', 'studentProfile.group'])
-        ->latest()
-        ->get()
-        ->map(function($j) {
-            return [
-                'id'            => $j->id,
-                'studentName'   => $j->studentProfile->user->name ?? 'Unknown',
-                'studentId'     => $j->studentProfile->student_id ?? 'N/A',
-                'grade'         => $j->studentProfile->group->name ?? 'G1',
-                'absenceDate'   => \Carbon\Carbon::parse($j->start_date)->format('M d, Y'),
-                'documentUrl'   => \Illuminate\Support\Facades\Storage::url($j->file_path),
-                'reason'        => $j->reason,
-                'submittedDate' => \Carbon\Carbon::parse($j->created_at)->format('M d, Y'),
-                'status'        => $j->status,
-                'updateUrl'     => route('admin.justifications.update', $j->id),
-            ];
-        })
-        ->values();
-@endphp
-
 @push('scripts')
 <script>
-    // Server data passed to the Alpine component (see resources/js/justifications.js)
-    const serverJustifications = @json($serverJustifications);
+    const serverJustifications = @json($justifications);
 </script>
 @endpush
 @endsection

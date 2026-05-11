@@ -2,21 +2,25 @@
  * Reports App (Admin)
  * ====================
  * Handles initialization of Chart.js charts for the admin reports view.
+ * Data is passed from the controller via window.reportData.
  */
-document.addEventListener('DOMContentLoaded', function() {
-    // Only run if we are on the reports page (check for a canvas)
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
+
+function initCharts() {
     const monthlyCtx = document.getElementById('monthlyTrendChart');
     if (!monthlyCtx) return;
 
-    // Initialize Overview Charts
+    const data = window.reportData || {};
+
     new Chart(monthlyCtx, {
         type: 'line',
         data: {
-            labels: ['Sep', 'Oct', 'Nov', 'Dec'],
+            labels: data.monthlyLabels || ['Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [{
                 label: 'Attendance Rate',
-                data: [97.2, 96.5, 95.8, 94.3],
-                borderColor: '#2563eb', // blue-600
+                data: data.monthlyRates || [97.2, 96.5, 95.8, 94.3],
+                borderColor: '#2563eb',
                 backgroundColor: 'rgba(37, 99, 235, 0.1)',
                 tension: 0.4,
                 fill: true
@@ -41,9 +45,9 @@ document.addEventListener('DOMContentLoaded', function() {
         new Chart(statusCtx, {
             type: 'doughnut',
             data: {
-                labels: ['Present', 'Unjustified Absence', 'Justified Absence', 'Late'],
+                labels: data.statusLabels || ['Present', 'Unjustified Absence', 'Justified Absence', 'Late'],
                 datasets: [{
-                    data: [95.8, 2.1, 1.8, 0.3],
+                    data: data.statusData || [95.8, 2.1, 1.8, 0.3],
                     backgroundColor: ['#22c55e', '#ef4444', '#3b82f6', '#f59e0b'],
                     borderWidth: 0,
                     cutout: '70%'
@@ -59,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Setup Trends Chart globally for Alpine to call
     let trendsChartInitialized = false;
     window.initTrendsChart = function () {
         if (trendsChartInitialized) return;
@@ -68,10 +71,10 @@ document.addEventListener('DOMContentLoaded', function() {
             new Chart(weekdayCtx, {
                 type: 'bar',
                 data: {
-                    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                    labels: data.weekdayLabels || ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
                     datasets: [{
                         label: 'Absences',
-                        data: [48, 32, 28, 35, 52],
+                        data: data.weekdayData || [48, 32, 28, 35, 52],
                         backgroundColor: '#ef4444',
                         borderRadius: 6
                     }]
@@ -85,4 +88,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         trendsChartInitialized = true;
     };
-});
+}
+
+document.addEventListener('DOMContentLoaded', initCharts);

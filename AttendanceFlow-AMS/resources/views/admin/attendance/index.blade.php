@@ -7,7 +7,7 @@
 <div class="space-y-6" x-data="attendanceApp(initialSessions, '{{ $date }}')">
     
     <!-- Step 1: Date + Session Selector -->
-<x-ui.section-card padding="p-4" class="mb-6">
+    <x-ui.section-card padding="p-4" class="mb-6">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <!-- Step label -->
             <div>
@@ -19,15 +19,12 @@
             </div>
 
             <!-- Date Input -->
-            <div class="flex items-center gap-3 bg-gray-50 p-2 rounded-lg border border-gray-100">
-                <label class="text-sm font-medium text-gray-700 whitespace-nowrap ml-1"><i data-lucide="calendar" class="w-4 h-4 inline-block mr-1 text-blue-600"></i> Date:</label>
-                <input
-                    type="date"
-                    x-model="selectedDate"
-                    @change="onDateChange()"
-                    class="text-sm border border-gray-300 rounded-md px-3 py-1.5 focus:ring-2 focus:ring-blue-500 outline-none bg-white shadow-sm"
-                >
-            </div>
+            <x-date-filter 
+                label="Date:"
+                name="selectedDate"
+                value="{{ $date }}"
+                onChange="window.location.href = '?date=' + this.selectedDate"
+            />
         </div>
 
         <!-- Session Cards -->
@@ -42,13 +39,11 @@
 
                     <!-- Session info -->
                     <div class="flex-1 min-w-0">
-                        <!-- Time + duration -->
                         <p class="font-semibold text-sm text-gray-800">
                             <span x-text="session.time"></span>
                             <span class="font-normal text-xs ml-1 text-gray-400" x-text="'(' + session.duration + 'h)'"></span>
                         </p>
                         
-                        <!-- Module & Group -->
                         <p class="text-xs text-gray-500 truncate mt-1">
                             <span class="font-medium text-gray-700" x-text="session.module"></span>
                             <span class="mx-1 text-gray-300">·</span>
@@ -73,7 +68,7 @@
                 class="border-dashed"
             />
         </div>
-</x-ui.section-card>
+    </x-ui.section-card>
 </div>
 
 @push('scripts')

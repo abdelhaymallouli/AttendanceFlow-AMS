@@ -2,9 +2,11 @@ import './bootstrap';
 import Alpine from 'alpinejs';
 import { createIcons, icons } from 'lucide';
 import './attendance';
+import './attendance-mark';
 import './justifications';
 import './calendar';
 import './reports';
+import './session-form';
 
 window.Alpine = Alpine;
 window.createIcons = createIcons;

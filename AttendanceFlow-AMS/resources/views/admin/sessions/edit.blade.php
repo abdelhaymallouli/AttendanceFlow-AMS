@@ -11,7 +11,7 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto">
-    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden" x-data="sessionForm()">
+    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden" x-data="sessionForm('{{ old('start_time', \Carbon\Carbon::parse($session->start_time)->format('H:i')) }}', '{{ old('end_time', \Carbon\Carbon::parse($session->end_time)->format('H:i')) }}')">
         <div class="p-6 border-b border-gray-200 bg-gray-50/50 flex items-center justify-between">
             <div>
                 <h3 class="text-lg font-semibold text-gray-800">Edit Session Configuration</h3>
@@ -139,34 +139,4 @@
     </div>
 </div>
 
-@push('scripts')
-<script>
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('sessionForm', () => ({
-            startTime: '{{ old('start_time', \Carbon\Carbon::parse($session->start_time)->format('H:i')) }}',
-            endTime: '{{ old('end_time', \Carbon\Carbon::parse($session->end_time)->format('H:i')) }}',
-            
-            get durationText() {
-                if (!this.startTime || !this.endTime) return '--';
-                
-                const start = this.startTime.split(':');
-                const end = this.endTime.split(':');
-                
-                const startMins = parseInt(start[0]) * 60 + parseInt(start[1]);
-                const endMins = parseInt(end[0]) * 60 + parseInt(end[1]);
-                
-                const diff = endMins - startMins;
-                
-                if (diff <= 0) return 'Invalid Time';
-                
-                const hours = Math.floor(diff / 60);
-                const mins = diff % 60;
-                
-                if (mins === 0) return `${hours} Hour${hours > 1 ? 's' : ''}`;
-                return `${hours}h ${mins}m`;
-            }
-        }));
-    });
-</script>
-@endpush
 @endsection
