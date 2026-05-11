@@ -20,21 +20,14 @@
                 <p class="text-xs text-gray-500 mt-1">Select a date to view the scheduled sessions.</p>
             </div>
             
-            <div class="flex items-center gap-3 bg-gray-50 p-2 rounded-lg border border-gray-100">
-                <label class="text-sm font-medium text-gray-700 whitespace-nowrap ml-1"><i data-lucide="calendar" class="w-4 h-4 inline-block mr-1 text-blue-600"></i> Date:</label>
-                <input 
-                    type="date" 
-                    name="date" 
-                    value="{{ $date }}"
-                    onchange="this.form.submit()"
-                    class="text-sm border border-gray-300 rounded-md px-3 py-1.5 focus:ring-2 focus:ring-blue-500 outline-none bg-white shadow-sm"
-                >
-                @if($date !== \Carbon\Carbon::today()->toDateString())
-                    <a href="{{ route('admin.sessions.index') }}" class="text-xs font-medium text-blue-600 hover:text-blue-800 px-2 py-1 bg-blue-50 hover:bg-blue-100 rounded transition-colors">
-                        Today
-                    </a>
-                @endif
-            </div>
+            <x-date-filter 
+                label="Date:"
+                name="date"
+                value="{{ $date }}"
+                onChange="this.form.submit()"
+                showTodayLink="true"
+                todayUrl="{{ route('admin.sessions.index') }}"
+            />
         </form>
     </x-ui.section-card>
 

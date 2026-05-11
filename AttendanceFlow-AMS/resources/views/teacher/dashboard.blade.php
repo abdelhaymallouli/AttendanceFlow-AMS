@@ -4,14 +4,14 @@
 @section('page_title', 'Teacher Dashboard')
 
 @section('content')
-<div class="space-y-6" x-data="teacherDashboard()">
+<div class="space-y-6" x-data="teacherDashboard()" x-init="init()">
 
     <!-- Current Session Alert -->
     <div x-show="currentSession"
-        class="mb-6 bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg p-6 text-white">
+         class="mb-6 bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg p-6 text-white">
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div class="flex items-center space-x-4">
-                <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
                     <span class="pulse-dot w-3 h-3 bg-green-400 rounded-full inline-block"></span>
                 </div>
                 <div>
@@ -22,7 +22,7 @@
                 </div>
             </div>
             <a :href="currentSession.url"
-                class="bg-white text-blue-600 font-semibold py-3 px-6 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center whitespace-nowrap">
+               class="bg-white text-blue-600 font-semibold py-3 px-6 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center whitespace-nowrap">
                 <i data-lucide="clipboard-check" class="w-5 h-5 mr-2"></i>
                 Take Attendance
             </a>
@@ -31,55 +31,42 @@
 
     <!-- Today's Stats -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6">
-
-        <!-- Total Students -->
-        <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <i data-lucide="users" class="w-6 h-6 text-blue-600"></i>
-                </div>
-                <span class="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">+2.5%</span>
-            </div>
-            <p class="text-2xl font-bold text-gray-800 mb-1" x-text="totalStudents"></p>
-            <p class="text-sm text-gray-500">Total Students</p>
-        </div>
-
-        <!-- Present Today -->
-        <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                    <i data-lucide="check-circle" class="w-6 h-6 text-green-600"></i>
-                </div>
-                <span class="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full" x-text="avgAttendance + '%'"></span>
-            </div>
-            <p class="text-2xl font-bold text-gray-800 mb-1" x-text="Math.round((avgAttendance/100) * totalStudents)"></p>
-            <p class="text-sm text-gray-500">Present Today</p>
-        </div>
-
-        <!-- Absent Today -->
-        <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                    <i data-lucide="x-circle" class="w-6 h-6 text-red-600"></i>
-                </div>
-                <span class="text-xs font-medium text-red-600 bg-red-50 px-2 py-1 rounded-full" x-text="(100 - avgAttendance) + '%'"></span>
-            </div>
-            <p class="text-2xl font-bold text-gray-800 mb-1" x-text="totalStudents - Math.round((avgAttendance/100) * totalStudents)"></p>
-            <p class="text-sm text-gray-500">Absent Today</p>
-        </div>
-
-        <!-- Pending Justifications -->
-        <a href="#"
-            class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow cursor-pointer block">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
-                    <i data-lucide="file-text" class="w-6 h-6 text-amber-600"></i>
-                </div>
-                <span class="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded-full">Action</span>
-            </div>
-            <p class="text-2xl font-bold text-gray-800 mb-1" x-text="pendingCount"></p>
-            <p class="text-sm text-gray-500">Pending Justifications</p>
-        </a>
+        <x-ui.stat-card 
+            title="Total Students" 
+            :value="0" 
+            icon="users" 
+            color="blue" 
+            trend="+2.5%" 
+            trendColor="green" 
+            alpineValue="totalStudents"
+        />
+        
+        <x-ui.stat-card 
+            title="Present Today" 
+            :value="0" 
+            icon="check-circle" 
+            color="green" 
+            :trend="''" 
+            alpineValue="Math.round((avgAttendance/100) * totalStudents)"
+        />
+        
+        <x-ui.stat-card 
+            title="Absent Today" 
+            :value="0" 
+            icon="x-circle" 
+            color="red" 
+            :trend="''" 
+            alpineValue="totalStudents - Math.round((avgAttendance/100) * totalStudents)"
+        />
+        
+        <x-ui.stat-card 
+            title="Pending Justifications" 
+            :value="0" 
+            icon="file-text" 
+            color="amber" 
+            trend="Action" 
+            alpineValue="pendingCount"
+        />
     </div>
 
     <!-- Two-Column Layout: Quick Actions + Sessions -->
@@ -93,22 +80,22 @@
             </h3>
             <div class="space-y-3">
                 <a :href="currentSession ? currentSession.url : '#'"
-                    class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center shadow-sm">
+                   class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center shadow-sm">
                     <i data-lucide="clipboard-check" class="w-5 h-5 mr-2"></i>
                     Take Attendance
                 </a>
                 <a href="#"
-                    class="block w-full bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-lg border border-gray-200 transition-colors flex items-center justify-center">
+                   class="block w-full bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-lg border border-gray-200 transition-colors flex items-center justify-center">
                     <i data-lucide="clock" class="w-5 h-5 mr-2"></i>
                     View Sessions
                 </a>
                 <a href="#"
-                    class="block w-full bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-lg border border-gray-200 transition-colors flex items-center justify-center">
+                   class="block w-full bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-lg border border-gray-200 transition-colors flex items-center justify-center">
                     <i data-lucide="download" class="w-5 h-5 mr-2"></i>
                     Export Report
                 </a>
                 <button
-                    class="w-full bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-lg border border-gray-200 transition-colors flex items-center justify-center">
+                   class="w-full bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-lg border border-gray-200 transition-colors flex items-center justify-center">
                     <i data-lucide="send" class="w-5 h-5 mr-2"></i>
                     Send Notifications
                 </button>
@@ -161,9 +148,9 @@
                             <p class="text-xs text-gray-500 mt-1" x-text="session.time + ' (' + session.duration_hours + 'h) \u2022 ' + session.groupName + ' \u2022 ' + session.studentsCount + ' students'"></p>
                         </div>
                         <a :href="session.url"
-                            class="text-sm font-medium px-3 py-1 rounded-lg transition-colors flex-shrink-0 whitespace-nowrap"
-                            :class="session.status === 'completed' ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-blue-600 text-white hover:bg-blue-700'"
-                            x-text="session.status === 'completed' ? 'View' : 'Take'"></a>
+                           class="text-sm font-medium px-3 py-1 rounded-lg transition-colors flex-shrink-0 whitespace-nowrap"
+                           :class="session.status === 'completed' ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-blue-600 text-white hover:bg-blue-700'"
+                           x-text="session.status === 'completed' ? 'View' : 'Take'"></a>
                     </div>
                 </template>
                 <div x-show="sessions.length === 0" class="text-center py-8">
@@ -215,8 +202,8 @@
     }
 </style>
 <script>
-    function teacherDashboard() {
-        return {
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('teacherDashboard', () => ({
             sessions: @json($sessionsData),
             currentSession: null,
             totalStudents: {{ $stats['total_students'] }},
@@ -225,7 +212,11 @@
             teacherGroups: @json($teacherGroups),
             init() {
                 this.determineStatuses();
-                setTimeout(() => lucide.createIcons(), 50);
+                setTimeout(() => {
+                    if (typeof window.initIcons === 'function') {
+                        window.initIcons();
+                    }
+                }, 50);
             },
             determineStatuses() {
                 const now = new Date();
@@ -256,8 +247,8 @@
                 const classes = { 'lecture': 'text-purple-600', 'td': 'text-blue-600', 'tp': 'text-green-600' };
                 return classes[type] || 'text-gray-600';
             }
-        }
-    }
+        }));
+    });
 </script>
 @endpush
 @endsection

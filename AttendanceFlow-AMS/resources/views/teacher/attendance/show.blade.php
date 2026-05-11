@@ -4,33 +4,8 @@
 @section('page_title', 'Mark Attendance')
 
 @section('content')
-<div class="space-y-6" x-data="{ 
-    searchQuery: '',
-    stats: { present: 0, absent: 0, late: 0, unmarked: {{ $students->count() }} },
-    updateStats() {
-        const statuses = Array.from(document.querySelectorAll('input[type=radio]:checked')).map(r => r.value);
-        this.stats.present = statuses.filter(s => s === 'present').length;
-        this.stats.absent = statuses.filter(s => s === 'absent').length;
-        this.stats.late = statuses.filter(s => s === 'late').length;
-        this.stats.unmarked = {{ $students->count() }} - statuses.length;
-    },
-    markAllPresent() {
-        document.querySelectorAll('input[type=radio][value=present]').forEach(el => el.checked = true);
-        this.updateStats();
-    },
-    clearAll() {
-        document.querySelectorAll('input[type=radio]').forEach(el => el.checked = false);
-        this.updateStats();
-    },
-    filterRows() {
-        const query = this.searchQuery.toLowerCase();
-        document.querySelectorAll('.student-row').forEach(row => {
-            const text = row.innerText.toLowerCase();
-            row.style.display = text.includes(query) ? '' : 'none';
-        });
-    }
-}" x-init="updateStats()">
-
+<div class="space-y-6" x-data="attendanceMark({{ $students->count() }})" x-init="updateStats()">
+    
     <!-- Session Context Banner -->
     <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-sm">
         <div class="flex items-center gap-3">
@@ -65,8 +40,8 @@
                         <i data-lucide="search" class="w-4 h-4 text-gray-400"></i>
                     </div>
                     <input x-model="searchQuery" @input="filterRows()" type="text"
-                        class="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 hover:bg-white transition-colors"
-                        placeholder="Name or ID...">
+                           class="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 hover:bg-white transition-colors"
+                           placeholder="Name or ID...">
                 </div>
             </div>
 
@@ -75,12 +50,12 @@
                 <label class="block text-sm font-medium text-gray-700 mb-2">Quick Actions</label>
                 <div class="flex space-x-2">
                     <button @click="markAllPresent()" type="button"
-                        class="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm flex items-center justify-center shadow-sm">
+                            class="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm flex items-center justify-center shadow-sm">
                         <i data-lucide="check-circle" class="w-4 h-4 mr-1.5"></i>
                         All Present
                     </button>
                     <button @click="clearAll()" type="button"
-                        class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-3 rounded-lg transition-colors text-sm flex items-center justify-center border border-gray-200">
+                            class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-3 rounded-lg transition-colors text-sm flex items-center justify-center border border-gray-200">
                         <i data-lucide="rotate-ccw" class="w-4 h-4 mr-1.5"></i>
                         Reset
                     </button>
@@ -109,7 +84,7 @@
                 </div>
             </div>
             <button onclick="document.getElementById('attendanceForm').submit()"
-                class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-6 rounded-lg transition-all flex items-center justify-center shadow-md hover:shadow-lg active:scale-95">
+                    class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-6 rounded-lg transition-all flex items-center justify-center shadow-md hover:shadow-lg active:scale-95">
                 <i data-lucide="save" class="w-4 h-4 mr-2"></i>
                 Save Attendance
             </button>
@@ -156,6 +131,4 @@
             @endif
         </x-ui.section-card>
     </form>
-
 </div>
-@endsection

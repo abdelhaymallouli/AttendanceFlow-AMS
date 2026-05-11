@@ -4,36 +4,7 @@
 @section('page_title', 'Mark Attendance')
 
 @section('content')
-<div class="space-y-6" x-data="{ 
-    searchQuery: '',
-    stats: { present: 0, absent: 0, late: 0, unmarked: {{ $students->count() }} },
-    updateStats() {
-        const statuses = Array.from(document.querySelectorAll('input[type=radio]:checked')).map(r => r.value);
-        this.stats.present = statuses.filter(s => s === 'present').length;
-        this.stats.absent = statuses.filter(s => s === 'absent').length;
-        this.stats.late = statuses.filter(s => s === 'late').length;
-        this.stats.unmarked = {{ $students->count() }} - statuses.length;
-    },
-    markAllPresent() {
-        document.querySelectorAll('input[type=radio][value=present]').forEach(el => el.checked = true);
-        this.updateStats();
-    },
-    clearAll() {
-        document.querySelectorAll('input[type=radio]').forEach(el => el.checked = false);
-        this.updateStats();
-    },
-    filterRows() {
-        const query = this.searchQuery.toLowerCase();
-        document.querySelectorAll('.student-row').forEach(row => {
-            const text = row.innerText.toLowerCase();
-            if (text.includes(query)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
-    }
-}" x-init="updateStats()">
+<div class="space-y-6" x-data="attendanceMark({{ $students->count() }})" x-init="updateStats()">
 
     <!-- Session Context Banner -->
     <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-sm">
