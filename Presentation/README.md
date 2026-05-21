@@ -174,7 +174,7 @@ style: |
 ## 2. Méthodologie : Scrum (Agile)
 
 <div class="img-container">
-  <img src="images/scrum.jpg" class="img-premium" style="max-height: 380px;" alt="Scrum">
+  <img src="images/scrum.png" class="img-premium" style="max-height: 380px;" alt="Scrum">
   <div class="glass-card" style="margin-top: 25px; border-top: 4px solid #00b894;">
     <p style="font-size: 1.1em; font-weight: 500; color: #2d3436; margin: 0;">L'agilité au cœur du développement pour une fiabilité maximale.</p>
   </div>
