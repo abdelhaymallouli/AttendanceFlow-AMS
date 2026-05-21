@@ -1,59 +1,12 @@
-<div align="center">
+# **Page De Garde** {#page-de-garde}
 
-<br>
+# **Table de matière** {#table-de-matière}
 
-| | |
-|:---:|:---:|
-| ![](../Presentation/images/logo-solicode.png){width=140px} | ![](../Presentation/images/ofppt-logo.png){width=140px} |
+# **Liste des figures** {#liste-des-figures}
 
-<br><br><br>
+# 
 
-**REPORT FINAL DE PROJET**
-
-
-<br>
-
-***
-
-<br>
-
-**AttendanceFlow-AMS**
-*Système de Gestion des Absences*
-
-<br>
-
-***
-
-<br><br><br>
-
-| | |
-|:--- | ---:|
-| **Submitted by:** | **Academic Year:** |
-| **Mallouli Abdelhay** | **2025 - 2026** |
-| | |
-| **Supervisor:** | **Filière:** |
-| **Mr. Essarraj Fouad** | **Développement Mobile** |
-
-<br><br><br><br><br>
-
-**SOLICODE – Digital & IT Training Center**
-*www.solicode.co*
-
-</div>
-
-```{=openxml}
-<w:p><w:r><w:br w:type="page"/></w:r></w:p>
-```
-# 📋 Table of Contents
-
-```{=openxml}
-<w:p><w:r><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:instrText xml:space="preserve"> TOC \o "1-3" \h \z \u </w:instrText></w:r><w:r><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:fldChar w:fldCharType="end"/></w:r></w:p>
-```
-
-```{=openxml}
-<w:p><w:r><w:br w:type="page"/></w:r></w:p>
-```
-# 📜 Remerciements
+# **Remerciement** {#remerciement}
 
 Au terme de ce projet, je tiens à exprimer ma profonde gratitude et mes sincères remerciements à toutes les personnes qui ont contribué de près ou de loin à la réalisation de ce travail.
 
@@ -63,100 +16,104 @@ Je tiens également à remercier l'ensemble de l'équipe pédagogique du centre 
 
 Enfin, je remercie ma famille et mes amis pour leur soutien indéfectible et leurs encouragements tout au long de mon parcours de formation.
 
-```{=openxml}
-<w:p><w:r><w:br w:type="page"/></w:r></w:p>
-```
+# ***Introduction*** {#introduction}
 
-# 🚀 Introduction
+Dans le cadre de notre formation à Solicode, le projet « Digitalisation de la gestion du Syndic » a été réalisé pour répondre à un besoin réel dans la gestion des immeubles résidentiels. Actuellement, le suivi des charges et des paiements se fait souvent de manière manuelle, ce qui rend l’organisation difficile et peu transparente. Cette situation peut entraîner des retards, des erreurs et des conflits entre les résidents et le syndic.
 
-Le projet **AttendanceFlow-AMS** est une réponse technologique moderne aux défis logistiques de la gestion de l'assiduité en centre de formation. En alliant ergonomie mobile et puissance administrative web, il redéfinit le suivi des présences comme un flux continu et transparent.
+L’objectif principal de ce projet est de concevoir une plateforme web permettant de centraliser les informations de l’immeuble et d’assurer un meilleur suivi des paiements. La solution proposée vise à améliorer la communication entre les acteurs et à garantir une gestion plus structurée et efficace.
 
-```{=openxml}
-<w:p><w:r><w:br w:type="page"/></w:r></w:p>
-```
+Pour atteindre ces objectifs, une démarche agile a été adoptée, combinant l’approche  Design thinking pour analyser les besoins des utilisateurs et la méthode Scrum pour organiser le développement par itérations successives.
 
-# 🏙️ Contexte de projet
+*Contexte de projet*
 
-## Objectifs de formation (SoliCode)
+La mise en place de la plateforme **AttendanceFlow-AMS** s'inscrit au cœur d'une réflexion globale sur l'amélioration des processus académiques et pédagogiques au sein de **SoliCode**. Cette section présente le contexte académique de formation, les enjeux qui ont motivé ce projet ainsi que le cadre d'apprentissage dans lequel il a été développé.
+
+## **Objectif de Project**  {#objectif-de-project}
 
 Le projet **AttendanceFlow-AMS** s'inscrit dans le cadre de la formation "Développement Mobile et Web" au sein de **SoliCode**. Les objectifs pédagogiques principaux sont :
 
-*   **Maîtrise de l'Agilité :** Application concrète des frameworks Scrum et Design Thinking sur un projet réel.
-*   **Expertise Full-Stack :** Utilisation de technologies modernes (Laravel, Tailwind CSS, Alpine.js) pour créer une solution complète.
-*   **Conception Centrée Utilisateur :** Passage du besoin abstrait à une interface fonctionnelle et ergonomique.
-*   **Professionnalisation :** Simulation d'un environnement de production avec gestion de version (Git) et documentation technique.
+\*   **Maîtrise de l'Agilité** : Application concrète des frameworks Scrum et Design Thinking sur un projet réel.
 
-```{=openxml}
-<w:p><w:r><w:br w:type="page"/></w:r></w:p>
-```
+\*   **Expertise Full-Stack** : Utilisation de technologies modernes (Laravel, Tailwind CSS, Alpine.js) pour créer une solution complète.
 
+\*  **Conception Centrée Utilisateur** : Passage du besoin abstrait à une interface fonctionnelle et ergonomique.
 
-# 📑 Cahier des Charges
+\*  **Professionnalisation** : Simulation d'un environnement de production avec gestion de version (Git) et documentation technique.
 
-**Rôle :** Architecture Système & Analyse
-**Projet :** Système de Gestion des Absences (AMS) pour SoliCode
+Ce projet de fin de formation constitue ainsi un tremplin idéal pour allier les exigences d'un produit professionnel aux objectifs d'apprentissage d'un développeur full-stack. Il jette les bases de l'analyse des besoins réels qui sera formalisée dans le cahier des charges de la section suivante.
 
----
+## **Cahier de charge** {#cahier-de-charge}
 
-## 1. Introduction & Vision
-AttendanceFlow-AMS est une solution numérique intégrée visant à supprimer le goulot d'étranglement de la gestion manuelle des absences. La vision centrale est d'automatiser le flux de données de la salle de classe (Terrain) vers l'administration (Core) en temps réel.
+*Afin de concevoir une solution parfaitement adaptée aux besoins de l'administration, des enseignants et des étudiants de SoliCode, il est indispensable de définir rigoureusement les contours du projet. Ce cahier des charges détaille la vision du système, les objectifs ciblés, les spécifications fonctionnelles pour chaque profil utilisateur, ainsi que les contraintes techniques et de performance régissant le développement.*
 
-## 2. Objectifs du Système
-- **Suppression du Papier :** Digitalisation 100% du pointage.
-- **Précision Granulaire :** Gestion des absences par sessions (9-11, 11-14, 14-17).
-- **Réactivité Administrative :** Disponibilité immédiate des données pour validation.
-- **Transparence Étudiante :** Consultation autonome par les apprenants.
-
-## 3. Spécifications Fonctionnelles
-
-### 3.1 Profil Formateur (Mobile-First)
-- Authentification sécurisée.
-- Pointage "Flash" : sélection rapide des absents/présents par session.
-- Saisie des motifs de retard en temps réel.
-- Historique des sessions récentes.
-
-### 3.2 Profil Administrateur (Back-Office Web)
-- Dashboard global de monitoring.
-- Hub de validation des pointages formateurs.
-- Gestion des justificatifs (Visualisation et Approbation).
-- Exportation de rapports dynamiques (PDF/Excel).
-
-### 3.3 Profil Étudiant (Consultation)
-- Tableau de bord personnel d'assiduité.
-- Soumission numérique de justificatifs.
-- Notifications d'alertes en cas de dépassement de quota.
-
-## 4. Spécifications Techniques (Architecture)
-- **Backend :** Laravel 12 (Robustesse & Sécurité).
-- **Frontend :** Tailwind CSS & Alpine.js (UX Premium & Performance).
-- **Database :** MySQL (Intégrité référentielle des records d'absence).
-- **Architecture :** Service-Pattern pour le découplage métier.
-
-## 5. Contraintes & Performance
-- **Temps de saisie :** Inférieur à 30 secondes pour une classe complète.
-- **Synchronisation :** Immédiate (Real-time update).
-- **Responsive :** Adaptabilité totale Web & Mobile.
+*Rôle : Architecture Système & Analyse*  
+*Projet : Système de Gestion des Absences (AMS) pour SoliCode*
 
 ---
 
-```{=openxml}
-<w:p><w:r><w:br w:type="page"/></w:r></w:p>
-```
-# 🛠️ Méthodes de travail
+###  Introduction & Vision {#introduction-&-vision}
 
-L'approche adoptée pour ce projet repose sur une symbiose entre deux cadres de référence majeurs : l'agilité de **Scrum** et la philosophie du **Design Thinking**. Cette combinaison garantit une solution rigoureusement centrée sur l'utilisateur et une livraison itérative de valeur.
+*AttendanceFlow-AMS est une solution numérique intégrée visant à supprimer le goulot d'étranglement de la gestion manuelle des absences. La vision centrale est d'automatiser le flux de données de la salle de classe (Terrain) vers l'administration (Core) en temps réel.*
 
----
+###  Objectifs du Système {#objectifs-du-système}
 
-## 📅 Méthodologie Scrum
+* *Suppression du Papier : Digitalisation 100% du pointage.*  
+* *Précision Granulaire : Gestion des absences par sessions (9-11, 11-14, 14-17).*  
+* *Réactivité Administrative : Disponibilité immédiate des données pour validation.*  
+* *Transparence Étudiante : Consultation autonome par les apprenants.*
 
-Scrum est le cadre de travail agile utilisé pour livrer de la valeur de manière itérative. Nous avons structuré le développement d'**AttendanceFlow-AMS** en Sprints de deux semaines.
+  ### 3\. Spécifications Fonctionnelles {#3.-spécifications-fonctionnelles}
 
-![Méthodologie Scrum](imgs/scrum.jpg)
+  #### 3.1 Profil Formateur (Mobile-First)
 
-### 👥 Rôles & Évènements
-*   **Rôles :** Product Owner (Vision), Scrum Master (Facilitateur), Équipe Dev (Réalisation).
-*   **Cycles :** Sprint Planning, Daily Stand-up, Sprint Review et Sprint Retrospective pour une amélioration continue.
+* *Authentification sécurisée.*  
+* *Pointage "Flash" : sélection rapide des absents/présents par session.*  
+* *Saisie des motifs de retard en temps réel.*  
+* *Historique des sessions récentes.*
+
+  #### 3.2 Profil Administrateur (Back-Office Web)
+
+* *Dashboard global de monitoring.*  
+* *Hub de validation des pointages formateurs.*  
+* *Gestion des justificatifs (Visualisation et Approbation).*  
+* *Exportation de rapports dynamiques (PDF/Excel).*
+
+  #### 3.3 Profil Étudiant (Consultation)
+
+* *Tableau de bord personnel d'assiduité.*  
+* *Soumission numérique de justificatifs.*  
+* *Notifications d'alertes en cas de dépassement de quota.*
+
+  ### 4\. Spécifications Techniques (Architecture) {#4.-spécifications-techniques-(architecture)}
+
+* *Backend : Laravel 12 (Robustesse & Sécurité).*  
+* *Frontend : Tailwind CSS & Alpine.js (UX Premium & Performance).*  
+* *Database : MySQL (Intégrité référentielle des records d'absence).*  
+* *Architecture : Service-Pattern pour le découplage métier.*
+
+  ### 5\. Contraintes & Performance {#5.-contraintes-&-performance}
+
+* *Temps de saisie : Inférieur à 30 secondes pour une classe complète.*  
+* *Synchronisation : Immédiate (Real-time update).*  
+* *Responsive : Adaptabilité totale Web & Mobile.*
+
+  ---
+
+*La définition claire de ces exigences fonctionnelles et techniques pose le cadre de référence pour l'ensemble du cycle de développement. Afin de concrétiser cette vision de manière itérative et agile, une méthodologie de travail collaborative et structurée s'avère nécessaire, comme décrit dans la section suivante.*
+
+*Méthode de travail*
+
+La réussite d’un projet d’envergure tel que AttendanceFlow-AMS repose non seulement sur les choix technologiques, mais également sur la rigueur de sa gestion et de sa conception. Cette section présente les méthodologies agiles Scrum et l’approche centrée utilisateur Design Thinking qui ont guidé notre processus, depuis la compréhension intime du besoin jusqu’à la validation finale du prototype.
+
+L’approche adoptée pour ce projet repose sur une symbiose entre deux cadres de référence majeurs : l’agilité de Scrum et la philosophie du Design Thinking. Cette combinaison garantit une solution rigoureusement centrée sur l’utilisateur et une livraison itérative de valeur.
+
+## **Scrum** {#scrum}
+
+Scrum est le cadre de travail agile utilisé pour livrer de la valeur de manière itérative. Nous avons structuré le développement d’**AttendanceFlow-AMS** en Sprints de deux semaines.
+
+![Méthodologie Scrum](images/image1.png)
+
+## **Figure 1** : Méthodologie Scrum
 
 ### 📋 Sprint 1 : Digitalisation du Pointage (MVP)
 
@@ -169,42 +126,18 @@ Le Sprint 1 s'est déroulé sur **deux semaines** (Mars 2026) avec les objectifs
 | **Sprint Review** | Fin du Sprint | Démonstration des fonctionnalités livrées au Product Owner |
 | **Sprint Retrospective** | Après la Review | Identification des axes d'amélioration pour le prochain sprint |
 
-**Backlog Sprint 1 (Livré) :**
-- Modélisation et migration de la base de données (12 tables)
-- Système d'authentification avec rôles (Admin, Formateur, Étudiant)
-- Dashboard Administrateur avec statistiques globales
-- CRUD complet des sessions académiques
-- Pointage des présences par session (formateur + admin)
-- Gestion des justificatifs (soumission + validation)
-- Reporting et analyses avec graphiques (Chart.js)
-- API RESTful pour consommation mobile
-- Données de démonstration (seeders CSV)
+* **Product Owner :** responsable de la vision fonctionnelle du produit et de la priorisation du backlog.  
+* **Scrum Master :** garant du respect de la méthodologie Scrum et facilitateur de l’équipe.  
+* **Équipe de développement :** chargée de la conception, du développement et des tests de l’application.
 
-```{=openxml}
-<w:p><w:r><w:br w:type="page"/></w:r></w:p>
-```
+### **🔹 Événements Scrum** {#🔹-événements-scrum}
 
-## 🎨 Design Thinking : L'Humain au Centre
+* **Sprint Planning :** planification des tâches à réaliser durant le sprint.  
+* **Daily Stand-up :** réunion quotidienne de suivi et d’alignement.  
+* **Sprint Review :** présentation des fonctionnalités développées.  
+* **Sprint Retrospective :** analyse des points d’amélioration pour les prochains sprints.
 
-Le Design Thinking nous a permis de déconstruire le problème complexe du pointage papier pour aboutir à une interface intuitive.
-
-![Méthodologie Design Thinking](imgs/designThinking.png)
-
-### 💡 Phase 1 : Empathie (Compréhension des Acteurs)
-
-Nous avons cartographié les frustrations et besoins de nos trois profils types via des **Mind Maps** détaillées. C'est cette analyse "terrain" qui a dicté la conception de l'application.
-
-#### 👤 Madame Hannane (Administratrice)
-Son besoin central est de passer du rôle de "saisisseuse" de données à celui de "validatrice".
-![Mind Map - Madame Hannane](imgs/mindmap_hannane.png)
-
-#### 👤 Anouar Benyakhelef (Étudiant)
-Son défi est l'opacité du système actuel ; il a besoin de transparence et d'autonomie.
-![Mind Map - Anouar Benyakhelef](imgs/mindmap_anouar.png)
-
-#### 👤 Imane Bouziane (Formatrice)
-Elle recherche la rapidité pour ne pas empiéter sur le temps pédagogique.
-![Mind Map - Imane Bouziane](imgs/mindmap_imane.png)
+## **La méthodologie 2TUP** {#la-méthodologie-2tup}
 
 ```{=openxml}
 <w:p><w:r><w:br w:type="page"/></w:r></w:p>
@@ -217,272 +150,6 @@ Suite à la phase d'empathie, nous avons synthétisé nos découvertes pour isol
 ### 💭 Phase 3 : Idéation (Génération de Solutions)
 
 Lors de cette phase, nous avons exploré des solutions pour transformer le flux d'information :
-
-- **Saisie Directe Mobile/Web :** L'enseignant enregistre numériquement les présences par tranche horaire, éliminant le support papier.
-- **Hub de Validation "One-Click" :** Interface administrateur avec code couleur (Rouge/Vert/Jaune) pour un scan rapide de l'assiduité.
-- **Portail de Justificatifs :** Soumission numérique des preuves (PDF/images) liées directement aux absences.
-- **Alertes Automatisées :** Notifications en cas d'absences consécutives anormales.
-
-```{=openxml}
-<w:p><w:r><w:br w:type="page"/></w:r></w:p>
-```
-
-### 🖥️ Phase 4 : Prototype (Maquettage et Développement)
-
-Deux niveaux de prototype ont été réalisés :
-
-1. **Maquettes HTML Interactives :** 17 pages web et 14 pages mobiles ont été créées en HTML/CSS statique pour valider l'expérience utilisateur avant développement. Ces maquettes couvrent tous les écrans (login, dashboards, pointage, justificatifs, reporting).
-
-2. **Prototype Fonctionnel (MVP) :** Développement complet en Laravel 12 avec :
-   - Authentification réelle et gestion des rôles (Spatie Permissions)
-   - Base de données relationnelle (MySQL, 12 tables)
-   - Tableaux de bord dynamiques avec données réelles
-   - Pointage fonctionnel avec recherche et actions groupées
-   - Reporting avec graphiques Chart.js
-
-### ✅ Phase 5 : Test (Validation Utilisateur)
-
-Les tests ont été effectués à plusieurs niveaux :
-
-- **Tests d'acceptance :** Parcours complets pour chaque rôle (Admin, Formateur, Étudiant) en utilisant les comptes de démonstration.
-- **Tests de performance :** Validation du temps de pointage < 30 secondes par classe.
-- **Tests de régression :** Après chaque itération, vérification que les fonctionnalités existantes restent opérationnelles.
-- **Feedback utilisateur :** Simulation des scénarios réels avec les personas définis en phase d'empathie.
-
-```{=openxml}
-<w:p><w:r><w:br w:type="page"/></w:r></w:p>
-```
-# Branche Fonctionnelle
-
-La branche fonctionnelle constitue le cœur de notre analyse. Elle vise à traduire les besoins abstraits des utilisateurs en une structure de solution concrète. En nous appuyant sur la méthodologie **Design Thinking**, nous explorons ici le parcours utilisateur depuis la compréhension profonde du problème jusqu'à la modélisation des solutions techniques, garantissant ainsi une application centrée sur l'humain et l'efficacité opérationnelle.
-
-L'analyse fonctionnelle de ce projet suit la méthodologie **Design Thinking**, structurée en phases immersives pour garantir que la solution répond aux besoins réels des utilisateurs.
-
-### 1. Empathie
-
-L'approche **Design Thinking** commence par l'immersion. Dans cette phase, nous avons cherché à comprendre profondément les défis quotidiens de nos trois acteurs clés : l'administratrice, l'enseignant et l'étudiant.
-
-#### A. Madame Hannane (Administratrice de l'Absence)
-
-Son flux de travail actuel est marqué par une surcharge de tâches manuelles et une dépendance critique au support papier. Le passage de la "saisie" à la "validation" est son besoin prioritaire.
-
-![Mind Map - Madame Hannane](imgs/mindmap_hannane.png)
-
-**Analyse de l'Expérience :**
-
-- **Points de Friction :** Des listes manuscrites illisibles, un décalage (data lag) de 4 à 6 heures, et une peur constante de l'erreur humaine.
-- **Besoins Clés :** Transformation de son rôle en validateur de données, synchronisation immédiate et suppression du support papier.
-
-#### B. Anouar Benyakhelef (Étudiant)
-
-Pour l'étudiant, l'opacité du système actuel génère du stress et une lourdeur administrative inutile, notamment pour la gestion des justificatifs.
-
-![Mind Map - Anouar Benyakhelef](imgs/mindmap_anouar.png)
-
-**Analyse de l'Expérience :**
-
-- **Points de Friction :** Manque de visibilité sur son assiduité, besoin de se déplacer physiquement à l'administration pour chaque démarche.
-- **Besoins Clés :** Transparence en temps réel sur son compteur d'absences et autonomie dans la soumission numérique des justificatifs.
-
-#### C. Imane Bouziane (Formatrice)
-
-La formatrice voit la gestion des absences comme un "vol" de temps pédagogique, surtout avec la nécessité de pointer les étudiants par session (9h-11h, 11h-14h, 14h-17h).
-
-![Mind Map - Imane Bouziane](imgs/mindmap_imane.png)
-
-**Analyse de l'Expérience :**
-
-- **Points de Friction :** Difficulté à segmenter les présences par tranches horaires sur papier, logistique lourde des fiches et interruption du rythme des cours.
-- **Besoins Clés :** Validation granulaire par session (9-11, 11-14, 14-17), interface mobile fluide et synchronisation automatique avec l'administration.
-
-**Synthèse Globale de l'Empathie :**
-L'analyse croisée de ces trois profils révèle un besoin commun : la **suppression du support physique** au profit d'un flux numérique fluide, sécurisé et instantané.
-
-```{=openxml}
-<w:p><w:r><w:br w:type="page"/></w:r></w:p>
-```
-
-### 2. Définition du Problème
-
-Suite à la phase d'empathie, nous avons synthétisé nos découvertes pour isoler le problème central. L'analyse révèle que le système actuel de "double saisie" (papier puis Excel) est la source principale d'inefficacité et d'erreurs.
-
-**Énoncé du problème global :**
-
-> Le problème central est l'inefficacité du flux de travail actuel qui repose sur le passage du **support papier vers une saisie manuelle sur Excel**. Cette méthode génère une surcharge logistique pour les formateurs (notamment pour la segmentation complexe des sessions 9-11, 11-14, 14-17) et un décalage d'information critique pour l'administration, compromettant la fiabilité globale du système.
-
-**Questions "How Might We" (HMW) :**
-Pour stimuler notre créativité, nous avons posé trois questions directrices :
-
-1. **Comment pourrions-nous** éliminer totalement le transfert physique des fiches papier de la salle de classe ?
-2. **Comment pourrions-nous** permettre à l'enseignant de valider chaque session (9-11, 11-14, 14-17) en moins de 30 secondes ?
-3. **Comment pourrions-nous** dématérialiser l'approbation des justificatifs médicaux ?
-
-**Besoins Fonctionnels Identifiés :**
-
-- **Accès par Rôles :** Permissions distinctes pour Enseignants, Administrateurs et Étudiants.
-- **Synchronisation en Temps Réel :** Données instantanément visibles sur le tableau de bord Admin.
-- **Indicateurs Visuels :** Utilisation de couleurs et icônes pour un balayage rapide.
-- **Gestion Numérique :** Capacité de stocker des justificatifs (PDF/Images) liés aux records d'absence.
-
-```{=openxml}
-<w:p><w:r><w:br w:type="page"/></w:r></w:p>
-```
-
-### 3. Idéation
-
-La phase d'idéation nous a permis d'explorer des solutions concrètes. Notre vision est celle d'un flux **"Direct-to-System"** où l'information ne subit aucune friction intermédiaire. L'objectif est de transformer le rôle de l'Administrateur, de la "Saisie de données" vers la "Vérification de données".
-
-**Solutions Stratégiques Retenues :**
-
-- **Saisie Directe par Session (Mobile/Web) :** L'enseignant enregistre les présences numériquement pour chaque tranche horaire (9h-11h, 11h-14h, 14h-17h).
-- **Hub de Validation "One-Click" :** Un tableau de bord administratif utilisant un code couleur (Rouge: Absent, Vert: Présent, Jaune: Justifié) pour scanner rapidement l'état.
-- **Cloud de Justificatifs :** Un portail où les étudiants/parents soumettent leurs preuves numériques, liées directement aux absences.
-
-**Brainstorming des Fonctionnalités :**
-
-- **Alertes Automatisées :** Notifications si un étudiant manque plusieurs cours consécutifs.
-- **Validation Interactive :** L'Admin clique sur "Approuver" ou "Rejeter" pour les justificatifs téléchargés.
-- **Export Intelligent :** Génération de rapports Excel/PDF en un clic pour les résumés quotidiens.
-
-```{=openxml}
-<w:p><w:r><w:br w:type="page"/></w:r></w:p>
-```
-
-### 4. Diagrammes de Cas d'Utilisation Globaux
-
-L'analyse fonctionnelle est divisée en deux écosystèmes complémentaires : la plateforme Web pour la gestion lourde et l'application Mobile pour les opérations de terrain.
-
-#### A. Plateforme Web (Global)
-
-La plateforme Web centralise la gestion des justificatifs, le reporting et le dashboard administratif.
-
-![Cas d'Utilisation Global - Plateforme Web](imgs/global-w.png)
-
-#### B. Application Mobile (Global)
-
-L'application mobile se concentre sur la rapidité de saisie et la mobilité.
-
-![Cas d'Utilisation Global - Plateforme mobile](imgs/global-m.png)
-
----
-
-### 5. Cas d'Utilisation par Sprints
-
-Le développement est segmenté en sprints pour garantir une livraison itérative de valeur. Chaque sprint intègre à la fois les fonctionnalités Web (administration) et Mobile (terrain).
-
-#### Sprint 1 : Digitalisation du Pointage (MVP Web & Mobile)
-
-Ce sprint se concentre sur le remplacement du papier par le numérique pour les opérations critiques de pointage.
-
-![Sprint 1 - Web & Mobile MVP](imgs/sprint1.png)
-
-**Fonctionnalités clés :**
-- **Web :** Authentification, visualisation du dashboard de base et gestion des absences.
-- **Mobile :** Pointage "Flash" par session, saisie des motifs de retard et authentification.
-
-#### Sprint 2 : Justificatifs & Intelligence Métier
-
-Ce sprint apporte l'interactivité pour l'étudiant et la validation administrative avancée.
-
-![Sprint 2 - Extension Web & Mobile](imgs/sprint2.png)
-
-**Fonctionnalités clés :**
-- **Web :** Soumission et validation des justificatifs, historique d'assiduité complet et export de rapports.
-- **Mobile :** Consultation de l'historique d'assiduité et vérification du statut de session.
-
-# 🏗️ Branche Technique
-
-## 🎯 Définition du Problème
-
-Le problème majeur réside dans la transition inefficace du **support papier vers la saisie manuelle sur Excel**. Ce processus archaïque génère une surcharge logistique pour les formateurs (devoir segmenter manuellement les sessions 9-11, 11-14, 14-17) et un décalage d'information critique pour l'administration. Le coeur du défi est la suppression de cette "double saisie" par une automatisation directe à la source.
-
-### Questions "Comment pourrions-nous" (HMW)
-
-1. **Comment pourrions-nous** éliminer le transfert physique des fiches de présence papier de la salle de classe au bureau administratif ?
-2. **Comment pourrions-nous** permettre à l'enseignant de valider chaque session (9-11, 11-14, 14-17) en moins de 30 secondes depuis son smartphone ?
-3. **Comment pourrions-nous** numériser la soumission et l'approbation des notes/justificatifs médicaux ?
-
-```{=openxml}
-<w:p><w:r><w:br w:type="page"/></w:r></w:p>
-```
-
-## Choix Technologiques
-
-Le projet repose sur un écosystème robuste et moderne permettant une scalabilité verticale et horizontale.
-
-*   **Backend :** Laravel 12, offrant un routage puissant, une sécurité intégrée et un ORM (Eloquent) performant.
-*   **Frontend :** Blade Templates pour le rendu côté serveur, combiné à Tailwind CSS pour un design atomique et Alpine.js pour la réactivité.
-*   **Base de données :** MySQL gérant les relations complexes entre les sessions, les étudiants et les pointages.
-*   **Outils Externes :** Git/GitHub (Versionnement), Lucide Icons (Visuels), Preline UI (Composants).
-
-```{=openxml}
-<w:p><w:r><w:br w:type="page"/></w:r></w:p>
-```
-
-## Architecture du Système
-
-### Architecture MVC
-Nous utilisons le motif **Modèle-Vue-Contrôleur** nativement supporté par Laravel :
-- **Modèle :** Gestion de la logique de données et des règles métier.
-- **Vue :** Présentation des données aux utilisateurs via Blade.
-- **Contrôleur :** Intermédiaire traitant les requêtes et orchestrant les réponses.
-
-### Architecture en 3 Couches (3-Tier)
-L'application est structurée pour séparer les responsabilités :
-1.  **Couche Présentation (Client) :** Navigateurs Web et Application Mobile.
-2.  **Couche Application (Serveur) :** Serveur Laravel traitant la logique métier.
-3.  **Couche Données (Stockage) :** Serveur de base de données MySQL.
-
-```{=openxml}
-<w:p><w:r><w:br w:type="page"/></w:r></w:p>
-```
-
-## Prototype (Fonctionnalités & Classes)
-
-Le prototype d'**AttendanceFlow-AMS** couvre les flux critiques :
--   **Section Administrateur :** Dashboard, gestion des étudiants, validation des justificatifs.
--   **Section Formateur :** Pointage par session (Flash), gestion des retards.
--   **Section Étudiant :** Consultation de l'assiduité, soumission de documents.
-
-### Diagramme de Classe — Entités Principales
-Les entités `User`, `Student`, `Teacher`, `Session`, `Attendance` et `Justification` forment le squelette du système, garantissant une intégrité référentielle stricte.
-
-```{=openxml}
-<w:p><w:r><w:br w:type="page"/></w:r></w:p>
-```
-
-# 🎨 Conception & UI Design
-
-## Diagramme de Classe
-
-Le diagramme de classe définit la structure de la base de données et les relations entre les entités clés (Utilisateurs, Sessions, Absences, Justificatifs).
-
-![Diagramme de Classe](imgs/diagramme-class.png)
-
-```{=openxml}
-<w:p><w:r><w:br w:type="page"/></w:r></w:p>
-```
-
-## Schéma des interfaces (Maquette UI/UX)
-
-La conception visuelle repose sur une approche premium et responsive, utilisant Tailwind CSS pour garantir une expérience fluide sur tous les terminaux.
-
-### Vue d'ensemble - Tableau de Bord Administratif (Web)
-
-![Maquette UI - Dashboard Admin](imgs/maquette.png)
-
-
-### Vue d'ensemble - Application Mobile
-
-![Maquette UI - Application Mobile](imgs/maquete-m.png)
-
-```{=openxml}
-<w:p><w:r><w:br w:type="page"/></w:r></w:p>
-```
-
-# 💻 Réalisation
-
-## 1. Architecture Implémentée
 
 L'application **AttendanceFlow-AMS** suit une architecture **MVC (Modèle-Vue-Contrôleur)** couplée à une **architecture 3-Tiers**, renforcée par un **Service Pattern** pour le découplage de la logique métier.
 
@@ -514,11 +181,31 @@ La logique métier est encapsulée dans 6 services spécialisés héritant d'une
 | `SchedulingService` | Planification des sessions avec détection de conflits |
 | `ReportingService` | Statistiques et analytics d'assiduité |
 
-```{=openxml}
-<w:p><w:r><w:br w:type="page"/></w:r></w:p>
-```
+*   **Frontend :** Blade Templates, Tailwind CSS pour le style, et Alpine.js pour l'interactivité dynamique.
+*   **Backend :** Laravel 12 (PHP 8.2+) gérant la logique métier, l'authentification et les accès.
+*   **Base de Données :** MySQL pour le stockage relationnel des données d'assiduité.
+*   **Composants UI :** Preline UI et Lucide Icons pour des interfaces professionnelles et claires.
+   **c. Couche Accès aux Données** 
+
+* Modèles Eloquent : User, Article, Category, Comment.  
+* Gestion des relations, des requêtes SQL, de la sécurité et de l’intégrité des données.  
+* Interaction directe avec la base de données MySQL.
 
 ## 2. Modules Fonctionnels
+
+Cette séparation en couches renforce la lisibilité du code et simplifie l’évolution du système.
+
+**3\. Architecture globale**
+
+L’architecture globale du projet est une fusion entre le modèle MVC de Laravel et l’architecture en 3 tiers.
+
+![Architecture globale](images/image12.png)
+
+*Figure 16 : Architecture globale*
+
+* **La couche Présentation** inclut **les Vues Blade et les Controllers**, car ils gèrent l’interaction avec l’utilisateur et les requêtes HTTP.
+
+## Outils de développement & Gestion
 
 ### 🛡️ Module Authentification
 - Login sécurisé avec validation d'email/mot de passe
@@ -725,19 +412,11 @@ Le système repose sur **12 tables applicatives** (plus les tables Laravel et Sp
 <w:p><w:r><w:br w:type="page"/></w:r></w:p>
 ```
 # ⭐ Conclusion
+* **La couche Logique Métier** regroupe les **Services**, la **validation**, et la **gestion des rôles/permissions avec Spatie**.
 
-Le projet **AttendanceFlow-AMS** a permis de répondre efficacement aux défis de la gestion des absences au sein de **SoliCode**. En remplaçant les processus manuels par une solution numérique intégrée (Web & Mobile), nous avons atteint les objectifs de :
+* **La couche Accès aux Données** contient les **Modèles Éloquent** et la **base MySQL**, responsables du stockage et de la récupération des informations.
 
-1.  **Fiabilité :** Suppression des erreurs de saisie et centralisation de l'information.
-2.  **Productivité :** Gain de temps significatif pour les formateurs et l'administration.
-3.  **Transparence :** Accès direct pour les étudiants à leurs données d'assiduité.
-
-## 📊 Bilan du Sprint 1
-
-Le MVP livré couvre l'ensemble du périmètre fonctionnel défini dans le cahier des charges :
-
-- **12 tables** de base de données modélisant l'intégralité du domaine métier
-- **22 routes web** et **17 endpoints API** pour une couverture fonctionnelle complète
+Cette organisation assure une application modulaire, sécurisée, facile à maintenir et capable de communiquer aussi bien avec le Web qu’avec une application mobile
 - **6 services métier** encapsulant la logique applicative (Service Pattern)
 - **33 vues Blade** avec Alpine.js pour une expérience utilisateur réactive et moderne
 - **44 utilisateurs de démonstration** (4 staff + 40 étudiants) pour la validation et les tests
@@ -777,3 +456,181 @@ Ce projet a été l'occasion de mettre en œuvre et de maîtriser :
 ```{=openxml}
 <w:p><w:r><w:br w:type="page"/></w:r></w:p>
 ```
+## **Projet Technique (Prototype CRUD):** {#projet-technique-(prototype-crud):}
+
+Dans le cadre du développement du prototype, un projet technique complet basé sur les opérations **CRUD (Create, Read, Update, Delete)** a été réalisé afin de tester la logique métier et la gestion des données du système. 
+
+Ce projet technique a permis de tester :
+
+* La manipulation dynamique des données  
+* Les opérations d’ajout, de modification et de suppression  
+* La communication entre les différentes couches de l’architecture  
+* La gestion des formulaires et validations  
+* L’organisation du code selon l’architecture MVC
+
+Le prototype utilise également **Alpine.js** afin d’améliorer l’interactivité et la réactivité des interfaces utilisateur. Cette intégration permet d’offrir une expérience plus fluide grâce aux composants dynamiques, aux interactions instantanées et aux mises à jour sans rechargement complet des pages.
+
+L’association de **Laravel**, **Blade Templates**, **Tailwind CSS** et **Alpine.js** permet ainsi de construire une application moderne, maintenable et performante.
+
+*Conception* 
+
+La conception visuelle et la structuration des données constituent le pont entre l'architecture logique du système et l'expérience de l'utilisateur final. Cette section présente la modélisation conceptuelle de nos entités via le diagramme de classes ainsi que le schéma des interfaces utilisateur, conçues pour être fluides, intuitives et adaptées à tous les terminaux.
+
+## **Diagramme de classe :** {#diagramme-de-classe-:}
+
+## Le diagramme de classe définit la structure de la base de données et les relations entre les entités clés (Utilisateurs, Sessions, Absences, Justificatifs). {#le-diagramme-de-classe-définit-la-structure-de-la-base-de-données-et-les-relations-entre-les-entités-clés-(utilisateurs,-sessions,-absences,-justificatifs).}
+
+![Diagramme de classe (Conception)](images/image13.png)   
+*Figure 17 : Diagramme de classe (Conception)*
+
+## **Charte graphique**  {#charte-graphique}
+
+![Charte graphique](images/image14.png)
+
+*Figure 18 : Charte graphique* 
+
+*Interfaces :*
+
+* Tableau de Bord Administrateur 
+
+![Tableau de Bord Administrateur (Statistique)](images/image15.png)   
+*Figure 19 :  Tableau de Bord Administrateur(Statistique)* 
+
+![Justifications récentes et analyse](images/image16.png)
+
+*Figure 20 : Justifications récentes et analyse*
+
+* Tableau de Bord Syndic   
+    
+   ![Tableau de Bord Syndic (Statistique)](images/image17.png)
+
+*Figure 21 :  Tableau de Bord Syndic (Statistique)*
+
+![Activité récente sur les immeubles](images/image18.png)
+
+*Figure 22 :  Activité récente sur les immeubles* 
+
+* Tableau de Bord Résident  
+    
+   ![Tableau de Bord Résident](images/image19.png)
+
+*Figure 24 :  Tableau de Bord R*
+
+# **Réalisation :** {#réalisation-:}
+
+La concrétisation de la plateforme **AttendanceFlow-AMS** se traduit par l'implémentation rigoureuse de la logique de programmation, de la base de données relationnelle et d'interfaces utilisateur dynamiques et interactives. Cette section détaille la mise en œuvre pratique de l'architecture MVC et du Service Pattern, les modules fonctionnels développés, les routes et endpoints d'API REST, le schéma physique de la base de données, la stack technologique finale, ainsi que les défis techniques et les solutions apportées. 
+
+## **1\. Architecture Implémentée** {#1.-architecture-implémentée}
+
+L’application repose sur une combinaison de trois approches architecturales complémentaires :
+
+* Architecture MVC (Modèle – Vue – Contrôleur)  
+* Architecture 3-Tiers  
+* Service Pattern pour la séparation de la logique métier
+
+Cette organisation garantit une meilleure maintenabilité du code, une séparation claire des responsabilités ainsi qu’une évolutivité du système.
+
+### 1.1 Structure globale du système {#1.1-structure-globale-du-système}
+
+Le système est divisé en trois couches principales :
+
+#### Couche Présentation
+
+Cette couche représente l’interface utilisateur. Elle est développée avec :
+
+* Blade Templates pour le rendu côté serveur  
+* Tailwind CSS pour le design et la mise en page  
+* Alpine.js pour les interactions dynamiques légères
+
+Cette couche permet une expérience utilisateur fluide et réactive sans recourir à un framework frontend lourd.
+
+#### Couche Application
+
+Cette couche contient la logique métier principale développée avec Laravel 12\. Elle comprend :
+
+* Les contrôleurs (gestion des requêtes HTTP)  
+* Les services (logique métier découplée)  
+* Les règles de validation et de traitement
+
+#### Couche Données
+
+Cette couche assure la persistance des données via :
+
+* MySQL comme base de données relationnelle  
+* Eloquent ORM pour la manipulation des données  
+* Migrations et seeders pour la structuration et l’initialisation
+
+---
+
+### 1.2 Service Pattern {#1.2-service-pattern}
+
+Afin d’éviter un code monolithique dans les contrôleurs, la logique métier a été déplacée vers des services spécialisés. Cette approche améliore la lisibilité et la réutilisabilité du code.
+
+Les principaux services implémentés sont :
+
+* IdentityService : gestion de l’authentification et des rôles utilisateurs  
+* AcademicService : gestion des données académiques (filières, groupes, modules)  
+* AttendanceService : traitement des présences et absences  
+* JustificationService : gestion du cycle de vie des justificatifs  
+* SchedulingService : gestion des sessions et détection des conflits  
+* ReportingService : génération des statistiques et analyses
+
+Chaque service joue un rôle précis dans la séparation des responsabilités et permet de structurer la logique métier de manière modulaire.
+
+---
+
+## **2\. Modules Fonctionnels Développés** {#2.-modules-fonctionnels-développés}
+
+* **Module d’authentification :** assure la connexion sécurisée des utilisateurs, la gestion des sessions et la redirection selon les rôles (administrateur, formateur et étudiant).  
+* **Dashboard Administrateur :** fournit une vue globale du système avec les statistiques principales, les activités récentes et des accès rapides aux fonctionnalités.  
+* **Module de gestion des sessions :** permet la création, la modification, la suppression et la consultation des sessions académiques avec vérification des conflits de planning.  
+* **Module de pointage des présences :** facilite l’enregistrement des présences, absences et retards en temps réel avec mise à jour automatique des statistiques.  
+* **Module de gestion des justificatifs :** permet aux étudiants de soumettre des justificatifs d’absence et aux administrateurs ou formateurs de les valider ou refuser.  
+* **Module de reporting et analytics :** génère des statistiques, graphiques et indicateurs pour le suivi de l’assiduité et des performances académiques.  
+* **Annuaire des étudiants :** offre une recherche rapide des étudiants, le filtrage par groupe et le suivi individuel des taux de présence.
+
+---
+
+# **4\. API RESTful** {#4.-api-restful}
+
+Une API REST a été développée afin de permettre une future extension mobile.
+
+Elle est sécurisée via Laravel Sanctum.
+
+Les principaux endpoints sont :
+
+* Authentification utilisateur (login / logout)  
+* Récupération du profil utilisateur  
+* Gestion des données académiques  
+* Enregistrement et consultation des présences  
+* Gestion des justificatifs  
+* Récupération des statistiques globales
+
+Cette API permet de dissocier le frontend web et de faciliter l’évolution vers une application mobile.
+
+---
+
+# **5\. Base de données** {#5.-base-de-données}
+
+La base de données est relationnelle et structurée autour de plusieurs entités principales :
+
+* Utilisateurs  
+* Profils étudiants et enseignants  
+* Filières et groupes  
+* Modules académiques  
+* Sessions académiques  
+* Enregistrements de présence  
+* Justificatifs d’absence  
+* Système de rôles et permissions
+
+Cette structure garantit une cohérence des données et une forte intégrité référentielle.
+
+# 
+
+#  **Conclusion :** {#conclusion-:}
+
+Le projet **ImmoSyndic** a permis de répondre au défi de la transition vers une gestion immobilière digitale et transparente. En utilisant les méthodologies Design Thinking, 2TUP et Scrum, nous avons pu transformer des problèmes vécus (manque de transparence, erreurs manuelles) en une solution logicielle performante.
+
+Ce travail m'a permis de consolider mes compétences en architecture logicielle (MVC), en développement avec Laravel, et en conception UX/UI. Les perspectives d'évolution incluent l'intégration de paiements en ligne Stripe et la gestion de la domotique pour les immeubles intelligents.
+
+
