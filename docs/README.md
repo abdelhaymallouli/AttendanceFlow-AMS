@@ -236,7 +236,7 @@ style: |
 
 <div class="img-container" style="margin-top: 0; text-align: center;">
   
-  <a href="https://canva.link/8objxj01b0o03brove" target="_blank" style="text-decoration: none;">
+  <a href="https://canva.link/8objxj01b0o03br" target="_blank" style="text-decoration: none;">
     <img 
       src="images/link.png" 
       alt="Voir le diagramme de classe"
