@@ -65,11 +65,11 @@ style: |
     align-items: center;
     justify-content: center;
     height: 100%;
-    margin-top: 20px;
+    margin-top: 10px;
   }
   .img-premium {
-    width: 90%;
-    max-height: 420px;
+    width: 100%;
+    max-height: 520px;
     object-fit: contain;
     border-radius: 20px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.12);
@@ -261,54 +261,52 @@ style: |
 
 ---
 
+
 ## 5. Réalisation : Outils Utilisés
 
-<div style="margin-top:40px;">
-
-<table style="width:100%; border-collapse: collapse; font-size: 0.95em;">
+<table style="width:100%; border-collapse: collapse; font-size: 0.82em; line-height: 1.15;">
 
   <tr style="background:#0984e3; color:white;">
-    <th style="padding:12px;">Outil</th>
-    <th style="padding:12px;">Rôle</th>
+    <th style="padding:6px;">Outil</th>
+    <th style="padding:6px;">Rôle</th>
   </tr>
 
   <tr>
-    <td style="padding:10px;">💻 Visual Studio Code</td>
-    <td style="padding:10px;">Développement et édition du code source</td>
+    <td style="padding:6px;">💻 Visual Studio Code</td>
+    <td style="padding:6px;">Développement</td>
   </tr>
 
   <tr style="background:#f1f2f6;">
-    <td style="padding:10px;">🔧 Git & GitHub</td>
-    <td style="padding:10px;">Gestion de versions et collaboration</td>
+    <td style="padding:6px;">🔧 Git & GitHub</td>
+    <td style="padding:6px;">Version control</td>
   </tr>
 
   <tr>
-    <td style="padding:10px;">📦 Composer</td>
-    <td style="padding:10px;">Gestionnaire de dépendances PHP</td>
+    <td style="padding:6px;">📦 Composer</td>
+    <td style="padding:6px;">PHP dependencies</td>
   </tr>
 
   <tr style="background:#f1f2f6;">
-    <td style="padding:10px;">⚡ NPM & Vite</td>
-    <td style="padding:10px;">Build frontend et optimisation des assets</td>
+    <td style="padding:6px;">⚡ NPM & Vite</td>
+    <td style="padding:6px;">Frontend build</td>
   </tr>
 
   <tr>
-    <td style="padding:10px;">📐 PlantUML</td>
-    <td style="padding:10px;">Conception UML et diagrammes techniques</td>
+    <td style="padding:6px;">📐 PlantUML</td>
+    <td style="padding:6px;">UML diagrams</td>
   </tr>
 
   <tr style="background:#f1f2f6;">
-    <td style="padding:10px;">🗄️ MySQL</td>
-    <td style="padding:10px;">Base de données relationnelle</td>
+    <td style="padding:6px;">🗄️ MySQL</td>
+    <td style="padding:6px;">Database</td>
+  </tr>
+
+  <tr>
+    <td style="padding:6px;">📱 Android SDK</td>
+    <td style="padding:6px;">Mobile development & testing</td>
   </tr>
 
 </table>
-
-</div>
-
-<div style="margin-top:25px; text-align:center; font-size:1.1em; font-weight:600; color:#0984e3;">
-📱 Android SDK — Environnement de développement mobile Android
-</div>
 
 
 ---
