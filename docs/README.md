@@ -197,7 +197,8 @@ style: |
 ## 3. Branche Fonctionnelle : Écosystème Web
 
 <div class="img-container">
-  <img src="images/global-w.png" class="img-premium" alt="Web Global">
+  <img src="images/global-w.png" class="img-premium" 
+  style="max-width: 120%; max-height: 550px;" alt="Web Global">
 </div>
 
 ---
@@ -262,52 +263,51 @@ style: |
 
 ## 5. Réalisation : Outils Utilisés
 
-<div class="feature-grid">
+<div style="margin-top:40px;">
 
-<div class="feature-card">
-<div class="feature-icon">💻</div>
-<h4>Visual Studio Code</h4>
-<p>Développement et édition du code source.</p>
+<table style="width:100%; border-collapse: collapse; font-size: 0.95em;">
+
+  <tr style="background:#0984e3; color:white;">
+    <th style="padding:12px;">Outil</th>
+    <th style="padding:12px;">Rôle</th>
+  </tr>
+
+  <tr>
+    <td style="padding:10px;">💻 Visual Studio Code</td>
+    <td style="padding:10px;">Développement et édition du code source</td>
+  </tr>
+
+  <tr style="background:#f1f2f6;">
+    <td style="padding:10px;">🔧 Git & GitHub</td>
+    <td style="padding:10px;">Gestion de versions et collaboration</td>
+  </tr>
+
+  <tr>
+    <td style="padding:10px;">📦 Composer</td>
+    <td style="padding:10px;">Gestionnaire de dépendances PHP</td>
+  </tr>
+
+  <tr style="background:#f1f2f6;">
+    <td style="padding:10px;">⚡ NPM & Vite</td>
+    <td style="padding:10px;">Build frontend et optimisation des assets</td>
+  </tr>
+
+  <tr>
+    <td style="padding:10px;">📐 PlantUML</td>
+    <td style="padding:10px;">Conception UML et diagrammes techniques</td>
+  </tr>
+
+  <tr style="background:#f1f2f6;">
+    <td style="padding:10px;">🗄️ MySQL</td>
+    <td style="padding:10px;">Base de données relationnelle</td>
+  </tr>
+
+</table>
+
 </div>
 
-<div class="feature-card">
-<div class="feature-icon">🔧</div>
-<h4>Git & GitHub</h4>
-<p>Gestion de versions et collaboration.</p>
-</div>
-
-<div class="feature-card">
-<div class="feature-icon">📦</div>
-<h4>Composer</h4>
-<p>Gestionnaire de dépendances PHP.</p>
-</div>
-
-<div class="feature-card">
-<div class="feature-icon">⚡</div>
-<h4>NPM & Vite</h4>
-<p>Build frontend et optimisation des assets.</p>
-</div>
-
-<div class="feature-card">
-<div class="feature-icon">📐</div>
-<h4>PlantUML</h4>
-<p>Conception UML et diagrammes techniques.</p>
-</div>
-
-<div class="feature-card">
-<div class="feature-icon">🗄️</div>
-<h4>MySQL</h4>
-<p>Gestion de base de données relationnelle.</p>
-</div>
-
-</div>
-
-<div class="glass-card" style="margin-top:35px; text-align:center;">
-
-### 📱 Android SDK
-
-Environnement utilisé pour le développement et les tests mobiles Android.
-
+<div style="margin-top:25px; text-align:center; font-size:1.1em; font-weight:600; color:#0984e3;">
+📱 Android SDK — Environnement de développement mobile Android
 </div>
 
 
