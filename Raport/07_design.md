@@ -4,7 +4,8 @@
 
 Le diagramme de classe définit la structure de la base de données et les relations entre les entités clés (Utilisateurs, Sessions, Absences, Justificatifs).
 
-![Diagramme de Classe](imgs/diagramme-class.png)
+[![Diagramme de Classe](imgs/diagramme-class.png)](https://canva.link/8objxj01b0o03br)
+🔗 [Voir la présentation complète sur Canva](https://canva.link/8objxj01b0o03br)
 
 ```{=openxml}
 <w:p><w:r><w:br w:type="page"/></w:r></w:p>

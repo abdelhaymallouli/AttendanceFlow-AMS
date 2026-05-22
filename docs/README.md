@@ -15,7 +15,7 @@ style: |
     padding: 60px 80px;
     background: linear-gradient(135deg, #ffffff 0%, #f1f2f6 100%);
   }
-  footer { width: 100%; text-align: right; font-size: 14px; color: #a4b0be; font-weight: 300; }
+  footer { width: 100%; text-align: right; font-size: 19px; color: #a4b0be; font-weight: 300; }
   .logo-header {
     display: flex;
     justify-content: space-between;
@@ -145,10 +145,9 @@ style: |
   <div class="sommaire-item"><div class="sommaire-num">1</div><div class="sommaire-text">Contexte du projet</div></div>
   <div class="sommaire-item"><div class="sommaire-num">2</div><div class="sommaire-text">Méthodologie & Agile</div></div>
   <div class="sommaire-item"><div class="sommaire-num">3</div><div class="sommaire-text">Branche Fonctionnelle</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">4</div><div class="sommaire-text">Branche Technique</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">5</div><div class="sommaire-text">Conception (UML)</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">6</div><div class="sommaire-text">Démonstration</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">7</div><div class="sommaire-text">Conclusion</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">4</div><div class="sommaire-text">Conception (UML)</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">5</div><div class="sommaire-text">Réalisation :  (3-Tiers) - MVC - Utlies</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">6</div><div class="sommaire-text">Conclusion</div></div>
 </div>
 
 ---
@@ -211,53 +210,121 @@ style: |
 
 ---
 
-## Branche Fonctionnelle : Maquettes Premium
+## 3 Branche Fonctionnelle : Maquettes Premium
 
 <div class="maquette-showcase">
   <div style="text-align: center;">
     <div class="device-frame" style="border-radius: 12px;">
        <img src="images/maquette.png" style="width: 100%; border-radius: 4px;" alt="Admin Dashboard">
     </div>
-    <p style="font-size: 0.9em; margin-top: 15px; color: #636e72;">Dashboard Administratif (Web)</p>
+    <p style="font-size: 1em; margin-top: 15px; color: #636e72;">Dashboard Administratif (Web)</p>
   </div>
   <div style="text-align: center;">
     <div class="device-frame">
        <img src="images/maquete-m.png" style="height: 380px; width: auto;" alt="Mobile App">
     </div>
-    <p style="font-size: 0.9em; margin-top: 15px; color: #636e72;">Application Mobile (Saisie Directe)</p>
+    <p style="font-size: 1em; margin-top: 15px; color: #636e72;">Application Mobile (Saisie Directe)</p>
   </div>
 </div>
 
 ---
 
-## 4. Branche Technique : Architecture & Stack
+---
 
-<div class="sommaire-grid" style="grid-template-columns: 1fr 1fr;">
-  <div class="tech-card">
-    <h4>Backend Excellence</h4>
-    <ul>
-      <li><strong>Laravel 12 :</strong> Framework PHP robuste (8.2+).</li>
-      <li><strong>Service Pattern :</strong> Architecture maintenable.</li>
-      <li><strong>MySQL / Eloquent :</strong> Gestion fluide des données.</li>
-    </ul>
-  </div>
-  <div class="tech-card" style="border-top-color: #00b894;">
-    <h4>Modern Frontend</h4>
-    <ul>
-      <li><strong>Tailwind CSS & Preline :</strong> Design Pixel-perfect.</li>
-      <li><strong>Livewire / Alpine.js :</strong> Interactivité temps-réel.</li>
-      <li><strong>Vite :</strong> Pipeline de build haute performance.</li>
-    </ul>
-  </div>
+## 4. Conception : Diagramme de Classe
+
+<div class="img-container" style="margin-top: 0; text-align: center;">
+  
+  <a href="https://canva.link/8objxj01b0o03brove" target="_blank" style="text-decoration: none;">
+    <img 
+      src="images/link.png" 
+      alt="Voir le diagramme de classe"
+      style="width: 120px; height: auto; transition: transform 0.3s ease;"
+      onmouseover="this.style.transform='scale(1.1)'"
+      onmouseout="this.style.transform='scale(1)'"
+    >
+  </a>
+
+  <p style="font-size: 1em; margin-top: 10px; color: #b2bec3;">
+    Cliquez sur l’icône pour consulter le diagramme de classe.
+  </p>
+
+</div>
+---
+
+## 5. Réalisation : Architecture 3-Tiers & MVC
+
+<div class="img-container">
+  <img src="images/architecture-3tiers.png" class="img-premium" style="max-height: 430px; width: auto;" alt="Architecture 3-Tiers MVC">
 </div>
 
 ---
 
-## 5. Conception : Diagramme de Classe
+## 5. Réalisation : Outils Utilisés
 
-<div class="img-container" style="margin-top: 0;">
-  <img src="images/diagramme-class.png" class="img-premium" style="max-height: 520px; width: auto;" alt="UML Class Diagram">
-  <p style="font-size: 0.8em; margin-top: 10px; color: #b2bec3;">Modélisation rigoureuse de la logique métier.</p>
+<div class="feature-grid">
+
+<div class="feature-card">
+<div class="feature-icon">💻</div>
+<h4>Visual Studio Code</h4>
+<p>Développement et édition du code source.</p>
+</div>
+
+<div class="feature-card">
+<div class="feature-icon">🔧</div>
+<h4>Git & GitHub</h4>
+<p>Gestion de versions et collaboration.</p>
+</div>
+
+<div class="feature-card">
+<div class="feature-icon">📦</div>
+<h4>Composer</h4>
+<p>Gestionnaire de dépendances PHP.</p>
+</div>
+
+<div class="feature-card">
+<div class="feature-icon">⚡</div>
+<h4>NPM & Vite</h4>
+<p>Build frontend et optimisation des assets.</p>
+</div>
+
+<div class="feature-card">
+<div class="feature-icon">📐</div>
+<h4>PlantUML</h4>
+<p>Conception UML et diagrammes techniques.</p>
+</div>
+
+<div class="feature-card">
+<div class="feature-icon">🗄️</div>
+<h4>MySQL</h4>
+<p>Gestion de base de données relationnelle.</p>
+</div>
+
+</div>
+
+<div class="glass-card" style="margin-top:35px; text-align:center;">
+
+### 📱 Android SDK
+
+Environnement utilisé pour le développement et les tests mobiles Android.
+
+</div>
+
+
+---
+## 6. Conclusion
+
+<div class="glass-card" style="border-left: 6px solid #0984e3; margin-top: 20px;">
+  <p style="font-size: 1.2em; font-weight: 500; color: #2d3436; margin-bottom: 20px;">
+    Le projet <strong>AttendanceFlow-AMS</strong> a permis de digitaliser et d’optimiser la gestion des absences :
+  </p>
+
+  <ul style="font-size: 1.1em; line-height: 2; padding-left: 20px; color: #636e72;">
+    <li>✔ Amélioration de la fiabilité des données</li>
+    <li>✔ Optimisation du suivi des étudiants</li>
+    <li>✔ Réduction du temps de traitement</li>
+    <li>✔ Expérience utilisateur modernisée</li>
+  </ul>
 </div>
 
 ---
