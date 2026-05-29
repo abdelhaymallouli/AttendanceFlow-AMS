@@ -15,7 +15,7 @@ style: |
     padding: 60px 80px;
     background: linear-gradient(135deg, #ffffff 0%, #f1f2f6 100%);
   }
-  footer { width: 100%; text-align: right; font-size: 14px; color: #a4b0be; font-weight: 300; }
+  footer { width: 100%; text-align: right; font-size: 19px; color: #a4b0be; font-weight: 300; }
   .logo-header {
     display: flex;
     justify-content: space-between;
@@ -65,11 +65,10 @@ style: |
     align-items: center;
     justify-content: center;
     height: 100%;
-    margin-top: 20px;
   }
   .img-premium {
-    width: 90%;
-    max-height: 420px;
+    width: 100%;
+    max-height: 550px;
     object-fit: contain;
     border-radius: 20px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.12);
@@ -145,10 +144,9 @@ style: |
   <div class="sommaire-item"><div class="sommaire-num">1</div><div class="sommaire-text">Contexte du projet</div></div>
   <div class="sommaire-item"><div class="sommaire-num">2</div><div class="sommaire-text">Méthodologie & Agile</div></div>
   <div class="sommaire-item"><div class="sommaire-num">3</div><div class="sommaire-text">Branche Fonctionnelle</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">4</div><div class="sommaire-text">Branche Technique</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">5</div><div class="sommaire-text">Conception (UML)</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">6</div><div class="sommaire-text">Démonstration</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">7</div><div class="sommaire-text">Conclusion</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">4</div><div class="sommaire-text">Conception (UML)</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">5</div><div class="sommaire-text">Réalisation :  (3-Tiers) - MVC - Utlies</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">6</div><div class="sommaire-text">Conclusion</div></div>
 </div>
 
 ---
@@ -164,7 +162,7 @@ style: |
 ## 2. Méthodologie : Design Thinking
 
 <div class="img-container">
-  <img src="images/designThinking.png" class="img-premium" style="max-height: 320px;" alt="Design Thinking">
+  <img src="images/designThinking.png" class="img-premium" style="max-height: 400px;" alt="Design Thinking">
   <div class="glass-card" style="margin-top: 30px; text-align: center;">
     <p style="font-size: 1.2em; font-weight: 600; color: #0984e3; margin: 0;">Empathie → Définition → Idéation → Prototype → Test</p>
   </div>
@@ -175,7 +173,7 @@ style: |
 ## 2. Méthodologie : Scrum (Agile)
 
 <div class="img-container">
-  <img src="images/scrum.png" class="img-premium" style="max-height: 380px;" alt="Scrum">
+  <img src="images/scrum.png" class="img-premium" style="max-height: 420px;" alt="Scrum">
   <div class="glass-card" style="margin-top: 25px; border-top: 4px solid #00b894;">
     <p style="font-size: 1.1em; font-weight: 500; color: #2d3436; margin: 0;">L'agilité au cœur du développement pour une fiabilité maximale.</p>
   </div>
@@ -198,7 +196,8 @@ style: |
 ## 3. Branche Fonctionnelle : Écosystème Web
 
 <div class="img-container">
-  <img src="images/global-w.png" class="img-premium" alt="Web Global">
+  <img src="images/global-w.png" class="img-premium" 
+  style="max-width: 120%; max-height: 530px;" alt="Web Global">
 </div>
 
 ---
@@ -211,53 +210,116 @@ style: |
 
 ---
 
-## Branche Fonctionnelle : Maquettes Premium
+## 3 Branche Fonctionnelle : Maquettes Premium
 
 <div class="maquette-showcase">
   <div style="text-align: center;">
     <div class="device-frame" style="border-radius: 12px;">
        <img src="images/maquette.png" style="width: 100%; border-radius: 4px;" alt="Admin Dashboard">
     </div>
-    <p style="font-size: 0.9em; margin-top: 15px; color: #636e72;">Dashboard Administratif (Web)</p>
+    <p style="font-size: 1em; margin-top: 15px; color: #636e72;">Dashboard Administratif (Web)</p>
   </div>
   <div style="text-align: center;">
     <div class="device-frame">
        <img src="images/maquete-m.png" style="height: 380px; width: auto;" alt="Mobile App">
     </div>
-    <p style="font-size: 0.9em; margin-top: 15px; color: #636e72;">Application Mobile (Saisie Directe)</p>
+    <p style="font-size: 1em; margin-top: 15px; color: #636e72;">Application Mobile (Saisie Directe)</p>
   </div>
 </div>
 
 ---
 
-## 4. Branche Technique : Architecture & Stack
+## 4. Conception : Diagramme de Classe
 
-<div class="sommaire-grid" style="grid-template-columns: 1fr 1fr;">
-  <div class="tech-card">
-    <h4>Backend Excellence</h4>
-    <ul>
-      <li><strong>Laravel 12 :</strong> Framework PHP robuste (8.2+).</li>
-      <li><strong>Service Pattern :</strong> Architecture maintenable.</li>
-      <li><strong>MySQL / Eloquent :</strong> Gestion fluide des données.</li>
-    </ul>
-  </div>
-  <div class="tech-card" style="border-top-color: #00b894;">
-    <h4>Modern Frontend</h4>
-    <ul>
-      <li><strong>Tailwind CSS & Preline :</strong> Design Pixel-perfect.</li>
-      <li><strong>Livewire / Alpine.js :</strong> Interactivité temps-réel.</li>
-      <li><strong>Vite :</strong> Pipeline de build haute performance.</li>
-    </ul>
-  </div>
+<div class="img-container" style="margin-top: 0; text-align: center;">
+  
+  <a href="https://canva.link/8objxj01b0o03br" target="_blank" style="text-decoration: none;">
+    <img 
+      src="images/link.png" 
+      alt="Voir le diagramme de classe"
+      style="width: 120px; height: auto; transition: transform 0.3s ease;"
+      onmouseover="this.style.transform='scale(1.1)'"
+      onmouseout="this.style.transform='scale(1)'"
+    >
+  </a>
+
+  <p style="font-size: 1em; margin-top: 10px; color: #b2bec3;">
+    Cliquez sur l’icône pour consulter le diagramme de classe.
+  </p>
+
+</div>
+---
+
+## 5. Réalisation : Architecture 3-Tiers & MVC
+
+<div class="img-container">
+  <img src="images/architecture-3tiers.png" class="img-premium" style="max-height: 430px; width: auto;" alt="Architecture 3-Tiers MVC">
 </div>
 
 ---
 
-## 5. Conception : Diagramme de Classe
 
-<div class="img-container" style="margin-top: 0;">
-  <img src="images/diagramme-class.png" class="img-premium" style="max-height: 520px; width: auto;" alt="UML Class Diagram">
-  <p style="font-size: 0.8em; margin-top: 10px; color: #b2bec3;">Modélisation rigoureuse de la logique métier.</p>
+## 5. Réalisation : Outils Utilisés
+
+<table style="width:100%; border-collapse: collapse; font-size: 0.82em; line-height: 1.15;">
+
+  <tr style="background:#0984e3; color:white;">
+    <th style="padding:6px;">Outil</th>
+    <th style="padding:6px;">Rôle</th>
+  </tr>
+
+  <tr>
+    <td style="padding:6px;">💻 Visual Studio Code</td>
+    <td style="padding:6px;">Développement</td>
+  </tr>
+
+  <tr style="background:#f1f2f6;">
+    <td style="padding:6px;">🔧 Git & GitHub</td>
+    <td style="padding:6px;">Version control</td>
+  </tr>
+
+  <tr>
+    <td style="padding:6px;">📦 Composer</td>
+    <td style="padding:6px;">PHP dependencies</td>
+  </tr>
+
+  <tr style="background:#f1f2f6;">
+    <td style="padding:6px;">⚡ NPM & Vite</td>
+    <td style="padding:6px;">Frontend build</td>
+  </tr>
+
+  <tr>
+    <td style="padding:6px;">📐 PlantUML</td>
+    <td style="padding:6px;">UML diagrams</td>
+  </tr>
+
+  <tr style="background:#f1f2f6;">
+    <td style="padding:6px;">🗄️ MySQL</td>
+    <td style="padding:6px;">Database</td>
+  </tr>
+
+  <tr>
+    <td style="padding:6px;">📱 Android SDK</td>
+    <td style="padding:6px;">Mobile development & testing</td>
+  </tr>
+
+</table>
+
+
+---
+## 6. Conclusion
+
+<div class="glass-card" style="border-left: 6px solid #0984e3; margin-top: 20px;">
+  <p style="font-size: 1.2em; font-weight: 500; color: #2d3436; margin-bottom: 20px;">
+    Le projet <strong>AttendanceFlow-AMS</strong> a permis de digitaliser et d’optimiser la gestion des absences :
+  </p>
+
+  <ul style="font-size: 1.1em; line-height: 2; padding-left: 20px; color: #636e72;">
+    <li>✔ Amélioration de la fiabilité des données</li>
+    <li>✔ Optimisation du suivi des étudiants</li>
+    <li>✔ Réduction du temps de traitement</li>
+    <li>✔ Expérience utilisateur modernisée</li>
+  </ul>
 </div>
 
 ---

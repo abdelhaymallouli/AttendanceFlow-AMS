@@ -1,5 +1,5 @@
 @startuml sprint2_web
-title Sprint 2 - Plateforme Web + Mobile (Justificatifs, Reporting & Suivi)
+title Sprint 2 - Plateforme Web + Mobile 
 left to right direction
 
 skinparam usecase {
@@ -15,30 +15,36 @@ rectangle "Web - Sprint 2" {
     usecase "Soumettre un justificatif" as UC_W04
     usecase "Gérer les justificatifs (Validation)" as UC_W05
     usecase "Historique d'assiduité complet" as UC_W06
-    usecase "Exporter les rapports (PDF/Excel)" as UC_W07
+usecase "Exporter la liste des étudiants\net l'historique des absences\n(Excel)" as UC_W07
+usecase "Recevoir des notifications" as UC_W09
 }
 
 rectangle "Mobile - Sprint 2" {
-    usecase "Vérifier statut de session" as UC_M08
-    usecase "Soumettre un justificatif (Mobile)" as UC_M03
-    usecase "Consulter l'historique d'assiduité" as UC_M07
+    usecase "S'authentifier (Mobile)" as UC_M01
+    usecase "Consulter ses sessions (Mobile)" as UC_M08
     usecase "Recevoir des notifications" as UC_M09
-    usecase "Valider justificatifs (Admin mobile)" as UC_M10
 }
 
+' Web Links
 Admin -- UC_W05
 Admin -- UC_W07
-Admin -- UC_M08
-Admin -- UC_M09
-Admin -- UC_M10
-
-Trainer -- UC_M08
-
+Admin -- UC_W09
 Student -- UC_W04
 Student -- UC_W06
-Student -- UC_M03
-Student -- UC_M07
+Student -- UC_W09
+Trainer -- UC_W09
+
+
+
+' Mobile Links
+Admin -- UC_M01
+Admin -- UC_M09
+
+Student -- UC_M01
 Student -- UC_M09
 
-@enduml
+Trainer -- UC_M01
+Trainer -- UC_M08
 
+
+@enduml

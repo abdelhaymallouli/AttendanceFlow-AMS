@@ -29,7 +29,8 @@ rectangle "Plateforme Web (AttendanceFlow-AMS)" {
     usecase "Valider / Réfuter un justificatif" as UC_W05a
     usecase "Gérer les comptes & structures\n(Classes, Modules, Utilisateurs)" as UC_W02
     usecase "Gestion avancée des absences\n(Correction, Clôture)" as UC_W_ABS
-    usecase "Exporter les rapports de synthèse\n(PDF, Excel)" as UC_W07
+    usecase "Exporter les rapports de synthèse\n(PDF, Excel)" as UC_W07R
+    usecase "Exporter la liste des étudiants\net l'historique des absences\n(Excel)" as UC_W07
     
     ' Teacher Actions
     usecase "Créer ses séances\n(Modules/Groups assignés)" as UC_W08
@@ -41,6 +42,7 @@ rectangle "Plateforme Web (AttendanceFlow-AMS)" {
     
     ' System Extension
     usecase "Recevoir des alertes / notifications" as UC_W_NOTIF
+    usecase "Générer une analyse IA des rapports\n(Modèle IA d'absentéisme & Synthèse)" as UC_W_AI
 }
 
 ' --- Relationships ---
@@ -53,11 +55,14 @@ UC_W02 ..> UC_W01 : <<include>>
 UC_W06 ..> UC_W01 : <<include>>
 UC_W_ABS ..> UC_W01 : <<include>>
 UC_W08 ..> UC_W01 : <<include>>
+UC_W_AI ..> UC_W01 : <<include>>
+
 
 ' Specific Flows (Extend)
 UC_W05 <.. UC_W05a : <<extend>>
 UC_W03 <.. UC_W07 : <<extend>>
 UC_W04 <.. UC_W04a : <<include>>
+UC_W_AI <.. UC_W07R : <<extend>>
 UC_W03 <.. UC_W_NOTIF : <<extend>>
 
 ' Actor Links
@@ -65,11 +70,14 @@ Admin -- UC_W03
 Admin -- UC_W02
 Admin -- UC_W05
 Admin -- UC_W_ABS
+Admin -- UC_W_AI
+Admin -- UC_W08
 
 Trainer -- UC_W03
 Trainer -- UC_W_ABS
 Trainer -- UC_W05
 Trainer -- UC_W08
+Trainer -- UC_W_AI
 
 Student -- UC_W03
 Student -- UC_W04
