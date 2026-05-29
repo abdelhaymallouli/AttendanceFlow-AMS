@@ -65,11 +65,10 @@ style: |
     align-items: center;
     justify-content: center;
     height: 100%;
-    margin-top: 10px;
   }
   .img-premium {
     width: 100%;
-    max-height: 520px;
+    max-height: 550px;
     object-fit: contain;
     border-radius: 20px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.12);
@@ -163,7 +162,7 @@ style: |
 ## 2. Méthodologie : Design Thinking
 
 <div class="img-container">
-  <img src="images/designThinking.png" class="img-premium" style="max-height: 320px;" alt="Design Thinking">
+  <img src="images/designThinking.png" class="img-premium" style="max-height: 400px;" alt="Design Thinking">
   <div class="glass-card" style="margin-top: 30px; text-align: center;">
     <p style="font-size: 1.2em; font-weight: 600; color: #0984e3; margin: 0;">Empathie → Définition → Idéation → Prototype → Test</p>
   </div>
@@ -174,7 +173,7 @@ style: |
 ## 2. Méthodologie : Scrum (Agile)
 
 <div class="img-container">
-  <img src="images/scrum.png" class="img-premium" style="max-height: 380px;" alt="Scrum">
+  <img src="images/scrum.png" class="img-premium" style="max-height: 420px;" alt="Scrum">
   <div class="glass-card" style="margin-top: 25px; border-top: 4px solid #00b894;">
     <p style="font-size: 1.1em; font-weight: 500; color: #2d3436; margin: 0;">L'agilité au cœur du développement pour une fiabilité maximale.</p>
   </div>
@@ -198,7 +197,7 @@ style: |
 
 <div class="img-container">
   <img src="images/global-w.png" class="img-premium" 
-  style="max-width: 120%; max-height: 550px;" alt="Web Global">
+  style="max-width: 120%; max-height: 530px;" alt="Web Global">
 </div>
 
 ---
@@ -227,8 +226,6 @@ style: |
     <p style="font-size: 1em; margin-top: 15px; color: #636e72;">Application Mobile (Saisie Directe)</p>
   </div>
 </div>
-
----
 
 ---
 

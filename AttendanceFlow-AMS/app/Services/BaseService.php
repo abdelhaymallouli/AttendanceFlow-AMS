@@ -21,7 +21,7 @@ abstract class BaseService
     /**
      * Standardized error logging for services.
      */
-    protected function logError(string $message, \Exception $e = null, array $context = []): void
+    protected function logError(string $message, ?\Exception $e = null, array $context = []): void
     {
         if ($e) {
             $context['exception'] = $e->getMessage();
@@ -36,6 +36,22 @@ abstract class BaseService
      */
     protected function logInfo(string $message, array $context = []): void
     {
-        Log::info("[{$this->getServiceName()}] $message", $context);
+        $this->logMessage('info', $message, $context);
+    }
+
+    /**
+     * Helper to get the service name automatically.
+     */
+    protected function getServiceName(): string
+    {
+        return class_basename($this);
+    }
+
+    /**
+     * Internal logging helper.
+     */
+    private function logMessage(string $level, string $message, array $context = []): void
+    {
+        Log::$level("[{$this->getServiceName()}] $message", $context);
     }
 }

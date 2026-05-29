@@ -13,21 +13,32 @@ actor "Étudiant" as Student
 
 rectangle "Application Mobile (AttendanceFlow-AMS)" {
     usecase "S'authentifier" as UC_M01
+    usecase "Consulter les absences (Rapide)" as UC_M06
+    usecase "Consulter ses sessions (Formateur)" as UC_M08
+    usecase "Recevoir des notifications" as UC_M09
+    
     usecase "Pointer les absences (Flash)" as UC_M02
     usecase "Saisir motif de retard" as UC_M02a
-    usecase "Consulter ses absences (Rapide)" as UC_M06
-    usecase "Vérifier statut de session" as UC_M08
+    usecase "Soumettre un justificatif" as UC_M03
 }
 
-Trainer -- UC_M01
-Trainer -- UC_M02
+' Relationships
+UC_M06 ..> UC_M01 : <<include>>
+UC_M08 ..> UC_M01 : <<include>>
+UC_M09 ..> UC_M01 : <<include>>
+UC_M02 ..> UC_M01 : <<include>>
+UC_M03 ..> UC_M01 : <<include>>
+
 UC_M02 <.. UC_M02a : <<extend>>
 
-Admin -- UC_M01
-Admin -- UC_M02
+Trainer -- UC_M08
+Trainer -- UC_M02
 
-Student -- UC_M01
+Admin -- UC_M02
+Admin -- UC_M09
+
 Student -- UC_M06
-Student -- UC_M08
+Student -- UC_M09
+Student -- UC_M03
 
 @enduml

@@ -1,262 +1,244 @@
 # 💻 Réalisation
 
-## Architecture 3-Tiers (MVC)
+## 1. Architecture Implémentée
 
-L'application **AttendanceFlow-AMS** est structurée selon le patron **Modèle-Vue-Contrôleur** en trois couches distinctes, garantissant une séparation claire des responsabilités et une maintenabilité optimale.
+L'application **AttendanceFlow-AMS** suit une architecture **MVC (Modèle-Vue-Contrôleur)** couplée à une **architecture 3-Tiers**, renforcée par un **Service Pattern** pour le découplage de la logique métier.
 
----
+### Couches de l'Application
 
-### Couche 1 : Présentation (Interface Utilisateur)
-
-| Plateforme | Technologie | Rôle |
-|------------|-------------|------|
-| **Application Mobile** | Blade + Tailwind CSS + Alpine.js + NativePHP | Interface mobile native Android pour le terrain (formateurs, étudiants) |
-| **API (Headless)** | Laravel JSON Response | Aucune UI — fournit les données au client mobile via REST |
-
-**Détail des écrans mobiles réalisés :**
-
-| Écran | Fichier Vue | Fonctionnalité |
-|-------|-------------|----------------|
-| Hub | `mobile/hub.blade.php` | Portail de sélection de rôle (Admin / Formateur / Étudiant) |
-| Liste des sessions | `mobile/sessions/index.blade.php` | Dashboard formateur — statistiques, liste des sessions, justificatifs en attente |
-| Détail session | `mobile/sessions/show.blade.php` | Revue des présences pour une session donnée |
-| Pointage Flash | `mobile/attendance/flash.blade.php` | Saisie rapide des présences (actions groupées + par étudiant) |
-| Dashboard Admin | `mobile/admin/dashboard.blade.php` | Statistiques globales, justificatifs en attente de validation |
-| Dashboard Étudiant | `mobile/student/dashboard.blade.php` | Assiduité personnelle, liste des absences, suivi hebdomadaire |
-| Layout global | `mobile/layouts/app.blade.php` | Barre supérieure fixe, navigation bottom, safe-area insets |
-
-**Stack UI :**
-- **Tailwind CSS** : Design atomique responsive, mobile-first
-- **Alpine.js** : Interactivité dynamique côté client (compteurs, états)
-- **Lucide Icons** : Iconographie premium
-- **NativePHP** : Compilation native Android (package `com.solicode.attendanceFlow`)
-
----
-
-### Couche 2 : Application (Logique Métier)
-
-**Projet API** — `AttendanceFlow-AMS/` (Laravel 12)
-
-| Controller | Endpoints | Responsabilité |
-|------------|-----------|----------------|
-| `AuthController` | `POST /api/login`, `GET /api/me`, `POST /api/logout` | Authentification via Sanctum (token-based), gestion de session |
-| `AcademicController` | `GET /api/academic/filieres`, `/groups`, `/modules`, `/sessions`, `/sessions/teacher/{id}`, `/session/{id}` | Données académiques en lecture seule avec eager loading |
-| `AttendanceController` | `GET /api/attendance/student/{id}`, `/session/{id}`, `POST /api/attendance/record` | CRUD des présences, enregistrement par lot avec `updateOrCreate` (idempotent) |
-| `JustificationController` | `GET /api/justifications/pending`, `POST /api/justifications/submit` | Gestion des justificatifs (upload fichier, workflow pending/accepted/rejected) |
-| `StatsController` | `GET /api/stats/admin`, `/stats/student/{id}` | Agrégations temps réel pour dashboards |
-
-**Projet Mobile** — `AttendanceFlow-AMS-Mobile/` (Laravel 13 + NativePHP)
-
-| Controller | Routes | Responsabilité |
-|------------|--------|----------------|
-| `SessionController` | `GET /mobile/teacher`, `/mobile/session/{id}`, `/mobile/flash/{id}` | Récupération sessions via API, rendu des vues mobile |
-| `AttendanceController` | `POST /mobile/attendance/record` | Validation formulaire, appel API pour enregistrement |
-| `AdminController` | `GET /mobile/admin` | Dashboard admin (stats + justificatifs) |
-| `StudentController` | `GET /mobile/student/{id?}` | Dashboard étudiant (stats + historique) |
-
-**Service d'intégration :**
-- `ApiService` : Client HTTP Laravel consommant l'API REST (`config('services.ams.url')`)
-- Communication via JSON, authentification par token Sanctum
-
----
-
-### Couche 3 : Données (Stockage & Modèles)
-
-**Base de données MySQL** — 16 tables assurant l'intégrité référentielle :
-
-| Table | Entité | Relations clés |
-|-------|--------|----------------|
-| `users` | Utilisateurs | Polymorphique vers StudentProfile / TeacherProfile |
-| `filieres` | Filières | `1:N` → Groupes |
-| `groups` | Groupes | `N:1` → Filière, `1:N` → StudentProfiles, `1:N` → Sessions |
-| `modules` | Modules | `1:N` → Sessions |
-| `teacher_profiles` | Profils formateurs | `1:1` → User, `1:N` → Sessions |
-| `student_profiles` | Profils étudiants | `1:1` → User, `N:1` → Groupe, `1:N` → AttendanceRecords, `1:N` → Justifications |
-| `academic_sessions` | Sessions académiques | `N:1` → Module, TeacherProfile, Groupe |
-| `attendance_records` | Présences | `N:1` → StudentProfile, Session (statut : présent/absent/retard/justifié) |
-| `justifications` | Justificatifs | `N:1` → StudentProfile (statut : pending/accepted/rejected) |
-| `module_teacher_group` | Pivot triple | Lien Many-to-Many entre formateurs, modules et groupes |
-| `roles` / `permissions` | RBAC | Spatie Permission — rôles : admin, teacher, student |
-| `personal_access_tokens` | Tokens API | Sanctum — authentification mobile sécurisée |
-
-**Modèles Eloquent (9) :**
-`User`, `Filiere`, `Group`, `Module`, `TeacherProfile`, `StudentProfile`, `Session`, `AttendanceRecord`, `Justification`
-
-**Relations principales :**
 ```
-Filiere → Groups → StudentProfiles → AttendanceRecords
-                                       → Justifications
-Modules → Sessions → AttendanceRecords
-TeacherProfiles → Sessions
-          ↕ (module_teacher_group)
-Modules ↔ Groups
+┌─────────────────────────────────────────────┐
+│  Couche Présentation (Blade + Alpine.js)     │
+│  Tailwind CSS / Preline UI / Lucide Icons    │
+├─────────────────────────────────────────────┤
+│  Couche Application (Laravel 12)             │
+│  Contrôleurs → Services → Repositories       │
+├─────────────────────────────────────────────┤
+│  Couche Données (MySQL)                      │
+│  Eloquent ORM + Migrations + Seeders         │
+└─────────────────────────────────────────────┘
 ```
 
----
+### Service Pattern
+
+La logique métier est encapsulée dans 6 services spécialisés héritant d'une classe `BaseService` commune avec logging et télémetrie :
+
+| Service | Responsabilité |
+|---------|----------------|
+| `IdentityService` | Authentification, gestion des rôles |
+| `AcademicService` | Gestion des filières, groupes, modules, profils |
+| `AttendanceService` | Pointage individuel et groupé des présences |
+| `JustificationService` | Cycle de vie des justificatifs (soumission → validation) |
+| `SchedulingService` | Planification des sessions avec détection de conflits |
+| `ReportingService` | Statistiques et analytics d'assiduité |
 
 ```{=openxml}
 <w:p><w:r><w:br w:type="page"/></w:r></w:p>
 ```
 
-## Réalisation par Sprints (Méthodologie Scrum)
+## 2. Modules Fonctionnels
 
-Le développement a été structuré en **Sprints de deux semaines** avec des rôles Scrum (Product Owner, Scrum Master, Équipe de Développement) et les événements associés (Sprint Planning, Daily Stand-up, Sprint Review, Sprint Retrospective).
+### 🛡️ Module Authentification
+- Login sécurisé avec validation d'email/mot de passe
+- Redirection intelligente basée sur le rôle (Admin → `/admin/dashboard`, Formateur → `/teacher/dashboard`, Étudiant → `/student/dashboard`)
+- Déconnexion avec invalidation de session et régénération de token
+- Comptes de démonstration pré-initialisés avec rôles et permissions (Spatie Laravel-Permission)
 
----
+### 📊 Dashboard Administrateur
+- 4 cartes statistiques : total étudiants, enseignants, justificatifs en attente, taux de présence global
+- Accès rapide aux fonctionnalités : nouvelle session, pointage, rapports
+- Fil d'activité récent (pointages et justifications)
 
-### Sprint 0 : Développement Mobile (30 Mars — 03 Avril 2026)
+### 📋 Gestion des Sessions (CRUD)
+- Création, modification, suppression et liste des sessions académiques
+- Validation des données : module, formateur, groupe, type de séance (CM/TD/TP), créneaux horaires
+- Détection automatique des conflits de planning via `SchedulingService`
+- Filtrage par date avec sélecteur de calendrier
 
-**Objectif :** Créer l'application mobile native comme interface principale de terrain.
+### ✅ Pointage des Présences
+- Sélection rapide des étudiants avec barre de recherche
+- Statuts : Présent, Absent, Retard (avec saisie du motif)
+- Statistiques en temps réel : taux de présence, nombre d'absents/retards
+- Actions groupées (marquer tous présents/absents)
+- Interface responsive adaptée au mobile
 
-**Exigences adressées :**
-- Interface mobile-first pour le pointage rapide des formateurs
-- Hub de navigation par rôle (Admin, Formateur, Étudiant)
-- Intégration avec l'API backend via `ApiService`
+### 📄 Gestion des Justificatifs
+- **Formateur/Admin :** Visualisation des justificatifs soumis, filtre par statut (en attente/accepté/refusé), approbation ou rejet en un clic
+- **Étudiant :** Soumission numérique avec upload de fichier (PDF/JPG, max 10MB), historique des demandes
+- Mise à jour automatique du statut d'absence lors de l'acceptation d'un justificatif
 
-**Tâches réalisées :**
-- Mise en place du projet Laravel 13 avec NativePHP
-- Création de 7 vues mobiles responsives (Tailwind CSS, Alpine.js)
-- Développement du `ApiService` pour la consommation de l'API REST
-- Configuration NativePHP (Android SDK, permissions, orientation portrait)
-- Layout avec navigation bottom et safe-area insets
-- Routes web sous préfixe `/mobile`
+### 📈 Rapports et Analytics (Chart.js)
+- 4 onglets : Vue d'ensemble, Tendances mensuelles, Par classe, Étudiants à risque
+- Graphiques : courbe d'évolution mensuelle, répartition des statuts (donut), barres par jour de semaine
+- Classement des groupes par taux de présence
+- Détection des étudiants à risque (< 90% d'assiduité)
 
-**Livrables :**
-- Application mobile compilable en APK Android
-- Interface Hub (sélection de rôle)
-- Vues Formateur (sessions, pointage flash)
-- Vues Admin (dashboard, justificatifs)
-- Vues Étudiant (assiduité personnelle)
-
----
-
-### Sprint 1 Partie 1 : API Publique & Pointage (06 Avril — 10 Avril 2026)
-
-**Objectif :** Développer l'API REST backend pour les fonctionnalités de base (auth, sessions, pointage).
-
-**Exigences adressées :**
-- HMW 1 : Éliminer le transfert physique des fiches papier
-- HMW 2 : Valider chaque session en moins de 30 secondes
-
-**Tâches réalisées :**
-- Installation et configuration de Laravel 12
-- Mise en place de Sanctum pour l'authentification API token-based
-- Création des migrations et modèles de base (users, filieres, groups, modules, sessions)
-- Développement de `AuthController` (login, logout, me)
-- Développement de `AcademicController` (endpoints GET pour données académiques)
-- Développement de `AttendanceController` (enregistrement par session, idempotent)
-- Configuration des routes API (15 endpoints RESTful)
-
-**Livrables :**
-- API REST fonctionnelle avec authentification
-- Endpoints de pointage avec `updateOrCreate` (pas de doublons)
-- Routes protégées par middleware `auth:sanctum`
-
----
+### 👥 Annuaire des Étudiants
+- Recherche dynamique par nom/prénom
+- Filtre par groupe
+- Barres de progression d'assiduité par étudiant
+- Pagination intégrée
 
 ```{=openxml}
 <w:p><w:r><w:br w:type="page"/></w:r></w:p>
 ```
 
-### Sprint 1 Partie 2 : Administration & RBAC (20 Avril — 24 Avril 2026)
+## 3. API RESTful
 
-**Objectif :** Ajouter la gestion des rôles, des justificatifs et des statistiques.
+Une API complète a été développée avec **Laravel Sanctum** pour l'authentification par token, destinée à la future application mobile :
 
-**Exigences adressées :**
-- HMW 3 : Dématérialiser l'approbation des justificatifs
-- Accès par rôles (Admin, Formateur, Étudiant)
+| Endpoint | Méthode | Description |
+|----------|---------|-------------|
+| `/api/login` | POST | Authentification et génération de token |
+| `/api/logout` | POST | Révocation du token |
+| `/api/me` | GET | Profil de l'utilisateur connecté |
+| `/api/academic/filieres` | GET | Liste des filières |
+| `/api/academic/groups` | GET | Liste des groupes |
+| `/api/academic/sessions` | GET | Liste des sessions |
+| `/api/attendance/session/{id}` | GET | Pointages d'une session |
+| `/api/attendance/record` | POST | Enregistrement d'un pointage |
+| `/api/justifications/pending` | GET | Justificatifs en attente |
+| `/api/justifications/submit` | POST | Soumission d'un justificatif |
+| `/api/stats/admin` | GET | Statistiques globales |
 
-**Tâches réalisées :**
-- Installation et configuration de Spatie Laravel-Permission
-- Création des rôles (admin, teacher, student) et permissions associées
-- Développement de `JustificationController` (soumission, upload fichier, workflow validation)
-- Développement de `StatsController` (agrégations dashboard)
-- Création des modèles restants (TeacherProfile, StudentProfile, AttendanceRecord, Justification)
-- Migration de la table pivot `module_teacher_group`
-- Création des seeders (CSVSeeder) pour données de test réalistes
-- Insertion des données de démonstration (utilisateurs, sessions, profils)
-
-**Livrables :**
-- RBAC complet avec 3 rôles
-- Workflow justificatifs (soumission → pending → accepted/rejected)
-- Upload fichiers (PDF/JPG/PNG, max 2MB) stockés dans `storage/app/public/justifications/`
-- Dashboard statistiques temps réel
-- Jeu de données de test (CSV)
-
----
-
-### Sprint 2 : Fonctions Avancées & Dashboard (11 Mai — 15 Mai 2026)
-
-**Objectif :** Enrichir l'application avec des fonctionnalités avancées de reporting et de validation.
-
-**Tâches réalisées :**
-- Rafraîchissement du dashboard administratif avec indicateurs visuels (code couleur)
-- Affinage du workflow de validation des justificatifs (approbation/rejet)
-- Amélioration des exports de données (préparation pour export Excel/PDF)
-- Implémentation des alertes de dépassement de quota d'absences
-- Optimisation des requêtes avec eager loading pour les dashboards
-- Tests et corrections sur les deux projets (API + Mobile)
-
-**Livrables :**
-- Dashboard administratif interactif avec métriques clés
-- Workflow validation justificatif complet (visualisation + décision)
-- Alertes automatisées pour absences répétées
-- Performance optimisée (jointures Eloquent, cache)
-
----
+**Total : 17 endpoints** couvrant l'authentification, les données académiques, le pointage, les justificatifs et les statistiques.
 
 ```{=openxml}
 <w:p><w:r><w:br w:type="page"/></w:r></w:p>
 ```
 
-## Diagrammes de Réalisation
+## 4. Base de Données
 
-### Diagramme de Séquence — Flux de Pointage
+### Schéma Relationnel
 
-Le flux de pointage mobile suit ce parcours :
-1. Formateur s'authentifie (Sanctum token)
-2. Sélectionne une session depuis la liste mobile
-3. Lance l'écran "Flash" — visualisation des étudiants du groupe
-4. Marque les présences (présent/absent/retard) individuellement ou par lot
-5. Validation → `POST /api/attendance/record` → `updateOrCreate`
-6. Données immédiatement disponibles sur le dashboard Admin
+Le système repose sur **12 tables applicatives** (plus les tables Laravel et Spatie) :
 
-### Diagramme de Déploiement
+| Table | Rôle | Relations clés |
+|-------|------|----------------|
+| `users` | Utilisateurs (tous les profils) | → teacher_profiles, student_profiles |
+| `filieres` | Filières de formation | → groups |
+| `groups` | Groupes d'étudiants | → filieres, student_profiles, academic_sessions |
+| `modules` | Matières enseignées | → academic_sessions |
+| `teacher_profiles` | Profils formateurs | → users, academic_sessions |
+| `student_profiles` | Profils étudiants (avec matricule) | → users, groups, attendance_records, justifications |
+| `module_teacher_group` | Pivot : affectation enseignant/matière/groupe | → modules, teacher_profiles, groups |
+| `academic_sessions` | Sessions de cours | → modules, teacher_profiles, groups, attendance_records |
+| `attendance_records` | Enregistrements de présence | → student_profiles, academic_sessions |
+| `justifications` | Justificatifs d'absence | → student_profiles |
+| `roles` / `permissions` | ACL (Spatie) | 3 rôles : admin, teacher, student |
 
+### Données de Démonstration
+
+10 fichiers CSV dans `database/data/` permettent de peupler l'application avec des données réalistes :
+- 4 filières, 8 groupes, 12 modules
+- 4 utilisateurs avec rôles + 40 étudiants
+- Sessions pré-générées avec enregistrements de présence
+- Justificatifs d'exemple
+
+**Comptes de test :**
+
+| Rôle | Email | Mot de passe |
+|------|-------|--------------|
+| Administrateur | `admin@ams.com` | `password` |
+| Administratrice | `hannane@ams.com` | `password` |
+| Formatrice | `imane@ams.com` | `password` |
+| Formateur | `ahmed@ams.com` | `password` |
+| Étudiant | `student1@ams.com` | `password` |
+
+```{=openxml}
+<w:p><w:r><w:br w:type="page"/></w:r></w:p>
 ```
-[Application Mobile (NativePHP)] ←→ HTTP/JSON
-        ↓
-[API REST (Laravel 12)] ←→ MySQL (Attendances, Users, Sessions)
-        ↓
-[Stockage Fichiers] Justificatifs PDF/images
+
+## 5. Stack Technologique
+
+### Backend
+- **Laravel 12** (PHP 8.2+) : Framework principal avec Eloquent ORM, routing, validation
+- **Spatie Laravel-Permission** v7.2 : Gestion fine des rôles et permissions
+- **Laravel Sanctum** v4.0 : API tokens pour l'authentification mobile
+- **MySQL** : Base de données relationnelle
+
+### Frontend
+- **Tailwind CSS v4** : Design atomique utilitaire, build via Vite
+- **Alpine.js** v3.15 : Réactivité côté client sans complexité (15 composants)
+- **Preline UI** v4.1 : Composants UI prêts à l'emploi
+- **Lucide Icons** : Bibliothèque d'icônes SVG
+- **Chart.js** : Graphiques de reporting (via npm, bundle Vite)
+- **Vite** v7 : Build tool haute performance (1766 modules transformés)
+
+### Outils de Développement
+- **IDE :** Visual Studio Code avec assistant IA Antigravity
+- **Versionnement :** Git + GitHub
+- **Conception UML :** PlantUML (diagrammes de classes, cas d'utilisation)
+- **Base de données :** MySQL Workbench / phpMyAdmin
+
+```{=openxml}
+<w:p><w:r><w:br w:type="page"/></w:r></w:p>
 ```
 
----
+## 6. Défis Techniques et Solutions
 
-## Outils de Développement & Gestion
+### 6.1 Détection de Conflits de Planning
+**Problème :** Un formateur ou une salle ne doit pas être programmé sur deux sessions simultanément.
 
-| Outil | Utilisation |
+**Solution :** Implémentation dans `SchedulingService` d'une vérification des chevauchements horaires avant création de session, utilisant les contraintes temporelles en base de données.
+
+### 6.2 Classes Tailwind Dynamiques
+**Problème :** Les classes Tailwind construites dynamiquement (ex: `"text-$color-600"`) ne sont pas détectées par le scan de Tailwind et ne génèrent pas de CSS.
+
+**Solution :** Utilisation de "class maps" complètes en PHP avec toutes les variantes possibles, garantissant que toutes les classes sont présentes dans le bundle de production.
+
+### 6.3 Pointage en Temps Réel
+**Problème :** Les statistiques de pointage doivent se mettre à jour instantanément lorsque l'utilisateur modifie le statut d'un étudiant.
+
+**Solution :** Composants Alpine.js avec état réactif (`x-data`) qui recalculent les statistiques (présents, absents, retards, taux) à chaque modification, sans rechargement de page.
+
+### 6.4 Sécurisation par Rôle
+**Problème :** Chaque route doit être accessible uniquement par le rôle approprié.
+
+**Solution :** Middleware personnalisé `role:admin|teacher|student` combiné aux permissions Spatie, avec redirection automatique après authentification via une méthode `authenticated()` dans le contrôleur de login.
+
+```{=openxml}
+<w:p><w:r><w:br w:type="page"/></w:r></w:p>
+```
+
+## 7. Captures d'Écran
+
+*Les captures d'écran ci-dessous montrent l'application en fonctionnement avec les données de démonstration.*
+
+*(Insérer ici les captures d'écran de l'application en fonctionnement)*
+
+| Écran | Description |
 |-------|-------------|
-| **Visual Studio Code** | IDE principal |
-| **Git / GitHub** | Gestion de versions et collaboration |
-| **Composer** | Gestion des dépendances PHP |
-| **NPM / Vite** | Build des assets frontend |
-| **PlantUML** | Diagrammes de classes et cas d'utilisation |
-| **Postman** | Tests des endpoints API |
-
----
+| Dashboard Admin | Vue d'ensemble avec statistiques et accès rapides |
+| Liste des Sessions | Calendrier des sessions avec filtre par date |
+| Pointage | Marquer les présences avec recherche et stats en direct |
+| Justificatifs | Liste des justificatifs avec actions d'approbation |
+| Rapports | Graphiques d'analyse d'assiduité (Chart.js) |
+| Dashboard Formateur | Session en cours et planning du jour |
+| Dashboard Étudiant | Taux de présence et historique |
 
 ```{=openxml}
 <w:p><w:r><w:br w:type="page"/></w:r></w:p>
 ```
 
-## Bilan des Sprints
+## 8. Vue d'Ensemble du Code
 
-| Sprint | Statut | Jalons Clés |
-|--------|--------|-------------|
-| **Sprint 0** — Mobile | ✅ Complété | Application native Android, 7 écrans mobiles, ApiService |
-| **Sprint 1 (Partie 1)** — API Publique | ✅ Complété | Auth Sanctum, CRUD sessions/pointage, endpoints académiques |
-| **Sprint 1 (Partie 2)** — API Admin | ✅ Complété | RBAC Spatie, justificatifs, stats, seeders CSV |
-| **Déploiement & Installation** | ✅ Complété | Configuration serveur, migrations, mise en production |
-| **Sprint 2** — Fonctions Avancées | ✅ Complété | Dashboard, workflow validation, alertes, optimisations |
-| **Réseau** | ✅ Complété | Infrastructure réseau, DNS, SSL, hébergement |
+### Statistiques du Projet
+
+| Métrique | Valeur |
+|----------|--------|
+| Migrations | 14 (dont 3 Laravel core) |
+| Modèles Eloquent | 9 |
+| Contrôleurs | 17 (Web: 11, API: 5, Base: 1) |
+| Services métier | 6 |
+| Vues Blade | 33 |
+| Composants Blade | 10 |
+| Modules JS (Alpine) | 7 |
+| Routes Web | 22 |
+| Endpoints API | 17 |
+| Fichiers CSV (seed) | 10 |
+| Utilisateurs de démonstration | 44 (4 staff + 40 étudiants) |
+
+```{=openxml}
+<w:p><w:r><w:br w:type="page"/></w:r></w:p>
+```

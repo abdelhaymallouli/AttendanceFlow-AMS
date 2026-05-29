@@ -1,0 +1,39 @@
+@startuml sprint3_web
+title Sprint 3 - Plateforme Web + Mobile (IA & Interactions Mobile)
+left to right direction
+
+skinparam usecase {
+  BackgroundColor #F5EEF8
+  BorderColor #8E44AD
+}
+
+actor "Administrateur" as Admin
+actor "Étudiant" as Student
+actor "Formateur" as Trainer
+
+rectangle "Web - Sprint 3" {
+    usecase "Générer une analyse IA des rapports\n(Modèle IA d'absentéisme & Synthèse)" as UC_W_AI
+    usecase "Exporter les rapports (CSV /Excel)" as UC_WXP
+}
+
+rectangle "Mobile - Sprint 3" {
+    usecase "Pointer les absences (Flash)" as UC_M02
+    usecase "Saisir motif de retard" as UC_M02a
+    usecase "Soumettre un justificatif (Mobile)" as UC_M03
+}
+
+' Web Links
+Admin -- UC_W_AI
+Trainer -- UC_W_AI
+Admin -- UC_WXP
+Trainer -- UC_WXP
+
+' Mobile Links
+Trainer -- UC_M02
+Admin -- UC_M02
+UC_M02 <.. UC_M02a : <<extend>>
+
+Student -- UC_M03
+
+
+@enduml

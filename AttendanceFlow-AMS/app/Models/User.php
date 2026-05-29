@@ -41,6 +41,16 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+    public function teacherProfile()
+    {
+        return $this->hasOne(TeacherProfile::class);
+    }
+
+    public function studentProfile()
+    {
+        return $this->hasOne(StudentProfile::class);
+    }
+
     protected function casts(): array
     {
         return [

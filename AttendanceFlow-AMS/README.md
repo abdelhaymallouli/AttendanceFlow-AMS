@@ -41,19 +41,38 @@ AttendanceFlow-AMS is a comprehensive Attendance Management System (AMS) built w
    php artisan migrate
    ```
 
-## Testing
+## 📚 Documentation
 
-To verify the core services of the application, run the following command:
+Detailed documentation for the various system components can be found in the `documentation` directory:
+
+- [📂 Project Vision & Analysis](documentation/analysis/vision_and_problem.md)
+- [📂 Technical Specs & Roadmap](documentation/analysis/technical_specs.md)
+- [📂 Database Schema & Seeders](documentation/database/)
+
+- [📂 Model Factories Guide](documentation/database/factories.md)
+- [📂 HTTP & Controllers Architecture](documentation/http/overview.md)
+- [📂 View Layer & Dashboards](documentation/views/admin.md)
+- [📂 Git Workflow & Milestones](documentation/git/workflow.md)
+- [📂 Services Architecture](documentation/services/architecture.md)
+
+
+
+- [📂 Testing Guide & TDD Strategy](documentation/testing/guide.md)
+
+## 🧪 Testing
+
+The project follows a TDD approach. To run the full suite:
 
 ```bash
-php artisan test tests/Feature --filter ServiceTest
+php artisan test
 ```
 
 ### Latest Test Results
-- **Status:** PASS
-- **Tests:** 26 passed
-- **Assertions:** 72 assertions
-- **Duration:** 6.21s
+- **Status:** PASS ✅
+- **Tests:** 31 passed
+- **Assertions:** 81 assertions
+- **Coverage:** Service Layer (100%)
+
 
 ## License
 
