@@ -64,6 +64,33 @@
         </div>
     </a>
 
+    <!-- Notifications -->
+    <div class="mb-6">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider">Notifications</h3>
+        </div>
+        <div class="space-y-3">
+            @forelse($notifications ?? [] as $notif)
+                <div class="p-4 rounded-3xl border flex items-start gap-3 bg-white shadow-sm border-gray-100">
+                    <div class="w-2.5 h-2.5 rounded-full mt-1.5 flex-shrink-0
+                        {{ $notif['type'] == 'success' ? 'bg-green-500' : '' }}
+                        {{ $notif['type'] == 'warning' ? 'bg-amber-500' : '' }}
+                        {{ $notif['type'] == 'danger' ? 'bg-red-500' : '' }}
+                        {{ $notif['type'] == 'info' ? 'bg-blue-500' : '' }}">
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-xs font-bold text-gray-800 uppercase">{{ $notif['title'] }}</p>
+                        <p class="text-[10px] mt-1 text-gray-500 leading-normal">{{ $notif['message'] }}</p>
+                    </div>
+                </div>
+            @empty
+                <div class="p-6 text-center text-gray-400 bg-white rounded-3xl border border-gray-100 shadow-sm">
+                    <p class="text-xs font-medium">Aucune notification</p>
+                </div>
+            @endforelse
+        </div>
+    </div>
+
     <!-- Recent Absences -->
     <div class="mb-6">
         <div class="flex items-center justify-between mb-4">

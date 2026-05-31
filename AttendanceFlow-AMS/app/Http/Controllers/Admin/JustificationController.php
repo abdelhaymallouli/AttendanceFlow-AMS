@@ -21,7 +21,7 @@ class JustificationController extends Controller
                     'studentId'     => $j->studentProfile->student_id ?? 'N/A',
                     'grade'         => $j->studentProfile->group->name ?? 'G1',
                     'absenceDate'   => \Carbon\Carbon::parse($j->start_date)->format('M d, Y'),
-                    'documentUrl'   => \Illuminate\Support\Facades\Storage::url($j->file_path),
+                    'documentUrl'   => \Illuminate\Support\Facades\Storage::url($j->document_name),
                     'reason'        => $j->reason,
                     'submittedDate' => \Carbon\Carbon::parse($j->created_at)->format('M d, Y'),
                     'status'        => $j->status,
@@ -38,13 +38,22 @@ class JustificationController extends Controller
     public function update(Request $request, Justification $justification)
     {
         $request->validate([
-            'status' => 'required|in:approved,rejected',
+            'status' => 'required|in:approved,rejected,accepted',
         ]);
 
-        $justification->update([
-            'status' => $request->status,
+        $service = app(\App\Services\JustificationService::class);
+        $service->reviewJustification($justification->id, $request->status);
+
+        $statusLabel = $request->status === 'rejected' ? 'refusé' : 'accepté';
+        $type = $request->status === 'rejected' ? 'danger' : 'success';
+
+        \App\Models\Notification::create([
+            'user_id' => $justification->studentProfile->user_id,
+            'title' => 'Justificatif ' . $statusLabel,
+            'message' => 'Votre justificatif pour la date du ' . \Carbon\Carbon::parse($justification->start_date)->format('d/m/Y') . ' a été ' . $statusLabel . '.',
+            'type' => $type,
         ]);
 
-        return back()->with('success', 'Justification ' . $request->status . '.');
+        return back()->with('success', 'Justification status updated successfully.');
     }
 }

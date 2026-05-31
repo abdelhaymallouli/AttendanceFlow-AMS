@@ -48,6 +48,7 @@ class StatsController extends Controller
 
         return response()->json([
             'student_id' => $student->matricule,
+            'user_id' => $student->user_id,
             'name' => $student->user->name,
             'group' => $student->group->name,
             'attendance_rate' => $rate,

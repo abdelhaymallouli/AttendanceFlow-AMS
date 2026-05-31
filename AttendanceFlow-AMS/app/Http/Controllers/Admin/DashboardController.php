@@ -13,11 +13,15 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $totalRecords = AttendanceRecord::count();
+        $presentRecords = AttendanceRecord::whereIn('status', ['present', 'late'])->count();
+        $attendanceRate = $totalRecords > 0 ? round(($presentRecords / $totalRecords) * 100) : 100;
+
         $stats = [
             'total_students' => StudentProfile::count(),
             'total_teachers' => TeacherProfile::count(),
-            'pending_justifications' => 7, // Mocked
-            'global_attendance' => 88, // Mocked
+            'pending_justifications' => \App\Models\Justification::where('status', 'pending')->count(),
+            'global_attendance' => $attendanceRate,
         ];
 
         return view('admin.dashboard', compact('stats'));

@@ -17,7 +17,7 @@ class ReportController extends Controller
         // 1. Overview Stats
         $totalRecords = AttendanceRecord::count();
         $presentRecords = AttendanceRecord::whereIn('status', ['present', 'late'])->count();
-        $absentRecords = AttendanceRecord::where('status', 'absent')->count();
+        $absentRecords = AttendanceRecord::whereIn('status', ['absent_unexcused', 'absent_excused'])->count();
         $lateRecords = AttendanceRecord::where('status', 'late')->count();
         
         $avgAttendance = $totalRecords > 0 ? round(($presentRecords / $totalRecords) * 100, 1) : 0;
@@ -46,7 +46,7 @@ class ReportController extends Controller
             
             $student->attendance_rate = $total > 0 ? round(($present / $total) * 100, 1) : 0;
             $student->absences_count = AttendanceRecord::where('student_profile_id', $student->id)
-                ->where('status', 'absent')->count();
+                ->whereIn('status', ['absent_unexcused', 'absent_excused'])->count();
             
             return $student;
         })->filter(function($student) {
@@ -57,7 +57,7 @@ class ReportController extends Controller
         $monthlyTrend = AttendanceRecord::select(
                 DB::raw('MONTH(date) as month'),
                 DB::raw('count(*) as total'),
-                DB::raw('count(case when status != "absent" then 1 end) as present')
+                DB::raw('count(case when status != "absent_unexcused" and status != "absent_excused" then 1 end) as present')
             )
             ->groupBy('month')
             ->get()

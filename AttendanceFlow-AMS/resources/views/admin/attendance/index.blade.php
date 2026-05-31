@@ -3,8 +3,14 @@
 @section('title', 'Attendance Entry')
 @section('page_title', 'Session Selection')
 
+@section('header_actions')
+<a href="{{ route('admin.export.attendance') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center text-sm shadow-sm">
+    <i data-lucide="download" class="w-4 h-4 mr-2"></i> Export Absences (Excel)
+</a>
+@endsection
+
 @section('content')
-<div class="space-y-6" x-data="attendanceApp(initialSessions, '{{ $date }}')">
+<div class="space-y-6" x-data="attendanceApp(@json($allSessionsData), '{{ $date }}')">
     
     <!-- Step 1: Date + Session Selector -->
     <x-ui.section-card padding="p-4" class="mb-6">
@@ -23,7 +29,14 @@
                 label="Date:"
                 name="selectedDate"
                 value="{{ $date }}"
-                onChange="window.location.href = '?date=' + this.selectedDate"
+                onChange="onDateChange($event.target.value)"
+            />
+            
+            <!-- Session Type Filter -->
+            <x-session-type-filter 
+                name="session_type"
+                value="{{ request('session_type') }}"
+                onChange="onDateChange($event.target.value)"
             />
         </div>
 
@@ -61,7 +74,7 @@
         </div>
 
         <!-- No sessions state -->
-        <div x-show="availableSessions.length === 0" style="display: none;">
+        <div x-show="availableSessions.length === 0">
             <x-ui.empty-state 
                 icon="calendar-x"
                 title="No sessions scheduled for this date"

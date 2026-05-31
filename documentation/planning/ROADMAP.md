@@ -19,6 +19,20 @@ We have successfully implemented the core administrative foundation for attendan
 
 ---
 
+## ✅ Sprint 2 — Completed
+
+> See full details: [sprint2.md](sprint2.md)
+
+- **Justification Lifecycle**: Matching rule `(student_id + session_id)`, délai 48h enforced.
+- **Auto-resolution**: `absent` → `absent_excused` / `absent_unexcused` via `AttendanceService`.
+- **Review workflow**: `JustificationService::reviewJustification()` links/unlinks `AttendanceRecord`.
+- **DB refactor**: `session_id` + `justification_id` FK, enum statuses (`absent_excused`, `absent_unexcused`, `approved`, `rejected`).
+- **Bug fixes**: Date filter `$event.target.value`, redirect with session date, `create.blade.php` rebuilt.
+- **Admin Dashboard**: Stats dynamiques (vraies requêtes Eloquent).
+
+
+---
+
 ## 🗺️ Future Roadmap
 
 ### Phase 1: Teacher (Formateur) Hub

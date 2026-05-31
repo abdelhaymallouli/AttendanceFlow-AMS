@@ -13,7 +13,8 @@ class AttendanceRecord extends Model
         'student_profile_id', 
         'session_id', 
         'status', 
-        'date'
+        'date',
+        'justification_id'
     ];
 
     public function studentProfile()
@@ -24,5 +25,10 @@ class AttendanceRecord extends Model
     public function session()
     {
         return $this->belongsTo(Session::class);
+    }
+
+    public function justification()
+    {
+        return $this->belongsTo(Justification::class);
     }
 }

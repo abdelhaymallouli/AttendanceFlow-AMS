@@ -4,7 +4,10 @@
     'value' => null,
     'onChange' => 'this.form.submit()', // Default to form submit
     'showTodayLink' => true,
-    'todayUrl' => null
+    'todayUrl' => null,
+    'minDate' => null,
+    'maxDate' => null,
+    'placeholder' => 'Select date'
 ])
 
 <div class="flex items-center gap-3 bg-gray-50 p-2 rounded-lg border border-gray-100">
@@ -16,6 +19,9 @@
         name="{{ $name }}" 
         value="{{ $value ?? old('date', \Carbon\Carbon::today()->toDateString()) }}"
         @change="{{ $onChange }}"
+        :min="$minDate"
+        :max="$maxDate"
+        placeholder="{{ $placeholder }}"
         class="text-sm border border-gray-300 rounded-md px-3 py-1.5 focus:ring-2 focus:ring-blue-500 outline-none bg-white shadow-sm"
     >
     @if($showTodayLink && $todayUrl)

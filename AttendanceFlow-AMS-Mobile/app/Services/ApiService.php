@@ -133,4 +133,24 @@ class ApiService
             return null;
         }
     }
+
+    public function getUserNotifications($userId)
+    {
+        try {
+            $response = Http::get($this->baseUrl . "/notifications/user/{$userId}");
+            return $response->successful() ? $response->json() : [];
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+
+    public function markNotificationAsRead($id)
+    {
+        try {
+            $response = Http::post($this->baseUrl . "/notifications/{$id}/read");
+            return $response->successful();
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
 }

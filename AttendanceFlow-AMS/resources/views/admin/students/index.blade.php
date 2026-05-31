@@ -4,9 +4,14 @@
 @section('page_title', 'Student Directory')
 
 @section('header_actions')
-<button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center text-sm shadow-sm">
-    <i data-lucide="plus" class="w-4 h-4 mr-2"></i> Add Student
-</button>
+<div class="flex items-center gap-2">
+    <a href="{{ route('admin.export.students') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center text-sm shadow-sm">
+        <i data-lucide="users" class="w-4 h-4 mr-2"></i> Export Students (Excel)
+    </a>
+    <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center text-sm shadow-sm">
+        <i data-lucide="plus" class="w-4 h-4 mr-2"></i> Add Student
+    </button>
+</div>
 @endsection
 
 @section('content')
@@ -54,29 +59,34 @@
         />
     </div>
 
-    <!-- Filters -->
-    <x-ui.section-card padding="p-4" class="mb-6">
-        <div class="flex flex-col md:flex-row gap-4">
-            <div class="flex-1">
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i data-lucide="search" class="w-5 h-5 text-gray-400"></i>
+            <!-- Filters -->
+            <x-ui.section-card padding="p-4" class="mb-6">
+                <form method="GET" action="{{ route('admin.students.index') }}" class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-1">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i data-lucide="search" class="w-5 h-5 text-gray-400"></i>
+                            </div>
+                            <input x-model="searchQuery" @input="filterStudents()" type="text"
+                                name="search"
+                                value="{{ request('search') }}"
+                                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                                placeholder="Search by name or ID...">
+                        </div>
                     </div>
-                    <input x-model="searchQuery" @input="filterStudents()" type="text"
-                        class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                        placeholder="Search by name or ID...">
-                </div>
-            </div>
-            <div class="flex gap-2">
-                <select class="py-2 px-3 border border-gray-300 rounded-lg text-sm text-gray-700 bg-white focus:ring-2 focus:ring-blue-500 outline-none cursor-pointer">
-                    <option value="">All Groups</option>
-                    @foreach(\App\Models\Group::all() as $group)
-                        <option value="{{ $group->id }}">{{ $group->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-    </x-ui.section-card>
+                    <div class="flex gap-2">
+                        <select name="group_id" onchange="this.form.submit()"
+                                class="py-2 px-3 border border-gray-300 rounded-lg text-sm text-gray-700 bg-white focus:ring-2 focus:ring-blue-500 outline-none cursor-pointer">
+                            <option value="">All Groups</option>
+                            @foreach(\App\Models\Group::all() as $group)
+                                <option value="{{ $group->id }}" {{ request('group_id') == $group->id ? 'selected' : '' }}>
+                                    {{ $group->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </form>
+            </x-ui.section-card>
 
     <!-- Student Table -->
     <x-ui.section-card :overflow="true" padding="none">

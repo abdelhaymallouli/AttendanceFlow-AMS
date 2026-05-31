@@ -26,6 +26,23 @@ class CsvSeeder extends Seeder
         $this->seedFromCsv('academic_sessions', database_path('data/sessions.csv'));
         $this->seedFromCsv('attendance_records', database_path('data/attendance_records.csv'));
         $this->seedFromCsv('justifications', database_path('data/justifications.csv'));
+
+        // Link approved justifications to attendance records
+        $approvedJustifications = \App\Models\Justification::where('status', 'approved')->get();
+        foreach ($approvedJustifications as $justification) {
+            if ($justification->session_id) {
+                $attendance = \App\Models\AttendanceRecord::where([
+                    'student_profile_id' => $justification->student_profile_id,
+                    'session_id' => $justification->session_id
+                ])->first();
+                if ($attendance) {
+                    $attendance->update([
+                        'status' => 'absent_excused',
+                        'justification_id' => $justification->id
+                    ]);
+                }
+            }
+        }
     }
 
     protected function seedUsers(string $path)

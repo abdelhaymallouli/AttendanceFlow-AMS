@@ -98,19 +98,40 @@ Stocke l'état de présence d'un étudiant spécifique lors d'une session spéci
 - `id` (PK)
 - `student_profile_id` (FK) : L'étudiant pointé.
 - `session_id` (FK) : Référence `academic_sessions`. Le cours concerné.
-- `status` (enum) : L'état du pointage (`present`, `absent`, `late`, `justified`). Défaut: `present`.
+- `status` (enum) : L'état du pointage (`present`, `late`, `absent_unexcused`, `absent_excused`). Défaut: `present`.
+- `justification_id` (FK, nullable) : Référence `justifications` si l'absence est justifiée.
 - `date` (date) : Raccourci pour requêtes rapides (dérivé du start_time de la session).
 
 ### `justifications` (Justificatifs d'absence)
-Gestion des documents (certificats médicaux, convocations) soumis par les étudiants pour justifier des absences sur une plage de dates.
+Gestion des documents (certificats médicaux, convocations) soumis par les étudiants pour justifier des absences pour une séance spécifique.
 - `id` (PK)
 - `student_profile_id` (FK) : L'étudiant concerné.
+- `session_id` (FK, nullable) : La séance spécifique concernée.
 - `reason` (text) : Motif de l'absence.
-- `file_path` (string, nullable) : Chemin (storage) vers le fichier uploadé comme preuve.
-- `start_date` (date) : Date de début de l'absence à justifier.
-- `end_date` (date) : Date de fin de l'absence à justifier.
-- `status` (enum) : État de la demande (`pending`, `accepted`, `rejected`). Défaut: `pending`.
+- `document_name` (string, nullable) : Nom/chemin du fichier uploadé comme preuve.
+- `start_date` (date) : Date de début.
+- `end_date` (date) : Date de fin.
+- `status` (enum) : État de la demande (`pending`, `approved`, `rejected`). Défaut: `pending`.
 - `submitted_at` (timestamp) : Date et heure d'envoi.
+- `reviewed_at` (timestamp, nullable) : Date et heure de révision.
+- `reviewed_by` (FK, nullable) : Référence `users` (l'administrateur réviseur).
+
+---
+
+## 🔔 4. Notification Service
+
+Nouveau service introduit pour notifier les utilisateurs en temps réel des changements d'état du pointage ou de la validation des justificatifs.
+
+### `notifications`
+Gère les alertes pour tous les types d'utilisateurs.
+- `id` (PK)
+- `user_id` (FK) : Référence `users` (Cascade On Delete). L'utilisateur destinataire.
+- `title` (string) : Titre de la notification.
+- `message` (text) : Contenu de la notification.
+- `type` (string) : Type de notification (ex: `success`, `warning`, `danger`, `info`).
+- `is_read` (boolean) : État de lecture de la notification (Défaut: false).
+- `created_at` (timestamp)
+- `updated_at` (timestamp)
 
 ---
 *Note : Cette documentation reflète l'état du dossier `database/migrations` au dernier audit.*

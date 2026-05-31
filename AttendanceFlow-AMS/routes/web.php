@@ -32,12 +32,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function () {
         Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
 
+        // Export Routes
+        Route::get('/export/students', [\App\Http\Controllers\Admin\ExportController::class, 'exportStudents'])->name('admin.export.students');
+        Route::get('/export/attendance', [\App\Http\Controllers\Admin\ExportController::class, 'exportAttendance'])->name('admin.export.attendance');
+        Route::get('/export/sessions', [\App\Http\Controllers\Admin\ExportController::class, 'exportSessions'])->name('admin.export.sessions');
+
         // Justification Management
         Route::get('/justifications', [\App\Http\Controllers\Admin\JustificationController::class, 'index'])->name('admin.justifications.index');
         Route::patch('/justifications/{justification}', [\App\Http\Controllers\Admin\JustificationController::class, 'update'])->name('admin.justifications.update');
-
-        // Reporting & Analytics
-        Route::get('/reports', [\App\Http\Controllers\Admin\ReportController::class, 'index'])->name('admin.reports.index');
 
         // Student Management
         Route::get('/students', [\App\Http\Controllers\Admin\StudentController::class, 'index'])->name('admin.students.index');

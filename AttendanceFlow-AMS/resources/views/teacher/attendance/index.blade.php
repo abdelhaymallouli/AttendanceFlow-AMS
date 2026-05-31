@@ -4,7 +4,7 @@
 @section('page_title', 'Session Selection')
 
 @section('content')
-<div class="space-y-6">
+<div class="space-y-6" x-data="teacherAttendanceApp(@json($sessionsData), '{{ $date }}')">
     <!-- Step 1: Date + Session Selector -->
     <x-ui.section-card padding="p-4" class="mb-6">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
@@ -20,7 +20,7 @@
                 label="Date:"
                 name="selectedDate"
                 value="{{ $date }}"
-                onChange="window.location.href = '?date=' + this.selectedDate"
+                onChange="onDateChange"
                 showTodayLink="true"
                 todayUrl="{{ route('teacher.attendance.index') }}"
             />

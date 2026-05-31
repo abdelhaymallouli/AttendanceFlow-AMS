@@ -30,7 +30,22 @@ class AttendanceController extends Controller
             ->orderBy('start_time')
             ->get();
 
-        return view('teacher.attendance.index', compact('sessions', 'date'));
+        // Prepare session data for Alpine.js component
+        $sessionsData = $sessions->map(function($session) {
+            $start = \Carbon\Carbon::parse($session->start_time);
+            $end = \Carbon\Carbon::parse($session->end_time);
+            return [
+                'id' => $session->id,
+                'start_time' => $start->format('Y-m-d H:i:s'),
+                'time' => $start->format('H:i') . ' - ' . $end->format('H:i'),
+                'duration' => $end->diffInHours($start),
+                'module' => $session->module->name,
+                'group' => $session->group->name,
+                'url' => route('teacher.sessions.attendance.show', $session->id)
+            ];
+        })->values();
+
+        return view('teacher.attendance.index', compact('sessions', 'date', 'sessionsData'));
     }
 
     /**

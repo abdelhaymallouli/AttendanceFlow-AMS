@@ -7,6 +7,7 @@ import './justifications';
 import './calendar';
 import './reports';
 import './session-form';
+import './teacher-attendance';
 
 window.Alpine = Alpine;
 window.createIcons = createIcons;
