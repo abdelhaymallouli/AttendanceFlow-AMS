@@ -22,7 +22,7 @@ class DashboardController extends Controller
         $presentSessions = $attendanceRecords->whereIn('status', ['present', 'late'])->count();
         $attendanceRate = $totalSessions > 0 ? round(($presentSessions / $totalSessions) * 100) : 100;
 
-        $totalAbsenceHours = $attendanceRecords->where('status', 'absent')->sum(fn($r) => $r->session->duration_hours ?? 0);
+        $totalAbsenceHours = $attendanceRecords->whereIn('status', ['absent_unexcused', 'absent_excused'])->sum(fn($r) => $r->session->duration_hours ?? 0);
 
         $stats = [
             'attendance_rate' => $attendanceRate,
@@ -35,13 +35,17 @@ class DashboardController extends Controller
                 ->get(),
         ];
 
-        $recentAbsences = $attendanceRecords->whereIn('status', ['absent', 'late'])
+        $recentAbsences = $attendanceRecords->whereIn('status', ['absent_unexcused', 'absent_excused', 'late'])
             ->sortByDesc('date')
             ->take(10)
             ->values();
 
         $recentHistory = $attendanceRecords->sortByDesc('date')->take(5)->values();
+        $notifications = \App\Models\Notification::where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
 
-        return view('student.dashboard', compact('studentProfile', 'stats', 'recentAbsences', 'recentHistory'));
+        return view('student.dashboard', compact('studentProfile', 'stats', 'recentAbsences', 'recentHistory', 'notifications'));
     }
 }

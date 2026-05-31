@@ -10,11 +10,6 @@
         <span>Attendance Entry</span>
         <span class="ml-auto bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">HOT</span>
     </a>
-    <a href="{{ route('admin.reports.index') }}"
-        class="flex items-center space-x-3 px-4 py-3 {{ request()->routeIs('admin.reports.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-gray-100' }} rounded-lg transition-colors">
-        <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
-        <span>Reports</span>
-    </a>
     <a href="{{ route('admin.students.index') }}"
         class="flex items-center space-x-3 px-4 py-3 {{ request()->routeIs('admin.students.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-gray-100' }} rounded-lg transition-colors">
         <i data-lucide="users" class="w-5 h-5"></i>
@@ -29,6 +24,6 @@
         class="flex items-center space-x-3 px-4 py-3 {{ request()->routeIs('admin.justifications.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-gray-100' }} rounded-lg transition-colors relative">
         <i data-lucide="file-text" class="w-5 h-5"></i>
         <span>Justifications</span>
-        <span class="ml-auto bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">7</span>
+        <span class="ml-auto bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{{ \App\Models\Justification::where('status', 'pending')->count() }}</span>
     </a>
 </div>

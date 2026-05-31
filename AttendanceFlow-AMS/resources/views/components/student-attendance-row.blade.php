@@ -13,7 +13,14 @@
     <!-- Desktop Info -->
     <div class="hidden md:block col-span-1 text-sm text-gray-500">{{ $loop->iteration ?? 1 }}</div>
     <div class="hidden md:block col-span-2 text-sm font-medium text-gray-800">{{ $student->matricule }}</div>
-    <div class="hidden md:block col-span-4 text-sm font-medium text-gray-800">{{ $student->user->name }}</div>
+    <div class="hidden md:block col-span-4 text-sm font-medium text-gray-800">
+        {{ $student->user->name }}
+        @if($currentStatus == 'absent_excused')
+            <span class="ml-2 inline-flex items-center gap-1 py-0.5 px-2 rounded-full text-[10px] font-bold bg-green-100 text-green-800 border border-green-200">
+                Justified
+            </span>
+        @endif
+    </div>
     
     <!-- Shared Buttons -->
     <div class="col-span-5 flex justify-center space-x-2 w-full">
@@ -27,7 +34,7 @@
         
         <!-- Absent -->
         <label class="flex-1 cursor-pointer">
-            <input type="radio" name="attendance[{{ $student->id }}]" value="absent" class="peer hidden" {{ $currentStatus == 'absent' ? 'checked' : '' }} @change="updateStats()">
+            <input type="radio" name="attendance[{{ $student->id }}]" value="absent" class="peer hidden" {{ in_array($currentStatus, ['absent', 'absent_unexcused', 'absent_excused']) ? 'checked' : '' }} @change="updateStats()">
             <div class="status-btn py-2.5 md:py-2 px-3 rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-1 bg-white text-gray-700 border border-gray-300 peer-checked:bg-red-600 peer-checked:text-white peer-checked:border-red-600 peer-checked:ring-2 peer-checked:ring-red-600 peer-checked:ring-offset-2">
                 <i data-lucide="x" class="w-4 h-4"></i><span class="md:inline">A</span>
             </div>

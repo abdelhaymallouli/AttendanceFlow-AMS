@@ -153,6 +153,30 @@
             </a>
         </div>
 
+        <!-- Notifications Card -->
+        <div class="bg-white border border-gray-200 rounded-[2.5rem] p-8 shadow-sm">
+            <h3 class="text-lg font-black text-gray-800 mb-6 uppercase tracking-widest flex items-center">
+                <i data-lucide="bell" class="w-5 h-5 mr-3 text-blue-600"></i>
+                Notifications
+            </h3>
+            <div class="space-y-4">
+                @forelse($notifications as $notif)
+                <div class="p-4 rounded-2xl border flex items-start gap-3
+                    {{ $notif->type == 'success' ? 'bg-green-50/50 border-green-100 text-green-800' : '' }}
+                    {{ $notif->type == 'warning' ? 'bg-amber-50/50 border-amber-100 text-amber-800' : '' }}
+                    {{ $notif->type == 'danger' ? 'bg-red-50/50 border-red-100 text-red-800' : '' }}
+                    {{ $notif->type == 'info' ? 'bg-blue-50/50 border-blue-100 text-blue-800' : '' }}">
+                    <div class="flex-1">
+                        <p class="text-xs font-black uppercase tracking-wider">{{ $notif->title }}</p>
+                        <p class="text-[10px] font-bold mt-1 leading-relaxed text-gray-500">{{ $notif->message }}</p>
+                    </div>
+                </div>
+                @empty
+                <p class="text-xs font-bold text-gray-400 italic text-center py-6">No new notifications</p>
+                @endforelse
+            </div>
+        </div>
+
         <!-- Schedule Preview (Mockup Style) -->
         <div class="bg-white border border-gray-200 rounded-[2.5rem] p-8 shadow-sm">
             <h3 class="text-lg font-black text-gray-800 mb-6 uppercase tracking-widest flex items-center">

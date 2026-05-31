@@ -21,10 +21,45 @@ class AttendanceService extends BaseService
     {
         $this->logInfo("Marking attendance for student {$studentProfileId} in session {$sessionId}: {$status}");
         
-        return AttendanceRecord::updateOrCreate(
+        $justification = null;
+        if ($status === 'absent' || $status === 'absent_unexcused' || $status === 'absent_excused') {
+            $justification = \App\Models\Justification::where([
+                'student_profile_id' => $studentProfileId,
+                'session_id' => $sessionId,
+            ])->where('status', 'approved')->first();
+
+            if ($justification) {
+                $status = 'absent_excused';
+            } else {
+                $status = 'absent_unexcused';
+            }
+        }
+
+        $record = AttendanceRecord::updateOrCreate(
             ['student_profile_id' => $studentProfileId, 'session_id' => $sessionId],
-            ['status' => $status, 'date' => $date]
+            [
+                'status' => $status, 
+                'date' => $date,
+                'justification_id' => $justification ? $justification->id : null
+            ]
         );
+
+        if (in_array($status, ['absent_unexcused', 'absent_excused', 'late'])) {
+            $student = \App\Models\StudentProfile::find($studentProfileId);
+            if ($student && $student->user_id) {
+                $session = \App\Models\Session::with('module')->find($sessionId);
+                $moduleName = $session->module->name ?? 'Séance';
+                $statusLabel = $status === 'absent_excused' ? 'absent (justifié)' : ($status === 'absent_unexcused' ? 'absent (non justifié)' : 'en retard');
+                \App\Models\Notification::create([
+                    'user_id' => $student->user_id,
+                    'title' => $status === 'late' ? 'Retard signalé' : 'Nouvelle absence signalée',
+                    'message' => 'Vous avez été marqué ' . $statusLabel . ' le ' . \Carbon\Carbon::parse($date)->format('d/m/Y') . ' pour la séance de : ' . $moduleName . '.',
+                    'type' => $status === 'absent_unexcused' ? 'danger' : ($status === 'absent_excused' ? 'success' : 'info'),
+                ]);
+            }
+        }
+
+        return $record;
     }
 
     /**

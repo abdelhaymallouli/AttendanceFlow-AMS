@@ -4,32 +4,65 @@
 @section('page_title', 'Session Schedule')
 
 @section('header_actions')
-<a href="{{ route('admin.sessions.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center text-sm shadow-sm">
-    <i data-lucide="plus" class="w-4 h-4 mr-2"></i> New Session
-</a>
+<div class="flex items-center gap-2">
+    <a href="{{ route('admin.export.sessions') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center text-sm shadow-sm">
+        <i data-lucide="calendar" class="w-4 h-4 mr-2"></i> Export Sessions (Excel)
+    </a>
+    <a href="{{ route('admin.sessions.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center text-sm shadow-sm">
+        <i data-lucide="plus" class="w-4 h-4 mr-2"></i> New Session
+    </a>
+</div>
 @endsection
 
 @section('content')
 <div class="space-y-6">
 
-    <!-- Date Filter Card -->
-    <x-ui.section-card padding="p-4">
-        <form method="GET" action="{{ route('admin.sessions.index') }}" class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-                <h3 class="text-sm font-semibold text-gray-800">Filter Schedule</h3>
-                <p class="text-xs text-gray-500 mt-1">Select a date to view the scheduled sessions.</p>
-            </div>
-            
-            <x-date-filter 
-                label="Date:"
-                name="date"
-                value="{{ $date }}"
-                onChange="this.form.submit()"
-                showTodayLink="true"
-                todayUrl="{{ route('admin.sessions.index') }}"
-            />
-        </form>
-    </x-ui.section-card>
+        <!-- Date Filter Card -->
+        <x-ui.section-card padding="p-4">
+            <form method="GET" action="{{ route('admin.sessions.index') }}" class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-800">Filter Schedule</h3>
+                    <p class="text-xs text-gray-500 mt-1">Select a date to view the scheduled sessions.</p>
+                </div>
+                
+                <x-date-filter 
+                    label="Date:"
+                    name="date"
+                    value="{{ $date }}"
+                    onChange="this.form.submit()"
+                    showTodayLink="true"
+                    todayUrl="{{ route('admin.sessions.index') }}"
+                />
+                
+                <x-module-filter 
+                    label="Module:"
+                    name="module_id"
+                    value="{{ request('module_id') }}"
+                    onChange="this.form.submit()"
+                />
+                
+                <x-group-filter 
+                    label="Group:"
+                    name="group_id"
+                    value="{{ request('group_id') }}"
+                    onChange="this.form.submit()"
+                />
+                
+                <x-teacher-filter 
+                    label="Teacher:"
+                    name="teacher_profile_id"
+                    value="{{ request('teacher_profile_id') }}"
+                    onChange="this.form.submit()"
+                />
+                
+                <x-session-type-filter 
+                    label="Type:"
+                    name="session_type"
+                    value="{{ request('session_type') }}"
+                    onChange="this.form.submit()"
+                />
+            </form>
+        </x-ui.section-card>
 
     <!-- Sessions Timeline/Table -->
     <x-ui.section-card :overflow="true" padding="none">

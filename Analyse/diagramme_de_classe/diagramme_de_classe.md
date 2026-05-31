@@ -87,24 +87,32 @@ classDiagram
             +int id
             +enum status
             +date date
+            +int justification_id
         }
 
         class Justification {
             +int id
+            +int session_id
             +string reason
+            +string document_name
             +date start_date
             +date end_date
             +enum status
-            +date submitted_at
-            +string document_name
-            +string type
+            +timestamp submitted_at
+            +timestamp reviewed_at
+            +int reviewed_by
         }
+    }
 
-        class Event {
+    %% Notification Service
+    namespace Notification_Service {
+        class Notification {
             +int id
-            +date date
-            +string name
+            +string title
+            +string message
             +string type
+            +boolean is_read
+            +timestamp created_at
         }
     }
 
@@ -129,6 +137,8 @@ classDiagram
     
     StudentProfile "1" -- "*" Justification : provides
     Justification "*" -- "1" Session : references
+
+    User "1" -- "*" Notification : receives
 ```
 
 ## 🔄 Sessions Dynamiques (Changeables)

@@ -14,13 +14,20 @@ return new class extends Migration
         Schema::create('justifications', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_profile_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('session_id')->nullable()->constrained('academic_sessions')->cascadeOnDelete();
             $table->text('reason');
-            $table->string('file_path')->nullable();
+            $table->string('document_name')->nullable();
             $table->date('start_date');
             $table->date('end_date');
-            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamp('submitted_at')->useCurrent();
+            $table->timestamp('reviewed_at')->nullable();
+            $table->foreignId('reviewed_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
+        });
+
+        Schema::table('attendance_records', function (Blueprint $table) {
+            $table->foreignId('justification_id')->nullable()->constrained('justifications')->nullOnDelete();
         });
     }
 
@@ -29,6 +36,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('attendance_records', function (Blueprint $table) {
+            $table->dropForeign(['justification_id']);
+            $table->dropColumn('justification_id');
+        });
         Schema::dropIfExists('justifications');
     }
 };

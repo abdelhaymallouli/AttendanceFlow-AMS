@@ -20,6 +20,11 @@ class StudentController extends Controller
         $stats = $this->api->getStudentStats($id);
         $attendanceData = $this->api->getStudentAttendance($id);
         
-        return view('mobile.student.dashboard', compact('stats', 'attendanceData'));
+        $notifications = [];
+        if ($stats && isset($stats['user_id'])) {
+            $notifications = $this->api->getUserNotifications($stats['user_id']);
+        }
+        
+        return view('mobile.student.dashboard', compact('stats', 'attendanceData', 'notifications'));
     }
 }

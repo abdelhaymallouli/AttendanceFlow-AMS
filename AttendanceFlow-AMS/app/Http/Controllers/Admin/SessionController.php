@@ -18,11 +18,31 @@ class SessionController extends Controller
     public function index(Request $request)
     {
         $date = $request->input('date', Carbon::today()->toDateString());
+        $moduleId = $request->input('module_id');
+        $groupId = $request->input('group_id');
+        $teacherId = $request->input('teacher_profile_id');
+        $sessionType = $request->input('session_type');
 
-        $sessions = Session::with(['module', 'group', 'teacherProfile.user'])
-            ->whereDate('start_time', $date)
-            ->orderBy('start_time', 'asc')
-            ->get();
+        $query = Session::with(['module', 'group', 'teacherProfile.user'])
+            ->whereDate('start_time', $date);
+
+        if ($moduleId) {
+            $query->where('module_id', $moduleId);
+        }
+
+        if ($groupId) {
+            $query->where('group_id', $groupId);
+        }
+
+        if ($teacherId) {
+            $query->where('teacher_profile_id', $teacherId);
+        }
+
+        if ($sessionType) {
+            $query->where('type', $sessionType);
+        }
+
+        $sessions = $query->orderBy('start_time', 'asc')->get();
 
         return view('admin.sessions.index', compact('sessions', 'date'));
     }

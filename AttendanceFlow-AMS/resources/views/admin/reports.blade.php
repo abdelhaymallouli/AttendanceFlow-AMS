@@ -4,9 +4,14 @@
 @section('page_title', 'Reports & Analytics')
 
 @section('header_actions')
-<button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center text-sm shadow-sm">
-    <i data-lucide="download" class="w-4 h-4 mr-2"></i> Export PDF
-</button>
+<div class="flex items-center gap-2">
+    <a href="{{ route('admin.export.students') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center text-sm shadow-sm">
+        <i data-lucide="users" class="w-4 h-4 mr-2"></i> Export Students (CSV)
+    </a>
+    <a href="{{ route('admin.export.attendance') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center text-sm shadow-sm">
+        <i data-lucide="download" class="w-4 h-4 mr-2"></i> Export Absences (CSV)
+    </a>
+</div>
 @endsection
 
 @section('content')

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('student_profile_id')->constrained()->cascadeOnDelete();
             $table->foreignId('session_id')->constrained('academic_sessions')->cascadeOnDelete();
-            $table->enum('status', ['present', 'absent', 'late', 'justified'])->default('present');
+            $table->enum('status', ['present', 'late', 'absent_unexcused', 'absent_excused'])->default('present');
             $table->date('date');
             $table->timestamps();
         });

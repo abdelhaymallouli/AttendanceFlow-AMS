@@ -49,3 +49,7 @@ Route::prefix('justifications')->group(function () {
 // Stats Routes
 Route::get('stats/admin', [\App\Http\Controllers\Api\StatsController::class, 'getAdminStats']);
 Route::get('stats/student/{id}', [\App\Http\Controllers\Api\StatsController::class, 'getStudentStats']);
+
+// Notifications Routes
+Route::get('notifications/user/{userId}', [\App\Http\Controllers\Api\NotificationController::class, 'getUserNotifications']);
+Route::post('notifications/{id}/read', [\App\Http\Controllers\Api\NotificationController::class, 'markAsRead']);
