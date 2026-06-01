@@ -8,6 +8,7 @@
     <a href="{{ route('admin.export.sessions') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center text-sm shadow-sm">
         <i data-lucide="calendar" class="w-4 h-4 mr-2"></i> Export Sessions (Excel)
     </a>
+
     <a href="{{ route('admin.sessions.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center text-sm shadow-sm">
         <i data-lucide="plus" class="w-4 h-4 mr-2"></i> New Session
     </a>
@@ -15,59 +16,38 @@
 @endsection
 
 @section('content')
+
 <div class="space-y-6">
 
-        <!-- Date Filter Card -->
-        <x-ui.section-card padding="p-4">
-            <form method="GET" action="{{ route('admin.sessions.index') }}" class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                    <h3 class="text-sm font-semibold text-gray-800">Filter Schedule</h3>
-                    <p class="text-xs text-gray-500 mt-1">Select a date to view the scheduled sessions.</p>
-                </div>
-                
-                <x-date-filter 
-                    label="Date:"
-                    name="date"
-                    value="{{ $date }}"
-                    onChange="this.form.submit()"
-                    showTodayLink="true"
-                    todayUrl="{{ route('admin.sessions.index') }}"
-                />
-                
-                <x-module-filter 
-                    label="Module:"
-                    name="module_id"
-                    value="{{ request('module_id') }}"
-                    onChange="this.form.submit()"
-                />
-                
-                <x-group-filter 
-                    label="Group:"
-                    name="group_id"
-                    value="{{ request('group_id') }}"
-                    onChange="this.form.submit()"
-                />
-                
-                <x-teacher-filter 
-                    label="Teacher:"
-                    name="teacher_profile_id"
-                    value="{{ request('teacher_profile_id') }}"
-                    onChange="this.form.submit()"
-                />
-                
-                <x-session-type-filter 
-                    label="Type:"
-                    name="session_type"
-                    value="{{ request('session_type') }}"
-                    onChange="this.form.submit()"
-                />
-            </form>
-        </x-ui.section-card>
+    <!-- FILTERS -->
+    <!-- FILTER -->
+    <x-ui.section-card padding="p-4">
+        <form method="GET" action="{{ route('admin.sessions.index') }}"
+              class="flex items-center justify-between gap-4">
 
-    <!-- Sessions Timeline/Table -->
+            <div>
+                <h3 class="text-sm font-semibold text-gray-800">Filter Schedule</h3>
+                <p class="text-xs text-gray-500 mt-1">
+                    Select a date to view sessions.
+                </p>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <label class="text-sm text-gray-600">Date:</label>
+
+                <input type="date"
+                       name="date"
+                       value="{{ $date }}"
+                       onchange="this.form.submit()"
+                       class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+            </div>
+
+        </form>
+    </x-ui.section-card>
+    <!-- SESSIONS LIST -->
     <x-ui.section-card :overflow="true" padding="none">
-        
-        <!-- Table Header (Desktop) -->
+
+        <!-- HEADER -->
         <div class="hidden md:grid grid-cols-12 gap-4 p-4 bg-gray-50 border-b border-gray-200 font-bold text-xs text-gray-500 uppercase tracking-wider">
             <div class="col-span-2">Time</div>
             <div class="col-span-3">Module</div>
@@ -77,103 +57,114 @@
         </div>
 
         <div class="divide-y divide-gray-100">
+
             @forelse($sessions as $session)
+
                 @php
                     $start = \Carbon\Carbon::parse($session->start_time);
                     $end = \Carbon\Carbon::parse($session->end_time);
                     $duration = $end->diffInHours($start);
                 @endphp
+
+                <!-- DESKTOP -->
                 <div class="hidden md:grid grid-cols-12 gap-4 p-4 items-center hover:bg-gray-50 transition-colors">
-                    <!-- Time -->
+
                     <div class="col-span-2">
-                        <p class="font-bold text-gray-800">{{ $start->format('H:i') }} <span class="text-gray-400 font-normal ml-1 text-xs">({{ $duration }}h)</span></p>
+                        <p class="font-bold text-gray-800">
+                            {{ $start->format('H:i') }}
+                            <span class="text-gray-400 text-xs">({{ $duration }}h)</span>
+                        </p>
                         <p class="text-xs text-gray-500">{{ $end->format('H:i') }}</p>
                     </div>
-                    
-                    <!-- Module -->
+
                     <div class="col-span-3">
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center mr-3 flex-shrink-0">
-                                <i data-lucide="book-open" class="w-4 h-4 text-blue-600"></i>
-                            </div>
-                            <div>
-                                <p class="font-medium text-gray-800 truncate">{{ $session->module->name }}</p>
-                                <p class="text-xs text-blue-600 font-medium uppercase tracking-wider mt-0.5">{{ $session->type }}</p>
-                            </div>
-                        </div>
+                        <p class="font-medium text-gray-800">{{ $session->module->name }}</p>
+                        <p class="text-xs text-blue-600 uppercase">{{ $session->type }}</p>
                     </div>
-                    
-                    <!-- Group -->
+
                     <div class="col-span-2">
-                        <x-ui.badge color="gray" class="font-medium">Group {{ $session->group->name }}</x-ui.badge>
+                        <x-ui.badge color="gray">Group {{ $session->group->name }}</x-ui.badge>
                     </div>
-                    
-                    <!-- Teacher -->
+
                     <div class="col-span-3">
-                        <div class="flex items-center">
-                            <i data-lucide="user" class="w-4 h-4 text-gray-400 mr-2"></i>
-                            <span class="text-sm font-medium text-gray-700">{{ $session->teacherProfile->user->name }}</span>
-                        </div>
+                        <span class="text-sm font-medium text-gray-700">
+                            {{ $session->teacherProfile->user->name }}
+                        </span>
                     </div>
-                    
-                    <!-- Actions -->
-                    <div class="col-span-2 flex justify-end space-x-1">
-                        <a href="{{ route('admin.attendance.show', $session->id) }}" class="text-blue-600 hover:text-blue-800 p-2 hover:bg-blue-50 rounded-lg transition-colors" title="Mark Attendance">
-                            <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+
+                    <div class="col-span-2 flex justify-end gap-2">
+                        <a href="{{ route('admin.attendance.show', $session->id) }}" class="text-blue-600">
+                            <i data-lucide="clipboard-check"></i>
                         </a>
-                        <a href="{{ route('admin.sessions.edit', $session->id) }}" class="text-gray-500 hover:text-blue-600 p-2 hover:bg-blue-50 rounded-lg transition-colors" title="Edit Session">
-                            <i data-lucide="edit-2" class="w-4 h-4"></i>
+
+                        <a href="{{ route('admin.sessions.edit', $session->id) }}" class="text-gray-500">
+                            <i data-lucide="edit-2"></i>
                         </a>
-                        <form method="POST" action="{{ route('admin.sessions.destroy', $session->id) }}" onsubmit="return confirm('Are you sure you want to delete this session?');">
+
+                        <form method="POST" action="{{ route('admin.sessions.destroy', $session->id) }}">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="text-gray-500 hover:text-red-600 p-2 hover:bg-red-50 rounded-lg transition-colors" title="Delete Session">
-                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            <button type="submit" class="text-red-500">
+                                <i data-lucide="trash-2"></i>
                             </button>
                         </form>
                     </div>
                 </div>
 
-                <!-- Mobile View -->
-                <div class="md:hidden p-4 hover:bg-gray-50 transition-colors">
-                    <div class="flex justify-between items-start mb-3">
+                <!-- MOBILE -->
+                <div class="md:hidden p-4 hover:bg-gray-50">
+
+                    <div class="flex justify-between mb-3">
                         <div>
-                            <p class="font-bold text-gray-800">{{ $start->format('H:i') }} - {{ $end->format('H:i') }} <span class="text-gray-400 font-normal ml-1 text-xs">({{ $duration }}h)</span></p>
-                            <p class="text-xs text-blue-600 font-medium uppercase tracking-wider mt-0.5">{{ $session->type }}</p>
+                            <p class="font-bold">
+                                {{ $start->format('H:i') }} - {{ $end->format('H:i') }}
+                                <span class="text-xs text-gray-400">({{ $duration }}h)</span>
+                            </p>
+                            <p class="text-xs text-blue-600">{{ $session->type }}</p>
                         </div>
-                        <a href="{{ route('admin.attendance.show', $session->id) }}" class="text-blue-600 bg-blue-50 hover:bg-blue-100 p-2 rounded-lg transition-colors">
-                            <i data-lucide="clipboard-check" class="w-4 h-4"></i>
+
+                        <a href="{{ route('admin.attendance.show', $session->id) }}" class="text-blue-600">
+                            <i data-lucide="clipboard-check"></i>
                         </a>
                     </div>
-                    
-                    <div class="space-y-2 text-sm">
-                        <div class="flex items-center text-gray-700">
-                            <i data-lucide="book-open" class="w-4 h-4 text-gray-400 mr-2"></i>
-                            <span class="font-medium">{{ $session->module->name }}</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center text-gray-600">
-                                <i data-lucide="user" class="w-4 h-4 text-gray-400 mr-2"></i>
-                                <span>{{ $session->teacherProfile->user->name }}</span>
-                            </div>
-                            <x-ui.badge color="gray" class="text-xs">Group {{ $session->group->name }}</x-ui.badge>
-                        </div>
+
+                    <p class="text-sm">{{ $session->module->name }}</p>
+
+                    <div class="flex justify-between text-sm text-gray-600 mt-2">
+                        <span>{{ $session->teacherProfile->user->name }}</span>
+                        <x-ui.badge color="gray">Group {{ $session->group->name }}</x-ui.badge>
                     </div>
                 </div>
+
             @empty
+
                 <div class="p-12 text-center bg-gray-50/30">
                     <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <i data-lucide="calendar-x" class="w-8 h-8 text-gray-400"></i>
                     </div>
-                    <h3 class="text-base font-bold text-gray-800 mb-1">No sessions scheduled</h3>
-                    <p class="text-sm text-gray-500 mb-6">There are no academic sessions planned for {{ \Carbon\Carbon::parse($date)->format('F j, Y') }}.</p>
-                    <a href="{{ route('admin.sessions.create') }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-blue-700 bg-blue-100 hover:bg-blue-200 transition-colors">
+
+
+                    <h3 class="text-base font-bold text-gray-800 mb-2">
+                        No sessions found
+                    </h3>
+
+                    <!-- ONLY DATE MESSAGE (FIXED) -->
+                    <p class="text-sm text-gray-500 mb-6">
+                        There are no academic sessions planned for
+                        {{ \Carbon\Carbon::parse($date)->format('F j, Y') }}.
+                    </p>
+
+                    <a href="{{ route('admin.sessions.create') }}"
+                       class="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-700 rounded-lg">
                         <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
-                        Create First Session
+                        Create Session
                     </a>
                 </div>
+
             @endforelse
+
         </div>
     </x-ui.section-card>
+
 </div>
 @endsection

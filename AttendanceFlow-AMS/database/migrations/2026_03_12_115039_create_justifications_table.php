@@ -34,12 +34,15 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
-        Schema::table('attendance_records', function (Blueprint $table) {
-            $table->dropForeign(['justification_id']);
-            $table->dropColumn('justification_id');
-        });
-        Schema::dropIfExists('justifications');
-    }
+public function down(): void
+{
+    Schema::table('attendance_records', function (Blueprint $table) {
+        if (Schema::hasColumn('attendance_records', 'justification_id')) {
+            // Safely remove FK + column (Laravel handles FK name internally)
+            $table->dropForeignId('justification_id');
+        }
+    });
+
+    Schema::dropIfExists('justifications');
+}
 };

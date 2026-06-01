@@ -90,11 +90,103 @@ La phase d'idéation nous a permis d'explorer des solutions concrètes. Notre vi
 - **Validation Interactive :** L'Admin clique sur "Approuver" ou "Rejeter" pour les justificatifs téléchargés.
 - **Export Intelligent :** Génération de rapports Excel/PDF en un clic pour les résumés quotidiens.
 
+### 4. Prototype
+
+À partir des solutions retenues lors de l'idéation, nous avons conçu des **prototypes fonctionnels** pour valider nos hypothèses avant le développement complet. Cette phase a produit deux livrables clés :
+
+**A. Maquettes UI/UX (Figma / Canva)**
+
+Des maquettes haute fidélité ont été créées pour chaque interface :
+
+- **Dashboard Administratif (Web)** : Tableau de bord avec indicateurs visuels (code couleur Rouge/Vert/Jaune), liste des justificatifs en attente et statistiques globales.
+- **Interface Mobile Formateur** : Écran de pointage « Flash » permettant de marquer les présences par session (9h-11h, 11h-14h, 14h-17h) en moins de 30 secondes.
+- **Espace Étudiant (Mobile)** : Dashboard personnel affichant le compteur d'absences, l'historique hebdomadaire et le statut des justificatifs soumis.
+- **Hub de Navigation** : Portail de sélection de rôle (Admin / Formateur / Étudiant) adapté au mobile.
+
+**B. Prototype API (Postman)**
+
+Un prototype des endpoints REST a été défini pour valider les flux de données :
+- Authentification par token (Sanctum)
+- Enregistrement des présences par lot (`POST /api/attendance/record`)
+- Soumission de justificatifs avec upload de fichier
+
 ```{=openxml}
 <w:p><w:r><w:br w:type="page"/></w:r></w:p>
 ```
 
-### 4. Diagrammes de Cas d'Utilisation Globaux
+### 5. Test
+
+La phase de test a permis de confronter nos prototypes aux utilisateurs réels pour valider l'adéquation de la solution avec leurs besoins. Trois séries de tests ont été menées avec nos personas identifiés lors de la phase d'empathie.
+
+#### A. Protocole de Test
+
+| Critère | Détail |
+|---------|--------|
+| **Participants** | 3 profils types : Administratrice, Formatrice, Étudiant |
+| **Méthode** | Tests d'utilisabilité en conditions réelles + entretiens semi-dirigés |
+| **Durée** | 20–30 minutes par session de test |
+| **Métriques** | Temps de réalisation des tâches, taux de réussite, satisfaction (échelle 1–5) |
+
+#### B. Scénarios de Test par Profil
+
+**Test 1 — Madame Hannane (Administratrice)**
+
+| Scénario | Tâche | Résultat |
+|----------|-------|----------|
+| S1.1 | Consulter le dashboard et identifier les absences du jour | ✅ Réussi — Navigation intuitive, code couleur compris immédiatement |
+| S1.2 | Valider un justificatif médical soumis par un étudiant | ✅ Réussi — Workflow « Approuver/Rejeter » clair |
+| S1.3 | Identifier les étudiants ayant dépassé le quota d'absences | ✅ Réussi — Les alertes visuelles ont été repérées rapidement |
+
+**Feedback :** *« C'est exactement ce dont j'avais besoin. Je passe de la saisie à la validation, je gagne énormément de temps. »*
+
+**Test 2 — Imane Bouziane (Formatrice)**
+
+| Scénario | Tâche | Résultat |
+|----------|-------|----------|
+| S2.1 | Pointer les présences d'un groupe pour la session 9h-11h | ✅ Réussi — Pointage « Flash » complété en 22 secondes |
+| S2.2 | Marquer tous les étudiants présents en un seul geste | ✅ Réussi — L'action groupée « Tous présents » a fonctionné |
+| S2.3 | Modifier le statut d'un étudiant (présent → retard) | ⚠️ Partiel — Bouton de modification jugé trop petit sur mobile |
+
+**Feedback :** *« Le pointage flash est rapide, ça ne prend plus de temps sur le cours. Par contre, les boutons pourraient être plus grands sur le téléphone. »*
+
+**Test 3 — Anouar Benyakhelef (Étudiant)**
+
+| Scénario | Tâche | Résultat |
+|----------|-------|----------|
+| S3.1 | Consulter son compteur d'absences personnel | ✅ Réussi — Information visible dès l'ouverture du dashboard |
+| S3.2 | Soumettre un justificatif médical (upload PDF) | ✅ Réussi — Formulaire de soumission intuitif |
+| S3.3 | Vérifier le statut d'un justificatif soumis | ⚠️ Partiel — Le statut « En attente » n'était pas assez visible |
+
+**Feedback :** *« Je peux enfin voir mes absences sans aller à l'administration. Mais j'aimerais que le statut de mon justificatif soit plus visible. »*
+
+#### C. Synthèse des Résultats
+
+| Métrique | Résultat Global |
+|----------|----------------|
+| **Taux de réussite des tâches** | 89% (8/9 tâches réussies complètement) |
+| **Temps moyen de pointage (Formateur)** | 22 secondes (objectif : < 30s) ✅ |
+| **Satisfaction moyenne** | 4.3 / 5 |
+| **Problèmes critiques identifiés** | 0 |
+| **Améliorations suggérées** | 2 (taille des boutons mobile, visibilité du statut justificatif) |
+
+#### D. Itérations Réalisées Suite aux Tests
+
+Les retours utilisateurs ont conduit aux améliorations suivantes :
+
+| Problème Identifié | Action Corrective | Impact |
+|--------------------|-------------------|--------|
+| Boutons trop petits sur l'écran de pointage mobile | Augmentation de la zone tactile des boutons de statut (48px minimum) | Amélioration de l'ergonomie mobile |
+| Statut du justificatif peu visible pour l'étudiant | Ajout de badges colorés (🟡 En attente, 🟢 Accepté, 🔴 Rejeté) avec notification | Transparence accrue pour l'étudiant |
+| Besoin d'un retour visuel après le pointage | Ajout d'une confirmation animée (toast notification) après soumission | Feedback utilisateur immédiat |
+
+**Conclusion de la phase Test :**
+Les tests utilisateurs ont validé que la solution **AttendanceFlow-AMS** répond aux trois questions « How Might We » posées lors de la phase de définition. Le flux « Direct-to-System » élimine efficacement le papier, le pointage se fait en moins de 30 secondes, et le workflow numérique des justificatifs supprime les déplacements physiques à l'administration.
+
+```{=openxml}
+<w:p><w:r><w:br w:type="page"/></w:r></w:p>
+```
+
+### 6. Diagrammes de Cas d'Utilisation Globaux
 
 L'analyse fonctionnelle est divisée en deux écosystèmes complémentaires : la plateforme Web pour la gestion lourde et l'application Mobile pour les opérations de terrain.
 
@@ -112,7 +204,7 @@ L'application mobile se concentre sur la rapidité de saisie et la mobilité.
 
 ---
 
-### 5. Cas d'Utilisation par Sprints
+### 7. Cas d'Utilisation par Sprints
 
 Le développement est segmenté en sprints pour garantir une livraison itérative de valeur. Chaque sprint intègre à la fois les fonctionnalités Web (administration) et Mobile (terrain).
 

@@ -22,8 +22,14 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
-        Schema::dropIfExists('teacher_profiles');
-    }
+public function down(): void
+{
+    Schema::table('teacher_profiles', function (Blueprint $table) {
+        if (Schema::hasColumn('teacher_profiles', 'user_id')) {
+            $table->dropConstrainedForeignId('user_id');
+        }
+    });
+
+    Schema::dropIfExists('teacher_profiles');
+}
 };

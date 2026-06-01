@@ -19,7 +19,14 @@
         @if($includeBlank)
             <option value=""> {{ $blankText }} </option>
         @endif
-        @foreach(\App\Models\TeacherProfile::with('user')->orderBy('user->name')->get() as $teacher)
+                    @foreach(
+                \App\Models\TeacherProfile::select('teacher_profiles.*')
+                    ->join('users', 'users.id', '=', 'teacher_profiles.user_id')
+                    ->with('user')
+                    ->orderBy('users.name')
+                    ->get()
+                as $teacher
+            )
             <option 
                 value="{{ $teacher->id }}" 
                 {{ $value == $teacher->id ? 'selected' : '' }}
