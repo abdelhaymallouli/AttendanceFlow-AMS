@@ -171,7 +171,7 @@
             <button class="text-sm text-blue-600 hover:text-blue-700 font-medium">View All</button>
         </div>
         <div class="space-y-4">
-            @forelse($recentActivity as $activity)
+            @forelse($data['recentActivity'] as $activity)
             <div class="flex items-start space-x-4 p-4 {{ $activity['bg'] }} rounded-lg">
                 <div class="w-10 h-10 {{ $activity['iconBg'] }} rounded-full flex items-center justify-center flex-shrink-0">
                     <i data-lucide="{{ $activity['icon'] }}" class="w-5 h-5 {{ $activity['iconColor'] }}"></i>
@@ -204,12 +204,12 @@
 <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('teacherDashboard', () => ({
-            sessions: @json($sessionsData),
+            sessions: @json($data['sessionsData']),
             currentSession: null,
-            totalStudents: {{ $stats['total_students'] }},
-            avgAttendance: {{ $stats['avg_attendance'] }},
-            pendingCount: {{ $stats['pending_justifications'] }},
-            teacherGroups: @json($teacherGroups),
+            totalStudents: {{ $data['stats']['total_students'] }},
+            avgAttendance: {{ $data['stats']['avg_attendance'] }},
+            pendingCount: {{ $data['stats']['pending_justifications'] }},
+            teacherGroups: @json($data['teacherGroups']),
             init() {
                 this.determineStatuses();
                 setTimeout(() => {

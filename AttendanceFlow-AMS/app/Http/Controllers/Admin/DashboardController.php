@@ -3,25 +3,26 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Models\StudentProfile;
-use App\Models\TeacherProfile;
-use App\Models\AttendanceRecord;
-use Illuminate\Http\Request;
+use App\Services\ReportingService;
 
 class DashboardController extends Controller
 {
+    protected ReportingService $reportingService;
+
+    public function __construct(ReportingService $reportingService)
+    {
+        $this->reportingService = $reportingService;
+    }
+
     public function index()
     {
-        $totalRecords = AttendanceRecord::count();
-        $presentRecords = AttendanceRecord::whereIn('status', ['present', 'late'])->count();
-        $attendanceRate = $totalRecords > 0 ? round(($presentRecords / $totalRecords) * 100) : 100;
+        $overview = $this->reportingService->getAdminOverview();
 
         $stats = [
-            'total_students' => StudentProfile::count(),
-            'total_teachers' => TeacherProfile::count(),
-            'pending_justifications' => \App\Models\Justification::where('status', 'pending')->count(),
-            'global_attendance' => $attendanceRate,
+            'total_students' => $overview['total_students'],
+            'total_teachers' => $overview['total_teachers'],
+            'pending_justifications' => $overview['pending_justifications'],
+            'global_attendance' => $overview['attendance_rate'],
         ];
 
         return view('admin.dashboard', compact('stats'));

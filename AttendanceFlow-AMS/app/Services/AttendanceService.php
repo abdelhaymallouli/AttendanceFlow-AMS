@@ -46,8 +46,9 @@ class AttendanceService extends BaseService
 
         if (in_array($status, ['absent_unexcused', 'absent_excused', 'late'])) {
             $student = \App\Models\StudentProfile::find($studentProfileId);
+            $session = \App\Models\Session::with(['module', 'teacherProfile.user'])->find($sessionId);
+            
             if ($student && $student->user_id) {
-                $session = \App\Models\Session::with('module')->find($sessionId);
                 $moduleName = $session->module->name ?? 'Séance';
                 $statusLabel = $status === 'absent_excused' ? 'absent (justifié)' : ($status === 'absent_unexcused' ? 'absent (non justifié)' : 'en retard');
                 \App\Models\Notification::create([
@@ -55,6 +56,16 @@ class AttendanceService extends BaseService
                     'title' => $status === 'late' ? 'Retard signalé' : 'Nouvelle absence signalée',
                     'message' => 'Vous avez été marqué ' . $statusLabel . ' le ' . \Carbon\Carbon::parse($date)->format('d/m/Y') . ' pour la séance de : ' . $moduleName . '.',
                     'type' => $status === 'absent_unexcused' ? 'danger' : ($status === 'absent_excused' ? 'success' : 'info'),
+                ]);
+            }
+
+            // Notify teacher
+            if ($session && $session->teacherProfile && $session->teacherProfile->user_id) {
+                \App\Models\Notification::create([
+                    'user_id' => $session->teacherProfile->user_id,
+                    'title' => 'Absence Étudiant',
+                    'message' => 'L\'étudiant ' . ($student->user->name ?? 'inconnu') . ' a été marqué ' . ($status === 'absent_excused' ? 'absent (justifié)' : 'absent (non justifié)') . ' pour la séance de : ' . ($session->module->name ?? 'Séance') . '.',
+                    'type' => 'danger',
                 ]);
             }
         }
@@ -83,5 +94,13 @@ class AttendanceService extends BaseService
         return AttendanceRecord::with('studentProfile.user')
             ->where('session_id', $sessionId)
             ->get();
+    }
+
+    /**
+     * Get all attendance records for a student.
+     */
+    public function getStudentAttendance(int $studentProfileId): Collection
+    {
+        return AttendanceRecord::where('student_profile_id', $studentProfileId)->get();
     }
 }

@@ -61,10 +61,77 @@ class AcademicService extends BaseService
     }
 
     /**
+     * Get all students for export.
+     */
+    public function getStudentsForExport(): \Illuminate\Database\Eloquent\Collection
+    {
+        return StudentProfile::with('user', 'group')->get();
+    }
+
+    /**
      * Get the complete academic hierarchy (Filieres -> Groups).
      */
     public function getAcademicHierarchy()
     {
         return Filiere::with('groups')->get();
+    }
+
+    /**
+     * Get all filieres.
+     */
+    public function getFilieres(): \Illuminate\Database\Eloquent\Collection
+    {
+        return Filiere::all();
+    }
+
+    /**
+     * Get all groups with filiere relationship.
+     */
+    public function getGroups(): \Illuminate\Database\Eloquent\Collection
+    {
+        return Group::with('filiere')->get();
+    }
+
+    /**
+     * Get all modules.
+     */
+    public function getModules(): \Illuminate\Database\Eloquent\Collection
+    {
+        return Module::all();
+    }
+
+    /**
+     * Get all sessions with core relationships.
+     */
+    public function getSessions(): \Illuminate\Database\Eloquent\Collection
+    {
+        return \App\Models\Session::with(['group.studentProfiles.user', 'module', 'teacherProfile.user'])->get();
+    }
+
+    /**
+     * Get sessions for a specific teacher.
+     */
+    public function getTeacherSessions(int $teacherProfileId): \Illuminate\Database\Eloquent\Collection
+    {
+        return \App\Models\Session::where('teacher_profile_id', $teacherProfileId)
+            ->with(['group.studentProfiles.user', 'module'])
+            ->get();
+    }
+
+    /**
+     * Get a specific session by ID with relationships.
+     */
+    public function getSession(int $id): \App\Models\Session
+    {
+        return \App\Models\Session::with(['group.studentProfiles.user', 'module', 'teacherProfile.user'])
+            ->findOrFail($id);
+    }
+
+    /**
+     * Get all teacher profiles with user relationship.
+     */
+    public function getAllTeacherProfiles(): \Illuminate\Database\Eloquent\Collection
+    {
+        return TeacherProfile::with('user')->get();
     }
 }

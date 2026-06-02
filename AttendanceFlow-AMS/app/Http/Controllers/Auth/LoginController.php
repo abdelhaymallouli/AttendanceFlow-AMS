@@ -3,12 +3,20 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Services\IdentityService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
+    protected IdentityService $identityService;
+
+    public function __construct(IdentityService $identityService)
+    {
+        $this->identityService = $identityService;
+    }
+
     /**
      * Show the login form.
      */
@@ -27,7 +35,7 @@ class LoginController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+        if ($this->identityService->authenticate($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
             return $this->authenticated($request, Auth::user());
@@ -59,7 +67,7 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        Auth::logout();
+        $this->identityService->logout();
 
         $request->session()->invalidate();
 

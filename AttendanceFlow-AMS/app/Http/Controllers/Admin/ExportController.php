@@ -3,13 +3,27 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\StudentProfile;
-use App\Models\AttendanceRecord;
-use Illuminate\Http\Request;
+use App\Services\AcademicService;
+use App\Services\ReportingService;
+use App\Services\SchedulingService;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ExportController extends Controller
 {
+    protected AcademicService $academicService;
+    protected ReportingService $reportingService;
+    protected SchedulingService $schedulingService;
+
+    public function __construct(
+        AcademicService $academicService,
+        ReportingService $reportingService,
+        SchedulingService $schedulingService
+    ) {
+        $this->academicService = $academicService;
+        $this->reportingService = $reportingService;
+        $this->schedulingService = $schedulingService;
+    }
+
     public function exportStudents()
     {
         $response = new StreamedResponse(function () {
@@ -21,7 +35,7 @@ class ExportController extends Controller
             // Write headers
             fwrite($handle, implode("\t", ['ID', 'Matricule', 'Nom', 'Email', 'Groupe']) . "\r\n");
 
-            $students = StudentProfile::with('user', 'group')->get();
+            $students = $this->academicService->getStudentsForExport();
 
             foreach ($students as $student) {
                 fwrite($handle, implode("\t", [
@@ -53,11 +67,7 @@ class ExportController extends Controller
             // Write headers
             fwrite($handle, implode("\t", ['Date', 'Matricule', 'Étudiant', 'Groupe', 'Séance / Module', 'Statut']) . "\r\n");
 
-            $records = AttendanceRecord::with([
-                'studentProfile.user',
-                'studentProfile.group',
-                'session.module'
-            ])->orderBy('date', 'desc')->get();
+            $records = $this->reportingService->getAttendanceForExport();
 
             foreach ($records as $record) {
                 fwrite($handle, implode("\t", [
@@ -90,11 +100,7 @@ class ExportController extends Controller
             // Write headers
             fwrite($handle, implode("\t", ['ID', 'Date', 'Heure Début', 'Heure Fin', 'Durée (h)', 'Module', 'Groupe', 'Formateur', 'Type']) . "\r\n");
 
-            $sessions = \App\Models\Session::with([
-                'module',
-                'group',
-                'teacherProfile.user'
-            ])->orderBy('start_time', 'asc')->get();
+            $sessions = $this->schedulingService->getSessionsForExport();
 
             foreach ($sessions as $session) {
                 fwrite($handle, implode("\t", [

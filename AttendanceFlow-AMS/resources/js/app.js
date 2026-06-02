@@ -8,7 +8,8 @@ import './calendar';
 import './reports';
 import './session-form';
 import './teacher-attendance';
-
+import './notifications';
+ 
 window.Alpine = Alpine;
 window.createIcons = createIcons;
 window.lucideIcons = icons;

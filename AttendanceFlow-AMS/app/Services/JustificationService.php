@@ -21,10 +21,55 @@ class JustificationService extends BaseService
     {
         $this->logInfo("New justification submitted by student {$studentProfileId}");
         
-        $data['student_profile_id'] = $studentProfileId;
-        $data['status'] = 'pending'; // Default status
+        $session = \App\Models\Session::findOrFail($data['session_id']);
         
-        return Justification::create($data);
+        // Enforce 48-hour rule
+        $endTime = \Carbon\Carbon::parse($session->end_time);
+        if (now()->greaterThan($endTime->copy()->addHours(48))) {
+            throw new \Exception("Submission rejected: The 48-hour deadline to justify this absence has passed.");
+        }
+
+        return Justification::create([
+            'student_profile_id' => $studentProfileId,
+            'session_id'          => $session->id,
+            'reason'              => $data['reason'],
+            'document_name'       => $data['document_name'] ?? null,
+            'start_date'          => \Carbon\Carbon::parse($session->start_time)->toDateString(),
+            'end_date'            => \Carbon\Carbon::parse($session->end_time)->toDateString(),
+            'status'              => 'pending',
+            'submitted_at'        => now(),
+        ]);
+    }
+
+    /**
+     * Get pending justifications.
+     */
+    public function getPending(): \Illuminate\Support\Collection
+    {
+        return Justification::where('status', 'pending')
+            ->with(['studentProfile.user'])
+            ->get();
+    }
+
+    /**
+     * Get justifications for a student.
+     */
+    public function getStudentJustifications(int $studentProfileId): \Illuminate\Support\Collection
+    {
+        return Justification::where('student_profile_id', $studentProfileId)
+            ->orderBy('submitted_at', 'desc')
+            ->get();
+    }
+
+    /**
+     * Get all justifications for administrative view.
+     */
+    public function getAllJustificationsWithRelations(): \Illuminate\Support\Collection
+    {
+        return Justification::with('studentProfile.user', 'studentProfile.group')
+            ->orderBy('status', 'asc')
+            ->orderBy('submitted_at', 'desc')
+            ->get();
     }
 
     /**
@@ -70,6 +115,16 @@ class JustificationService extends BaseService
                     ]);
             }
         }
+
+        $statusLabel = $status === 'rejected' ? 'refusé' : 'accepté';
+        $type = $status === 'rejected' ? 'danger' : 'success';
+
+        \App\Models\Notification::create([
+            'user_id' => $justification->studentProfile->user_id,
+            'title' => 'Justificatif ' . $statusLabel,
+            'message' => 'Votre justificatif pour la date du ' . \Carbon\Carbon::parse($justification->start_date)->format('d/m/Y') . ' a été ' . $statusLabel . '.',
+            'type' => $type,
+        ]);
 
         return $justification;
     }

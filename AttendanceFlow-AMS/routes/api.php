@@ -51,5 +51,9 @@ Route::get('stats/admin', [\App\Http\Controllers\Api\StatsController::class, 'ge
 Route::get('stats/student/{id}', [\App\Http\Controllers\Api\StatsController::class, 'getStudentStats']);
 
 // Notifications Routes
-Route::get('notifications/user/{userId}', [\App\Http\Controllers\Api\NotificationController::class, 'getUserNotifications']);
-Route::post('notifications/{id}/read', [\App\Http\Controllers\Api\NotificationController::class, 'markAsRead']);
+Route::prefix('notifications')->group(function () {
+    Route::get('user/{userId}', [\App\Http\Controllers\Api\NotificationController::class, 'getUserNotifications']);
+    Route::post('{id}/read', [\App\Http\Controllers\Api\NotificationController::class, 'markAsRead']);
+    Route::post('mark-all-as-read', [\App\Http\Controllers\Api\NotificationController::class, 'markAllAsRead']);
+    Route::post('clear-all', [\App\Http\Controllers\Api\NotificationController::class, 'clearAllNotifications']);
+});

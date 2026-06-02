@@ -3,17 +3,22 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Justification;
+use App\Services\JustificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class JustificationController extends Controller
 {
+    protected JustificationService $justificationService;
+
+    public function __construct(JustificationService $justificationService)
+    {
+        $this->justificationService = $justificationService;
+    }
+
     public function getPending()
     {
-        return response()->json(Justification::where('status', 'pending')
-            ->with(['studentProfile.user'])
-            ->get());
+        return response()->json($this->justificationService->getPending());
     }
 
     public function submit(Request $request)
@@ -41,11 +46,11 @@ class JustificationController extends Controller
             $data['document_name'] = basename($path);
         }
 
-        $data['status'] = 'pending';
-        $data['submitted_at'] = now();
-
-        $justification = Justification::create($data);
-
-        return response()->json(['message' => 'Justification submitted successfully', 'data' => $justification]);
+        try {
+            $justification = $this->justificationService->submitJustification($request->student_profile_id, $data);
+            return response()->json(['message' => 'Justification submitted successfully', 'data' => $justification]);
+        } catch (\Exception $e) {
+            return response()->json(['errors' => ['submission' => [$e->getMessage()]]], 422);
+        }
     }
 }

@@ -132,3 +132,5 @@
         </x-ui.section-card>
     </form>
 </div>
+
+@endsection

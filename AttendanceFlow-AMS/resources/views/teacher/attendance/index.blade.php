@@ -45,3 +45,5 @@
         </div>
     </x-ui.section-card>
 </div>
+
+@endsection

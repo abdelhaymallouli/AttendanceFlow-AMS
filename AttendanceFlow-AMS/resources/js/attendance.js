@@ -11,11 +11,11 @@
  */
 document.addEventListener('alpine:init', () => {
     Alpine.data('attendanceApp', (initialSessions = [], initialDate = '') => ({
-        selectedDate: initialDate || new Date().toISOString().split('T')[0],
+        selectedDate: initialDate,
         availableSessions: initialSessions,
 
-        onDateChange() {
-            window.location.href = `?date=${this.selectedDate}`;
+        onDateChange(value) {
+            window.location.href = `?date=${value}`;
         }
     }));
 });

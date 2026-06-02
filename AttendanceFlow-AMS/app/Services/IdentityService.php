@@ -54,6 +54,15 @@ class IdentityService extends BaseService
     }
 
     /**
+     * Create a personal access token for a user.
+     */
+    public function createToken(User $user, string $deviceName): string
+    {
+        $this->logInfo("Creating token for user ID {$user->id} on device: {$deviceName}");
+        return $user->createToken($deviceName)->plainTextToken;
+    }
+
+    /**
      * Logout the current user.
      */
     public function logout(): void

@@ -3,13 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Services\IdentityService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+    protected IdentityService $identityService;
+
+    public function __construct(IdentityService $identityService)
+    {
+        $this->identityService = $identityService;
+    }
+
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -22,15 +28,15 @@ class AuthController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $user = User::where('email', $request->email)->first();
+        $user = \App\Models\User::where('email', $request->email)->first();
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+        if (! $user || ! $this->identityService->authenticate(['email' => $request->email, 'password' => $request->password])) {
             return response()->json([
                 'message' => 'The provided credentials are incorrect.',
             ], 422);
         }
 
-        $token = $user->createToken($request->device_name)->plainTextToken;
+        $token = $this->identityService->createToken($user, $request->device_name);
 
         return response()->json([
             'token' => $token,
@@ -40,7 +46,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        $this->identityService->logout();
 
         return response()->json(['message' => 'Logged out successfully']);
     }

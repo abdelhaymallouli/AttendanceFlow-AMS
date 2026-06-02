@@ -3,17 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Justification;
+use App\Services\JustificationService;
 use Illuminate\Http\Request;
 
 class JustificationController extends Controller
 {
+    protected JustificationService $justificationService;
+
+    public function __construct(JustificationService $justificationService)
+    {
+        $this->justificationService = $justificationService;
+    }
+
     public function index()
     {
-        $justifications = Justification::with('studentProfile.user', 'studentProfile.group')
-            ->orderBy('status', 'asc')
-            ->orderBy('submitted_at', 'desc')
-            ->get()
+        $justifications = $this->justificationService->getAllJustificationsWithRelations()
             ->map(function($j) {
                 return [
                     'id'            => $j->id,
@@ -30,29 +34,18 @@ class JustificationController extends Controller
             })
             ->values();
 
-        $pendingCount = \App\Models\Justification::where('status', 'pending')->count();
+        $pendingCount = $this->justificationService->getPending()->count();
 
         return view('admin.justifications', compact('justifications', 'pendingCount'));
     }
 
-    public function update(Request $request, Justification $justification)
+    public function update(Request $request, \App\Models\Justification $justification)
     {
         $request->validate([
             'status' => 'required|in:approved,rejected,accepted',
         ]);
 
-        $service = app(\App\Services\JustificationService::class);
-        $service->reviewJustification($justification->id, $request->status);
-
-        $statusLabel = $request->status === 'rejected' ? 'refusé' : 'accepté';
-        $type = $request->status === 'rejected' ? 'danger' : 'success';
-
-        \App\Models\Notification::create([
-            'user_id' => $justification->studentProfile->user_id,
-            'title' => 'Justificatif ' . $statusLabel,
-            'message' => 'Votre justificatif pour la date du ' . \Carbon\Carbon::parse($justification->start_date)->format('d/m/Y') . ' a été ' . $statusLabel . '.',
-            'type' => $type,
-        ]);
+        $this->justificationService->reviewJustification($justification->id, $request->status);
 
         return back()->with('success', 'Justification status updated successfully.');
     }

@@ -4,13 +4,20 @@ namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
 use App\Models\Session;
-use App\Models\AttendanceRecord;
+use App\Services\AttendanceService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class AttendanceController extends Controller
 {
+    protected AttendanceService $attendanceService;
+
+    public function __construct(AttendanceService $attendanceService)
+    {
+        $this->attendanceService = $attendanceService;
+    }
+
     /**
      * Display a list of the teacher's sessions for attendance marking.
      */
@@ -69,7 +76,7 @@ class AttendanceController extends Controller
         ]);
 
         // Load existing records for this session
-        $existingRecords = AttendanceRecord::where('session_id', $session->id)->get()->pluck('status', 'student_profile_id');
+        $existingRecords = $this->attendanceService->getSessionAttendance($session->id)->pluck('status', 'student_profile_id');
 
         return view('teacher.attendance.show', compact('session', 'students', 'studentsData', 'existingRecords'));
     }
@@ -89,17 +96,9 @@ class AttendanceController extends Controller
             'attendance.*' => 'required|in:present,absent,late',
         ]);
 
+        $sessionDate = \Carbon\Carbon::parse($session->start_time)->toDateString();
         foreach ($request->attendance as $studentId => $status) {
-            AttendanceRecord::updateOrCreate(
-                [
-                    'session_id' => $session->id,
-                    'student_profile_id' => $studentId,
-                ],
-                [
-                    'status' => $status,
-                    'date' => \Carbon\Carbon::parse($session->start_time)->toDateString(),
-                ]
-            );
+            $this->attendanceService->markAttendance((int) $studentId, $session->id, $status, $sessionDate);
         }
 
         $redirectRoute = Auth::user()->hasRole('admin') ? 'admin.dashboard' : 'teacher.dashboard';
