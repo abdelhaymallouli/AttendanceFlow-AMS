@@ -75,11 +75,10 @@
                     </div>
 
                     <div class="flex items-center py-2">
-                        <label class="flex items-center cursor-pointer group">
-                            <input type="checkbox" name="remember"
-                                class="w-5 h-5 text-blue-600 border-gray-100 rounded-lg focus:ring-blue-500 transition-all cursor-pointer">
-                            <span class="ml-3 text-sm font-bold text-gray-400 group-hover:text-gray-600 transition-colors">Keep me signed in</span>
-                        </label>
+                        <x-preline-checkbox
+                            name="remember"
+                            label="Keep me signed in"
+                        />
                     </div>
 
                     <button type="submit"

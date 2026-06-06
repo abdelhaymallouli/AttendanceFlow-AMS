@@ -172,6 +172,215 @@
     </div>
 
     @stack('scripts')
+
+    <script>
+    function notificationCenter() {
+        return {
+            open: false,
+            items: [],
+            unreadCount: 0,
+            loading: false,
+            seenIds: [],
+            cfg: null,
+            _pollTimer: null,
+
+            init() {
+                var el = document.getElementById('notification-config');
+                this.cfg = el ? JSON.parse(el.textContent) : null;
+                this.seenIds = this.items.map(function (n) { return n.id; });
+                var self = this;
+                this.refresh().then(function () {
+                    self.seenIds = self.items.map(function (n) { return n.id; });
+                });
+                this._pollTimer = setInterval(function () { self.refresh(true); }, 20000);
+            },
+
+            toggleDropdown() {
+                this.open = !this.open;
+                if (this.open) this.refresh();
+            },
+
+            refresh(checkOnly) {
+                var self = this;
+                if (! this.cfg) return Promise.resolve();
+                if (checkOnly) this.loading = false;
+                else this.loading = true;
+                return fetch(this.cfg.indexUrl, {
+                    headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': this.cfg.csrf },
+                    credentials: 'same-origin',
+                })
+                .then(function (r) { return r.ok ? r.json() : null; })
+                .then(function (data) {
+                    self.loading = false;
+                    if (! data) return;
+                    if (checkOnly) {
+                        var newOnes = (data.items || []).filter(function (n) {
+                            return n.is_read === false && self.seenIds.indexOf(n.id) === -1;
+                        });
+                        if (newOnes.length > 0) {
+                            var newest = newOnes[0];
+                            window.dispatchEvent(new CustomEvent('new-notification', { detail: newest }));
+                        }
+                    }
+                    self.items = data.items || [];
+                    self.unreadCount = data.unread_count || 0;
+                    self.seenIds = self.items.map(function (n) { return n.id; });
+                })
+                .catch(function () { self.loading = false; });
+            },
+
+            markAllAsRead() {
+                if (! this.cfg) return;
+                var self = this;
+                fetch(this.cfg.markAllUrl, {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': this.cfg.csrf },
+                    credentials: 'same-origin',
+                })
+                .then(function (r) { return r.json(); })
+                .then(function () { return self.refresh(); });
+            },
+
+            clearAll() {
+                if (! this.cfg) return;
+                if (! confirm('Effacer toutes les notifications ?')) return;
+                var self = this;
+                fetch(this.cfg.clearAllUrl, {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': this.cfg.csrf },
+                    credentials: 'same-origin',
+                })
+                .then(function (r) { return r.json(); })
+                .then(function () { return self.refresh(); });
+            },
+
+            handleClick(n) {
+                if (! this.cfg) return;
+                if (! n.is_read) {
+                    var self = this;
+                    fetch(this.cfg.indexUrl + '/' + n.id + '/read', {
+                        method: 'POST',
+                        headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': this.cfg.csrf },
+                        credentials: 'same-origin',
+                    })
+                    .then(function (r) { return r.json(); })
+                    .then(function (data) {
+                        n.is_read = true;
+                        self.unreadCount = Math.max(0, self.unreadCount - 1);
+                        if (data && data.redirect_url) {
+                            window.location.href = data.redirect_url;
+                        } else {
+                            self.refresh();
+                        }
+                    })
+                    .catch(function () {});
+                } else if (n.redirect_url) {
+                    window.location.href = n.redirect_url;
+                }
+            },
+
+            iconFor(n) {
+                if (n.category === 'attendance.absent') return 'user-x';
+                if (n.category === 'attendance.present') return 'user-check';
+                if (n.category === 'attendance.teacher_absent') return 'user-x';
+                if (n.category === 'justification.approved') return 'check-circle-2';
+                if (n.category === 'justification.rejected') return 'x-circle';
+                if (n.category === 'justification.submitted') return 'file-text';
+                if (n.type === 'success') return 'check-circle-2';
+                if (n.type === 'danger') return 'alert-circle';
+                if (n.type === 'warning') return 'alert-triangle';
+                return 'info';
+            },
+
+            iconBg(type) {
+                if (type === 'success') return 'bg-emerald-50 border border-emerald-100';
+                if (type === 'danger') return 'bg-red-50 border border-red-100';
+                if (type === 'warning') return 'bg-amber-50 border border-amber-100';
+                return 'bg-blue-50 border border-blue-100';
+            },
+
+            iconColor(type) {
+                if (type === 'success') return 'text-emerald-600';
+                if (type === 'danger') return 'text-red-600';
+                if (type === 'warning') return 'text-amber-600';
+                return 'text-blue-600';
+            },
+        };
+    }
+
+    function notificationPopup() {
+        return {
+            visible: false,
+            current: null,
+            _autoCloseTimer: null,
+
+            popupInit() { /* event-driven, nothing to do on init */ },
+
+            showPopup(n) {
+                if (! n) return;
+                this.current = n;
+                this.visible = true;
+                var self = this;
+                clearTimeout(this._autoCloseTimer);
+                this._autoCloseTimer = setTimeout(function () { self.dismiss(); }, 10000);
+                if (window.lucide && window.lucide.createIcons) {
+                    setTimeout(function () { window.lucide.createIcons(); }, 0);
+                }
+            },
+
+            dismiss() {
+                this.visible = false;
+                clearTimeout(this._autoCloseTimer);
+                this.current = null;
+            },
+
+            openNotification() {
+                if (! this.current) return;
+                var url = this.current.redirect_url;
+                this.dismiss();
+                if (url) window.location.href = url;
+            },
+
+            popupIcon() {
+                if (! this.current) return 'info';
+                if (this.current.category === 'attendance.absent') return 'user-x';
+                if (this.current.category === 'attendance.present') return 'user-check';
+                if (this.current.category === 'attendance.teacher_absent') return 'user-x';
+                if (this.current.category === 'justification.approved') return 'check-circle-2';
+                if (this.current.category === 'justification.rejected') return 'x-circle';
+                if (this.current.category === 'justification.submitted') return 'file-text';
+                if (this.current.type === 'success') return 'check-circle-2';
+                if (this.current.type === 'danger') return 'alert-circle';
+                if (this.current.type === 'warning') return 'alert-triangle';
+                return 'info';
+            },
+
+            popupIconBg() {
+                if (! this.current) return 'bg-blue-50 border border-blue-100';
+                if (this.current.type === 'success') return 'bg-emerald-50 border border-emerald-100';
+                if (this.current.type === 'danger') return 'bg-red-50 border border-red-100';
+                if (this.current.type === 'warning') return 'bg-amber-50 border border-amber-100';
+                return 'bg-blue-50 border border-blue-100';
+            },
+
+            popupIconColor() {
+                if (! this.current) return 'text-blue-600';
+                if (this.current.type === 'success') return 'text-emerald-600';
+                if (this.current.type === 'danger') return 'text-red-600';
+                if (this.current.type === 'warning') return 'text-amber-600';
+                return 'text-blue-600';
+            },
+
+            popupBorder() {
+                if (! this.current) return 'border-blue-200';
+                if (this.current.type === 'success') return 'border-emerald-200';
+                if (this.current.type === 'danger') return 'border-red-200';
+                if (this.current.type === 'warning') return 'border-amber-200';
+                return 'border-blue-200';
+            },
+        };
+    }
+    </script>
 </body>
 
 </html>

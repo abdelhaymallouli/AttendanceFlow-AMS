@@ -3,6 +3,9 @@
 /* Preline UI Variants & Components */
 @import "../../node_modules/preline/variants.css";
 
+/* Tailwind Forms plugin (required by Preline for form controls) */
+@plugin "@tailwindcss/forms";
+
 @source "../../node_modules/preline/dist/*.js";
 @source '../**/*.blade.php';
 @source '../**/*.js';

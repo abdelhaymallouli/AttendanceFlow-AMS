@@ -35,47 +35,56 @@
                 <!-- Module Selection -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Module</label>
-                    <select name="module_id" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-4 focus:ring-blue-100 focus:border-blue-600 transition-all outline-none bg-white">
-                        <option value="">Select a Module</option>
-                        @foreach($modules as $module)
-                            <option value="{{ $module->id }}" {{ old('module_id', $session->module_id) == $module->id ? 'selected' : '' }}>{{ $module->name }}</option>
-                        @endforeach
-                    </select>
+                    <x-preline-select
+                        name="module_id"
+                        :value="old('module_id', $session->module_id)"
+                        :options="$modules->mapWithKeys(fn($m) => [(string) $m->id => $m->name])->toArray()"
+                        icon="book-open"
+                        placeholder="Choisir un module..."
+                        :allowBlank="false"
+                    />
                     @error('module_id') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                 </div>
 
                 <!-- Teacher Selection -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Teacher</label>
-                    <select name="teacher_id" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-4 focus:ring-blue-100 focus:border-blue-600 transition-all outline-none bg-white">
-                        <option value="">Select a Teacher</option>
-                        @foreach($teacherProfiles as $teacher)
-                            <option value="{{ $teacher->id }}" {{ old('teacher_id', $session->teacher_profile_id) == $teacher->id ? 'selected' : '' }}>{{ $teacher->user->name }} ({{ $teacher->specialty }})</option>
-                        @endforeach
-                    </select>
+                    <x-preline-select
+                        name="teacher_id"
+                        :value="old('teacher_id', $session->teacher_profile_id)"
+                        :options="$teacherProfiles->mapWithKeys(fn($t) => [(string) $t->id => $t->user->name . ' (' . $t->specialty . ')'])->toArray()"
+                        icon="user"
+                        placeholder="Choisir un formateur..."
+                        :allowBlank="false"
+                    />
                     @error('teacher_id') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                 </div>
 
                 <!-- Group Selection -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Group</label>
-                    <select name="group_id" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-4 focus:ring-blue-100 focus:border-blue-600 transition-all outline-none bg-white">
-                        <option value="">Select a Group</option>
-                        @foreach($groups as $group)
-                            <option value="{{ $group->id }}" {{ old('group_id', $session->group_id) == $group->id ? 'selected' : '' }}>{{ $group->name }}</option>
-                        @endforeach
-                    </select>
+                    <x-preline-select
+                        name="group_id"
+                        :value="old('group_id', $session->group_id)"
+                        :options="$groups->mapWithKeys(fn($g) => [(string) $g->id => $g->name])->toArray()"
+                        icon="users"
+                        placeholder="Choisir un groupe..."
+                        :allowBlank="false"
+                    />
                     @error('group_id') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                 </div>
 
                 <!-- Session Type -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Session Type</label>
-                    <select name="type" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-4 focus:ring-blue-100 focus:border-blue-600 transition-all outline-none bg-white">
-                        <option value="lecture" {{ old('type', $session->type) == 'lecture' ? 'selected' : '' }}>Lecture</option>
-                        <option value="td" {{ old('type', $session->type) == 'td' ? 'selected' : '' }}>TD (Travaux Dirigés)</option>
-                        <option value="tp" {{ old('type', $session->type) == 'tp' ? 'selected' : '' }}>TP (Travaux Pratiques)</option>
-                    </select>
+                    <x-preline-select
+                        name="type"
+                        :value="old('type', $session->type)"
+                        :options="['lecture' => 'Lecture', 'td' => 'TD (Travaux Dirigés)', 'tp' => 'TP (Travaux Pratiques)']"
+                        icon="book-open"
+                        placeholder="Choisir un type..."
+                        :allowBlank="false"
+                    />
                     @error('type') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                 </div>
             </div>
@@ -86,23 +95,23 @@
                 <!-- Date -->
                 <div class="md:col-span-2">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Date</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i data-lucide="calendar" class="w-4 h-4 text-gray-400"></i>
-                        </div>
-                        <input type="date" name="date" required value="{{ old('date', \Carbon\Carbon::parse($session->start_time)->toDateString()) }}" class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-4 focus:ring-blue-100 focus:border-blue-600 transition-all outline-none">
-                    </div>
+                    <x-preline-datepicker
+                        name="date"
+                        :value="old('date', \Carbon\Carbon::parse($session->start_time)->toDateString())"
+                        icon="calendar"
+                        placeholder="Choisir une date..."
+                    />
                     @error('date') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                 </div>
-                
+
                 <!-- Start Time -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Start Time</label>
                     <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3 z-10">
                             <i data-lucide="clock" class="w-4 h-4 text-gray-400"></i>
                         </div>
-                        <input type="time" x-model="startTime" name="start_time" required class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-4 focus:ring-blue-100 focus:border-blue-600 transition-all outline-none">
+                        <input type="time" x-model="startTime" name="start_time" required class="w-full ps-10 pe-4 py-3 border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none bg-white shadow-sm">
                     </div>
                     @error('start_time') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                 </div>
@@ -111,10 +120,10 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">End Time</label>
                     <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3 z-10">
                             <i data-lucide="clock" class="w-4 h-4 text-gray-400"></i>
                         </div>
-                        <input type="time" x-model="endTime" name="end_time" required class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-4 focus:ring-blue-100 focus:border-blue-600 transition-all outline-none">
+                        <input type="time" x-model="endTime" name="end_time" required class="w-full ps-10 pe-4 py-3 border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none bg-white shadow-sm">
                     </div>
                     @error('end_time') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                 </div>

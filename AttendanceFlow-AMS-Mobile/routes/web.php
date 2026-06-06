@@ -34,6 +34,11 @@ Route::prefix('mobile')->group(function () {
         Route::get('/session/{id}', [SessionController::class, 'show'])->name('mobile.session.show');
         Route::get('/flash/{id}', [SessionController::class, 'flash'])->name('mobile.attendance.flash');
         Route::post('/attendance/record', [AttendanceController::class, 'record'])->name('mobile.attendance.record');
+
+        // Student QR scan
+        Route::get('/scan', [AttendanceController::class, 'scan'])->name('mobile.attendance.scan');
+        Route::post('/scan/submit', [AttendanceController::class, 'submitScan'])->name('mobile.attendance.scan.submit');
+        Route::post('/scan/sync', [AttendanceController::class, 'syncOffline'])->name('mobile.attendance.scan.sync');
         
         // Admin routes
         Route::get('/admin', [\App\Http\Controllers\Mobile\AdminController::class, 'dashboard'])->name('mobile.admin.dashboard');

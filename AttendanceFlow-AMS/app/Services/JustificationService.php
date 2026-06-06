@@ -4,15 +4,19 @@ namespace App\Services;
 
 use App\Models\Justification;
 use App\Models\AttendanceRecord;
+use App\Models\Role;
+use App\Models\User;
 
 /**
  * JustificationService
- * 
+ *
  * Manages the lifecycle of absence justifications.
  */
 class JustificationService extends BaseService
 {
-    // Service name is now automatically handled by BaseService
+    public function __construct(private readonly NotificationService $notifications)
+    {
+    }
 
     /**
      * Submit a new justification.
@@ -20,16 +24,16 @@ class JustificationService extends BaseService
     public function submitJustification(int $studentProfileId, array $data): Justification
     {
         $this->logInfo("New justification submitted by student {$studentProfileId}");
-        
+
         $session = \App\Models\Session::findOrFail($data['session_id']);
-        
+
         // Enforce 48-hour rule
         $endTime = \Carbon\Carbon::parse($session->end_time);
         if (now()->greaterThan($endTime->copy()->addHours(48))) {
             throw new \Exception("Submission rejected: The 48-hour deadline to justify this absence has passed.");
         }
 
-        return Justification::create([
+        $justification = Justification::create([
             'student_profile_id' => $studentProfileId,
             'session_id'          => $session->id,
             'reason'              => $data['reason'],
@@ -39,6 +43,20 @@ class JustificationService extends BaseService
             'status'              => 'pending',
             'submitted_at'        => now(),
         ]);
+
+        // Notify every admin that a new justification is awaiting review
+        $student = $justification->studentProfile;
+        $studentName = $student?->user?->name ?? 'Un étudiant';
+        $adminIds = User::role('admin')->pluck('id');
+        foreach ($adminIds as $adminId) {
+            $this->notifications->notifyAdminJustificationSubmitted(
+                userId: (int) $adminId,
+                justificationId: $justification->id,
+                studentName: $studentName,
+            );
+        }
+
+        return $justification;
     }
 
     /**
@@ -78,8 +96,7 @@ class JustificationService extends BaseService
     public function reviewJustification(int $justificationId, string $status): Justification
     {
         $justification = Justification::findOrFail($justificationId);
-        
-        // Map 'accepted' to 'approved' for backwards compatibility
+
         if ($status === 'accepted') {
             $status = 'approved';
         }
@@ -91,9 +108,8 @@ class JustificationService extends BaseService
 
         if ($status === 'approved') {
             $this->logInfo("Justification {$justificationId} approved. Updating related attendance records.");
-            
+
             if ($justification->session_id) {
-                // Find or update the attendance record for this student and session
                 $attendance = AttendanceRecord::where([
                     'student_profile_id' => $justification->student_profile_id,
                     'session_id' => $justification->session_id,
@@ -105,7 +121,6 @@ class JustificationService extends BaseService
                     $attendance->save();
                 }
             } else {
-                // Fallback for missing session_id: Auto-update absentees records to excused between the dates
                 AttendanceRecord::where('student_profile_id', $justification->student_profile_id)
                     ->whereBetween('date', [$justification->start_date, $justification->end_date])
                     ->whereIn('status', ['absent', 'absent_unexcused'])
@@ -119,12 +134,18 @@ class JustificationService extends BaseService
         $statusLabel = $status === 'rejected' ? 'refusé' : 'accepté';
         $type = $status === 'rejected' ? 'danger' : 'success';
 
-        \App\Models\Notification::create([
-            'user_id' => $justification->studentProfile->user_id,
-            'title' => 'Justificatif ' . $statusLabel,
-            'message' => 'Votre justificatif pour la date du ' . \Carbon\Carbon::parse($justification->start_date)->format('d/m/Y') . ' a été ' . $statusLabel . '.',
-            'type' => $type,
-        ]);
+        $this->notifications->create(
+            userId: $justification->studentProfile->user_id,
+            title: 'Justificatif ' . $statusLabel,
+            message: 'Votre justificatif pour la date du ' . \Carbon\Carbon::parse($justification->start_date)->format('d/m/Y') . ' a été ' . $statusLabel . '.',
+            category: $status === 'approved' ? 'justification.approved' : 'justification.rejected',
+            type: $type,
+            audience: 'student',
+            data: [
+                'justification_id' => $justification->id,
+                'url' => route('student.justifications.index', [], false),
+            ],
+        );
 
         return $justification;
     }

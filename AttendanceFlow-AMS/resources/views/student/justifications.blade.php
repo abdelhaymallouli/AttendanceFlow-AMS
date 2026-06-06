@@ -39,18 +39,22 @@
             <div class="space-y-2 ml-2">
                 <label for="session_id" class="block text-[10px] font-black text-gray-400 uppercase tracking-widest opacity-80">Select Session to Justify</label>
                 <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-                        <i data-lucide="calendar" class="w-5 h-5 text-gray-400"></i>
-                    </div>
-                    <select name="session_id" id="session_id" required
-                            class="w-full pl-14 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-600 outline-none transition-all font-bold text-gray-800 appearance-none">
-                        <option value="" disabled selected>Choose a session...</option>
-                        @foreach($sessions as $session)
-                            <option value="{{ $session->id }}">
-                                {{ $session->module->name ?? 'Séance' }} - {{ \Carbon\Carbon::parse($session->start_time)->format('d/m H:i') }} ({{ $session->type }})
-                            </option>
-                        @endforeach
-                    </select>
+                    @php
+                        $sessionOptions = $sessions->mapWithKeys(function ($s) {
+                            $label = ($s->module->name ?? 'Séance') . ' - '
+                                . \Carbon\Carbon::parse($s->start_time)->format('d/m H:i')
+                                . ' (' . ($s->type ?? 'CM') . ')';
+                            return [(string) $s->id => $label];
+                        })->toArray();
+                    @endphp
+                    <x-preline-select
+                        name="session_id"
+                        :value="$preselectSessionId ?? null"
+                        :options="$sessionOptions"
+                        icon="calendar"
+                        placeholder="Choisir une séance..."
+                        :allowBlank="false"
+                    />
                 </div>
             </div>
 

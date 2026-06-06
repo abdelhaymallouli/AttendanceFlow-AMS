@@ -26,6 +26,12 @@
         <a href="{{ route('teacher.attendance.index') }}" class="text-xs text-blue-600 hover:text-blue-800 underline font-medium self-start sm:self-center bg-white px-3 py-1.5 rounded-lg border border-blue-200 transition-colors">
             Change session
         </a>
+        <a href="{{ route('teacher.sessions.qr.show', $session->id) }}"
+           class="text-xs text-white bg-indigo-600 hover:bg-indigo-700 font-medium self-start sm:self-center px-3 py-1.5 rounded-lg border border-indigo-700 transition-colors flex items-center gap-1.5 shadow-sm"
+           target="_blank">
+            <i data-lucide="qr-code" class="w-3.5 h-3.5"></i>
+            Afficher le QR Code
+        </a>
     </div>
 
     <!-- Controls Bar -->

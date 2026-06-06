@@ -50,6 +50,20 @@
         </div>
     </div>
 
+    <!-- QR Scan CTA -->
+    <a href="{{ route('mobile.attendance.scan') }}" class="block bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-3xl p-5 mb-6 shadow-md shadow-indigo-200 active:scale-95 transition-all">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-white bg-opacity-20 rounded-2xl flex items-center justify-center flex-shrink-0">
+                <i data-lucide="qr-code" class="w-6 h-6 text-white"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <p class="text-sm font-bold">Scanner le QR de présence</p>
+                <p class="text-[10px] text-indigo-100 font-medium">Ouvre la caméra pour valider ta présence</p>
+            </div>
+            <i data-lucide="chevron-right" class="w-5 h-5 text-white opacity-80"></i>
+        </div>
+    </a>
+
     <!-- Justification CTA -->
     <a href="#" class="block bg-white border-2 border-dashed border-indigo-200 rounded-3xl p-5 mb-6 shadow-sm active:scale-95 transition-all">
         <div class="flex items-center gap-4">

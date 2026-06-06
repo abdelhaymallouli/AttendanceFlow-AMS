@@ -26,31 +26,25 @@
 
             <!-- SEARCH -->
             <div class="flex-1">
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i data-lucide="search" class="w-5 h-5 text-gray-400"></i>
-                    </div>
-
-                    <input type="text"
-                           name="search"
-                           value="{{ request('search') }}"
-                           class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                           placeholder="Search by name, email or ID...">
-                </div>
+                <x-preline-search
+                    name="search"
+                    :value="request('search')"
+                    icon="search"
+                    placeholder="Rechercher par nom, email ou ID..."
+                />
             </div>
 
             <!-- GROUP FILTER -->
-            <select name="group_id"
-                    onchange="this.form.submit()"
-                    class="py-2 px-3 border border-gray-300 rounded-lg text-sm bg-white">
-                <option value="">All Groups</option>
-                @foreach($groups as $group)
-                    <option value="{{ $group->id }}"
-                        @selected(request('group_id') == $group->id)>
-                        {{ $group->name }}
-                    </option>
-                @endforeach
-            </select>
+            <div class="w-full md:w-[240px]">
+                <x-preline-select
+                    name="group_id"
+                    :value="request('group_id')"
+                    :options="$groups->mapWithKeys(fn($g) => [(string) $g->id => $g->name])->toArray()"
+                    onChange="this.form.submit()"
+                    icon="users"
+                    blankText="Tous les groupes"
+                />
+            </div>
 
         </form>
     </x-ui.section-card>

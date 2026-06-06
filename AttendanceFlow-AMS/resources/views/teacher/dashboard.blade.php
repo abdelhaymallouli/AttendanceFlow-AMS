@@ -84,6 +84,12 @@
                     <i data-lucide="clipboard-check" class="w-5 h-5 mr-2"></i>
                     Take Attendance
                 </a>
+                <a :href="currentSession ? currentSession.url.replace('/attendance', '/qr') : '#'"
+                   class="block w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center shadow-sm"
+                   x-show="currentSession">
+                    <i data-lucide="qr-code" class="w-5 h-5 mr-2"></i>
+                    Show QR Code
+                </a>
                 <a href="#"
                    class="block w-full bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-lg border border-gray-200 transition-colors flex items-center justify-center">
                     <i data-lucide="clock" class="w-5 h-5 mr-2"></i>

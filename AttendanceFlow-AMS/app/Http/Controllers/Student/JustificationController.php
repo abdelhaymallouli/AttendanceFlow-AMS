@@ -19,7 +19,7 @@ class JustificationController extends Controller
         $this->academicService = $academicService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $studentProfile = Auth::user()->studentProfile;
         
@@ -34,7 +34,17 @@ class JustificationController extends Controller
             ->orderBy('start_time', 'desc')
             ->get();
 
-        return view('student.justifications', compact('justifications', 'sessions'));
+        $preselectSessionId = (int) $request->query('session', 0);
+
+        return view('student.justifications', compact('justifications', 'sessions', 'preselectSessionId'));
+    }
+
+    /**
+     * Deep link from a notification: open the justification form pre-filtered to a session.
+     */
+    public function create(Request $request)
+    {
+        return $this->index($request);
     }
 
     public function store(Request $request)

@@ -2,37 +2,40 @@
     'name' => 'teacher_profile_id',
     'value' => null,
     'onChange' => 'this.form.submit()',
-    'label' => 'Teacher:',
+    'label' => 'Formateur :',
+    'icon' => 'user',
     'includeBlank' => true,
-    'blankText' => 'All Teachers'
+    'blankText' => 'Tous les formateurs',
+    'formId' => null,
+    'size' => 'md',
 ])
 
-<div class="flex items-center gap-3 bg-gray-50 p-2 rounded-lg border border-gray-100">
-    <label class="text-sm font-medium text-gray-700 whitespace-nowrap ml-1">
-        <i data-lucide="user" class="w-4 h-4 inline-block mr-1 text-blue-600"></i> {{ $label }}
+@php
+    $options = \App\Models\TeacherProfile::query()
+        ->join('users', 'users.id', '=', 'teacher_profiles.user_id')
+        ->with('user')
+        ->orderBy('users.name')
+        ->get()
+        ->mapWithKeys(fn ($t) => [(string) $t->id => $t->user->name])
+        ->toArray();
+@endphp
+
+<div class="flex items-center gap-3 bg-white p-2 rounded-lg border border-gray-200">
+    <label for="filter-{{ $name }}" class="text-sm font-medium text-gray-700 whitespace-nowrap ml-1 flex items-center gap-1.5">
+        <i data-lucide="{{ $icon }}" class="w-4 h-4 text-blue-600"></i>
+        {{ $label }}
     </label>
-    <select 
-        name="{{ $name }}"
-        @change="{{ $onChange }}"
-        class="text-sm border border-gray-300 rounded-md px-3 py-1.5 focus:ring-2 focus:ring-blue-500 outline-none bg-white shadow-sm"
-    >
-        @if($includeBlank)
-            <option value=""> {{ $blankText }} </option>
-        @endif
-                    @foreach(
-                \App\Models\TeacherProfile::select('teacher_profiles.*')
-                    ->join('users', 'users.id', '=', 'teacher_profiles.user_id')
-                    ->with('user')
-                    ->orderBy('users.name')
-                    ->get()
-                as $teacher
-            )
-            <option 
-                value="{{ $teacher->id }}" 
-                {{ $value == $teacher->id ? 'selected' : '' }}
-            >
-                {{ $teacher->user->name }}
-            </option>
-        @endforeach
-    </select>
+    <div class="flex-1 min-w-0 max-w-[260px]">
+        <x-preline-select
+            :name="$name"
+            :value="$value"
+            :options="$options"
+            :onChange="$onChange"
+            :icon="$icon"
+            :includeBlank="$includeBlank"
+            :blankText="$blankText"
+            :formId="$formId"
+            :size="$size"
+        />
+    </div>
 </div>

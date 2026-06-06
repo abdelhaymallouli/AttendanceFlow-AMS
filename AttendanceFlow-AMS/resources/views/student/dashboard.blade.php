@@ -139,6 +139,20 @@
 
     <!-- Right Column: Justifications & Actions -->
     <div class="space-y-8">
+        <!-- Quick QR Scan Card -->
+        <div class="bg-white border border-gray-200 rounded-[2.5rem] p-8 shadow-sm group">
+            <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 mb-6 group-hover:scale-110 transition-transform">
+                <i data-lucide="qr-code" class="w-8 h-8"></i>
+            </div>
+            <h4 class="text-xl font-black text-gray-800 uppercase italic mb-3 tracking-tighter">Scan Attendance QR</h4>
+            <p class="text-sm font-bold text-gray-400 leading-relaxed mb-8 opacity-80">Ouvrez l'app mobile <strong>AttendanceFlow</strong> pour scanner le QR affiché par l'enseignant, ou soumettez le code depuis votre navigateur.</p>
+            <a href="{{ route('student.qr.scan') }}"
+               class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-4 px-6 rounded-2xl transition-all flex items-center justify-center gap-3 active:scale-95 shadow-md shadow-indigo-500/20">
+                <span>Scanner un code QR</span>
+                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+            </a>
+        </div>
+
         <!-- Quick Justification Card (Mockup Style) -->
         <div class="bg-white border border-gray-200 rounded-[2.5rem] p-8 shadow-sm group">
             <div class="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center text-amber-600 mb-6 group-hover:scale-110 transition-transform">
@@ -146,7 +160,7 @@
             </div>
             <h4 class="text-xl font-black text-gray-800 uppercase italic mb-3 tracking-tighter">Absence Justification</h4>
             <p class="text-sm font-bold text-gray-400 leading-relaxed mb-8 opacity-80">Did you miss a class? Upload your documentation now for administrative approval.</p>
-            <a href="{{ route('student.justifications.index') }}" 
+            <a href="{{ route('student.justifications.index') }}"
                class="w-full bg-slate-900 hover:bg-blue-600 text-white font-black py-4 px-6 rounded-2xl transition-all flex items-center justify-center gap-3 active:scale-95">
                 <span>Upload Document</span>
                 <i data-lucide="arrow-right" class="w-5 h-5"></i>

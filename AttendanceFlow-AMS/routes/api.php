@@ -38,6 +38,13 @@ Route::prefix('attendance')->group(function () {
     Route::get('student/{id}', [AttendanceController::class, 'getStudentAttendance']);
     Route::get('session/{id}', [AttendanceController::class, 'getSessionAttendance']);
     Route::post('record', [AttendanceController::class, 'recordAttendance']);
+
+    // QR attendance (multi-factor: HMAC + GPS + Wi-Fi + device fingerprint)
+    Route::middleware('auth:sanctum')->prefix('qr')->group(function () {
+        Route::get('token/{sessionId}', [\App\Http\Controllers\Api\QrAttendanceController::class, 'issueToken']);
+        Route::post('scan', [\App\Http\Controllers\Api\QrAttendanceController::class, 'scan']);
+        Route::post('sync-offline', [\App\Http\Controllers\Api\QrAttendanceController::class, 'syncOffline']);
+    });
 });
 
 // Justification Routes
@@ -50,10 +57,12 @@ Route::prefix('justifications')->group(function () {
 Route::get('stats/admin', [\App\Http\Controllers\Api\StatsController::class, 'getAdminStats']);
 Route::get('stats/student/{id}', [\App\Http\Controllers\Api\StatsController::class, 'getStudentStats']);
 
-// Notifications Routes
-Route::prefix('notifications')->group(function () {
-    Route::get('user/{userId}', [\App\Http\Controllers\Api\NotificationController::class, 'getUserNotifications']);
-    Route::post('{id}/read', [\App\Http\Controllers\Api\NotificationController::class, 'markAsRead']);
-    Route::post('mark-all-as-read', [\App\Http\Controllers\Api\NotificationController::class, 'markAllAsRead']);
-    Route::post('clear-all', [\App\Http\Controllers\Api\NotificationController::class, 'clearAllNotifications']);
+// Notifications Routes (auth required, scoped to current user)
+Route::middleware('auth:sanctum')->prefix('notifications')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Api\NotificationController::class, 'index']);
+    Route::get('/unread', [\App\Http\Controllers\Api\NotificationController::class, 'unread']);
+    Route::get('/unread-count', [\App\Http\Controllers\Api\NotificationController::class, 'unreadCount']);
+    Route::post('/{id}/read', [\App\Http\Controllers\Api\NotificationController::class, 'markAsRead'])->whereNumber('id');
+    Route::post('/mark-all-as-read', [\App\Http\Controllers\Api\NotificationController::class, 'markAllAsRead']);
+    Route::post('/clear-all', [\App\Http\Controllers\Api\NotificationController::class, 'clearAllNotifications']);
 });

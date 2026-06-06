@@ -153,4 +153,26 @@ class ApiService
             return false;
         }
     }
+
+    public function qrScan(array $payload, ?string $token = null)
+    {
+        try {
+            $response = Http::withToken($token ?? session('mobile_token'))
+                ->post($this->baseUrl . '/attendance/qr/scan', $payload);
+            return $response->json() ?? ['status' => 'rejected', 'rejection_reason' => 'no_response'];
+        } catch (\Exception $e) {
+            return ['status' => 'rejected', 'rejection_reason' => 'network_error', 'message' => $e->getMessage()];
+        }
+    }
+
+    public function qrSyncOffline(array $entries, ?string $token = null)
+    {
+        try {
+            $response = Http::withToken($token ?? session('mobile_token'))
+                ->post($this->baseUrl . '/attendance/qr/sync-offline', ['entries' => $entries]);
+            return $response->json() ?? ['processed' => 0, 'accepted' => 0, 'rejected' => count($entries), 'results' => []];
+        } catch (\Exception $e) {
+            return ['processed' => 0, 'accepted' => 0, 'rejected' => count($entries), 'results' => [], 'message' => $e->getMessage()];
+        }
+    }
 }

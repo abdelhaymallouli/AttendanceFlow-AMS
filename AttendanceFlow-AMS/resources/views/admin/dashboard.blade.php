@@ -63,9 +63,9 @@
             Quick Actions
         </h3>
         <div class="space-y-3">
-            <a href="{{ route('admin.sessions.create') }}" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center shadow-sm">
+            <a href="{{ route('admin.timetable.create') }}" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center shadow-sm">
                 <i data-lucide="plus-circle" class="w-5 h-5 mr-2"></i>
-                New Session
+                Nouvelle séance
             </a>
             <a href="{{ route('admin.attendance.index') }}" class="block w-full bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-lg border border-gray-200 transition-colors flex items-center justify-center">
                 <i data-lucide="clipboard-check" class="w-5 h-5 mr-2"></i>

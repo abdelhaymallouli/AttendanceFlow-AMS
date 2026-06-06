@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             RolesAndPermissionsSeeder::class,
             UserSeeder::class,
             CsvSeeder::class,
+            CampusLocationSeeder::class,
         ]);
         
         // User::factory(10)->create();

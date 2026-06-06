@@ -46,22 +46,26 @@
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
         <div class="flex flex-col md:flex-row gap-4">
             <div class="flex-1">
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i data-lucide="search" class="w-5 h-5 text-gray-400"></i>
-                    </div>
-                    <input x-model="searchQuery" @input="filterJustifications()" type="text" class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none" placeholder="Search by student name or ID...">
-                </div>
+                <x-preline-search
+                    name="search"
+                    icon="search"
+                    placeholder="Rechercher par nom ou ID..."
+                    onChange="searchQuery = this.value; filterJustifications()"
+                />
             </div>
-            <div class="flex gap-2">
-                <div class="relative min-w-[150px]">
-                    <select x-model="filterStatus" @change="filterJustifications()" class="w-full py-2 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-white text-sm">
-                        <option value="all">All Status</option>
-                        <option value="pending">Pending</option>
-                        <option value="approved">Approved</option>
-                        <option value="rejected">Rejected</option>
-                    </select>
-                </div>
+            <div class="flex gap-2 w-full md:w-[200px]">
+                <x-preline-select
+                    name="filterStatus"
+                    :options="[
+                        'all' => 'Tous les statuts',
+                        'pending' => 'En attente',
+                        'approved' => 'Accepté',
+                        'rejected' => 'Refusé',
+                    ]"
+                    icon="filter"
+                    onChange="filterStatus = this.value; filterJustifications()"
+                    :allowBlank="false"
+                />
             </div>
         </div>
     </div>

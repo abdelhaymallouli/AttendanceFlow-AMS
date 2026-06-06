@@ -2,31 +2,33 @@
     'name' => 'session_type',
     'value' => null,
     'onChange' => 'this.form.submit()',
-    'label' => 'Session Type:',
+    'label' => 'Type :',
+    'icon' => 'book-open',
     'options' => [
-        '' => 'All Types',
-        'lecture' => 'Lecture',
-        'td' => 'Tutorial/Discussion (TD)',
-        'tp' => 'Practical Work (TP)'
-    ]
+        '' => 'Tous les types',
+        'lecture' => 'Cours',
+        'td' => 'TD',
+        'tp' => 'TP',
+    ],
+    'formId' => null,
+    'size' => 'md',
 ])
 
-<div class="flex items-center gap-3 bg-gray-50 p-2 rounded-lg border border-gray-100">
-    <label class="text-sm font-medium text-gray-700 whitespace-nowrap ml-1">
-        <i data-lucide="book-open" class="w-4 h-4 inline-block mr-1 text-blue-600"></i> {{ $label }}
+<div class="flex items-center gap-3 bg-white p-2 rounded-lg border border-gray-200">
+    <label for="filter-{{ $name }}" class="text-sm font-medium text-gray-700 whitespace-nowrap ml-1 flex items-center gap-1.5">
+        <i data-lucide="{{ $icon }}" class="w-4 h-4 text-blue-600"></i>
+        {{ $label }}
     </label>
-    <select 
-        name="{{ $name }}"
-        @change="{{ $onChange }}"
-        class="text-sm border border-gray-300 rounded-md px-3 py-1.5 focus:ring-2 focus:ring-blue-500 outline-none bg-white shadow-sm"
-    >
-        @foreach($options as $value => $label)
-            <option 
-                value="{{ $value }}" 
-                {{ $value == $value ? 'selected' : '' }}
-            >
-                {{ $label }}
-            </option>
-        @endforeach
-    </select>
+    <div class="flex-1 min-w-0 max-w-[220px]">
+        <x-preline-select
+            :name="$name"
+            :value="$value"
+            :options="$options"
+            :onChange="$onChange"
+            :icon="$icon"
+            :formId="$formId"
+            :size="$size"
+            :allowBlank="false"
+        />
+    </div>
 </div>
