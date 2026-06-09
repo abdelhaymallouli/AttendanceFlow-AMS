@@ -21,6 +21,11 @@ class JustificationController extends Controller
         return response()->json($this->justificationService->getPending());
     }
 
+    public function getStudentJustifications($id)
+    {
+        return response()->json($this->justificationService->getStudentJustifications($id));
+    }
+
     public function submit(Request $request)
     {
         $validator = Validator::make($request->all(), [

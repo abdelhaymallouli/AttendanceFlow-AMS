@@ -15,10 +15,10 @@
         <span>QR Émargement</span>
         <span class="ml-auto bg-indigo-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">NEW</span>
     </a>
-    <a href="{{ route('admin.students.index') }}"
-        class="flex items-center space-x-3 px-4 py-3 {{ request()->routeIs('admin.students.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-gray-100' }} rounded-lg transition-colors">
+    <a href="{{ route('admin.users.index') }}"
+        class="flex items-center space-x-3 px-4 py-3 {{ request()->routeIs('admin.users.*') || request()->routeIs('admin.students.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-gray-100' }} rounded-lg transition-colors">
         <i data-lucide="users" class="w-5 h-5"></i>
-        <span>Students</span>
+        <span>Gestion des utilisateurs</span>
     </a>
     <a href="{{ route('admin.timetable.index') }}"
        class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors {{ request()->routeIs('admin.timetable.*') ? 'text-blue-600 bg-blue-50 font-medium' : 'text-gray-700 hover:bg-gray-100' }}">

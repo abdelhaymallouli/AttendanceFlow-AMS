@@ -1,54 +1,50 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Mobile\SessionController;
-use App\Http\Controllers\Mobile\AttendanceController;
 use App\Http\Controllers\Mobile\LoginController;
+use App\Http\Controllers\Mobile\StudentController;
+use App\Http\Controllers\Mobile\AttendanceController;
 
 /*
 |--------------------------------------------------------------------------
-| Mobile Web Routes
+| Mobile Web Routes — Student Only
 |--------------------------------------------------------------------------
 */
 
+$auth = function ($request, $next) {
+    if (!session()->has('mobile_token')) {
+        return redirect()->route('mobile.login');
+    }
+    return $next($request);
+};
+
 Route::prefix('mobile')->group(function () {
-    // Auth Routes
+    // Auth
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('mobile.login');
     Route::post('/login', [LoginController::class, 'login'])->name('mobile.login.post');
     Route::post('/logout', [LoginController::class, 'logout'])->name('mobile.logout');
 
-    // Secure Portal Routes
-    Route::middleware([function ($request, $next) {
-        if (!session()->has('mobile_token')) {
-            return redirect()->route('mobile.login');
-        }
-        return $next($request);
-    }])->group(function () {
-        // Hub route (Portal Selection)
-        Route::get('/', function () {
-            return view('mobile.hub');
-        })->name('mobile.hub');
+    // Protected student routes
+    Route::middleware($auth)->group(function () {
+        Route::get('/', [StudentController::class, 'home'])->name('mobile.home');
 
-        // Teacher routes
-        Route::get('/teacher', [SessionController::class, 'index'])->name('mobile.sessions');
-        Route::get('/session/{id}', [SessionController::class, 'show'])->name('mobile.session.show');
-        Route::get('/flash/{id}', [SessionController::class, 'flash'])->name('mobile.attendance.flash');
-        Route::post('/attendance/record', [AttendanceController::class, 'record'])->name('mobile.attendance.record');
+        // Absences
+        Route::get('/absences', [StudentController::class, 'absences'])->name('mobile.absences');
 
-        // Student QR scan
-        Route::get('/scan', [AttendanceController::class, 'scan'])->name('mobile.attendance.scan');
-        Route::post('/scan/submit', [AttendanceController::class, 'submitScan'])->name('mobile.attendance.scan.submit');
-        Route::post('/scan/sync', [AttendanceController::class, 'syncOffline'])->name('mobile.attendance.scan.sync');
-        
-        // Admin routes
-        Route::get('/admin', [\App\Http\Controllers\Mobile\AdminController::class, 'dashboard'])->name('mobile.admin.dashboard');
-        
-        // Student routes
-        Route::get('/student/{id?}', [\App\Http\Controllers\Mobile\StudentController::class, 'dashboard'])->name('mobile.student.dashboard');
+        // Justifications
+        Route::get('/justifications', [StudentController::class, 'justifications'])->name('mobile.justifications');
+        Route::get('/justifications/create', [StudentController::class, 'justificationsCreate'])->name('mobile.justifications.create');
+        Route::post('/justifications', [StudentController::class, 'justificationsStore'])->name('mobile.justifications.store');
+
+        // Sessions
+        Route::get('/sessions', [StudentController::class, 'sessions'])->name('mobile.sessions');
+        Route::get('/sessions/{id}', [StudentController::class, 'sessionDetail'])->name('mobile.session.detail');
+
+        // QR Scan
+        Route::get('/scan', [AttendanceController::class, 'scan'])->name('mobile.scan');
+        Route::post('/scan/submit', [AttendanceController::class, 'submitScan'])->name('mobile.scan.submit');
+        Route::post('/scan/sync', [AttendanceController::class, 'syncOffline'])->name('mobile.scan.sync');
     });
 });
 
-// Redirect root to mobile hub
-Route::get('/', function () {
-    return redirect()->route('mobile.hub');
-});
+Route::get('/', fn() => redirect()->route('mobile.login'));

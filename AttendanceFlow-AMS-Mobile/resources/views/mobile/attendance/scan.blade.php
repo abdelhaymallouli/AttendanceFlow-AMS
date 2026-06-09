@@ -4,8 +4,8 @@
 
 @section('content')
 <div class="p-4 space-y-4" x-data="mobileQrScan({
-    submitUrl: '{{ route('mobile.attendance.scan.submit') }}',
-    syncUrl: '{{ route('mobile.attendance.scan.sync') }}',
+    submitUrl: '{{ route('mobile.scan.submit') }}',
+    syncUrl: '{{ route('mobile.scan.sync') }}',
     pendingCount: {{ (int) $pendingCount }},
     studentProfileId: {{ (int) (session('mobile_student_profile_id') ?? 0) }},
     csrf: '{{ csrf_token() }}',

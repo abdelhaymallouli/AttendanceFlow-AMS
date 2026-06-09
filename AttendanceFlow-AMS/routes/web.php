@@ -50,6 +50,9 @@ Route::group(['middleware' => ['auth']], function () {
         // Live scan telemetry (JSON, polled)
         Route::get('/sessions/{session}/live-scans', [\App\Http\Controllers\Teacher\QrSessionController::class, 'liveScans'])
             ->name('teacher.sessions.live-scans');
+
+        // My Students (read-only with phone numbers)
+        Route::get('/students', [\App\Http\Controllers\Teacher\StudentController::class, 'index'])->name('teacher.students.index');
     });
 
     // Admin Group
@@ -65,8 +68,19 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/justifications', [\App\Http\Controllers\Admin\JustificationController::class, 'index'])->name('admin.justifications.index');
         Route::patch('/justifications/{justification}', [\App\Http\Controllers\Admin\JustificationController::class, 'update'])->name('admin.justifications.update');
 
-        // Student Management
+        // Student Management (legacy read-only)
         Route::get('/students', [\App\Http\Controllers\Admin\StudentController::class, 'index'])->name('admin.students.index');
+
+        // User Management (unified)
+        Route::get('/users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users.index');
+        Route::get('/users/create', [\App\Http\Controllers\Admin\UserController::class, 'createStudent'])->name('admin.users.create-student');
+        Route::post('/users', [\App\Http\Controllers\Admin\UserController::class, 'storeStudent'])->name('admin.users.store-student');
+        Route::get('/users/teachers/create', [\App\Http\Controllers\Admin\UserController::class, 'createTeacher'])->name('admin.users.create-teacher');
+        Route::post('/users/teachers', [\App\Http\Controllers\Admin\UserController::class, 'storeTeacher'])->name('admin.users.store-teacher');
+        Route::get('/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'show'])->name('admin.users.show');
+        Route::get('/users/{user}/edit', [\App\Http\Controllers\Admin\UserController::class, 'edit'])->name('admin.users.edit');
+        Route::put('/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('admin.users.update');
+        Route::delete('/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('admin.users.destroy');
 
         // Timetable (Emploi du temps) — admin has full access
         Route::get('/timetable', [\App\Http\Controllers\Admin\TimetableController::class, 'index'])->name('admin.timetable.index');

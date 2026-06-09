@@ -3,7 +3,7 @@
     'value' => null,
     'onChange' => 'this.form.submit()',
     'label' => 'Date :',
-    'icon' => 'calendar',
+    'icon' => null,
     'showTodayLink' => true,
     'todayUrl' => null,
     'minDate' => null,
@@ -19,10 +19,11 @@
 @endphp
 
 <div class="flex items-center gap-3 bg-white p-2 rounded-lg border border-gray-200">
-    <label class="text-sm font-medium text-gray-700 whitespace-nowrap ml-1 flex items-center gap-1.5">
-        <i data-lucide="{{ $icon }}" class="w-4 h-4 text-blue-600"></i>
-        {{ $label }}
-    </label>
+    @if($label)
+        <label class="text-sm font-medium text-gray-700 whitespace-nowrap ml-1 flex items-center gap-1.5">
+            {{ $label }}
+        </label>
+    @endif
 
     <div class="flex-1 min-w-0 max-w-[200px]">
         <x-preline-datepicker

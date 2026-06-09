@@ -134,6 +134,53 @@ class ApiService
         }
     }
 
+    public function getMeProfile(?string $token = null)
+    {
+        try {
+            $response = Http::withToken($token ?? session('mobile_token'))
+                ->get($this->baseUrl . '/me/profile');
+            return $response->successful() ? $response->json() : null;
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    public function getStudentJustifications(int $studentProfileId)
+    {
+        try {
+            $response = Http::get($this->baseUrl . "/justifications/student/{$studentProfileId}");
+            return $response->successful() ? $response->json() : [];
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+
+    public function getGroupSessions(int $groupId)
+    {
+        try {
+            $response = Http::get($this->baseUrl . "/academic/sessions/group/{$groupId}");
+            return $response->successful() ? $response->json() : [];
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+
+    public function submitJustificationWithFile(array $data, ?string $filePath = null, ?string $token = null)
+    {
+        try {
+            $http = Http::withToken($token ?? session('mobile_token'));
+            if ($filePath && file_exists($filePath)) {
+                $response = $http->attach('document', file_get_contents($filePath), basename($filePath))
+                    ->post($this->baseUrl . '/justifications/submit', $data);
+            } else {
+                $response = $http->post($this->baseUrl . '/justifications/submit', $data);
+            }
+            return $response->json() ?? ['success' => false];
+        } catch (\Exception $e) {
+            return ['success' => false, 'message' => 'Connection error'];
+        }
+    }
+
     public function getUserNotifications($userId)
     {
         try {

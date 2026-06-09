@@ -313,6 +313,36 @@
             visible: false,
             current: null,
             _autoCloseTimer: null,
+            _audioCtx: null,
+            _soundEnabled: (function () {
+                try { return localStorage.getItem('notif_sound') !== 'off'; } catch (e) { return true; }
+            })(),
+
+            _playSound() {
+                if (! this._soundEnabled) return;
+                try {
+                    if (! this._audioCtx) {
+                        var Ctx = window.AudioContext || window.webkitAudioContext;
+                        if (! Ctx) return;
+                        this._audioCtx = new Ctx();
+                    }
+                    var ctx = this._audioCtx;
+                    var now = ctx.currentTime;
+                    var o1 = ctx.createOscillator();
+                    var o2 = ctx.createOscillator();
+                    var g = ctx.createGain();
+                    o1.type = 'sine';
+                    o2.type = 'sine';
+                    o1.frequency.setValueAtTime(880, now);
+                    o2.frequency.setValueAtTime(1320, now);
+                    g.gain.setValueAtTime(0, now);
+                    g.gain.linearRampToValueAtTime(0.12, now + 0.01);
+                    g.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+                    o1.connect(g); o2.connect(g); g.connect(ctx.destination);
+                    o1.start(now); o2.start(now);
+                    o1.stop(now + 0.5); o2.stop(now + 0.5);
+                } catch (e) { /* silent */ }
+            },
 
             popupInit() { /* event-driven, nothing to do on init */ },
 
@@ -320,12 +350,18 @@
                 if (! n) return;
                 this.current = n;
                 this.visible = true;
+                this._playSound();
                 var self = this;
                 clearTimeout(this._autoCloseTimer);
                 this._autoCloseTimer = setTimeout(function () { self.dismiss(); }, 10000);
                 if (window.lucide && window.lucide.createIcons) {
                     setTimeout(function () { window.lucide.createIcons(); }, 0);
                 }
+            },
+
+            toggleSound() {
+                this._soundEnabled = ! this._soundEnabled;
+                try { localStorage.setItem('notif_sound', this._soundEnabled ? 'on' : 'off'); } catch (e) {}
             },
 
             dismiss() {

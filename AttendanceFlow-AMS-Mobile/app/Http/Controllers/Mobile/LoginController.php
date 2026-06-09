@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Mobile;
 
 use App\Http\Controllers\Controller;
+use App\Services\ApiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -31,27 +32,31 @@ class LoginController extends Controller
 
             if ($response->successful()) {
                 $data = $response->json();
-                
-                // Store user and token in session
+                $token = $data['token'];
+                $user = $data['user'];
+                $role = $user['roles'][0]['name'] ?? 'student';
+
                 session([
-                    'mobile_token' => $data['token'],
-                    'mobile_user' => $data['user'],
-                    'mobile_role' => $data['user']['roles'][0]['name'] ?? 'student',
+                    'mobile_token' => $token,
+                    'mobile_user' => $user,
+                    'mobile_role' => $role,
                 ]);
 
-                // Redirect based on role
-                $role = session('mobile_role');
-                if ($role === 'admin') {
-                    return redirect()->route('mobile.admin.dashboard');
-                } elseif ($role === 'teacher') {
-                    return redirect()->route('mobile.sessions');
-                } else {
-                    // Fetch student profile ID if student
-                    // In a production app we'd fetch profile from API, 
-                    // for demo we assume profile ID matches or defaults to 1
-                    $profileId = 1; // Default fallback
-                    return redirect()->route('mobile.student.dashboard', ['id' => $profileId]);
+                if ($role !== 'student') {
+                    return back()->withErrors([
+                        'email' => 'Cette application est réservée aux étudiants.',
+                    ]);
                 }
+
+                $profileData = app(ApiService::class)->getMeProfile($token);
+                if ($profileData && $profileData['profile']) {
+                    session([
+                        'mobile_student_profile_id' => $profileData['profile']['id'],
+                        'mobile_student_group_id' => $profileData['profile']['group_id'] ?? null,
+                        'mobile_student_matricule' => $profileData['profile']['matricule'] ?? null,
+                    ]);
+                }
+                return redirect()->route('mobile.home');
             }
 
             return back()->withErrors([
@@ -66,7 +71,25 @@ class LoginController extends Controller
 
     public function logout()
     {
-        session()->forget(['mobile_token', 'mobile_user', 'mobile_role']);
+        $token = session('mobile_token');
+        if ($token) {
+            try {
+                Http::withToken($token)
+                    ->post(config('services.ams.url') . '/logout');
+            } catch (\Exception $e) {
+                // ignore
+            }
+        }
+
+        session()->forget([
+            'mobile_token',
+            'mobile_user',
+            'mobile_role',
+            'mobile_student_profile_id',
+            'mobile_student_group_id',
+            'mobile_student_matricule',
+        ]);
+
         return redirect()->route('mobile.login');
     }
 }

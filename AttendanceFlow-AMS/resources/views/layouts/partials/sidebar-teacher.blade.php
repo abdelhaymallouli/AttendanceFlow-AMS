@@ -15,6 +15,11 @@
         <span>Présences</span>
         <span class="ml-auto bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">LIVE</span>
     </a>
+    <a href="{{ route('teacher.students.index') }}"
+        class="flex items-center space-x-3 px-4 py-3 {{ request()->routeIs('teacher.students.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-gray-100' }} rounded-lg transition-colors">
+        <i data-lucide="users" class="w-5 h-5"></i>
+        <span>Mes Étudiants</span>
+    </a>
     <a href="{{ route('teacher.timetable.create-request') }}"
         class="flex items-center space-x-3 px-4 py-3 {{ request()->routeIs('teacher.timetable.create-request') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-gray-100' }} rounded-lg transition-colors">
         <i data-lucide="plus-circle" class="w-5 h-5"></i>

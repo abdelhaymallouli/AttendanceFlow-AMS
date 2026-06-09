@@ -17,30 +17,27 @@
 @php
     $id = $name . '_' . \Illuminate\Support\Str::random(6);
     $paddingClass = $size === 'sm' ? 'py-2 pe-8 ps-10' : 'py-2.5 pe-9 ps-10';
-    $selectOptions = [
-        'hasSearch' => (bool) $hasSearch,
-        'placeholder' => (string) $placeholder,
-        'searchPlaceholder' => (string) $placeholder,
-    ];
-    $selectOptionsJson = json_encode($selectOptions);
+    $resolvedValue = old($name, $value);
+    $searchFlag = $hasSearch ? 'true' : 'false';
 @endphp
 
-<div class="relative inline-block w-full" @if($disabled) x-data="{ disabled: true }" @endif>
-    <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3">
+<div class="relative w-full">
+    <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3 z-10">
         <i data-lucide="{{ $icon }}" class="w-4 h-4 text-gray-400"></i>
     </div>
 
     <select
         id="{{ $id }}"
         name="{{ $name }}"
-        data-hs-select='{{ $selectOptionsJson }}'
+        data-hs-select='{"hasSearch": {{ $searchFlag }}, "placeholder": "{{ $placeholder }}", "searchPlaceholder": "{{ $placeholder }}"}'
         @change="{{ $onChange }}"
         @if($disabled) disabled @endif
         @if($formId) form="{{ $formId }}" @endif
-        class="w-full {{ $paddingClass }} text-sm border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none bg-white shadow-sm disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400"
+        class="w-full {{ $paddingClass }} text-sm text-gray-900 placeholder-gray-400 border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none bg-white shadow-sm disabled:opacity-50 disabled:pointer-events-none appearance-none"
+        style="background-image: none;"
     >
         @if($allowBlank)
-            <option value="" @selected(old($name, $value ?? '') === '' || $value === null)>
+            <option value="" @selected($resolvedValue === '' || $resolvedValue === null)>
                 {{ $blankText }}
             </option>
         @endif
@@ -48,18 +45,22 @@
             @if(is_array($optLabel))
                 <optgroup label="{{ $optValue }}">
                     @foreach($optLabel as $subValue => $subLabel)
-                        <option value="{{ $subValue }}" @selected((string) old($name, $value ?? '') === (string) $subValue)>
+                        <option value="{{ $subValue }}" @selected((string) $resolvedValue === (string) $subValue)>
                             {{ $subLabel }}
                         </option>
                     @endforeach
                 </optgroup>
             @else
-                <option value="{{ $optValue }}" @selected((string) old($name, $value ?? '') === (string) $optValue)>
+                <option value="{{ $optValue }}" @selected((string) $resolvedValue === (string) $optValue)>
                     {{ $optLabel }}
                 </option>
             @endif
         @endforeach
     </select>
+
+    <div class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3">
+        <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400"></i>
+    </div>
 
     @if($label)
         <label for="{{ $id }}" class="sr-only">{{ $label }}</label>

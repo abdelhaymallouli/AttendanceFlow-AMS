@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Connexion - Solicode AMS</title>
+    <title>Connexion - AttendanceFlow AMS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -22,8 +22,8 @@
             <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-indigo-200">
                 <i data-lucide="shield-check" class="w-8 h-8 text-white"></i>
             </div>
-            <h1 class="text-2xl font-black text-gray-800 tracking-tight">Solicode AMS</h1>
-            <p class="text-xs text-gray-400 font-bold uppercase tracking-wider mt-1">Espace Mobile</p>
+            <h1 class="text-2xl font-black text-gray-800 tracking-tight">AttendanceFlow</h1>
+            <p class="text-xs text-gray-400 font-bold uppercase tracking-wider mt-1">Espace Étudiant</p>
         </div>
 
         @if ($errors->any())

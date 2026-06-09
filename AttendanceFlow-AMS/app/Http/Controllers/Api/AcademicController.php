@@ -43,4 +43,14 @@ class AcademicController extends Controller
     {
         return response()->json($this->academicService->getSession($id));
     }
+
+    public function getGroupSessions($groupId)
+    {
+        return response()->json(
+            \App\Models\Session::where('group_id', $groupId)
+                ->with(['module', 'teacherProfile.user'])
+                ->orderBy('start_time', 'desc')
+                ->get()
+        );
+    }
 }

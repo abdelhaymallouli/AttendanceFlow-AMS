@@ -20,7 +20,8 @@ use Illuminate\Support\Facades\Route;
 // Auth Routes
 Route::post('login', [AuthController::class, 'login']);
 
-Route::get('me', [AuthController::class, 'me']);
+Route::get('me', [AuthController::class, 'me'])->middleware('auth:sanctum');
+Route::get('me/profile', [AuthController::class, 'meProfile'])->middleware('auth:sanctum');
 Route::post('logout', [AuthController::class, 'logout']);
 
 // Academic Routes
@@ -31,6 +32,7 @@ Route::prefix('academic')->group(function () {
     Route::get('session/{id}', [AcademicController::class, 'getSession']);
     Route::get('sessions', [AcademicController::class, 'getSessions']);
     Route::get('sessions/teacher/{id}', [AcademicController::class, 'getTeacherSessions']);
+    Route::get('sessions/group/{groupId}', [AcademicController::class, 'getGroupSessions']);
 });
 
 // Attendance Routes
@@ -50,6 +52,7 @@ Route::prefix('attendance')->group(function () {
 // Justification Routes
 Route::prefix('justifications')->group(function () {
     Route::get('pending', [JustificationController::class, 'getPending']);
+    Route::get('student/{id}', [JustificationController::class, 'getStudentJustifications']);
     Route::post('submit', [JustificationController::class, 'submit']);
 });
 

@@ -55,4 +55,21 @@ class AuthController extends Controller
     {
         return response()->json($request->user()->load('roles'));
     }
+
+    public function meProfile(Request $request)
+    {
+        $user = $request->user()->load('roles');
+
+        $profile = null;
+        if ($user->hasRole('student')) {
+            $profile = $user->studentProfile;
+        } elseif ($user->hasRole('teacher')) {
+            $profile = $user->teacherProfile;
+        }
+
+        return response()->json([
+            'user' => $user,
+            'profile' => $profile,
+        ]);
+    }
 }
