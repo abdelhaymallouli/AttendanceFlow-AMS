@@ -31,6 +31,39 @@ class QrAttendanceController extends Controller
     }
 
     /**
+     * GET /api/attendance/qr/pre-check
+     * Pre-checks network subnet matching and optional GPS positioning.
+     */
+    public function preCheck(Request $request): JsonResponse
+    {
+        $wifi = app(\App\Services\Qr\WifiSubnetService::class);
+        $geo = app(\App\Services\Qr\GeolocationService::class);
+
+        $ip = $request->ip();
+        $networkOk = $wifi->isOnCampusNetwork($ip, $request);
+
+        $lat = $request->query('latitude');
+        $lng = $request->query('longitude');
+        $accuracy = $request->query('accuracy');
+
+        $gpsOk = false;
+        $gpsReason = 'gps_missing';
+
+        if ($lat !== null && $lng !== null) {
+            $geoResult = $geo->isWithinCampus((float) $lat, (float) $lng, $accuracy !== null ? (float) $accuracy : null);
+            $gpsOk = $geoResult['ok'];
+            $gpsReason = $geoResult['reason'];
+        }
+
+        return response()->json([
+            'network_ok' => $networkOk,
+            'gps_ok' => $gpsOk,
+            'gps_reason' => $gpsReason,
+            'client_ip' => $ip,
+        ]);
+    }
+
+    /**
      * GET /api/attendance/qr/token/{sessionId}
      * Returns the active (or freshly-issued) token for a session.
      * Teachers/admins only.
@@ -49,11 +82,15 @@ class QrAttendanceController extends Controller
             return response()->json(['message' => 'Forbidden'], 403);
         }
 
-        $token = $this->tokens->generate($session);
+        $isMultiUse = request()->boolean('is_multi_use', true);
+        $ttl = request()->has('ttl') ? (int) request()->input('ttl') : null;
+
+        $token = $this->tokens->generate($session, $isMultiUse, $ttl);
         return response()->json([
             'token'      => $token['token'],
-            'issued_at'  => $token['issued_at'],
-            'expires_at' => $token['expires_at'],
+            'text_code'  => $token['text_code'],
+            'issued_at'  => now()->toIso8601String(),
+            'expires_at' => $token['expires_at']->timestamp,
             'session_id' => $session->id,
         ]);
     }

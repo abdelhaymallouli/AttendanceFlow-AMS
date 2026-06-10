@@ -11,13 +11,6 @@ use App\Http\Controllers\Mobile\AttendanceController;
 |--------------------------------------------------------------------------
 */
 
-$auth = function ($request, $next) {
-    if (!session()->has('mobile_token')) {
-        return redirect()->route('mobile.login');
-    }
-    return $next($request);
-};
-
 Route::prefix('mobile')->group(function () {
     // Auth
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('mobile.login');
@@ -25,7 +18,7 @@ Route::prefix('mobile')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('mobile.logout');
 
     // Protected student routes
-    Route::middleware($auth)->group(function () {
+    Route::middleware('auth.mobile')->group(function () {
         Route::get('/', [StudentController::class, 'home'])->name('mobile.home');
 
         // Absences

@@ -31,4 +31,14 @@
         <span>Justifications</span>
         <span class="ml-auto bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{{ \App\Models\Justification::where('status', 'pending')->count() }}</span>
     </a>
+    <a href="{{ route('admin.logs.index') }}"
+        class="flex items-center space-x-3 px-4 py-3 {{ request()->routeIs('admin.logs.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-gray-100' }} rounded-lg transition-colors">
+        <i data-lucide="shield-check" class="w-5 h-5"></i>
+        <span>Journaux émargement</span>
+    </a>
+    <a href="{{ route('admin.settings.index') }}"
+        class="flex items-center space-x-3 px-4 py-3 {{ request()->routeIs('admin.settings.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-gray-100' }} rounded-lg transition-colors">
+        <i data-lucide="settings" class="w-5 h-5"></i>
+        <span>Configuration QR</span>
+    </a>
 </div>

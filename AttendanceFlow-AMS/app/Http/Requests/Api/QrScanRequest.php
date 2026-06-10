@@ -15,7 +15,7 @@ class QrScanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'token'               => ['required', 'string', 'min:32', 'max:2048'],
+            'token'               => ['required', 'string', 'min:6', 'max:2048'],
             'student_profile_id'  => ['required', 'integer', 'exists:student_profiles,id'],
             'latitude'            => ['required', 'numeric', 'between:-90,90'],
             'longitude'           => ['required', 'numeric', 'between:-180,180'],

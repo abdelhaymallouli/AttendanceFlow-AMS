@@ -1,7 +1,7 @@
 @props([
     'name' => 'date',
     'value' => null,
-    'onChange' => 'this.form.submit()',
+    'onChange' => '',
     'icon' => 'calendar',
     'minDate' => null,
     'maxDate' => null,

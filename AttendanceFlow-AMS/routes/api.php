@@ -43,6 +43,7 @@ Route::prefix('attendance')->group(function () {
 
     // QR attendance (multi-factor: HMAC + GPS + Wi-Fi + device fingerprint)
     Route::middleware('auth:sanctum')->prefix('qr')->group(function () {
+        Route::get('pre-check', [\App\Http\Controllers\Api\QrAttendanceController::class, 'preCheck']);
         Route::get('token/{sessionId}', [\App\Http\Controllers\Api\QrAttendanceController::class, 'issueToken']);
         Route::post('scan', [\App\Http\Controllers\Api\QrAttendanceController::class, 'scan']);
         Route::post('sync-offline', [\App\Http\Controllers\Api\QrAttendanceController::class, 'syncOffline']);

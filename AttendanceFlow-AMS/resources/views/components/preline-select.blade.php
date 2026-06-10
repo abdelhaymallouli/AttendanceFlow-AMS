@@ -2,7 +2,7 @@
     'name',
     'value' => null,
     'options' => [],
-    'onChange' => 'this.form.submit()',
+    'onChange' => '',
     'icon' => 'list',
     'label' => null,
     'placeholder' => 'Sélectionner...',

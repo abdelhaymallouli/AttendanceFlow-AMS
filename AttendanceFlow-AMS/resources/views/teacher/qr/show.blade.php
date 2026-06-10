@@ -26,6 +26,7 @@
     $config = [
         'sessionId' => (int) $session->id,
         'initialToken' => $token['token'] ?? '',
+        'initialTextCode' => $token['text_code'] ?? '',
         'initialExpiresAt' => $token ? (int) $token['expires_at']->timestamp : 0,
         'ttlSeconds' => (int) config('qr_attendance.token.ttl_seconds'),
         'students' => $studentsData,
@@ -162,6 +163,11 @@
                         <div class="flex flex-col items-center gap-3">
                             <div class="w-56 h-56 bg-white border-2 border-gray-200 rounded-2xl p-3 flex items-center justify-center shadow-sm">
                                 <div id="qr-canvas" class="w-full h-full"></div>
+                            </div>
+                            <!-- Unique QR Text Code Display -->
+                            <div x-show="textCode" x-cloak class="text-center bg-gray-50 border border-gray-200 rounded-xl py-1 px-3 w-full">
+                                <span class="text-[10px] text-gray-500 uppercase font-semibold block">Code d'émargement alternatif</span>
+                                <span class="text-lg font-black tracking-widest text-indigo-700 font-mono select-all" x-text="textCode"></span>
                             </div>
                             <div class="flex items-center justify-between w-full px-1 text-[10px] text-gray-500 font-mono uppercase tracking-wider">
                                 <span>Projection Active v1.0</span>
@@ -449,6 +455,10 @@
             <div class="bg-white p-6 rounded-2xl border-4 border-blue-100 inline-block">
                 <div id="qr-canvas-fullscreen" class="w-[480px] h-[480px]"></div>
             </div>
+            <div x-show="textCode" x-cloak class="mt-4 bg-gray-50 border border-gray-200 rounded-xl py-2 px-6 block">
+                <span class="text-xs text-gray-500 uppercase font-semibold block">Code d'émargement alternatif</span>
+                <span class="text-3xl font-black tracking-widest text-indigo-700 font-mono select-all" x-text="textCode"></span>
+            </div>
             <p class="text-3xl font-mono text-gray-700 mt-4">
                 <span x-text="secondsLeft"></span>s
             </p>
@@ -463,6 +473,7 @@ function qrSessionWorkspace() {
     return {
         sessionId: 0,
         currentToken: '',
+        textCode: '',
         expiresAt: new Date(0),
         ttlSeconds: 30,
         secondsLeft: 30,
@@ -502,6 +513,7 @@ function qrSessionWorkspace() {
             }
             this.sessionId = cfg.sessionId;
             this.currentToken = cfg.initialToken || '';
+            this.textCode = cfg.initialTextCode || '';
             this.expiresAt = new Date((cfg.initialExpiresAt || 0) * 1000);
             this.ttlSeconds = cfg.ttlSeconds || 30;
             this.secondsLeft = this.ttlSeconds;
@@ -674,6 +686,7 @@ function qrSessionWorkspace() {
             .then(function (data) {
                 if (!data || !data.token) return;
                 self.currentToken = data.token;
+                self.textCode = data.text_code || '';
                 self.expiresAt = new Date(data.expires_at * 1000);
                 self.renderQr('qr-canvas', self.currentToken);
                 if (self.isFullscreen) self.renderQr('qr-canvas-fullscreen', self.currentToken);

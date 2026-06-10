@@ -81,7 +81,7 @@
                          class="border rounded-lg p-3 text-xs flex items-start gap-2">
                         <i :data-lucide="issue.level === 'error' ? 'x-circle' : 'alert-triangle'" class="w-4 h-4 flex-shrink-0 mt-0.5"></i>
                         <div>
-                            <p class="font-bold" x-text="issue.code"></p>
+                            <p class="font-bold" x-text="issue.code === 'teacher_conflict' ? 'Conflit enseignant' : (issue.code === 'group_conflict' ? 'Conflit groupe' : (issue.code === 'room_conflict' ? 'Conflit salle' : (issue.code === 'module_hours_exceeded' ? 'Dépassement heures module' : (issue.code === 'module_hours_fully_used' ? 'Module complet' : 'Information'))))"></p>
                             <p x-text="issue.message"></p>
                         </div>
                     </div>

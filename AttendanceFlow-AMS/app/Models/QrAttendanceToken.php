@@ -16,9 +16,11 @@ class QrAttendanceToken extends Model
     protected $fillable = [
         'session_id',
         'token_hash',
+        'text_code',
         'nonce',
         'issued_at',
         'expires_at',
+        'is_multi_use',
         'is_consumed',
         'consumed_by_student_id',
         'consumed_at',
@@ -30,6 +32,7 @@ class QrAttendanceToken extends Model
         'expires_at' => 'datetime',
         'consumed_at' => 'datetime',
         'is_consumed' => 'boolean',
+        'is_multi_use' => 'boolean',
     ];
 
     public function session(): BelongsTo

@@ -105,13 +105,19 @@ class ValidationScoreService extends BaseService
         $total = array_sum(array_map(fn ($s) => $s['points'], $signals));
         $max = array_sum($weights);
 
-        $status = match (true) {
-            $total >= (int) $thresholds['present_min'] => 'present',
-            $total >= (int) $thresholds['late_min']    => 'late',
-            default                                     => 'rejected',
-        };
+        $allPassed = $hmacOk && $geo['ok'] && $wifiOk;
+        $status = $allPassed ? 'present' : 'rejected';
 
-        $rejectionReason = $status === 'rejected' ? 'validation_score_below_threshold' : null;
+        $rejectionReason = null;
+        if (! $allPassed) {
+            if (! $geo['ok']) {
+                $rejectionReason = $geo['reason'] ?? 'outside_campus_radius';
+            } elseif (! $wifiOk) {
+                $rejectionReason = 'ip_not_in_campus_subnets';
+            } else {
+                $rejectionReason = 'validation_failed';
+            }
+        }
 
         return [
             'status' => $status,

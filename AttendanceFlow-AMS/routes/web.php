@@ -108,6 +108,11 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/sessions/{session}/qr', [\App\Http\Controllers\Teacher\QrSessionController::class, 'show'])->name('admin.sessions.qr.show');
         Route::post('/sessions/{session}/qr/reinitialize', [\App\Http\Controllers\Teacher\QrSessionController::class, 'reinitialize'])->name('admin.sessions.qr.reinitialize');
         Route::get('/sessions/{session}/live-scans', [\App\Http\Controllers\Teacher\QrSessionController::class, 'liveScans'])->name('admin.sessions.live-scans');
+
+        // QR Settings & Attendance Logs
+        Route::get('/settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('admin.settings.index');
+        Route::post('/settings', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('admin.settings.update');
+        Route::get('/logs', [\App\Http\Controllers\Admin\AttendanceLogController::class, 'index'])->name('admin.logs.index');
     });
 
     // Student Group

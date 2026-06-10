@@ -25,9 +25,9 @@ class QrTokenService extends BaseService
      *
      * @return array{token: string, expires_at: \Carbon\Carbon, token_id: int}
      */
-    public function generate(Session $session): array
+    public function generate(Session $session, bool $isMultiUse = true, ?int $ttlSeconds = null): array
     {
-        $ttl = (int) config('qr_attendance.token.ttl_seconds', 30);
+        $ttl = $ttlSeconds ?? (int) config('qr_attendance.token.ttl_seconds', 30);
         $issuedAt = now();
         $expiresAt = (clone $issuedAt)->addSeconds($ttl);
         $nonce = Str::random(32);
@@ -44,19 +44,27 @@ class QrTokenService extends BaseService
         $signature = $this->sign($payloadB64);
         $token = $payloadB64 . '.' . $signature;
 
+        $textCode = null;
+        do {
+            $textCode = Str::upper(Str::random(6));
+        } while (QrAttendanceToken::where('text_code', $textCode)->where('expires_at', '>', now())->exists());
+
         $record = QrAttendanceToken::create([
             'session_id' => $session->id,
             'token_hash' => $signature,
+            'text_code' => $textCode,
             'nonce' => $nonce,
             'issued_at' => $issuedAt,
             'expires_at' => $expiresAt,
+            'is_multi_use' => $isMultiUse,
             'is_consumed' => false,
         ]);
 
-        $this->logInfo("QR token issued for session {$session->id}, expires at {$expiresAt}");
+        $this->logInfo("QR token issued for session {$session->id}, expires at {$expiresAt}, code {$textCode}");
 
         return [
             'token' => $token,
+            'text_code' => $textCode,
             'expires_at' => $expiresAt,
             'token_id' => $record->id,
         ];
@@ -69,6 +77,19 @@ class QrTokenService extends BaseService
      */
     public function verify(string $token): ?QrAttendanceToken
     {
+        if (strlen($token) === 6 && preg_match('/^[A-Z0-9]{6}$/', $token)) {
+            $record = QrAttendanceToken::query()
+                ->where('text_code', $token)
+                ->where('expires_at', '>', now())
+                ->first();
+
+            if (! $record || ! $record->isValid()) {
+                return null;
+            }
+
+            return $record;
+        }
+
         $parts = explode('.', $token);
         if (count($parts) !== 2) {
             return null;
@@ -128,11 +149,14 @@ class QrTokenService extends BaseService
     }
 
     /**
-     * Atomically mark a token as consumed for the given student. Uses
-     * a row-level lock to prevent double-spend.
+     * Atomically mark a token as consumed for the given student.
      */
     public function consume(QrAttendanceToken $token, int $studentProfileId, ?string $ip = null): bool
     {
+        if ($token->is_multi_use) {
+            return $token->isValid();
+        }
+
         $updated = QrAttendanceToken::query()
             ->where('id', $token->id)
             ->where('is_consumed', false)
