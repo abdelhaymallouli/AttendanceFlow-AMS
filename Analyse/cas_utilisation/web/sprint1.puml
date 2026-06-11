@@ -13,28 +13,30 @@ actor "Étudiant" as Student
 
 rectangle "Web - Sprint 1 (MVP)" {
     usecase "S'authentifier" as UC_W01
-    usecase "Gestion avancée des absences" as UC_W_ABS
-    usecase "Visualiser le Dashboard (Lecture seule)" as UC_W03
+    usecase "Gestion avancée des absences\n(Correction, Clôture)" as UC_W_ABS
+    usecase "Visualiser le Dashboard" as UC_W03
     usecase "Créer ses séances\n(Modules/Groups assignés)" as UC_W08
+    usecase "Gérer les comptes & structures\n(Utilisateurs)" as UC_W02
 }
 
 rectangle "Mobile - Sprint 1 (MVP)" {
-    usecase "Consulter les absences (Mobile)" as UC_M05
     usecase "Consulter ses absences (Mobile)" as UC_M06
+    usecase "S'authentifier (Mobile)" as UC_M01
 }
 
 Admin -- UC_W_ABS
 Admin -- UC_W03
-Admin -- UC_M05
+Admin -- UC_W02
 
 Trainer -- UC_W_ABS
 Trainer -- UC_W08
 
 Student -- UC_M06
+Student -- UC_M01
 
 UC_W08 ..> UC_W01 : <<include>>
 UC_W_ABS ..> UC_W01 : <<include>>
 UC_W03 ..> UC_W01 : <<include>>
-
+UC_M06 ..> UC_M01 : <<include>>
 
 @enduml

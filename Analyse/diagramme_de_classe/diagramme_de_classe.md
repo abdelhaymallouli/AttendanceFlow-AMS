@@ -12,247 +12,218 @@ Ce document présente l'architecture technique détaillée et le diagramme de cl
   - **QR Attendance Service** : Génération/vérification de tokens HMAC, validation multi-facteur (géofencing, Wi-Fi campus, empreinte appareil), file d'attente hors-ligne.
 - **Base de données** : Relations inter-services modélisées.
 
-## 📌 Diagramme de Classe détaillé
+## 📌 Diagramme de Classe détaillé (Corrigé)
 
 ```mermaid
 classDiagram
-    %% Spatie / IAM Package
-    namespace IAM_Auth_Service {
-        class User {
-            +int id
-            +string name
-            +string email
-            +string password
-            +login()
-            +logout()
-            +hasRole(role)
-            +hasPermissionTo(permission)
-        }
-        
-        class Role {
-            +int id
-            +string name
-            +string guard_name
-        }
-        
-        class Permission {
-            +int id
-            +string name
-            +string guard_name
-        }
-    }
 
-    %% Academic Package
-    namespace Academic_Service {
-        class StudentProfile {
-            +int id
-            +string matricule
-        }
+class User {
+    +int id
+    +string name
+    +string email
+    +string password
+    +login()
+    +logout()
+    +hasRole(role) bool
+    +hasPermissionTo(perm) bool
+}
 
-        class TeacherProfile {
-            +int id
-            +string specialty
-        }
+class Role {
+    +int id
+    +string name
+    +string guard_name
+}
 
-        class Group {
-            +int id
-            +string name
-        }
+class Permission {
+    +int id
+    +string name
+    +string guard_name
+}
 
-        class Filiere {
-            +int id
-            +string name
-            +string code
-        }
+class DeviceFingerprint {
+    +int id
+    +string fingerprint_hash
+    +string user_agent
+    +int trust_score
+    +timestamp first_seen_at
+    +timestamp last_seen_at
+    +register(userId, hash, ua) bool
+    +isKnown(hash) bool
+    +revoke()
+}
 
-        class Module {
-            +int id
-            +string name
-            +string code
-            +float coefficient
-        }
+class StudentProfile {
+    +int id
+    +string matricule
+}
 
-        class Session {
-            +int id
-            +time start_time
-            +time end_time
-            +float duration_hours
-            +string type
-        }
+class TeacherProfile {
+    +int id
+    +string specialty
+}
 
-    }
+class Group {
+    +int id
+    +string name
+}
 
-    %% Attendance Package
-    namespace Attendance_Service {
-        class AttendanceRecord {
-            +int id
-            +enum status
-            +date date
-            +int justification_id
-            +enum check_in_method
-            +decimal latitude
-            +decimal longitude
-            +int distance_meters
-            +string wifi_ip
-            +int device_fingerprint_id
-            +int qr_token_id
-            +timestamp synced_at
-            +int validation_score
-            +string rejection_reason
-        }
+class Filiere {
+    +int id
+    +string name
+    +string code
+}
 
-        class Justification {
-            +int id
-            +int session_id
-            +string reason
-            +string document_name
-            +date start_date
-            +date end_date
-            +enum status
-            +timestamp submitted_at
-            +timestamp reviewed_at
-            +int reviewed_by
-        }
-    }
+class Module {
+    +int id
+    +string name
+    +string code
+    +float coefficient
+}
 
-    %% QR Attendance Service
-    namespace QR_Attendance_Service {
-        class QrAttendanceToken {
-            +int id
-            +int session_id
-            +string token_hash
-            +string nonce
-            +timestamp issued_at
-            +timestamp expires_at
-            +bool is_consumed
-            +int consumed_by_student_id
-            +timestamp consumed_at
-            +string consumed_ip
-            +generate(sessionId, ttl) string
-            +verify(plainToken) bool
-            +consume(studentId, ip) void
-            +isValid() bool
-            +scope active()
-        }
+class CampusLocation {
+    +int id
+    +string name
+    +string code
+    +decimal latitude
+    +decimal longitude
+    +int radius_meters
+    +json allowed_subnets
+    +bool is_active
+    +contains(lat, lng) bool
+    +ipAllowed(ip) bool
+}
 
-        class DeviceFingerprint {
-            +int id
-            +int user_id
-            +string fingerprint_hash
-            +timestamp first_seen_at
-            +timestamp last_seen_at
-            +int trust_score
-            +string user_agent
-            +register(userId, hash, ua) bool
-            +isKnown(hash) bool
-            +revoke() void
-        }
+class Session {
+    +int id
+    +date date
+    +time start_time
+    +time end_time
+    +float duration_hours
+    +string type
+}
 
-        class CampusLocation {
-            +int id
-            +string name
-            +string code
-            +decimal latitude
-            +decimal longitude
-            +int radius_meters
-            +json allowed_subnets
-            +bool is_active
-            +contains(lat, lng) bool
-            +ipAllowed(ip) bool
-        }
+class Attendance {
+    +int id
+    +enum status
+    +date date
+    +enum check_in_method
+    +decimal latitude
+    +decimal longitude
+    +int distance_meters
+    +string wifi_ip
+    +int validation_score
+    +string rejection_reason
+    +timestamp synced_at
+}
 
-        class QrTokenService {
-            +generate(sessionId) QrAttendanceToken
-            +verify(token) QrAttendanceToken|null
-            +consume(token, studentId, ip) void
-            -sign(payload) string
-            -verifyHmac(plain, hash) bool
-        }
+class QrAttendanceToken {
+    +int id
+    +string token_hash
+    +string nonce
+    +timestamp issued_at
+    +timestamp expires_at
+    +bool is_consumed
+    +timestamp consumed_at
+    +string consumed_ip
+    +generate(sessionId, ttl) string
+    +verify(plainToken) bool
+    +consume(studentId, ip)
+    +isValid() bool
+}
 
-        class GeolocationService {
-            +haversine(lat1, lng1, lat2, lng2) float
-            +isWithinCampus(lat, lng, accuracy) array
-            +getDistanceToCampus(lat, lng) float
-        }
+class Justification {
+    +int id
+    +string reason
+    +string document_name
+    +date start_date
+    +date end_date
+    +enum status
+    +timestamp submitted_at
+    +timestamp reviewed_at
+}
 
-        class WifiSubnetService {
-            +ipInRange(ip, cidr) bool
-            +getClientIp(Request) string
-            +isOnCampusNetwork(Request) bool
-            +matchSubnets(ip, subnets[]) bool
-        }
+class Notification {
+    +int id
+    +string title
+    +string message
+    +string type
+    +bool is_read
+    +timestamp created_at
+}
 
-        class DeviceFingerprintService {
-            +generate(userAgent, screen, tz) string
-            +register(userId, hash) DeviceFingerprint
-            +verify(userId, hash) bool
-            +isTrustedDevice(userId, hash) bool
-        }
+class AttendanceReport {
+    +int id
+    +string title
+    +enum scope
+    +date from_date
+    +date to_date
+    +float absence_rate
+    +int total_sessions
+    +int total_absences
+    +timestamp generated_at
+    +generate()
+    +export(format)
+}
 
-        class ValidationScoreService {
-            +evaluate(context) ValidationResult
-            -scoreHmac(token) int
-            -scoreGeolocation(lat, lng) int
-            -scoreWifi(ip) int
-            -scoreDevice(fp) int
-        }
+class AbsenceAlert {
+    +int id
+    +int threshold_percent
+    +bool is_triggered
+    +timestamp triggered_at
+    +evaluate(studentId) bool
+    +notify(userId)
+}
 
-        class OfflineQueueService {
-            +enqueue(scanData) string
-            +sync(batch[]) SyncReport
-            +isStale(timestamp) bool
-            +deduplicate(batch[]) array
-        }
-    }
+User "1" --> "0..1" StudentProfile : has
+User "1" --> "0..1" TeacherProfile : has
+User "*" --> "*" Role : hasRoles
+Role "*" --> "*" Permission : hasPermissions
+User "1" --> "*" DeviceFingerprint : owns
 
-    %% Notification Service
-    namespace Notification_Service {
-        class Notification {
-            +int id
-            +string title
-            +string message
-            +string type
-            +boolean is_read
-            +timestamp created_at
-        }
-    }
+StudentProfile "*" --> "1" Group : belongsTo
+Group "*" --> "1" Filiere : partOf
+TeacherProfile "*" --> "*" Module : teaches
+TeacherProfile "*" --> "*" Group : manages
+Session "*" --> "1" Group : scheduledFor
+Session "*" --> "1" TeacherProfile : taughtBy
+Session "*" --> "1" Module : covers
+Session "*" --> "1" CampusLocation : hostedAt
 
-    %% Relationships
-    User "1" -- "0..1" StudentProfile : has
-    User "1" -- "0..1" TeacherProfile : has
-    User "*" -- "*" Role : hasRoles
-    Role "*" -- "*" Permission : hasPermissions
-    User "1" -- "*" DeviceFingerprint : owns
+Session "1" --> "*" QrAttendanceToken : generates
+Attendance "*" --> "1" StudentProfile : recordedFor
+Attendance "*" --> "1" Session : linkedTo
+Attendance "*" --> "0..1" QrAttendanceToken : validatedBy
+Attendance "*" --> "0..1" DeviceFingerprint : from
+Attendance "1" --> "0..1" Justification : hasJustification
+Justification "*" --> "1" StudentProfile : submittedBy
+Justification "*" --> "1" Session : references
+Justification "*" --> "0..1" User : reviewedBy
 
-    StudentProfile "*" -- "1" Group : belongsTo
-    Group "*" -- "1" Filiere : partOf
-    
-    TeacherProfile "*" -- "*" Module : teaches
-    TeacherProfile "*" -- "*" Group : manages
-    
-    Session "*" -- "1" Group : scheduled for
-    Session "*" -- "1" TeacherProfile : assigned to
-    Session "*" -- "1" Module : focused on
-    Session "1" -- "*" QrAttendanceToken : generates
-    CampusLocation "1" -- "*" Session : hosted at
+AbsenceAlert "*" --> "1" StudentProfile : monitors
+AbsenceAlert "*" --> "1" Module : regarding
+AbsenceAlert "1" --> "*" Notification : triggers
+Notification "*" --> "1" User : sentTo
 
-    AttendanceRecord "*" -- "1" StudentProfile : associatedWith
-    AttendanceRecord "*" -- "1" Session : linkedTo
-    AttendanceRecord "*" -- "0..1" QrAttendanceToken : validatedBy
-    AttendanceRecord "*" -- "0..1" DeviceFingerprint : from
-    
-    StudentProfile "1" -- "*" Justification : provides
-    Justification "*" -- "1" Session : references
-
-    User "1" -- "*" Notification : receives
-
-    QrTokenService ..> QrAttendanceToken : manages
-    ValidationScoreService ..> QrAttendanceToken : uses
-    ValidationScoreService ..> GeolocationService : delegates
-    ValidationScoreService ..> WifiSubnetService : delegates
-    ValidationScoreService ..> DeviceFingerprintService : delegates
-    OfflineQueueService ..> AttendanceRecord : persists
+AttendanceReport "*" --> "1" Group : scopedTo
+AttendanceReport "*" --> "1" User : generatedBy
 ```
+
+---
+
+## ✅ Changements effectués sur le diagramme de classes
+
+| # | Changement | Raison |
+|---|-----------|--------|
+| 1 | `AttendanceRecord` → `Attendance` | Nom plus standard et court |
+| 2 | Ajout de `date` dans `Session` | Une session a une date précise (indispensable) |
+| 3 | Suppression de `justification_id` dans `Attendance` | Remplacé par une relation directe `Attendance * -- 0..1 Justification` |
+| 4 | Suppression de `session_id` dans `Justification` | Redondant car la relation `Justification * -- 1 Session` existe déjà |
+| 5 | `reviewed_by` (int) → relation `Justification * -- 0..1 User` | Un justificatif est revu par un utilisateur, pas un simple ID |
+| 6 | Ajout de `user_id` dans `Notification` | Explicit dans l'attribut plutôt que implicite via la relation |
+| 7 | Suppression de `qr_token_id` et `device_fingerprint_id` de `Attendance` | Remplacés par les relations directes `Attendance * -- 0..1 QrAttendanceToken` et `DeviceFingerprint` |
+| 8 | Ajout relation `Attendance * -- 0..1 Justification : justifiedBy` | Lien direct entre une présence et sa justification |
+| 9 | `CampusLocation -- Session : hosted at` → `hosts` | Verbe plus clair, relation correcte |
+| 10 | Suppression `consumed_by_student_id` de `QrAttendanceToken` | Remplacé par relation via `Attendance` (le token est lié à l'étudiant consommateur via Attendance) |
 
 ## 🔄 Sessions Dynamiques (Changeables)
 

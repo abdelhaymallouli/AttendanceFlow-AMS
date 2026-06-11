@@ -63,7 +63,7 @@
                         'rejected' => 'Refusé',
                     ]"
                     icon="filter"
-                    onChange="filterStatus = this.value; filterJustifications()"
+                    onChange="filterStatus = $event.target.value; filterJustifications()"
                     :allowBlank="false"
                 />
             </div>

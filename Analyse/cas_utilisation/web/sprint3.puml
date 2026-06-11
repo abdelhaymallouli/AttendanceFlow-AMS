@@ -1,5 +1,5 @@
 @startuml sprint3_web
-title Sprint 3 - Plateforme Web + Mobile (IA & Interactions Mobile)
+title Sprint 3 - QR Attendance, IA & Mobile Interactions
 left to right direction
 
 skinparam usecase {
@@ -13,27 +13,28 @@ actor "Formateur" as Trainer
 
 rectangle "Web - Sprint 3" {
     usecase "Générer une analyse IA des rapports\n(Modèle IA d'absentéisme & Synthèse)" as UC_W_AI
-    usecase "Exporter les rapports (CSV /Excel)" as UC_WXP
+    usecase "Exporter les rapports de synthèse\n(PDF, Excel)" as UC_W07R
+    usecase "Exporter la liste des étudiants\net l'historique des absences\n(Excel)" as UC_W07
 }
 
 rectangle "Mobile - Sprint 3" {
-    usecase "Pointer les absences (Flash)" as UC_M02
+    usecase "Pointer par scan QR" as UC_M02
     usecase "Saisir motif de retard" as UC_M02a
-    usecase "Soumettre un justificatif (Mobile)" as UC_M03
 }
 
 ' Web Links
 Admin -- UC_W_AI
 Trainer -- UC_W_AI
-Admin -- UC_WXP
-Trainer -- UC_WXP
+Admin -- UC_W07R
+Trainer -- UC_W07R
+Admin -- UC_W07
+Trainer -- UC_W07
 
 ' Mobile Links
-Trainer -- UC_M02
-Admin -- UC_M02
+Student -- UC_M02
+
 UC_M02 <.. UC_M02a : <<extend>>
 
-Student -- UC_M03
 
 
 @enduml

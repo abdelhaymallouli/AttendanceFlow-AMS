@@ -11,7 +11,7 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto">
-    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden" x-data="sessionForm('', '')">
+    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden" x-data="sessionForm('09:00', '11:00')">
         <div class="p-6 border-b border-gray-200 bg-gray-50/50">
             <h3 class="text-lg font-semibold text-gray-800">New Session Configuration</h3>
             <p class="text-sm text-gray-500">Fill in the module, teacher, and schedule for the new session.</p>
@@ -19,6 +19,16 @@
 
         <form method="POST" action="{{ route('admin.sessions.store') }}" class="p-6 md:p-8 space-y-6">
             @csrf
+
+            @if ($errors->any())
+            <div class="p-4 text-sm text-red-800 rounded-lg bg-red-50 border border-red-200">
+                <ul class="list-disc list-inside space-y-0.5">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Module Selection -->
