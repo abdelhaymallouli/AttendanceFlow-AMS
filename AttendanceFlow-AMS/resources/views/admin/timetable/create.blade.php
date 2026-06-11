@@ -32,56 +32,45 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Module *</label>
-                    <x-preline-select
-                        name="module_id"
-                        :options="$modules->pluck('name', 'id')"
-                        placeholder="Choisir un module…"
-                        icon="book"
-                        :hasSearch="true"
-                        :allowBlank="false"
-                        :value="old('module_id')"
-                    />
+                    <select name="module_id" class="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        <option value="" disabled>Choisir un module…</option>
+                        @foreach($modules as $module)
+                            <option value="{{ $module->id }}" @selected(old('module_id') == $module->id)>{{ $module->name }}</option>
+                        @endforeach
+                    </select>
                     @error('module_id') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Type *</label>
-                    <x-preline-select
-                        name="type"
-                        :options="['lecture' => 'Cours (CM)', 'td' => 'TD', 'tp' => 'TP']"
-                        placeholder="Choisir un type…"
-                        icon="tag"
-                        :allowBlank="false"
-                        :value="old('type', 'lecture')"
-                    />
+                    <select name="type" class="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        <option value="" disabled>Choisir un type…</option>
+                        <option value="lecture" @selected(old('type', 'lecture') == 'lecture')>Cours (CM)</option>
+                        <option value="td" @selected(old('type', 'lecture') == 'td')>TD</option>
+                        <option value="tp" @selected(old('type', 'lecture') == 'tp')>TP</option>
+                    </select>
                     @error('type') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Groupe *</label>
-                    <x-preline-select
-                        name="group_id"
-                        :options="$groups->mapWithKeys(fn($g) => [$g->id => ($g->filiere?->name ? $g->filiere->name.' · ' : '').$g->name])"
-                        placeholder="Choisir un groupe…"
-                        icon="users"
-                        :hasSearch="true"
-                        :allowBlank="false"
-                        :value="old('group_id')"
-                    />
+                    <select name="group_id" class="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        <option value="" disabled>Choisir un groupe…</option>
+                        @foreach($groups as $group)
+                            <option value="{{ $group->id }}" @selected(old('group_id') == $group->id)>{{ $group->filiere?->name ? $group->filiere->name.' · ' : '' }}{{ $group->name }}</option>
+                        @endforeach
+                    </select>
                     @error('group_id') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Enseignant *</label>
-                    <x-preline-select
-                        name="teacher_profile_id"
-                        :options="$teachers->mapWithKeys(fn($t) => [$t->id => $t->user->name])"
-                        placeholder="Choisir un enseignant…"
-                        icon="user"
-                        :hasSearch="true"
-                        :allowBlank="false"
-                        :value="old('teacher_profile_id')"
-                    />
+                    <select name="teacher_profile_id" class="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        <option value="" disabled>Choisir un enseignant…</option>
+                        @foreach($teachers as $teacher)
+                            <option value="{{ $teacher->id }}" @selected(old('teacher_profile_id') == $teacher->id)>{{ $teacher->user->name }}</option>
+                        @endforeach
+                    </select>
                     @error('teacher_profile_id') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
                 </div>
 

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>SoliCode AMS | Attendance Redefined</title>
+<title>SoliCode AMS | Gestion des Présences</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
 <style>
@@ -260,20 +260,20 @@ footer{border-top:1px solid var(--border);padding:2.5rem 0}
       <span class="logo-text">solicode<span>AMS</span></span>
     </a>
     <div class="nav-links">
-      <a href="#features">Features</a>
-      <a href="#how">How it works</a>
-      <a href="#roles">Roles</a>
+      <a href="#features">Fonctionnalités</a>
+      <a href="#how">Comment ça marche</a>
+      <a href="#roles">Rôles</a>
     </div>
     <div class="nav-cta">
-      <a href="/login" class="btn-primary"><i class="bi bi-box-arrow-in-right"></i> Access Portal</a>
+      <a href="/login" class="btn-primary"><i class="bi bi-box-arrow-in-right"></i> Accès portail</a>
       <button class="nav-hamburger" id="hamburger" aria-label="Menu"><i class="bi bi-list"></i></button>
     </div>
   </div>
   <div class="mobile-nav" id="mobileNav">
-    <a href="#features">Features</a>
-    <a href="#how">How it works</a>
-    <a href="#roles">Roles</a>
-    <a href="/login" style="color:var(--accent);font-weight:600">Access Portal →</a>
+    <a href="#features">Fonctionnalités</a>
+    <a href="#how">Comment ça marche</a>
+    <a href="#roles">Rôles</a>
+    <a href="/login" style="color:var(--accent);font-weight:600">Accès portail →</a>
   </div>
 </nav>
 
@@ -286,31 +286,31 @@ footer{border-top:1px solid var(--border);padding:2.5rem 0}
           <div class="pulse-dot"></div>
           SoliCode AMS · 2026
         </div>
-        <h1>Attendance<br/>management,<br/><em>reinvented.</em></h1>
-        <p>A real-time ecosystem connecting teachers, students, and administrators. Zero paper, full visibility, every session.</p>
+        <h1>Gestion des<br/>présences,<br/><em>réinventée.</em></h1>
+        <p>Un écosystème temps réel connectant formateurs, étudiants et administrateurs. Zéro papier, visibilité totale, chaque séance.</p>
         <div class="hero-actions">
-          <a href="/login" class="btn-hero btn-hero-primary"><i class="bi bi-box-arrow-in-right"></i> Access Portal</a>
-          <a href="#how" class="btn-hero btn-hero-secondary"><i class="bi bi-play-circle"></i> See how it works</a>
+          <a href="/login" class="btn-hero btn-hero-primary"><i class="bi bi-box-arrow-in-right"></i> Accès portail</a>
+          <a href="#how" class="btn-hero btn-hero-secondary"><i class="bi bi-play-circle"></i> Voir le fonctionnement</a>
         </div>
       </div>
 
       <div class="hero-visual">
         <div class="dashboard-card">
           <div class="dash-header">
-            <span class="dash-title">Session · Module Web — Grp 3</span>
-            <span class="dash-date">Today, 09:00 – 11:00</span>
+            <span class="dash-title">Séance · Module Web — Grp 3</span>
+            <span class="dash-date">Aujourd'hui, 09:00 – 11:00</span>
           </div>
 
           <div class="attendance-row">
             <div class="att-avatar" style="background:#e0e9ff;color:#1a56db">AS</div>
             <span class="att-name">Amine Saidi</span>
-            <span class="att-status status-present">Present</span>
+            <span class="att-status status-present">Présent</span>
             <span class="att-time">08:57</span>
           </div>
           <div class="attendance-row">
             <div class="att-avatar" style="background:#fef3c7;color:#d97706">LM</div>
             <span class="att-name">Laila Moussaoui</span>
-            <span class="att-status status-late">Late</span>
+            <span class="att-status status-late">Retard</span>
             <span class="att-time">09:14</span>
           </div>
           <div class="attendance-row">
@@ -322,13 +322,13 @@ footer{border-top:1px solid var(--border);padding:2.5rem 0}
           <div class="attendance-row">
             <div class="att-avatar" style="background:#e6f8f1;color:#0fa96a">HZ</div>
             <span class="att-name">Hana Zaoui</span>
-            <span class="att-status status-present">Present</span>
+            <span class="att-status status-present">Présent</span>
             <span class="att-time">08:59</span>
           </div>
 
           <div class="progress-section">
             <div class="progress-label">
-              <span>Attendance rate</span>
+              <span>Taux de présence</span>
               <strong>82%</strong>
             </div>
             <div class="progress-track"><div class="progress-fill"></div></div>
@@ -338,16 +338,16 @@ footer{border-top:1px solid var(--border);padding:2.5rem 0}
         <div class="float-badge fb-1">
           <div class="float-badge-icon" style="background:var(--green-light);color:var(--green)"><i class="bi bi-check2-all"></i></div>
           <div>
-            <div style="font-size:.7rem;font-weight:600;color:var(--ink)">Session submitted</div>
-            <div style="font-size:.65rem;color:var(--ink-mute)">Synced 2s ago</div>
+            <div style="font-size:.7rem;font-weight:600;color:var(--ink)">Séance soumise</div>
+            <div style="font-size:.65rem;color:var(--ink-mute)">Synchronisé il y a 2s</div>
           </div>
         </div>
 
         <div class="float-badge fb-2">
           <div class="float-badge-icon" style="background:var(--amber-light);color:var(--amber)"><i class="bi bi-file-earmark-check"></i></div>
           <div>
-            <div style="font-size:.7rem;font-weight:600;color:var(--ink)">Justification approved</div>
-            <div style="font-size:.65rem;color:var(--ink-mute)">Medical · Amine S.</div>
+            <div style="font-size:.7rem;font-weight:600;color:var(--ink)">Justification approuvée</div>
+            <div style="font-size:.65rem;color:var(--ink-mute)">Médical · Amine S.</div>
           </div>
         </div>
       </div>
@@ -361,19 +361,19 @@ footer{border-top:1px solid var(--border);padding:2.5rem 0}
     <div class="stats-grid">
       <div class="stat-item">
         <div class="stat-num">30s</div>
-        <div class="stat-label">Avg. session entry</div>
+        <div class="stat-label">Saisie moyenne</div>
       </div>
       <div class="stat-item">
         <div class="stat-num">100%</div>
-        <div class="stat-label">Paperless workflow</div>
+        <div class="stat-label">Flux sans papier</div>
       </div>
       <div class="stat-item">
         <div class="stat-num">3</div>
-        <div class="stat-label">Roles connected</div>
+        <div class="stat-label">Rôles connectés</div>
       </div>
       <div class="stat-item">
         <div class="stat-num">Live</div>
-        <div class="stat-label">Real-time sync</div>
+        <div class="stat-label">Sync temps réel</div>
       </div>
     </div>
   </div>
@@ -383,26 +383,26 @@ footer{border-top:1px solid var(--border);padding:2.5rem 0}
 <section class="section" id="features">
   <div class="container">
     <div class="section-head">
-      <span class="section-label">Core engine</span>
-      <h2 class="section-title">Built for speed.<br/><em>Designed for clarity.</em></h2>
-      <p class="section-sub">Every feature is optimised for mobile interaction and immediate sync with the central administration.</p>
+      <span class="section-label">Moteur principal</span>
+      <h2 class="section-title">Conçu pour la vitesse.<br/><em>Pensé pour la clarté.</em></h2>
+      <p class="section-sub">Chaque fonctionnalité est optimisée pour une interaction mobile et une synchronisation immédiate avec l'administration.</p>
     </div>
     <div class="features-layout">
       <div class="features-left">
         <div class="feature-card active" onclick="setActive(this,'flash')">
           <div class="fc-icon fc-icon-blue"><i class="bi bi-phone-vibrate"></i></div>
-          <div class="fc-title">Mobile-first flash entry</div>
-          <p class="fc-desc">Teachers mark attendance on their phone in under 30 seconds — tap, confirm, done. No desktop required.</p>
+          <div class="fc-title">Saisie mobile rapide</div>
+          <p class="fc-desc">Les formateurs marquent les présences sur leur téléphone en moins de 30 secondes — appuyer, confirmer, terminé.</p>
         </div>
         <div class="feature-card" onclick="setActive(this,'sessions')">
           <div class="fc-icon fc-icon-green"><i class="bi bi-calendar-event"></i></div>
-          <div class="fc-title">Dynamic sessions</div>
-          <p class="fc-desc">Configure precise time blocks per group and per module — 09:00–11:00, 11:00–14:00 and beyond.</p>
+          <div class="fc-title">Séances dynamiques</div>
+          <p class="fc-desc">Configurez des créneaux précis par groupe et par module — 09h00–11h00, 11h00–14h00 et plus.</p>
         </div>
         <div class="feature-card" onclick="setActive(this,'justify')">
           <div class="fc-icon fc-icon-amber"><i class="bi bi-file-earmark-medical"></i></div>
-          <div class="fc-title">Digital justifications</div>
-          <p class="fc-desc">Students upload medical proofs digitally. Admins review and approve in a single click from anywhere.</p>
+          <div class="fc-title">Justifications numériques</div>
+          <p class="fc-desc">Les étudiants téléchargent leurs justificatifs médicaux. Les admins les valident en un clic depuis n'importe où.</p>
         </div>
       </div>
       <div class="features-preview">
@@ -412,12 +412,12 @@ footer{border-top:1px solid var(--border);padding:2.5rem 0}
           <div class="traffic-dot" style="background:#28c840"></div>
         </div>
         <div class="preview-body" id="previewBody">
-          <p class="preview-title">Quick attendance · 09:00 session</p>
+          <p class="preview-title">Présences rapides · Séance 09:00</p>
           <div class="quick-entry" id="qeList">
             <div class="qe-row">
               <div class="qe-check checked" onclick="toggleCheck(this)"><i class="bi bi-check" style="font-size:.75rem"></i></div>
               <span class="qe-name">Amine Saidi</span>
-              <span class="qe-tag status-present">Present</span>
+              <span class="qe-tag status-present">Présent</span>
             </div>
             <div class="qe-row">
               <div class="qe-check" onclick="toggleCheck(this)"></div>
@@ -427,17 +427,17 @@ footer{border-top:1px solid var(--border);padding:2.5rem 0}
             <div class="qe-row">
               <div class="qe-check checked" onclick="toggleCheck(this)"><i class="bi bi-check" style="font-size:.75rem"></i></div>
               <span class="qe-name">Youssef Benhaddou</span>
-              <span class="qe-tag status-present">Present</span>
+              <span class="qe-tag status-present">Présent</span>
             </div>
             <div class="qe-row">
               <div class="qe-check checked" onclick="toggleCheck(this)"><i class="bi bi-check" style="font-size:.75rem"></i></div>
               <span class="qe-name">Hana Zaoui</span>
-              <span class="qe-tag status-present">Present</span>
+              <span class="qe-tag status-present">Présent</span>
             </div>
           </div>
           <div class="submit-bar">
-            <span><i class="bi bi-send-check" style="margin-right:6px"></i>Submit session</span>
-            <small>4 students · 3 present</small>
+            <span><i class="bi bi-send-check" style="margin-right:6px"></i>Soumettre séance</span>
+            <small>4 étudiants · 3 présents</small>
           </div>
         </div>
       </div>
@@ -449,29 +449,29 @@ footer{border-top:1px solid var(--border);padding:2.5rem 0}
 <section class="how-section" id="how">
   <div class="container">
     <div class="section-head">
-      <span class="section-label">Workflow</span>
-      <h2 class="section-title">Simple by <em>design.</em></h2>
+      <span class="section-label">Flux de travail</span>
+      <h2 class="section-title">Simple par <em>conception.</em></h2>
     </div>
     <div class="steps-grid">
       <div class="step-item">
         <div class="step-num active"><i class="bi bi-calendar2-plus"></i></div>
-        <div class="step-title">Session created</div>
-        <p class="step-desc">Admin configures the module, group, and time block in the dashboard.</p>
+        <div class="step-title">Séance créée</div>
+        <p class="step-desc">L'admin configure le module, le groupe et le créneau dans le tableau de bord.</p>
       </div>
       <div class="step-item">
         <div class="step-num"><i class="bi bi-phone"></i></div>
-        <div class="step-title">Teacher marks</div>
-        <p class="step-desc">Teacher opens the app, taps each student's status and submits in seconds.</p>
+        <div class="step-title">Le formateur note</div>
+        <p class="step-desc">Le formateur ouvre l'app, tape le statut de chaque étudiant et soumet en quelques secondes.</p>
       </div>
       <div class="step-item">
         <div class="step-num"><i class="bi bi-bell"></i></div>
-        <div class="step-title">Student notified</div>
-        <p class="step-desc">Students with absences get an immediate notification and can upload justifications.</p>
+        <div class="step-title">Étudiant notifié</div>
+        <p class="step-desc">Les étudiants absents reçoivent une notification immédiate et peuvent déposer un justificatif.</p>
       </div>
       <div class="step-item">
         <div class="step-num"><i class="bi bi-check2-circle"></i></div>
-        <div class="step-title">Admin reviews</div>
-        <p class="step-desc">Admin approves proofs and generates attendance reports with one click.</p>
+        <div class="step-title">Admin valide</div>
+        <p class="step-desc">L'admin approuve les justificatifs et génère les rapports de présence en un clic.</p>
       </div>
     </div>
   </div>
@@ -481,41 +481,41 @@ footer{border-top:1px solid var(--border);padding:2.5rem 0}
 <section class="roles-section" id="roles">
   <div class="container">
     <div class="section-head">
-      <span class="section-label">Three roles, one system</span>
-      <h2 class="section-title">Every actor has<br/><em>their own space.</em></h2>
+      <span class="section-label">Trois rôles, un système</span>
+      <h2 class="section-title">Chaque acteur a<br/><em>son propre espace.</em></h2>
     </div>
     <div class="roles-grid">
       <div class="role-card role-teacher">
         <div class="role-icon role-icon-blue"><i class="bi bi-person-badge"></i></div>
-        <div class="role-title">Teacher</div>
-        <div class="role-sub">Instructor portal</div>
+        <div class="role-title">Formateur</div>
+        <div class="role-sub">Portail instructeur</div>
         <ul class="role-list">
-          <li>View assigned sessions & groups</li>
-          <li>Mark attendance in under 30 seconds</li>
-          <li>Review past session records</li>
-          <li>Flag exceptional absences</li>
+          <li>Voir les séances et groupes assignés</li>
+          <li>Marquer les présences en 30 secondes</li>
+          <li>Consulter l'historique des séances</li>
+          <li>Signaler les absences exceptionnelles</li>
         </ul>
       </div>
       <div class="role-card role-student">
         <div class="role-icon role-icon-green"><i class="bi bi-mortarboard"></i></div>
-        <div class="role-title">Student</div>
-        <div class="role-sub">Learner portal</div>
+        <div class="role-title">Étudiant</div>
+        <div class="role-sub">Portail apprenant</div>
         <ul class="role-list">
-          <li>View personal attendance history</li>
-          <li>Upload medical justifications</li>
-          <li>Track justification approval status</li>
-          <li>See absence alerts in real time</li>
+          <li>Voir son historique de présence</li>
+          <li>Déposer des justificatifs médicaux</li>
+          <li>Suivre le statut d'approbation</li>
+          <li>Voir les alertes d'absence en temps réel</li>
         </ul>
       </div>
       <div class="role-card role-admin">
         <div class="role-icon role-icon-amber"><i class="bi bi-sliders"></i></div>
-        <div class="role-title">Administrator</div>
-        <div class="role-sub">Control panel</div>
+        <div class="role-title">Administrateur</div>
+        <div class="role-sub">Panneau de contrôle</div>
         <ul class="role-list">
-          <li>Manage groups, modules & sessions</li>
-          <li>Approve or reject justifications</li>
-          <li>Export attendance reports</li>
-          <li>Monitor system-wide statistics</li>
+          <li>Gérer groupes, modules et séances</li>
+          <li>Approuver ou refuser les justificatifs</li>
+          <li>Exporter les rapports de présence</li>
+          <li>Surveiller les statistiques globales</li>
         </ul>
       </div>
     </div>
@@ -526,12 +526,12 @@ footer{border-top:1px solid var(--border);padding:2.5rem 0}
 <section class="cta-section">
   <div class="container">
     <div class="cta-card">
-      <span class="cta-label">Ready to start?</span>
-      <h2>No more paper.<br/><em>No more guessing.</em></h2>
-      <p>SoliCode AMS gives every stakeholder a clear, real-time view of attendance — from the first session to the final report.</p>
+      <span class="cta-label">Prêt à commencer ?</span>
+      <h2>Plus de papier.<br/><em>Plus de suppositions.</em></h2>
+      <p>SoliCode AMS offre à chaque intervenant une vue claire et en temps réel des présences — de la première séance au rapport final.</p>
       <div class="cta-actions">
-        <a href="/login" class="btn-cta-primary"><i class="bi bi-box-arrow-in-right"></i> Access the portal</a>
-        <a href="#features" class="btn-cta-ghost"><i class="bi bi-info-circle"></i> Learn more</a>
+        <a href="/login" class="btn-cta-primary"><i class="bi bi-box-arrow-in-right"></i> Accéder au portail</a>
+        <a href="#features" class="btn-cta-ghost"><i class="bi bi-info-circle"></i> En savoir plus</a>
       </div>
     </div>
   </div>
@@ -545,7 +545,7 @@ footer{border-top:1px solid var(--border);padding:2.5rem 0}
         <div class="logo-icon" style="width:30px;height:30px;font-size:14px"><i class="bi bi-fingerprint"></i></div>
         <span class="logo-text" style="font-size:.9rem">solicode<span>AMS</span></span>
       </a>
-      <span class="footer-copy">© 2026 SoliCode Project. Sprint 1.</span>
+      <span class="footer-copy">© 2026 Projet SoliCode. Sprint 1.</span>
       <div class="footer-links">
         <a href="#" aria-label="GitHub"><i class="bi bi-github"></i></a>
         <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
@@ -573,22 +573,22 @@ function toggleCheck(el){
   el.classList.toggle('checked');
   el.innerHTML=isChecked?'':'<i class="bi bi-check" style="font-size:.75rem"></i>';
   if(isChecked){tag.textContent='Absent';tag.className='qe-tag status-absent';}
-  else{tag.textContent='Present';tag.className='qe-tag status-present';}
+  else{tag.textContent='Présent';tag.className='qe-tag status-present';}
   updateCount();
 }
 function updateCount(){
   const total=document.querySelectorAll('.qe-row').length;
   const present=document.querySelectorAll('.qe-check.checked').length;
   const bar=document.querySelector('.submit-bar small');
-  if(bar)bar.textContent=`${total} students · ${present} present`;
+  if(bar)bar.textContent=`${total} étudiants · ${present} présents`;
 }
 
 const previewContents={
-  flash:{title:'Quick attendance · 09:00 session',body:document.getElementById('previewBody').innerHTML},
-  sessions:{title:'Module sessions · Grp 3',body:`
-    <p class="preview-title">Configured sessions</p>
+  flash:{title:'Présences rapides · Séance 09:00',body:document.getElementById('previewBody').innerHTML},
+  sessions:{title:'Séances module · Grp 3',body:`
+    <p class="preview-title">Séances configurées</p>
     <div style="display:flex;flex-direction:column;gap:.5rem">
-      ${[['Web Development','09:00 – 11:00','Mon, Wed'],['Database Design','11:00 – 14:00','Tue, Thu'],['UI/UX Fundamentals','14:00 – 16:00','Fri']].map(([m,t,d])=>`
+      ${[['Développement Web','09:00 – 11:00','Lun, Mer'],['Conception BD','11:00 – 14:00','Mar, Jeu'],['Fondamentaux UI/UX','14:00 – 16:00','Ven']].map(([m,t,d])=>`
       <div style="display:flex;align-items:center;gap:.75rem;padding:.7rem .9rem;border:1px solid var(--border);border-radius:var(--radius-md)">
         <div style="width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0"></div>
         <div style="flex:1"><div style="font-size:.82rem;font-weight:500;color:var(--ink)">${m}</div><div style="font-size:.7rem;color:var(--ink-mute)">${d}</div></div>
@@ -596,14 +596,14 @@ const previewContents={
       </div>`).join('')}
     </div>`
   },
-  justify:{title:'Justifications queue',body:`
-    <p class="preview-title">Pending review</p>
+  justify:{title:'File des justifications',body:`
+    <p class="preview-title">En attente de validation</p>
     <div style="display:flex;flex-direction:column;gap:.5rem">
-      ${[['Amine Saidi','Medical note','Pending'],['Laila Moussaoui','Family event','Approved'],['Youssef B.','Hospital doc','Rejected']].map(([n,t,s])=>`
+      ${[['Amine Saidi','Note médicale','En attente'],['Laila Moussaoui','Événement familial','Approuvé'],['Youssef B.','Doc hôpital','Refusé']].map(([n,t,s])=>`
       <div style="display:flex;align-items:center;gap:.75rem;padding:.7rem .9rem;border:1px solid var(--border);border-radius:var(--radius-md)">
         <i class="bi bi-file-earmark-text" style="color:var(--ink-mute);font-size:1rem"></i>
         <div style="flex:1"><div style="font-size:.82rem;font-weight:500;color:var(--ink)">${n}</div><div style="font-size:.7rem;color:var(--ink-mute)">${t}</div></div>
-        <span style="font-size:.68rem;font-weight:600;padding:.2rem .55rem;border-radius:999px;${s==='Pending'?'background:var(--amber-light);color:var(--amber)':s==='Approved'?'background:var(--green-light);color:var(--green)':'background:#fef2f2;color:var(--red)'}">${s}</span>
+        <span style="font-size:.68rem;font-weight:600;padding:.2rem .55rem;border-radius:999px;${s==='En attente'?'background:var(--amber-light);color:var(--amber)':s==='Approuvé'?'background:var(--green-light);color:var(--green)':'background:#fef2f2;color:var(--red)'}">${s}</span>
       </div>`).join('')}
     </div>`
   }

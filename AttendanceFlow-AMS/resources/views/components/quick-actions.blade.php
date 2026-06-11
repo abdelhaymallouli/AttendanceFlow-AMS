@@ -1,5 +1,5 @@
 @props([
-    'title' => 'Quick Actions',
+    'title' => 'Actions rapides',
     'actions' => [] // Array of ['href' => ..., 'icon' => ..., 'label' => ..., 'color' => 'blue']
 ])
 

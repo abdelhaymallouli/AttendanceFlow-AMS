@@ -34,7 +34,11 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Action *</label>
-                    <x-preline-select name="action" :options="['create' => 'Créer', 'update' => 'Modifier', 'delete' => 'Supprimer']" :allowBlank="false" :value="old('action', $session ? 'update' : 'create')" icon="settings" />
+                    <select name="action" class="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        <option value="create" @selected(old('action', $session ? 'update' : 'create') == 'create')>Créer</option>
+                        <option value="update" @selected(old('action', $session ? 'update' : 'create') == 'update')>Modifier</option>
+                        <option value="delete" @selected(old('action', $session ? 'update' : 'create') == 'delete')>Supprimer</option>
+                    </select>
                 </div>
                 @if($session)
                 <div>
@@ -46,15 +50,27 @@
                 @endif
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Module *</label>
-                    <x-preline-select name="module_id" :options="$modules->pluck('name', 'id')" :allowBlank="false" :value="old('module_id', $session?->module_id)" icon="book" :hasSearch="true" />
+                    <select name="module_id" class="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        @foreach($modules as $module)
+                            <option value="{{ $module->id }}" @selected(old('module_id', $session?->module_id) == $module->id)>{{ $module->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Type *</label>
-                    <x-preline-select name="type" :options="['lecture' => 'CM', 'td' => 'TD', 'tp' => 'TP']" :allowBlank="false" :value="old('type', $session?->type ?? 'lecture')" icon="tag" />
+                    <select name="type" class="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        <option value="lecture" @selected(old('type', $session?->type ?? 'lecture') == 'lecture')>CM</option>
+                        <option value="td" @selected(old('type', $session?->type ?? 'lecture') == 'td')>TD</option>
+                        <option value="tp" @selected(old('type', $session?->type ?? 'lecture') == 'tp')>TP</option>
+                    </select>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Groupe *</label>
-                    <x-preline-select name="group_id" :options="$groups->pluck('name', 'id')" :allowBlank="false" :value="old('group_id', $session?->group_id)" icon="users" :hasSearch="true" />
+                    <select name="group_id" class="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        @foreach($groups as $group)
+                            <option value="{{ $group->id }}" @selected(old('group_id', $session?->group_id) == $group->id)>{{ $group->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Date *</label>

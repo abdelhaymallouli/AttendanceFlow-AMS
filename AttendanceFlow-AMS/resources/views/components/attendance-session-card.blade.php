@@ -26,18 +26,18 @@
         </p>
         
         <!-- Type label -->
-        <p class="text-xs mt-0.5 text-gray-500">{{ $isToday ? 'Active Session' : 'Scheduled' }}</p>
+        <p class="text-xs mt-0.5 text-gray-500">{{ $isToday ? 'Séance active' : 'Planifiée' }}</p>
         
         <!-- Module & Group -->
         <p class="text-xs text-gray-500 truncate mt-1">
             <span>{{ $session->module->name }}</span>
             <span class="mx-1 text-gray-300">·</span>
-            <span>Group {{ $session->group->name }}</span>
+            <span>Groupe {{ $session->group->name }}</span>
         </p>
         
         <!-- Teacher -->
         <p class="text-xs mt-0.5 text-gray-400">
-            Teacher: {{ $session->teacherProfile->user->name }}
+            Formateur : {{ $session->teacherProfile->user->name }}
         </p>
     </div>
 </a>

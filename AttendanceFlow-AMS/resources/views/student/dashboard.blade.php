@@ -1,12 +1,12 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Student Portfolio')
-@section('page_title', 'My Overview')
+@section('title', 'Portfolio étudiant')
+@section('page_title', 'Mon aperçu')
 
 @section('header_actions')
 <div class="flex items-center gap-3">
     <span class="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-[10px] font-black bg-brand-50 text-blue-600 border border-brand-100 uppercase tracking-widest">
-        Academic Year 2025/26
+        Année académique 2025/26
     </span>
 </div>
 @endsection
@@ -36,7 +36,7 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 relative z-10">
                 <div class="p-6 bg-gray-50 rounded-[2rem] border border-gray-100 text-center hover:bg-white transition-colors duration-300">
-                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Total Presence</p>
+                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Total Présences</p>
                     <p class="text-4xl font-black text-gray-800">{{ $stats['attendance_rate'] }}%</p>
                 </div>
                 <div class="p-6 bg-gray-50 rounded-[2rem] border border-gray-100 text-center hover:bg-white transition-colors duration-300">
@@ -47,8 +47,8 @@
             
             <div class="mt-10 p-6 bg-slate-900 rounded-[2rem] text-white flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
                 <div>
-                    <p class="text-sm font-black uppercase tracking-widest italic opacity-70">Weekly Progress</p>
-                    <p class="text-[10px] font-bold text-slate-400 mt-1">Goal: Above 90% Attendance</p>
+                    <p class="text-sm font-black uppercase tracking-widest italic opacity-70">Progression hebdo</p>
+                    <p class="text-[10px] font-bold text-slate-400 mt-1">Objectif : +90% de présence</p>
                 </div>
                 <div class="flex-1 w-full max-w-md h-3 bg-slate-800 rounded-full overflow-hidden mx-auto">
                     <div class="h-full bg-blue-500 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.5)]" style="width: 92%"></div>
@@ -60,7 +60,7 @@
         <div class="bg-white border border-gray-200 rounded-[2.5rem] p-8 lg:p-10 shadow-sm relative">
             <h3 class="text-lg font-black text-gray-800 uppercase tracking-widest mb-8 flex items-center">
                 <i data-lucide="history" class="w-5 h-5 mr-3 text-blue-600"></i>
-                Session History
+                Historique des séances
             </h3>
             
             <div class="space-y-4">
@@ -81,7 +81,7 @@
                     </span>
                 </div>
                 @empty
-                <div class="px-6 py-12 text-center text-gray-400 font-bold uppercase tracking-[0.2em] opacity-40">No attendance records yet</div>
+                <div class="px-6 py-12 text-center text-gray-400 font-bold uppercase tracking-[0.2em] opacity-40">Aucun enregistrement de présence</div>
                 @endforelse
             </div>
         </div>
@@ -90,7 +90,7 @@
         <div class="bg-white border border-gray-200 rounded-[2.5rem] p-8 lg:p-10 shadow-sm relative">
             <h3 class="text-lg font-black text-gray-800 uppercase tracking-widest mb-8 flex items-center">
                 <i data-lucide="alert-triangle" class="w-5 h-5 mr-3 text-red-500"></i>
-                Absence Details
+                Détails des absences
             </h3>
             
             @if($stats['total_absences'] > 0)
@@ -99,7 +99,7 @@
                     <i data-lucide="info" class="w-5 h-5 text-red-600"></i>
                 </div>
                 <p class="text-xs font-bold text-red-700 uppercase tracking-wider">
-                    You have accumulated <span class="text-sm">{{ $stats['total_absences'] }}h</span> of absences
+                    Vous avez accumulé <span class="text-sm">{{ $stats['total_absences'] }}h</span> d'absences
                 </p>
             </div>
             @endif
@@ -129,8 +129,8 @@
                     <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
                         <i data-lucide="check-circle" class="w-8 h-8 text-green-600"></i>
                     </div>
-                    <p class="text-sm font-black text-gray-500 uppercase tracking-widest opacity-60">No absences recorded</p>
-                    <p class="text-[10px] font-bold text-gray-400 mt-2 uppercase tracking-widest opacity-40">Keep up the good attendance!</p>
+                    <p class="text-sm font-black text-gray-500 uppercase tracking-widest opacity-60">Aucune absence enregistrée</p>
+                    <p class="text-[10px] font-bold text-gray-400 mt-2 uppercase tracking-widest opacity-40">Continuez votre bonne assiduité !</p>
                 </div>
                 @endforelse
             </div>
@@ -144,7 +144,7 @@
             <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 mb-6 group-hover:scale-110 transition-transform">
                 <i data-lucide="qr-code" class="w-8 h-8"></i>
             </div>
-            <h4 class="text-xl font-black text-gray-800 uppercase italic mb-3 tracking-tighter">Scan Attendance QR</h4>
+            <h4 class="text-xl font-black text-gray-800 uppercase italic mb-3 tracking-tighter">Scanner QR Présence</h4>
             <p class="text-sm font-bold text-gray-400 leading-relaxed mb-8 opacity-80">Ouvrez l'app mobile <strong>AttendanceFlow</strong> pour scanner le QR affiché par l'enseignant, ou soumettez le code depuis votre navigateur.</p>
             <a href="{{ route('student.qr.scan') }}"
                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-4 px-6 rounded-2xl transition-all flex items-center justify-center gap-3 active:scale-95 shadow-md shadow-indigo-500/20">
@@ -158,11 +158,11 @@
             <div class="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center text-amber-600 mb-6 group-hover:scale-110 transition-transform">
                 <i data-lucide="upload-cloud" class="w-8 h-8"></i>
             </div>
-            <h4 class="text-xl font-black text-gray-800 uppercase italic mb-3 tracking-tighter">Absence Justification</h4>
-            <p class="text-sm font-bold text-gray-400 leading-relaxed mb-8 opacity-80">Did you miss a class? Upload your documentation now for administrative approval.</p>
+            <h4 class="text-xl font-black text-gray-800 uppercase italic mb-3 tracking-tighter">Justifier une absence</h4>
+            <p class="text-sm font-bold text-gray-400 leading-relaxed mb-8 opacity-80">Vous avez manqué un cours ? Téléchargez votre justificatif pour approbation.</p>
             <a href="{{ route('student.justifications.index') }}"
                class="w-full bg-slate-900 hover:bg-blue-600 text-white font-black py-4 px-6 rounded-2xl transition-all flex items-center justify-center gap-3 active:scale-95">
-                <span>Upload Document</span>
+                <span>Envoyer un document</span>
                 <i data-lucide="arrow-right" class="w-5 h-5"></i>
             </a>
         </div>
@@ -186,7 +186,7 @@
                     </div>
                 </div>
                 @empty
-                <p class="text-xs font-bold text-gray-400 italic text-center py-6">No new notifications</p>
+                <p class="text-xs font-bold text-gray-400 italic text-center py-6">Aucune nouvelle notification</p>
                 @endforelse
             </div>
         </div>
@@ -195,7 +195,7 @@
         <div class="bg-white border border-gray-200 rounded-[2.5rem] p-8 shadow-sm">
             <h3 class="text-lg font-black text-gray-800 mb-6 uppercase tracking-widest flex items-center">
                 <i data-lucide="calendar-check" class="w-5 h-5 mr-3 text-blue-600"></i>
-                Today's Schedule
+                Emploi du temps
             </h3>
             
             <div class="space-y-6 relative border-l-2 border-gray-100 pl-8 ml-3">
@@ -206,7 +206,7 @@
                     <p class="text-sm font-black text-gray-800 uppercase">{{ $session->module->name }} / {{ $session->type }}</p>
                 </div>
                 @empty
-                <p class="text-xs font-bold text-gray-400 italic text-center py-8">No upcoming sessions</p>
+                <p class="text-xs font-bold text-gray-400 italic text-center py-8">Aucune séance à venir</p>
                 @endforelse
             </div>
         </div>

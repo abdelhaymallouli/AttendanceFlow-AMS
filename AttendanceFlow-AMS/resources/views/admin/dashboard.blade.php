@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Admin Dashboard')
-@section('page_title', 'Dashboard')
+@section('title', 'Tableau de bord')
+@section('page_title', 'Tableau de bord')
 
 @section('content')
 <!-- Today's Stats -->
@@ -9,7 +9,7 @@
 
     <!-- Total Students -->
     <x-ui.stat-card 
-        title="Total Students" 
+        title="Total Étudiants" 
         :value="\App\Models\StudentProfile::count()" 
         icon="users" 
         color="blue" 
@@ -27,7 +27,7 @@
 
     <!-- Present Today -->
     <x-ui.stat-card 
-        title="Present Today" 
+        title="Présents Ajd" 
         :value="$present" 
         icon="check-circle" 
         color="green" 
@@ -36,7 +36,7 @@
 
     <!-- Absent Today -->
     <x-ui.stat-card 
-        title="Absent Today" 
+        title="Absents Ajd" 
         :value="$absent" 
         icon="x-circle" 
         color="red" 
@@ -45,7 +45,7 @@
 
     <!-- Pending Justifications -->
     <x-ui.stat-card 
-        title="Pending Justifications" 
+        title="Justifications en attente" 
         :value="\App\Models\Justification::where('status', 'pending')->count()" 
         icon="file-text" 
         color="amber" 
@@ -60,7 +60,7 @@
     <div class="lg:col-span-1 bg-white border border-gray-200 rounded-xl p-6">
         <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
             <i data-lucide="zap" class="w-5 h-5 mr-2 text-blue-600"></i>
-            Quick Actions
+            Actions rapides
         </h3>
         <div class="space-y-3">
             <a href="{{ route('admin.timetable.create') }}" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center shadow-sm">
@@ -69,26 +69,26 @@
             </a>
             <a href="{{ route('admin.attendance.index') }}" class="block w-full bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-lg border border-gray-200 transition-colors flex items-center justify-center">
                 <i data-lucide="clipboard-check" class="w-5 h-5 mr-2"></i>
-                Attendance Entry
+                Saisie des présences
             </a>
             <a href="{{ route('admin.export.attendance') }}" class="block w-full bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-lg border border-gray-200 transition-colors flex items-center justify-center">
                 <i data-lucide="download" class="w-5 h-5 mr-2"></i>
-                Export Absences (Excel)
+                Exporter absences (Excel)
             </a>
             <button class="w-full bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-lg border border-gray-200 transition-colors flex items-center justify-center">
                 <i data-lucide="send" class="w-5 h-5 mr-2"></i>
-                Send Notifications
+                Envoyer notifications
             </button>
         </div>
 
         <!-- Class Summary -->
         <div class="mt-6 pt-6 border-t border-gray-200">
-            <h4 class="text-sm font-semibold text-gray-700 mb-3">Classes Overview</h4>
+            <h4 class="text-sm font-semibold text-gray-700 mb-3">Aperçu des classes</h4>
             <div class="space-y-2 text-sm">
                 @foreach(\App\Models\Group::take(3)->get() as $group)
                 <div class="flex justify-between items-center">
                     <span class="text-gray-600">{{ $group->name }}</span>
-                    <span class="font-medium text-green-600">94% present</span>
+                    <span class="font-medium text-green-600">94% présents</span>
                 </div>
                 @endforeach
             </div>
@@ -100,9 +100,9 @@
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-bold text-gray-800 flex items-center">
                 <i data-lucide="activity" class="w-5 h-5 mr-2 text-blue-600"></i>
-                Recent Activity
+                Activité récente
             </h3>
-            <button class="text-sm text-blue-600 hover:text-blue-700 font-medium">View All</button>
+            <button class="text-sm text-blue-600 hover:text-blue-700 font-medium">Tout voir</button>
         </div>
 
         <div class="space-y-4">
@@ -113,7 +113,7 @@
                 </div>
                 <div class="flex-1 min-w-0">
                     <p class="text-sm font-medium text-gray-800">
-                        {{ $record->studentProfile->user->name }} was marked {{ str_replace('_', ' ', $record->status) }}
+                        {{ $record->studentProfile->user->name }} marqué {{ str_replace('_', ' ', $record->status) }}
                     </p>
                     <p class="text-xs text-gray-500 mt-1">
                         {{ $record->session->module->name ?? 'Module' }} • {{ \Carbon\Carbon::parse($record->created_at)->diffForHumans() }}
@@ -122,7 +122,7 @@
             </div>
             @empty
             <div class="text-center p-6 text-gray-500 text-sm">
-                No recent activity found.
+                Aucune activité récente.
             </div>
             @endforelse
         </div>

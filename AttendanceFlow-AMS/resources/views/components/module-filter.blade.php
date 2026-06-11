@@ -23,16 +23,13 @@
         </label>
     @endif
     <div class="flex-1 min-w-0 max-w-[260px]">
-        <x-preline-select
-            :name="$name"
-            :value="$value"
-            :options="$options"
-            :onChange="$onChange"
-            :icon="$icon"
-            :includeBlank="$includeBlank"
-            :blankText="$blankText"
-            :formId="$formId"
-            :size="$size"
-        />
+        <select name="{{ $name }}" onchange="{{ $onChange }}" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+            @if($includeBlank)
+                <option value="">{{ $blankText }}</option>
+            @endif
+            @foreach($options as $optValue => $optLabel)
+                <option value="{{ $optValue }}" @selected($value == $optValue)>{{ $optLabel }}</option>
+            @endforeach
+        </select>
     </div>
 </div>

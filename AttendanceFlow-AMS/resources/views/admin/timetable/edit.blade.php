@@ -31,19 +31,35 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Module *</label>
-                    <x-preline-select name="module_id" :options="$modules->pluck('name', 'id')" placeholder="…" icon="book" :hasSearch="true" :allowBlank="false" :value="old('module_id', $session->module_id)" />
+                    <select name="module_id" class="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        @foreach($modules as $module)
+                            <option value="{{ $module->id }}" @selected(old('module_id', $session->module_id) == $module->id)>{{ $module->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Type *</label>
-                    <x-preline-select name="type" :options="['lecture' => 'Cours (CM)', 'td' => 'TD', 'tp' => 'TP']" placeholder="…" icon="tag" :allowBlank="false" :value="old('type', $session->type)" />
+                    <select name="type" class="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        <option value="lecture" @selected(old('type', $session->type) == 'lecture')>Cours (CM)</option>
+                        <option value="td" @selected(old('type', $session->type) == 'td')>TD</option>
+                        <option value="tp" @selected(old('type', $session->type) == 'tp')>TP</option>
+                    </select>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Groupe *</label>
-                    <x-preline-select name="group_id" :options="$groups->mapWithKeys(fn($g) => [$g->id => ($g->filiere?->name ? $g->filiere->name.' · ' : '').$g->name])" placeholder="…" icon="users" :hasSearch="true" :allowBlank="false" :value="old('group_id', $session->group_id)" />
+                    <select name="group_id" class="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        @foreach($groups as $group)
+                            <option value="{{ $group->id }}" @selected(old('group_id', $session->group_id) == $group->id)>{{ $group->filiere?->name ? $group->filiere->name.' · ' : '' }}{{ $group->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Enseignant *</label>
-                    <x-preline-select name="teacher_profile_id" :options="$teachers->mapWithKeys(fn($t) => [$t->id => $t->user->name])" placeholder="…" icon="user" :hasSearch="true" :allowBlank="false" :value="old('teacher_profile_id', $session->teacher_profile_id)" />
+                    <select name="teacher_profile_id" class="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        @foreach($teachers as $teacher)
+                            <option value="{{ $teacher->id }}" @selected(old('teacher_profile_id', $session->teacher_profile_id) == $teacher->id)>{{ $teacher->user->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Date *</label>
@@ -90,13 +106,10 @@
         </x-ui.section-card>
 
         <div class="mt-4 flex items-center justify-between gap-3">
-            <form method="POST" action="{{ route('admin.timetable.destroy', $session->id) }}" onsubmit="return confirm('Supprimer cette séance ?')">
-                @csrf @method('DELETE')
-                <button type="submit" class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-4 py-2.5 text-red-700 hover:bg-red-50 border border-red-200 rounded-xl transition-colors">
-                    <i data-lucide="trash-2" class="w-4 h-4"></i>
-                    Supprimer
-                </button>
-            </form>
+            <button type="submit" form="delete-form" onclick="return confirm('Supprimer cette séance ?')" class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-4 py-2.5 text-red-700 hover:bg-red-50 border border-red-200 rounded-xl transition-colors">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                Supprimer
+            </button>
             <div class="flex items-center gap-3">
                 <a href="{{ route('admin.timetable.index') }}" class="text-xs font-bold uppercase tracking-wider px-4 py-2.5 text-gray-700 bg-white hover:bg-gray-100 border border-gray-200 rounded-xl">Annuler</a>
                 <button type="submit" :disabled="hasErrors" :class="hasErrors ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'"
@@ -106,6 +119,10 @@
                 </button>
             </div>
         </div>
+    </form>
+
+    <form id="delete-form" method="POST" action="{{ route('admin.timetable.destroy', $session->id) }}">
+        @csrf @method('DELETE')
     </form>
 
 </div>

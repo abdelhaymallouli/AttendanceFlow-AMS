@@ -1,12 +1,12 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Justification Upload')
-@section('page_title', 'Absence Proof Upload')
+@section('title', 'Dépôt de justificatif')
+@section('page_title', 'Justifier une absence')
 
 @section('header_actions')
 <div class="flex items-center gap-3">
     <span class="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-[10px] font-black bg-emerald-50 text-emerald-600 border border-emerald-100 uppercase tracking-widest leading-none">
-        Secure Portal
+        Portail sécurisé
     </span>
 </div>
 @endsection
@@ -19,8 +19,8 @@
         <div class="absolute top-0 right-0 w-32 h-32 bg-blue-600/5 rounded-full -mr-16 -mt-16 group-hover:scale-110 transition-transform duration-700"></div>
         
         <div class="mb-10 text-center lg:text-left relative z-10">
-            <h3 class="text-3xl font-black text-gray-800 tracking-tight mb-2 uppercase italic">New Proof</h3>
-            <p class="text-slate-400 font-bold text-xs tracking-widest uppercase opacity-80">Upload your documentation for administrative review</p>
+            <h3 class="text-3xl font-black text-gray-800 tracking-tight mb-2 uppercase italic">Nouveau justificatif</h3>
+            <p class="text-slate-400 font-bold text-xs tracking-widest uppercase opacity-80">Téléchargez votre document pour validation</p>
         </div>
 
         <form action="{{ route('student.justifications.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6 relative z-10">
@@ -37,7 +37,7 @@
             @endif
 
             <div class="space-y-2 ml-2">
-                <label for="session_id" class="block text-[10px] font-black text-gray-400 uppercase tracking-widest opacity-80">Select Session to Justify</label>
+                <label for="session_id" class="block text-[10px] font-black text-gray-400 uppercase tracking-widest opacity-80">Sélectionner une séance</label>
                 <div class="relative">
                     @php
                         $sessionOptions = $sessions->mapWithKeys(function ($s) {
@@ -47,38 +47,36 @@
                             return [(string) $s->id => $label];
                         })->toArray();
                     @endphp
-                    <x-preline-select
-                        name="session_id"
-                        :value="$preselectSessionId ?? null"
-                        :options="$sessionOptions"
-                        icon="calendar"
-                        placeholder="Choisir une séance..."
-                        :allowBlank="false"
-                    />
+                    <select name="session_id" class="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        <option value="" disabled>Choisir une séance...</option>
+                        @foreach($sessionOptions as $id => $label)
+                            <option value="{{ $id }}" @selected(($preselectSessionId ?? null) == $id)>{{ $label }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
 
             <div class="space-y-2 ml-2">
-                <label for="reason" class="block text-[10px] font-black text-gray-400 uppercase tracking-widest opacity-80">Reason for Absence</label>
+                <label for="reason" class="block text-[10px] font-black text-gray-400 uppercase tracking-widest opacity-80">Motif de l'absence</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
                         <i data-lucide="help-circle" class="w-5 h-5 text-gray-400"></i>
                     </div>
                     <input type="text" name="reason" id="reason" 
                            class="w-full pl-14 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-600 outline-none transition-all font-bold text-gray-800"
-                           placeholder="e.g., Medical Appointment, Family Emergency" required>
+                           placeholder="Ex : Rendez-vous médical, urgence familiale" required>
                 </div>
             </div>
 
             <div class="space-y-2 ml-2">
-                <label for="file" class="block text-[10px] font-black text-gray-400 uppercase tracking-widest opacity-80">Supporting Document (PDF/JPG)</label>
+                <label for="file" class="block text-[10px] font-black text-gray-400 uppercase tracking-widest opacity-80">Document justificatif (PDF/JPG)</label>
                 <div class="relative">
                     <label class="group flex flex-col items-center justify-center p-8 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl hover:bg-white hover:border-blue-600 transition-all cursor-pointer">
                         <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-blue-600 mb-2 shadow-sm group-hover:scale-110 transition-transform">
                             <i data-lucide="upload-cloud" class="w-6 h-6"></i>
                         </div>
-                        <p class="text-xs font-black text-gray-500 group-hover:text-blue-600 uppercase tracking-widest">Tap to browse files</p>
-                        <p class="text-[9px] font-bold text-gray-300 mt-1 uppercase tracking-widest">Max size: 5MB</p>
+                    <p class="text-xs font-black text-gray-500 group-hover:text-blue-600 uppercase tracking-widest">Cliquez pour parcourir</p>
+                    <p class="text-[9px] font-bold text-gray-300 mt-1 uppercase tracking-widest">Taille max : 5 Mo</p>
                         <input type="file" name="file" id="file" class="hidden" required @change="fileName = $event.target.files[0].name" x-data="{ fileName: '' }">
                     </label>
                 </div>
@@ -86,7 +84,7 @@
 
             <button type="submit" 
                     class="w-full bg-slate-900 hover:bg-blue-600 text-white font-black py-5 px-6 rounded-2xl transition-all duration-300 flex items-center justify-center gap-3 shadow-xl shadow-slate-200 hover:shadow-blue-500/20 active:scale-95">
-                <span>SUBMIT FOR APPROVAL</span>
+                <span>SOUMETTRE POUR APPROBATION</span>
                 <i data-lucide="send" class="w-5 h-5"></i>
             </button>
         </form>
@@ -96,7 +94,7 @@
     <div class="bg-white border border-gray-100 rounded-[2.5rem] p-8 lg:p-10 shadow-sm relative">
         <h3 class="text-lg font-black text-gray-800 uppercase tracking-widest mb-8 flex items-center">
             <i data-lucide="history" class="w-5 h-5 mr-3 text-blue-600"></i>
-            My Recent Proofs
+            Mes derniers justificatifs
         </h3>
         
         <div class="space-y-4">
@@ -119,7 +117,7 @@
                 </span>
             </div>
             @empty
-            <div class="px-6 py-12 text-center text-gray-400 font-bold uppercase tracking-[0.2em] opacity-40">No justifications uploaded yet</div>
+            <div class="px-6 py-12 text-center text-gray-400 font-bold uppercase tracking-[0.2em] opacity-40">Aucun justificatif déposé</div>
             @endforelse
         </div>
     </div>

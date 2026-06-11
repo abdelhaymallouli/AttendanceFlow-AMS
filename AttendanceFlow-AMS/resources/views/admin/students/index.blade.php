@@ -1,17 +1,17 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Student Management')
-@section('page_title', 'Student Directory')
+@section('title', 'Gestion des étudiants')
+@section('page_title', 'Annuaire des étudiants')
 
 @section('header_actions')
 <div class="flex items-center gap-2">
     <a href="{{ route('admin.export.students') }}"
        class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center text-sm shadow-sm">
-        <i data-lucide="users" class="w-4 h-4 mr-2"></i> Export Students (Excel)
+        <i data-lucide="users" class="w-4 h-4 mr-2"></i> Exporter étudiants (Excel)
     </a>
 
     <a href="" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center text-sm shadow-sm">
-        <i data-lucide="plus" class="w-4 h-4 mr-2"></i> Add Student
+        <i data-lucide="plus" class="w-4 h-4 mr-2"></i> Ajouter un étudiant
     </a>
 </div>
 @endsection
@@ -36,14 +36,12 @@
 
             <!-- GROUP FILTER -->
             <div class="w-full md:w-[240px]">
-                <x-preline-select
-                    name="group_id"
-                    :value="request('group_id')"
-                    :options="$groups->mapWithKeys(fn($g) => [(string) $g->id => $g->name])->toArray()"
-                    onChange="this.form.submit()"
-                    icon="users"
-                    blankText="Tous les groupes"
-                />
+                <select name="group_id" onchange="this.form.submit()" class="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                    <option value="">Tous les groupes</option>
+                    @foreach($groups as $group)
+                        <option value="{{ $group->id }}" @selected(request('group_id') == $group->id)>{{ $group->name }}</option>
+                    @endforeach
+                </select>
             </div>
 
         </form>
@@ -57,10 +55,10 @@
 
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-6 py-4 text-xs text-gray-500 uppercase">Student</th>
-                        <th class="px-6 py-4 text-xs text-gray-500 uppercase">Group</th>
-                        <th class="px-6 py-4 text-xs text-gray-500 uppercase">Attendance</th>
-                        <th class="px-6 py-4 text-xs text-gray-500 uppercase">Status</th>
+                        <th class="px-6 py-4 text-xs text-gray-500 uppercase">Étudiant</th>
+                        <th class="px-6 py-4 text-xs text-gray-500 uppercase">Groupe</th>
+                        <th class="px-6 py-4 text-xs text-gray-500 uppercase">Présence</th>
+                        <th class="px-6 py-4 text-xs text-gray-500 uppercase">Statut</th>
                         <th class="px-6 py-4 text-right text-xs text-gray-500 uppercase">Actions</th>
                     </tr>
                 </thead>
@@ -94,7 +92,7 @@
                             <!-- GROUP -->
                             <td class="px-6 py-4">
                                 <x-ui.badge type="info">
-                                    {{ $student->group->name ?? 'No Group' }}
+                                    {{ $student->group->name ?? 'Aucun groupe' }}
                                 </x-ui.badge>
                             </td>
 
@@ -110,14 +108,14 @@
 
                             <!-- STATUS -->
                             <td class="px-6 py-4">
-                                <x-ui.badge type="success" text="Good Standing" />
+                                <x-ui.badge type="success" text="Actif" />
                             </td>
 
                             <!-- ACTIONS -->
                             <td class="px-6 py-4 text-right">
                                 <div class="flex justify-end gap-3">
-                                    <button class="text-blue-600 text-sm">View</button>
-                                    <button class="text-gray-600 text-sm">Edit</button>
+                                    <button class="text-blue-600 text-sm">Voir</button>
+                                    <button class="text-gray-600 text-sm">Modifier</button>
                                 </div>
                             </td>
 
@@ -127,7 +125,7 @@
 
                         <tr>
                             <td colspan="5" class="px-6 py-12 text-center text-gray-500">
-                                No students found.
+                                Aucun étudiant trouvé.
                             </td>
                         </tr>
 

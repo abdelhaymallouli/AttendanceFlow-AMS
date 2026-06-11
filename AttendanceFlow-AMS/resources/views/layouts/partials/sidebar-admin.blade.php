@@ -2,7 +2,7 @@
     <a href="{{ route('admin.dashboard') }}"
         class="flex items-center space-x-3 px-4 py-3 {{ request()->routeIs('admin.dashboard') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-gray-100' }} rounded-lg font-medium transition-colors">
         <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-        <span>Dashboard</span>
+        <span>Tableau de bord</span>
     </a>
     <a href="{{ route('admin.attendance.index') }}"
         class="flex items-center space-x-3 px-4 py-3 {{ request()->routeIs('admin.attendance.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-gray-100' }} rounded-lg transition-colors">
@@ -13,7 +13,7 @@
         class="flex items-center space-x-3 px-4 py-3 {{ request()->routeIs('admin.qr.*') || request()->routeIs('admin.sessions.qr.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-gray-100' }} rounded-lg transition-colors">
         <i data-lucide="qr-code" class="w-5 h-5"></i>
         <span>QR Émargement</span>
-        <span class="ml-auto bg-indigo-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">NEW</span>
+        <span class="ml-auto bg-indigo-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">NOUVEAU</span>
     </a>
     <a href="{{ route('admin.users.index') }}"
         class="flex items-center space-x-3 px-4 py-3 {{ request()->routeIs('admin.users.*') || request()->routeIs('admin.students.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-gray-100' }} rounded-lg transition-colors">

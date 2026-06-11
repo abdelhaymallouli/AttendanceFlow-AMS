@@ -17,7 +17,7 @@
         {{ $student->user->name }}
         @if($currentStatus == 'absent_excused')
             <span class="ml-2 inline-flex items-center gap-1 py-0.5 px-2 rounded-full text-[10px] font-bold bg-green-100 text-green-800 border border-green-200">
-                Justified
+                Justifié
             </span>
         @endif
     </div>

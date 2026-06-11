@@ -39,17 +39,17 @@
             @endif
         </p>
         
-        <p class="text-xs mt-0.5 text-gray-500">{{ $isToday ? 'Active Session' : 'Scheduled' }}</p>
+        <p class="text-xs mt-0.5 text-gray-500">{{ $isToday ? 'Séance active' : 'Planifiée' }}</p>
         
         <p class="text-xs text-gray-500 truncate mt-1">
             @if($alpine)
                 <span class="font-medium text-gray-700" x-text="session.module"></span>
                 <span class="mx-1 text-gray-300">·</span>
-                <span x-text="'Group ' + session.group"></span>
+                <span x-text="'Groupe ' + session.group"></span>
             @else
                 <span class="font-medium text-gray-700">{{ $session->moduleName ?? $session->module->name }}</span>
                 <span class="mx-1 text-gray-300">·</span>
-                <span>Group {{ $session->groupName ?? $session->group->name }}</span>
+                <span>Groupe {{ $session->groupName ?? $session->group->name }}</span>
             @endif
         </p>
         

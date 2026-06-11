@@ -203,7 +203,7 @@
                                     <div class="h-full bg-blue-500 transition-all" :style="'width: ' + progressPct + '%'"></div>
                                 </div>
                                 <p class="text-[9px] font-mono text-gray-400 mt-1.5 truncate" :title="currentToken">
-                                    Payload : <span x-text="currentToken || 'Calcul...'"></span>
+                                    Charge utile : <span x-text="currentToken || 'Calcul...'"></span>
                                 </p>
                             </div>
 

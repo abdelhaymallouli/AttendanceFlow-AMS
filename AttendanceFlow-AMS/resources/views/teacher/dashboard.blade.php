@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Teacher Dashboard')
-@section('page_title', 'Teacher Dashboard')
+@section('title', 'Tableau de bord')
+@section('page_title', 'Mon espace')
 
 @section('content')
 <div class="space-y-6" x-data="teacherDashboard()" x-init="init()">
@@ -15,16 +15,16 @@
                     <span class="pulse-dot w-3 h-3 bg-green-400 rounded-full inline-block"></span>
                 </div>
                 <div>
-                    <p class="text-sm opacity-90">Current Session</p>
+                    <p class="text-sm opacity-90">Séance en cours</p>
                     <h3 class="text-xl font-bold" x-text="currentSession.typeLabel"></h3>
                     <p class="text-sm opacity-90" x-text="currentSession.time + ' - ' + currentSession.moduleName"></p>
-                    <p class="text-sm opacity-75" x-text="currentSession.groupName + ' \u2022 ' + currentSession.studentsCount + ' students'"></p>
+                    <p class="text-sm opacity-75" x-text="currentSession.groupName + ' \u2022 ' + currentSession.studentsCount + ' étudiants'"></p>
                 </div>
             </div>
             <a :href="currentSession.url"
                class="bg-white text-blue-600 font-semibold py-3 px-6 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center whitespace-nowrap">
                 <i data-lucide="clipboard-check" class="w-5 h-5 mr-2"></i>
-                Take Attendance
+                Prendre présence
             </a>
         </div>
     </div>
@@ -32,7 +32,7 @@
     <!-- Today's Stats -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6">
         <x-ui.stat-card 
-            title="Total Students" 
+            title="Total Étudiants" 
             :value="0" 
             icon="users" 
             color="blue" 
@@ -42,7 +42,7 @@
         />
         
         <x-ui.stat-card 
-            title="Present Today" 
+            title="Présents Ajd" 
             :value="0" 
             icon="check-circle" 
             color="green" 
@@ -51,7 +51,7 @@
         />
         
         <x-ui.stat-card 
-            title="Absent Today" 
+            title="Absents Ajd" 
             :value="0" 
             icon="x-circle" 
             color="red" 
@@ -60,7 +60,7 @@
         />
         
         <x-ui.stat-card 
-            title="Pending Justifications" 
+            title="Justifications en attente" 
             :value="0" 
             icon="file-text" 
             color="amber" 
@@ -76,51 +76,51 @@
         <div class="lg:col-span-1 bg-white border border-gray-200 rounded-xl p-6">
             <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
                 <i data-lucide="zap" class="w-5 h-5 mr-2 text-blue-600"></i>
-                Quick Actions
+                Actions rapides
             </h3>
             <div class="space-y-3">
                 <a :href="currentSession ? currentSession.url : '#'"
                    class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center shadow-sm">
                     <i data-lucide="clipboard-check" class="w-5 h-5 mr-2"></i>
-                    Take Attendance
+                    Prendre présence
                 </a>
                 <a :href="currentSession ? currentSession.url.replace('/attendance', '/qr') : '#'"
                    class="block w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center shadow-sm"
                    x-show="currentSession">
                     <i data-lucide="qr-code" class="w-5 h-5 mr-2"></i>
-                    Show QR Code
+                    Afficher QR
                 </a>
                 <a href="#"
                    class="block w-full bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-lg border border-gray-200 transition-colors flex items-center justify-center">
                     <i data-lucide="clock" class="w-5 h-5 mr-2"></i>
-                    View Sessions
+                    Voir séances
                 </a>
                 <a href="#"
                    class="block w-full bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-lg border border-gray-200 transition-colors flex items-center justify-center">
                     <i data-lucide="download" class="w-5 h-5 mr-2"></i>
-                    Export Report
+                    Exporter rapport
                 </a>
                 <button
                    class="w-full bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-lg border border-gray-200 transition-colors flex items-center justify-center">
                     <i data-lucide="send" class="w-5 h-5 mr-2"></i>
-                    Send Notifications
+                    Envoyer notifications
                 </button>
             </div>
 
             <!-- My Classes Overview -->
             <div class="mt-6 pt-6 border-t border-gray-200">
-                <h4 class="text-sm font-semibold text-gray-700 mb-3">My Classes Overview</h4>
+                <h4 class="text-sm font-semibold text-gray-700 mb-3">Aperçu de mes classes</h4>
                 <div class="space-y-2 text-sm">
                     <template x-for="group in teacherGroups" :key="group.id">
                         <div class="flex justify-between items-center">
                             <span class="text-gray-600" x-text="group.name"></span>
                             <span class="font-medium"
                                 :class="group.attendanceRate >= 95 ? 'text-green-600' : group.attendanceRate >= 90 ? 'text-amber-600' : 'text-red-600'"
-                                x-text="group.attendanceRate + '% present'"></span>
+                                x-text="group.attendanceRate + '% présents'"></span>
                         </div>
                     </template>
                     <div x-show="teacherGroups.length === 0" class="text-center py-4 text-gray-400 text-sm">
-                        No classes assigned
+                        Aucune classe assignée
                     </div>
                 </div>
             </div>
@@ -131,9 +131,9 @@
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-bold text-gray-800 flex items-center">
                     <i data-lucide="calendar" class="w-5 h-5 mr-2 text-blue-600"></i>
-                    Today's Sessions
+                    Séances du jour
                 </h3>
-                <a href="#" class="text-sm text-blue-600 hover:text-blue-700 font-medium">View All</a>
+                <a href="#" class="text-sm text-blue-600 hover:text-blue-700 font-medium">Tout voir</a>
             </div>
 
             <div class="space-y-4">
@@ -149,19 +149,19 @@
                                 <p class="text-sm font-medium text-gray-800" x-text="session.typeLabel + ' - ' + session.moduleName"></p>
                                 <span class="text-xs font-bold px-2 py-1 rounded-full"
                                     :class="session.status === 'completed' ? 'bg-green-100 text-green-700' : session.status === 'active' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'"
-                                    x-text="session.status === 'completed' ? 'Completed' : session.status === 'active' ? 'In Progress' : 'Upcoming'"></span>
+                                    x-text="session.status === 'completed' ? 'Terminé' : session.status === 'active' ? 'En cours' : 'À venir'"></span>
                             </div>
-                            <p class="text-xs text-gray-500 mt-1" x-text="session.time + ' (' + session.duration_hours + 'h) \u2022 ' + session.groupName + ' \u2022 ' + session.studentsCount + ' students'"></p>
+                            <p class="text-xs text-gray-500 mt-1" x-text="session.time + ' (' + session.duration_hours + 'h) \u2022 ' + session.groupName + ' \u2022 ' + session.studentsCount + ' étudiants'"></p>
                         </div>
                         <a :href="session.url"
                            class="text-sm font-medium px-3 py-1 rounded-lg transition-colors flex-shrink-0 whitespace-nowrap"
                            :class="session.status === 'completed' ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-blue-600 text-white hover:bg-blue-700'"
-                           x-text="session.status === 'completed' ? 'View' : 'Take'"></a>
+                           x-text="session.status === 'completed' ? 'Voir' : 'Prendre'"></a>
                     </div>
                 </template>
                 <div x-show="sessions.length === 0" class="text-center py-8">
                     <i data-lucide="calendar-x" class="w-12 h-12 mx-auto mb-3 text-gray-300"></i>
-                    <p class="text-gray-500 text-sm">No sessions scheduled for today</p>
+                    <p class="text-gray-500 text-sm">Aucune séance prévue aujourd'hui</p>
                 </div>
             </div>
         </div>
@@ -172,9 +172,9 @@
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-bold text-gray-800 flex items-center">
                 <i data-lucide="activity" class="w-5 h-5 mr-2 text-blue-600"></i>
-                Recent Activity
+                Activité récente
             </h3>
-            <button class="text-sm text-blue-600 hover:text-blue-700 font-medium">View All</button>
+            <button class="text-sm text-blue-600 hover:text-blue-700 font-medium">Tout voir</button>
         </div>
         <div class="space-y-4">
             @forelse($data['recentActivity'] as $activity)
@@ -190,7 +190,7 @@
             @empty
             <div class="text-center py-8 text-gray-500">
                 <i data-lucide="activity" class="w-12 h-12 mx-auto mb-2 text-gray-300"></i>
-                <p class="text-sm">No recent activity</p>
+                <p class="text-sm">Aucune activité récente</p>
             </div>
             @endforelse
         </div>

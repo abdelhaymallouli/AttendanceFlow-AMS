@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
-    <title>@yield('title', 'Dashboard') - solicode AMS</title>
+    <title>@yield('title', 'Tableau de bord') - solicode AMS</title>
     
     <!-- Vite Assets -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -98,7 +98,7 @@
                     </div>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="text-gray-400 hover:text-gray-600 transition-colors" title="Logout">
+                        <button type="submit" class="text-gray-400 hover:text-gray-600 transition-colors" title="Déconnexion">
                             <i data-lucide="log-out" class="w-5 h-5"></i>
                         </button>
                     </form>
@@ -117,7 +117,7 @@
                     </button>
                     <div class="min-w-0">
                         <h2 class="text-xl font-bold text-gray-800 truncate">@yield('page_title')</h2>
-                        <p class="text-sm text-gray-500 hidden sm:block truncate opacity-80">Welcome back, {{ Auth::user()->name }}</p>
+                        <p class="text-sm text-gray-500 hidden sm:block truncate opacity-80">Bon retour, {{ Auth::user()->name }}</p>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4 shrink-0">

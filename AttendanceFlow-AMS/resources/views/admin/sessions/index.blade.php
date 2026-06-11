@@ -1,16 +1,16 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Academic Schedule')
-@section('page_title', 'Session Schedule')
+@section('title', 'Calendrier académique')
+@section('page_title', 'Calendrier des séances')
 
 @section('header_actions')
 <div class="flex items-center gap-2">
     <a href="{{ route('admin.export.sessions') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center text-sm shadow-sm">
-        <i data-lucide="calendar" class="w-4 h-4 mr-2"></i> Export Sessions (Excel)
+        <i data-lucide="calendar" class="w-4 h-4 mr-2"></i> Exporter séances (Excel)
     </a>
 
     <a href="{{ route('admin.sessions.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center text-sm shadow-sm">
-        <i data-lucide="plus" class="w-4 h-4 mr-2"></i> New Session
+        <i data-lucide="plus" class="w-4 h-4 mr-2"></i> Nouvelle séance
     </a>
 </div>
 @endsection
@@ -26,9 +26,9 @@
               class="flex items-center justify-between gap-4">
 
             <div>
-                <h3 class="text-sm font-semibold text-gray-800">Filter Schedule</h3>
+                <h3 class="text-sm font-semibold text-gray-800">Filtrer le calendrier</h3>
                 <p class="text-xs text-gray-500 mt-1">
-                    Select a date to view sessions.
+                    Sélectionnez une date pour voir les séances.
                 </p>
             </div>
 
@@ -48,10 +48,10 @@
 
         <!-- HEADER -->
         <div class="hidden md:grid grid-cols-12 gap-4 p-4 bg-gray-50 border-b border-gray-200 font-bold text-xs text-gray-500 uppercase tracking-wider">
-            <div class="col-span-2">Time</div>
+            <div class="col-span-2">Horaire</div>
             <div class="col-span-3">Module</div>
-            <div class="col-span-2">Group</div>
-            <div class="col-span-3">Teacher</div>
+            <div class="col-span-2">Groupe</div>
+            <div class="col-span-3">Formateur</div>
             <div class="col-span-2 text-right">Actions</div>
         </div>
 
@@ -82,7 +82,7 @@
                     </div>
 
                     <div class="col-span-2">
-                        <x-ui.badge color="gray">Group {{ $session->group->name }}</x-ui.badge>
+                        <x-ui.badge color="gray">Groupe {{ $session->group->name }}</x-ui.badge>
                     </div>
 
                     <div class="col-span-3">
@@ -131,7 +131,7 @@
 
                     <div class="flex justify-between text-sm text-gray-600 mt-2">
                         <span>{{ $session->teacherProfile->user->name }}</span>
-                        <x-ui.badge color="gray">Group {{ $session->group->name }}</x-ui.badge>
+                        <x-ui.badge color="gray">Groupe {{ $session->group->name }}</x-ui.badge>
                     </div>
                 </div>
 
@@ -144,19 +144,19 @@
 
 
                     <h3 class="text-base font-bold text-gray-800 mb-2">
-                        No sessions found
+                        Aucune séance trouvée
                     </h3>
 
                     <!-- ONLY DATE MESSAGE (FIXED) -->
                     <p class="text-sm text-gray-500 mb-6">
-                        There are no academic sessions planned for
-                        {{ \Carbon\Carbon::parse($date)->format('F j, Y') }}.
+                        Aucune séance prévue pour le
+                        {{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}.
                     </p>
 
                     <a href="{{ route('admin.sessions.create') }}"
                        class="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-700 rounded-lg">
                         <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
-                        Create Session
+                        Créer une séance
                     </a>
                 </div>
 

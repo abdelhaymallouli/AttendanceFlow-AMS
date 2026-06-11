@@ -10,19 +10,13 @@
    | obtain it through the world-wide-web, please send a note to          |
    | license@php.net so we can mail you a copy immediately.               |
    +----------------------------------------------------------------------+
-   | Author: Thies C. Arntzen <thies@thieso.net>                          |
+   | Authors: Calvin Buckley <calvin@cmpct.info>                          |
    +----------------------------------------------------------------------+
- */
+*/
 
-#ifndef PHP_DIR_H
-#define PHP_DIR_H
+#include "php.h"
 
-/* directory functions */
-PHP_MINIT_FUNCTION(dir);
-PHP_RINIT_FUNCTION(dir);
-
-#define PHP_SCANDIR_SORT_ASCENDING 0
-#define PHP_SCANDIR_SORT_DESCENDING 1
-#define PHP_SCANDIR_SORT_NONE 2
-
-#endif /* PHP_DIR_H */
+PHPAPI bool php_odbc_connstr_is_quoted(const char *str);
+PHPAPI bool php_odbc_connstr_should_quote(const char *str);
+PHPAPI size_t php_odbc_connstr_estimate_quote_length(const char *in_str);
+PHPAPI size_t php_odbc_connstr_quote(char *out_str, const char *in_str, size_t out_str_size);

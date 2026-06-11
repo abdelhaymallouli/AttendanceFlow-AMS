@@ -13,7 +13,7 @@
         class="flex items-center space-x-3 px-4 py-3 {{ request()->routeIs('teacher.attendance.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-gray-100' }} rounded-lg font-medium transition-colors">
         <i data-lucide="clipboard-check" class="w-5 h-5"></i>
         <span>Présences</span>
-        <span class="ml-auto bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">LIVE</span>
+        <span class="ml-auto bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">EN DIRECT</span>
     </a>
     <a href="{{ route('teacher.students.index') }}"
         class="flex items-center space-x-3 px-4 py-3 {{ request()->routeIs('teacher.students.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-gray-100' }} rounded-lg transition-colors">
