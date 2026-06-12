@@ -68,15 +68,15 @@
         <div class="flex items-center justify-between gap-3 flex-wrap">
             <div class="flex items-center gap-2">
                 <a href="{{ route('admin.timetable.index', ['week' => $prevWeek]) }}"
-                   class="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-gray-700 hover:bg-gray-100 px-3 py-2 rounded-lg transition-colors">
+                   class="inline-flex items-center justify-center gap-1.5 h-9 text-xs font-bold uppercase tracking-wider text-gray-700 hover:bg-gray-100 px-3 rounded-lg border border-transparent transition-colors">
                     <i data-lucide="chevron-left" class="w-4 h-4"></i> Précédent
                 </a>
                 <a href="{{ route('admin.timetable.index', ['week' => $today]) }}"
-                   class="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-blue-700 hover:bg-blue-50 border border-blue-200 px-3 py-2 rounded-lg transition-colors">
-                    <i data-lucide="calendar-days" class="w-3.5 h-3.5"></i> Aujourd'hui
+                   class="inline-flex items-center justify-center gap-1.5 h-9 text-xs font-bold uppercase tracking-wider text-blue-700 hover:bg-blue-50 border border-blue-200 px-3 rounded-lg transition-colors shadow-sm">
+                    <i data-lucide="calendar-days" class="w-4 h-4"></i> Aujourd'hui
                 </a>
                 <a href="{{ route('admin.timetable.index', ['week' => $nextWeek]) }}"
-                   class="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-gray-700 hover:bg-gray-100 px-3 py-2 rounded-lg transition-colors">
+                   class="inline-flex items-center justify-center gap-1.5 h-9 text-xs font-bold uppercase tracking-wider text-gray-700 hover:bg-gray-100 px-3 rounded-lg border border-transparent transition-colors">
                     Suivant <i data-lucide="chevron-right" class="w-4 h-4"></i>
                 </a>
             </div>
@@ -135,16 +135,16 @@
                                                     </p>
                                                 @endif
                                             </div>
-                                            <div class="opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1">
+                                            <div class="flex flex-col gap-1.5 flex-shrink-0">
                                                 <a href="{{ route('admin.timetable.edit', $session->id) }}"
-                                                   class="text-blue-600 hover:bg-blue-50 p-1 rounded" title="Modifier">
-                                                    <i data-lucide="pencil" class="w-3 h-3"></i>
+                                                   class="text-blue-600 hover:bg-blue-50 p-1.5 rounded-lg border border-gray-100 bg-gray-50/50 flex items-center justify-center transition-colors" title="Modifier">
+                                                    <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
                                                 </a>
                                                 <form method="POST" action="{{ route('admin.timetable.destroy', $session->id) }}"
                                                       onsubmit="return confirm('Supprimer cette séance ?')">
                                                     @csrf @method('DELETE')
-                                                    <button type="submit" class="text-red-600 hover:bg-red-50 p-1 rounded w-full" title="Supprimer">
-                                                        <i data-lucide="trash-2" class="w-3 h-3"></i>
+                                                    <button type="submit" class="text-red-600 hover:bg-red-50 p-1.5 rounded-lg border border-gray-100 bg-gray-50/50 flex items-center justify-center transition-colors w-full" title="Supprimer">
+                                                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                                                     </button>
                                                 </form>
                                             </div>

@@ -6,10 +6,10 @@
 @section('content')
 <div class="space-y-6" x-data="{ date: '{{ $date }}' }">
 
-    <div class="bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-200 rounded-xl p-5 shadow-sm">
+    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-5 shadow-sm">
         <div class="flex items-center justify-between gap-4 flex-wrap">
             <div class="flex items-center gap-3">
-                <div class="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center shadow-sm">
+                <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-sm">
                     <i data-lucide="qr-code" class="w-6 h-6 text-white"></i>
                 </div>
                 <div>
@@ -20,11 +20,11 @@
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <i data-lucide="calendar" class="w-4 h-4 text-indigo-600"></i>
+                <i data-lucide="calendar" class="w-4 h-4 text-blue-600"></i>
                 <span class="text-sm font-semibold text-gray-700">
                     {{ \Carbon\Carbon::parse($date)->translatedFormat('l d F Y') }}
                 </span>
-                <span class="ml-2 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100">
+                <span class="ml-2 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-100">
                     <i data-lucide="layers" class="w-3 h-3"></i>
                     {{ $totalSessions }} séance(s)
                 </span>
@@ -36,16 +36,17 @@
         <form method="GET" action="{{ route('admin.qr.index') }}" id="adminQrDateForm" class="flex items-center gap-3">
             <label class="text-sm font-semibold text-gray-700 whitespace-nowrap">Date :</label>
             <div class="max-w-[220px] flex-1">
-                <x-preline-datepicker
-                    name="date"
-                    :value="$date"
-                    onChange="this.form.submit()"
-                    icon="calendar"
-                />
+                <input 
+                    type="date" 
+                    name="date" 
+                    value="{{ $date }}" 
+                    onchange="this.form.submit()" 
+                    class="block w-full h-10 rounded-lg border-gray-200 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-white px-3 py-2 border outline-none cursor-pointer"
+                >
             </div>
             <a href="{{ route('admin.qr.index', ['date' => now()->toDateString()]) }}"
-               class="ml-auto text-xs font-bold uppercase tracking-wider px-3 py-2 text-indigo-600 hover:bg-indigo-50 border border-indigo-200 rounded-lg transition-colors">
-                <i data-lucide="rotate-ccw" class="w-3 h-3 inline -mt-0.5"></i>
+               class="ml-auto h-10 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2 text-indigo-600 hover:bg-indigo-50 border border-indigo-200 rounded-lg transition-colors shadow-sm">
+                <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
                 Aujourd'hui
             </a>
         </form>

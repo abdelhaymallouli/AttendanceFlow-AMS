@@ -76,12 +76,13 @@
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Date *</label>
-                    <x-preline-datepicker
-                        name="date"
-                        :value="old('date', $defaultDate)"
-                        onChange=""
-                        icon="calendar"
-                    />
+                    <input 
+                        type="date" 
+                        name="date" 
+                        value="{{ old('date', $defaultDate) }}" 
+                        @change="checkConflicts()"
+                        class="block w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white shadow-sm cursor-pointer"
+                    >
                     @error('date') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
                 </div>
 
